@@ -1,12 +1,12 @@
 import 'package:btolet/property.dart';
-import 'package:btolet/toletpage.dart';
+import 'package:btolet/tolet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 
-import 'map_button.dart';
-import 'post_btn.dart';
+import 'widget/map_button.dart';
+import 'widget/post_btn.dart';
 
 void main() {
   runApp(const MyApp());
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       systemNavigationBarColor: Color(0xff161a2d),
       systemNavigationBarIconBrightness: Brightness.light,
     ));
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -315,7 +315,7 @@ class _MyHomePageState extends State<MyHomePage>
                     }
                     return true;
                   },
-                  child: const ToletPage(),
+                  child: const ToletHome(),
                 ),
                 NotificationListener<ScrollEndNotification>(
                   onNotification: (scrollEnd) {
