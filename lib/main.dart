@@ -1,6 +1,7 @@
 import 'package:btolet/property.dart';
 import 'package:btolet/tolet.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
@@ -64,6 +65,41 @@ class _MyHomePageState extends State<MyHomePage>
   ));
   double wt = Get.width;
   bool _switchValue = false;
+  final scrollController = ScrollController();
+  @override
+  void initState() {
+    scrollController.addListener(() {
+      if (scrollController.position.pixels > 0) {
+        if (scrollController.position.userScrollDirection ==
+            ScrollDirection.reverse) {
+          if (_offsetAnimation.isCompleted) _controller.reverse();
+          print("---------reverse--------");
+        }
+        if (scrollController.position.userScrollDirection ==
+            ScrollDirection.forward) {
+          print("---------forward--------");
+          _controller.forward();
+        }
+      }
+
+      if (scrollController.position.atEdge) {
+        if (scrollController.position.pixels == 0) {
+          print("You're at the top.");
+        } else {
+          print("You're at the bottom.");
+        }
+      }
+    });
+    super.initState();
+  }
+
+  @override
+  void deactivate() {
+    scrollController.dispose();
+    _controller.dispose();
+    super.deactivate();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -142,6 +178,7 @@ class _MyHomePageState extends State<MyHomePage>
         length: 2,
         child: SafeArea(
           child: NestedScrollView(
+            controller: scrollController,
             floatHeaderSlivers: true,
             headerSliverBuilder: (context, value) {
               return [
@@ -259,6 +296,7 @@ class _MyHomePageState extends State<MyHomePage>
                     //       ),
                     //       onTap: () {},
                     //     ),
+
                     //   ),
                     // ),
                     // RotatedBox(
