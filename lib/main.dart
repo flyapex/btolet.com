@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 
+import 'map_button.dart';
 import 'post_btn.dart';
 
 void main() {
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
+        fontFamily: 'Roboto',
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
@@ -61,6 +63,7 @@ class _MyHomePageState extends State<MyHomePage>
     curve: Curves.easeIn,
   ));
   double wt = Get.width;
+  bool _switchValue = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,6 +107,37 @@ class _MyHomePageState extends State<MyHomePage>
           ),
         ),
       ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Text('Drawer Header'),
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.home,
+              ),
+              title: const Text('Page 1'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.train,
+              ),
+              title: const Text('Page 2'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      ),
       body: DefaultTabController(
         length: 2,
         child: SafeArea(
@@ -119,7 +153,9 @@ class _MyHomePageState extends State<MyHomePage>
                     children: [
                       IconButton(
                         padding: EdgeInsets.zero,
-                        onPressed: () {},
+                        onPressed: () {
+                          Scaffold.of(context).openDrawer();
+                        },
                         icon: const CircleAvatar(
                           backgroundImage: NetworkImage(
                               "https://lh3.googleusercontent.com/a/AAcHTtdx1wQM-1NXgarrI1Ya4-6q0OtKawcqY55DHK3YBw"),
@@ -155,31 +191,35 @@ class _MyHomePageState extends State<MyHomePage>
                             onTap: () {},
                           ),
                         ),
-                      )
+                      ),
                     ],
                   ),
+                  // flexibleSpace: FlexibleSpaceBar(
+                  //   background: Center(
+                  //     child: Text(
+                  //       'Btolet',
+                  //       style: TextStyle(
+                  //         fontSize: 18,
+                  //         color: Colors.blue.withOpacity(0.5),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                   actions: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(50),
-                      child: Material(
-                        child: InkWell(
-                          child: const Padding(
-                            padding: EdgeInsets.all(5),
-                            child: Icon(Icons.search, size: 28),
-                          ),
-                          onTap: () {},
-                        ),
-                      ),
-                    ),
-                    RotatedBox(
-                      quarterTurns: 1,
+                    Padding(
+                      padding: const EdgeInsets.only(right: 5),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(50),
                         child: Material(
+                          color: const Color(0xffF0F0F0),
                           child: InkWell(
-                            child: const Padding(
-                              padding: EdgeInsets.all(5),
-                              child: Icon(FontAwesome.sliders, size: 26),
+                            child: Padding(
+                              padding: const EdgeInsets.all(5),
+                              child: Icon(
+                                Icons.search,
+                                color: Colors.black.withOpacity(0.2),
+                                size: 28,
+                              ),
                             ),
                             onTap: () {},
                           ),
@@ -188,19 +228,69 @@ class _MyHomePageState extends State<MyHomePage>
                     ),
                     Padding(
                       padding: const EdgeInsets.only(right: 20),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(50),
-                        child: Material(
-                          child: InkWell(
-                            child: const Padding(
-                              padding: EdgeInsets.all(5),
-                              child: Icon(Feather.message_square, size: 26),
-                            ),
-                            onTap: () {},
-                          ),
-                        ),
+                      child: MapButton(
+                        width: 90,
+                        height: 40,
+                        onTap: () {},
+                        onDoubleTap: () {},
+                        onSwipe: () {},
+                        value: _switchValue,
+                        iconOn: Feather.map_pin,
+                        iconOff: Feather.align_left,
+                        textOn: Feather.align_left,
+                        textOff: Feather.map_pin,
+                        colorOn: Colors.blue,
+                        colorOff: Colors.blue,
+                        onChanged: (bool state) {
+                          setState(() {
+                            _switchValue = !_switchValue;
+                          });
+                        },
+                        animationDuration: const Duration(milliseconds: 250),
                       ),
                     ),
+                    // ClipRRect(
+                    //   borderRadius: BorderRadius.circular(50),
+                    //   child: Material(
+                    //     child: InkWell(
+                    //       child: const Padding(
+                    //         padding: EdgeInsets.all(5),
+                    //         child: Icon(Icons.search, size: 28),
+                    //       ),
+                    //       onTap: () {},
+                    //     ),
+                    //   ),
+                    // ),
+                    // RotatedBox(
+                    //   quarterTurns: 1,
+                    //   child: ClipRRect(
+                    //     borderRadius: BorderRadius.circular(50),
+                    //     child: Material(
+                    //       child: InkWell(
+                    //         child: const Padding(
+                    //           padding: EdgeInsets.all(5),
+                    //           child: Icon(FontAwesome.sliders, size: 26),
+                    //         ),
+                    //         onTap: () {},
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                    // Padding(
+                    //   padding: const EdgeInsets.only(right: 20),
+                    //   child: ClipRRect(
+                    //     borderRadius: BorderRadius.circular(50),
+                    //     child: Material(
+                    //       child: InkWell(
+                    //         child: const Padding(
+                    //           padding: EdgeInsets.all(5),
+                    //           child: Icon(Feather.message_square, size: 26),
+                    //         ),
+                    //         onTap: () {},
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                   elevation: 0.0,
                 ),
