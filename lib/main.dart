@@ -6,8 +6,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 
-import 'widget/map_button.dart';
+import 'widget/tolet/map_button.dart';
 import 'widget/post_btn.dart';
+import 'widget/tolet/posttolet.dart';
 
 void main() {
   runApp(const MyApp());
@@ -117,7 +118,23 @@ class _MyHomePageState extends State<MyHomePage>
               height: wt / 9,
               width: wt / 3.5,
               child: UnicornOutlineButton(
-                onPressed: () {},
+                onPressed: () {
+                  Get.bottomSheet(
+                    const PostNow(),
+                    elevation: 20.0,
+                    enableDrag: true,
+                    backgroundColor: Colors.white,
+                    isScrollControlled: true,
+                    ignoreSafeArea: true,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20.0),
+                        topRight: Radius.circular(20.0),
+                      ),
+                    ),
+                    enterBottomSheetDuration: const Duration(milliseconds: 170),
+                  );
+                },
                 gradient: const LinearGradient(
                   colors: [Colors.blue, Colors.cyanAccent, Colors.yellow],
                 ),
@@ -129,7 +146,7 @@ class _MyHomePageState extends State<MyHomePage>
                     const Icon(Icons.add),
                     const SizedBox(width: 6),
                     Text(
-                      'POST',
+                      'Sell',
                       style: TextStyle(
                         color: Colors.black.withOpacity(0.70),
                         fontSize: 18,

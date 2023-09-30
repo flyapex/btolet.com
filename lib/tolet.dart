@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
 import 'package:marquee/marquee.dart';
 
+import 'widget/sorting/sortingtolet.dart';
+
 class ToletHome extends StatelessWidget {
   const ToletHome({super.key});
 
@@ -48,32 +50,52 @@ class ToletHome extends StatelessWidget {
                     ],
                   ),
                 ),
-                Container(
-                  height: 35,
-                  width: 100,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(4),
-                    border: Border.all(color: Colors.black.withOpacity(0.3)),
-                  ),
-                  child: const Padding(
-                    padding: EdgeInsets.only(left: 5, right: 5),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(
-                              Feather.sliders,
-                              color: Colors.black45,
-                              size: 20,
-                            ),
-                            SizedBox(width: 6),
-                            Text('Filter'),
-                          ],
+                InkWell(
+                  onTap: () {
+                    Get.bottomSheet(
+                      const SortingTolet(),
+                      elevation: 20.0,
+                      enableDrag: true,
+                      backgroundColor: Colors.white,
+                      isScrollControlled: true,
+                      ignoreSafeArea: true,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20.0),
+                          topRight: Radius.circular(20.0),
                         ),
-                        Icon(Feather.chevron_down),
-                      ],
+                      ),
+                      enterBottomSheetDuration:
+                          const Duration(milliseconds: 170),
+                    );
+                  },
+                  child: Container(
+                    height: 35,
+                    width: 100,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(4),
+                      border: Border.all(color: Colors.black.withOpacity(0.3)),
+                    ),
+                    child: const Padding(
+                      padding: EdgeInsets.only(left: 5, right: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                Feather.sliders,
+                                color: Colors.black45,
+                                size: 20,
+                              ),
+                              SizedBox(width: 6),
+                              Text('Filter'),
+                            ],
+                          ),
+                          Icon(Feather.chevron_down),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -168,7 +190,7 @@ class Posts extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  width: 8,
+                  width: 7,
                   color: Colors.yellowAccent,
                 ),
                 Padding(
@@ -187,12 +209,12 @@ class Posts extends StatelessWidget {
                           children: [
                             Icon(
                               Icons.flash_on,
-                              size: 14,
+                              size: 12,
                             ),
                             Text(
                               "FEATURED",
                               style: TextStyle(
-                                fontSize: 14,
+                                fontSize: 12,
                                 color: Color(0xff083437),
                                 fontWeight: FontWeight.w300,
                               ),
@@ -203,27 +225,61 @@ class Posts extends StatelessWidget {
                       const Text(
                         "৳ 2000",
                         style: TextStyle(
-                          fontSize: 24,
+                          fontSize: 22,
                           color: Color(0xff083437),
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const Text(
-                        "2 Bds -2 Ba -1234 ft2",
-                        style: TextStyle(
-                          color: Color(0xff083437),
-                        ),
+                      // const Text(
+                      //   "2 Bds -2 Ba -1234 ft2",
+                      //   style: TextStyle(
+                      //     color: Color(0xff083437),
+                      //     fontSize: 12,
+                      //   ),
+                      // ),
+                      const Row(
+                        children: [
+                          Text(
+                            "2 ",
+                            style: TextStyle(
+                              color: Color(0xff083437),
+                              fontSize: 14,
+                            ),
+                          ),
+                          Icon(Icons.bed_outlined, color: Colors.black38),
+                          Text(
+                            "  2",
+                            style: TextStyle(
+                              color: Color(0xff083437),
+                              fontSize: 14,
+                            ),
+                          ),
+                          Icon(Icons.shower_outlined, color: Colors.black38),
+                          Text(
+                            "  123 ",
+                            style: TextStyle(
+                              color: Color(0xff083437),
+                              fontSize: 14,
+                            ),
+                          ),
+                          Icon(
+                            Icons.image_aspect_ratio_rounded,
+                            color: Colors.black38,
+                          ),
+                        ],
                       ),
-                      Text(
-                        "House For Rent",
-                        style: TextStyle(
-                          color: const Color(0xff083437).withOpacity(0.3),
-                        ),
-                      ),
+                      // Text(
+                      //   "House For Rent",
+                      //   style: TextStyle(
+                      //     color: const Color(0xff083437).withOpacity(0.3),
+                      //     fontSize: 12,
+                      //   ),
+                      // ),
                       Text(
                         "Khulna Nirala",
                         style: TextStyle(
                           color: const Color(0xff083437).withOpacity(0.3),
+                          fontSize: 12,
                         ),
                       ),
                     ],
@@ -269,6 +325,7 @@ class Posts extends StatelessWidget {
                     "1 day ago",
                     style: TextStyle(
                       color: const Color(0xff083437).withOpacity(0.3),
+                      fontSize: 12,
                     ),
                   ),
                 ],

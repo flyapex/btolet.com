@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
@@ -14,7 +15,15 @@ class ToletPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var height = Get.height;
     var width = Get.width;
+
     return Scaffold(
+      appBar: AppBar(
+        systemOverlayStyle: const SystemUiOverlayStyle(
+          statusBarColor: Colors.white,
+          statusBarIconBrightness: Brightness.dark, // For Android (dark icons)
+          statusBarBrightness: Brightness.light, // For iOS (dark icons)
+        ),
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Container(
         height: 60,
@@ -287,32 +296,35 @@ class ToletPage extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    height: 20,
+                    height: 15,
                     margin: const EdgeInsets.only(top: 10),
                     decoration: const BoxDecoration(
                       color: Colors.black12,
                     ),
                   ),
                   // const SizedBox(height: 20),
-                  // Container(
-                  //   height: 100,
-                  //   width: width,
-                  //   decoration: BoxDecoration(
-                  //     color: Colors.yellow,
-                  //     borderRadius: BorderRadius.circular(10),
-                  //   ),
-                  //   child: const Center(
-                  //     child: Text('Ads'),
-                  //   ),
-                  // ),
-                  // Container(
-                  //   height: 1,
-                  //   decoration: BoxDecoration(
-                  //     color: Colors.black12,
-                  //     borderRadius: BorderRadius.circular(10),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(left: 20, right: 20),
+                  //   child: Container(
+                  //     height: 100,
+                  //     width: width,
+                  //     decoration: BoxDecoration(
+                  //       color: Colors.yellow,
+                  //       borderRadius: BorderRadius.circular(10),
+                  //     ),
+                  //     child: const Center(
+                  //       child: Text('Ads'),
+                  //     ),
                   //   ),
                   // ),
-
+                  // const SizedBox(height: 20),
+                  Container(
+                    height: 1,
+                    decoration: BoxDecoration(
+                      color: Colors.black12,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(left: 20, right: 20),
                     child: Column(
@@ -329,7 +341,7 @@ class ToletPage extends StatelessWidget {
                         ),
                         const SizedBox(height: 15),
                         const Details(
-                          type: "Property Type",
+                          type: "Room",
                           detailstext: "Family, Bachelor",
                           icon: Icons.business_outlined,
                         ),
@@ -388,7 +400,6 @@ class ToletPage extends StatelessWidget {
                           detailstext: "300 ৳/mon",
                           icon: Icons.monetization_on_outlined,
                         ),
-
                         const SizedBox(height: 15),
                         const Details(
                           type: "Rent From",
@@ -401,7 +412,6 @@ class ToletPage extends StatelessWidget {
                           detailstext: "Nirala scool, 334 no building",
                           icon: Icons.share_location_rounded,
                         ),
-
                         const SizedBox(height: 20),
                         Container(
                           height: 1,
@@ -427,18 +437,41 @@ class ToletPage extends StatelessWidget {
                         Container(
                           height: 100,
                           width: double.infinity,
-                          margin: const EdgeInsets.only(right: 20),
                           decoration: BoxDecoration(
                             color: const Color(0xffE3E8FF),
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: const Padding(
-                            padding: EdgeInsets.all(10),
+                            padding:
+                                EdgeInsets.only(top: 20, left: 20, right: 15),
                             child: Text(
-                              "Nirala 14, Khulna",
+                              "Nirala 14, Khulna Nirala 14, Khulna Nirala 14, KhulnaNirala 14, KhulnaNirala 14, KhulnaNirala 14, Khulna",
                               textAlign: TextAlign.justify,
                               overflow: TextOverflow.ellipsis,
                               maxLines: 5,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        const Text(
+                          "Posted In",
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Color(0xff083437),
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Container(
+                          height: 100,
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(6),
+                            image: const DecorationImage(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(
+                                "https://media.wired.com/photos/59269cd37034dc5f91bec0f1/master/w_1920,c_limit/GoogleMapTA.jpg",
+                              ),
                             ),
                           ),
                         ),
@@ -458,6 +491,18 @@ class ToletPage extends StatelessWidget {
                         //     ),
                         //   ),
                         // ),
+                        const SizedBox(height: 20),
+                        Container(
+                          height: 100,
+                          width: width,
+                          decoration: BoxDecoration(
+                            color: Colors.yellow,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: const Center(
+                            child: Text('Ads'),
+                          ),
+                        ),
                         const SizedBox(height: 200),
                       ],
                     ),
