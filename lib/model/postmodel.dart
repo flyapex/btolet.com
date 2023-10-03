@@ -1,0 +1,58 @@
+List<String> rooms = [
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  "10+",
+];
+List<String> bath = [
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  "10+",
+];
+List<String> floors = [
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  "10+",
+];
+List<String> facing = [
+  "East",
+  "North",
+  "North-East",
+  "North-West",
+  "South",
+  "South-East",
+  "South-West",
+  "West",
+];
+List<String> kitchen = [
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  "10+",
+];

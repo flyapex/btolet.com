@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 
 class PostController extends GetxController {
   var pageController = PageController();
+
+  //------------------------sorting
   var family = false.obs;
   var bachelor = false.obs;
   var officeSpace = false.obs;
@@ -23,12 +25,27 @@ class PostController extends GetxController {
   var security = false.obs;
   var firealarm = false.obs;
 
+  //-----------------------------
+  var rooms = 'select'.obs;
+  var bath = 'select'.obs;
+  var floors = 'select'.obs;
+  var facing = 'select'.obs;
+  var kitchen = 'select'.obs;
+
   TextEditingController maintenance = TextEditingController();
   TextEditingController sizeOfHome = TextEditingController();
+  TextEditingController propertyName = TextEditingController();
   TextEditingController shortAddress = TextEditingController();
   TextEditingController description = TextEditingController();
+  TextEditingController squireft = TextEditingController();
   TextEditingController price = TextEditingController();
   TextEditingController number = TextEditingController();
   TextEditingController wapp = TextEditingController();
   TextEditingController name = TextEditingController();
+
+  late String image1 = '';
+  late String image2 = '';
+  late String image3 = '';
+  late String image4 = '';
+  late String image5 = '';
 }

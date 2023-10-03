@@ -5,9 +5,8 @@ import 'package:another_xlider/models/slider_step.dart';
 import 'package:another_xlider/models/tooltip/tooltip.dart';
 import 'package:another_xlider/models/trackbar.dart';
 import 'package:btolet/controller/post_controller.dart';
-
+import 'package:btolet/widget/btn.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 
@@ -95,62 +94,7 @@ class _SortHereState extends State<SortHere> with TickerProviderStateMixin {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    color: Colors.white,
-                    child: Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        onTap: () => {},
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    CircleAvatar(
-                                      backgroundColor: const Color(0xffEEEEEE),
-                                      child: SvgPicture.asset(
-                                        'assets/icons/location.svg',
-                                        height: 18,
-                                        width: 18,
-                                        // ignore: deprecated_member_use
-                                        color: Colors.blue,
-                                      ),
-                                    ),
-                                    const SizedBox(width: 10),
-                                    SizedBox(
-                                      width: Get.width / 1.5,
-                                      child: const Text(
-                                        "Nirala,Khulna,Khulna Division .....",
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          color: Colors.black,
-                                          letterSpacing: 0.1,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 10),
-                                  child: SvgPicture.asset(
-                                    'assets/icons/arrow.svg',
-                                    height: 12,
-                                    width: 12,
-                                    // ignore: deprecated_member_use
-                                    color: const Color(0xffAFAFAF),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 25),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                  const LocationSmall(),
                   Center(
                     child: FittedBox(
                       child: Container(
