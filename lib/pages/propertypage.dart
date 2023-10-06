@@ -684,6 +684,7 @@ class YoutubeVideo extends StatefulWidget {
 
 class _YoutubeVideoState extends State<YoutubeVideo> {
   var videoUrl = "GzU8KqOY8YA";
+  // ignore: prefer_typing_uninitialized_variables
   var _controller;
   @override
   void initState() {

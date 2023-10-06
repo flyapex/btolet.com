@@ -5,11 +5,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 import 'controller/location_controller.dart';
+import 'pages/map/multi_map.dart';
 import 'pages/property.dart';
 import 'pages/tolet.dart';
 import 'pages/map/location_sheet_map.dart';
 import 'pages/map/map_button_top.dart';
-import 'widget/tolet/drawer.dart';
+import 'widget/drawer.dart';
 import 'widget/tolet/posttolet.dart';
 
 class HomeView extends StatefulWidget {
@@ -85,62 +86,68 @@ class _HomeViewState extends State<HomeView>
     return Obx(
       () => Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: SlideTransition(
-          position: _offsetAnimation,
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 20),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(200),
-              ),
-              child: SizedBox(
-                height: wt / 9,
-                width: wt / 3.5,
-                child: UnicornOutlineButton(
-                  onPressed: () {
-                    Get.bottomSheet(
-                      const PostNow(),
-                      elevation: 20.0,
-                      enableDrag: true,
-                      backgroundColor: Colors.white,
-                      isScrollControlled: true,
-                      ignoreSafeArea: true,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20.0),
-                          topRight: Radius.circular(20.0),
+        floatingActionButton: locationController.mapMode.value
+            ? const SizedBox()
+            : SlideTransition(
+                position: _offsetAnimation,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 20),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(200),
+                    ),
+                    child: SizedBox(
+                      height: wt / 9,
+                      width: wt / 3.5,
+                      child: UnicornOutlineButton(
+                        onPressed: () {
+                          Get.bottomSheet(
+                            const PostNow(),
+                            elevation: 20.0,
+                            enableDrag: true,
+                            backgroundColor: Colors.white,
+                            isScrollControlled: true,
+                            ignoreSafeArea: true,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20.0),
+                                topRight: Radius.circular(20.0),
+                              ),
+                            ),
+                            enterBottomSheetDuration:
+                                const Duration(milliseconds: 170),
+                          );
+                        },
+                        gradient: const LinearGradient(
+                          colors: [
+                            Colors.blue,
+                            Colors.cyanAccent,
+                            Colors.yellow
+                          ],
+                        ),
+                        strokeWidth: 4,
+                        radius: 50,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.add),
+                            const SizedBox(width: 6),
+                            Text(
+                              'Sell',
+                              style: TextStyle(
+                                color: Colors.black.withOpacity(0.70),
+                                fontSize: 18,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      enterBottomSheetDuration:
-                          const Duration(milliseconds: 170),
-                    );
-                  },
-                  gradient: const LinearGradient(
-                    colors: [Colors.blue, Colors.cyanAccent, Colors.yellow],
-                  ),
-                  strokeWidth: 4,
-                  radius: 50,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const Icon(Icons.add),
-                      const SizedBox(width: 6),
-                      Text(
-                        'Sell',
-                        style: TextStyle(
-                          color: Colors.black.withOpacity(0.70),
-                          fontSize: 18,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ),
-        ),
         // drawer: Drawer(
         //   child: ListView(
         //     padding: EdgeInsets.zero,
@@ -354,16 +361,7 @@ class _HomeViewState extends State<HomeView>
                 // physics: const NeverScrollableScrollPhysics(),
                 children: [
                   locationController.mapMode.value
-                      // ? const MultiMap()
-
-                      ? Container(
-                          height: 100,
-                          width: 100,
-                          decoration: BoxDecoration(
-                            color: Colors.red,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        )
+                      ? const MultiMap()
                       : NotificationListener<ScrollEndNotification>(
                           onNotification: (scrollEnd) {
                             final metrics = scrollEnd.metrics;
