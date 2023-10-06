@@ -7,13 +7,13 @@ class PostController extends GetxController {
   //------------------------sorting
   var family = false.obs;
   var bachelor = false.obs;
-  var officeSpace = false.obs;
+  var office = false.obs;
   var sitMale = false.obs;
   var sitFemale = false.obs;
   var sublet = false.obs;
   var hostel = false.obs;
   var shop = false.obs;
-  var garage = false.obs;
+  var onlygarage = false.obs;
 
   var balcony = false.obs;
   var parking = false.obs;
@@ -24,6 +24,7 @@ class PostController extends GetxController {
   var gas = false.obs;
   var security = false.obs;
   var firealarm = false.obs;
+  var gaser = false.obs;
 
   //-----------------------------
   var rooms = 'select'.obs;
@@ -38,6 +39,7 @@ class PostController extends GetxController {
   TextEditingController shortAddress = TextEditingController();
   TextEditingController description = TextEditingController();
   TextEditingController squireft = TextEditingController();
+  TextEditingController garagetxtcontroller = TextEditingController();
   TextEditingController price = TextEditingController();
   TextEditingController number = TextEditingController();
   TextEditingController wapp = TextEditingController();

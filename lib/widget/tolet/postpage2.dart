@@ -39,12 +39,16 @@ class _PostPage2State extends State<PostPage2> {
                   elevation: 0,
                   onPressed: () async {},
                   icon: const Icon(
-                    Feather.check,
+                    Icons.check_circle_outline_rounded,
                     color: Colors.white,
                   ),
                   label: const Text(
-                    " Post Now  ",
-                    style: TextStyle(color: Colors.white),
+                    "Post Now",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1,
+                    ),
                   ),
                   backgroundColor: Colors.blueAccent,
                 ),

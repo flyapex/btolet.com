@@ -24,8 +24,8 @@ class _LocationSheetState extends State<LocationSheet> {
   late String _mapStyle;
 
   void _onMapCreated(GoogleMapController controller) {
-    locationController.mapController = controller;
     controller.setMapStyle(_mapStyle);
+    locationController.mapController = controller;
   }
 
   openSearchSheet() async {
@@ -263,11 +263,12 @@ class _LocationSheetState extends State<LocationSheet> {
                                   ),
                                   child: IconButton(
                                     onPressed: () {
-                                      // _onMyLocationButtonPressed();
+                                      // locationController
+                                      //       .locationAddress.value=
                                     },
                                     icon: Icon(
                                       // Icons.my_location,
-                                      Feather.heart,
+                                      Feather.check_circle,
                                       color: Colors.black.withOpacity(0.5),
                                       size: 22,
                                     ),

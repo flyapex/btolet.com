@@ -200,42 +200,21 @@ class _SortHereState extends State<SortHere> with TickerProviderStateMixin {
                               ).createShader(rect);
                             },
                             blendMode: BlendMode.dstOut,
-                            // child: const Row(
-                            //   mainAxisAlignment: MainAxisAlignment.start,
-                            //   children: [
-                            //     Expanded(
-                            //       child: Wrap(
-                            //         spacing: 10,
-                            //         children: [
-                            //           CatagoryCpx(catagory: 1),
-                            //           CatagoryCpx(catagory: 2),
-                            //           CatagoryCpx(catagory: 4),
-                            //           CatagoryCpx(catagory: 5),
-                            //           CatagoryCpx(catagory: 6),
-                            //           CatagoryCpx(catagory: 7),
-                            //           CatagoryCpx(catagory: 8),
-                            //           CatagoryCpx(catagory: 9),
-                            //           CatagoryCpx(catagory: 3),
-                            //         ],
-                            //       ),
-                            //     ),
-                            //   ],
-                            // ),
                             child: ListView(
                               // scrollDirection: Axis.horizontal,
                               children: const [
                                 Wrap(
                                   spacing: 10,
                                   children: [
-                                    CatagoryCpx(catagory: 1),
-                                    CatagoryCpx(catagory: 2),
-                                    CatagoryCpx(catagory: 4),
-                                    CatagoryCpx(catagory: 5),
-                                    CatagoryCpx(catagory: 6),
-                                    CatagoryCpx(catagory: 7),
-                                    CatagoryCpx(catagory: 8),
-                                    CatagoryCpx(catagory: 9),
-                                    CatagoryCpx(catagory: 3),
+                                    CatagoryCpx(catagory: 'Family'),
+                                    CatagoryCpx(catagory: 'Bachelor'),
+                                    CatagoryCpx(catagory: 'Male Sit'),
+                                    CatagoryCpx(catagory: 'Female Sit'),
+                                    CatagoryCpx(catagory: 'Sub-let'),
+                                    CatagoryCpx(catagory: 'Hostel'),
+                                    CatagoryCpx(catagory: 'Shop'),
+                                    CatagoryCpx(catagory: 'Office'),
+                                    CatagoryCpx(catagory: 'Only Garage'),
                                   ],
                                 ),
                               ],
@@ -272,9 +251,11 @@ class _SortHereState extends State<SortHere> with TickerProviderStateMixin {
                                           color: Color(0xff083437),
                                         ),
                                       ),
-                                      const Icon(
-                                        Feather.chevron_down,
-                                        color: Color(0xff083437),
+                                      Icon(
+                                        categorySize == 117
+                                            ? Feather.chevron_down
+                                            : Feather.chevron_up,
+                                        color: const Color(0xff083437),
                                         size: 18,
                                       )
                                     ],
@@ -287,66 +268,7 @@ class _SortHereState extends State<SortHere> with TickerProviderStateMixin {
                       ],
                     ),
                   ),
-                  // const Row(
-                  //   mainAxisAlignment: MainAxisAlignment.start,
-                  //   children: [
-                  //     Expanded(
-                  //       child: Wrap(
-                  //         spacing: 10,
-                  //         children: [
-                  //           CatagoryCpx(catagory: 1),
-                  //           CatagoryCpx(catagory: 2),
-                  //           CatagoryCpx(catagory: 4),
-                  //           CatagoryCpx(catagory: 5),
-                  //           CatagoryCpx(catagory: 6),
-                  //           CatagoryCpx(catagory: 7),
-                  //           CatagoryCpx(catagory: 8),
-                  //           CatagoryCpx(catagory: 9),
-                  //           CatagoryCpx(catagory: 3),
-                  //         ],
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
-                  // const SingleChildScrollView(
-                  //   scrollDirection: Axis.horizontal,
-                  //   child: Row(
-                  //     children: [
-                  //       CatagoryCpx(catagory: 1),
-                  //       SizedBox(width: 10),
-                  //       CatagoryCpx(catagory: 2),
-                  //       SizedBox(width: 10),
-                  //       CatagoryCpx(catagory: 3),
-                  //       SizedBox(width: 10),
-                  //     ],
-                  //   ),
-                  // ),
-                  // const SingleChildScrollView(
-                  //   scrollDirection: Axis.horizontal,
-                  //   child: Row(
-                  //     children: [
-                  //       CatagoryCpx(catagory: 4),
-                  //       SizedBox(width: 10),
-                  //       CatagoryCpx(catagory: 5),
-                  //       SizedBox(width: 10),
-                  //       CatagoryCpx(catagory: 6),
-                  //       SizedBox(width: 10),
-                  //     ],
-                  //   ),
-                  // ),
-                  // const SingleChildScrollView(
-                  //   scrollDirection: Axis.horizontal,
-                  //   child: Row(
-                  //     children: [
-                  //       CatagoryCpx(catagory: 7),
-                  //       SizedBox(width: 10),
-                  //       CatagoryCpx(catagory: 8),
-                  //       SizedBox(width: 10),
-                  //       CatagoryCpx(catagory: 9),
-                  //       SizedBox(width: 10),
-                  //     ],
-                  //   ),
-                  // ),
+
                   const SizedBox(height: 20),
                   const Row(
                     children: [
@@ -509,6 +431,8 @@ class CustomeChip extends StatelessWidget {
           return postController.powerbackup.value;
         case "Fire Alarm":
           return postController.firealarm.value;
+        case "Gaser":
+          return postController.gaser.value;
         default:
           return false;
       }
@@ -549,6 +473,9 @@ class CustomeChip extends StatelessWidget {
               break;
             case "Fire Alarm":
               postController.firealarm.value = !postController.firealarm.value;
+              break;
+            case "Gaser":
+              postController.gaser.value = !postController.gaser.value;
               break;
             default:
               break;
@@ -650,7 +577,7 @@ class _RowbtnState extends State<Rowbtn> {
 }
 
 class CatagoryCpx extends StatefulWidget {
-  final int catagory;
+  final String catagory;
   const CatagoryCpx({
     super.key,
     required this.catagory,
@@ -662,47 +589,26 @@ class CatagoryCpx extends StatefulWidget {
 
 class _CatagoryCpxState extends State<CatagoryCpx> {
   final PostController postController = Get.find();
-  getText() {
-    if (widget.catagory == 1) {
-      return 'Family';
-    } else if (widget.catagory == 2) {
-      return 'Bachelor';
-    } else if (widget.catagory == 3) {
-      return 'Office Space';
-    } else if (widget.catagory == 4) {
-      return 'Male Sit';
-    } else if (widget.catagory == 5) {
-      return 'Female Sit';
-    } else if (widget.catagory == 6) {
-      return 'Sub-let ';
-    } else if (widget.catagory == 7) {
-      return 'Hostel';
-    } else if (widget.catagory == 8) {
-      return 'Shop';
-    } else if (widget.catagory == 9) {
-      return 'Garage';
-    }
-  }
 
   getController() {
-    if (widget.catagory == 1) {
+    if (widget.catagory == 'Family') {
       return postController.family.value;
-    } else if (widget.catagory == 2) {
+    } else if (widget.catagory == 'Bachelor') {
       return postController.bachelor.value;
-    } else if (widget.catagory == 3) {
-      return postController.officeSpace.value;
-    } else if (widget.catagory == 4) {
+    } else if (widget.catagory == 'Office') {
+      return postController.office.value;
+    } else if (widget.catagory == 'Male Sit') {
       return postController.sitMale.value;
-    } else if (widget.catagory == 5) {
+    } else if (widget.catagory == 'Female Sit') {
       return postController.sitFemale.value;
-    } else if (widget.catagory == 6) {
+    } else if (widget.catagory == 'Sub-let') {
       return postController.sublet.value;
-    } else if (widget.catagory == 7) {
+    } else if (widget.catagory == 'Hostel') {
       return postController.hostel.value;
-    } else if (widget.catagory == 8) {
+    } else if (widget.catagory == 'Shop') {
       return postController.shop.value;
-    } else if (widget.catagory == 9) {
-      return postController.garage.value;
+    } else if (widget.catagory == 'Only Garage') {
+      return postController.onlygarage.value;
     }
   }
 
@@ -713,34 +619,33 @@ class _CatagoryCpxState extends State<CatagoryCpx> {
         return FilterChip(
           showCheckmark: false,
           label: Text(
-            getText(),
+            widget.catagory,
             style: TextStyle(
               color: Colors.black.withOpacity(0.5),
             ),
           ),
           selected: getController(),
           onSelected: (value) {
-            if (widget.catagory == 1) {
+            if (widget.catagory == 'Family') {
               postController.family.value = !postController.family.value;
-            } else if (widget.catagory == 2) {
+            } else if (widget.catagory == 'Bachelor') {
               postController.bachelor.value = !postController.bachelor.value;
-            } else if (widget.catagory == 3) {
-              postController.officeSpace.value =
-                  !postController.officeSpace.value;
-            } else if (widget.catagory == 4) {
+            } else if (widget.catagory == 'Office') {
+              postController.office.value = !postController.office.value;
+            } else if (widget.catagory == 'Male Sit') {
               postController.sitMale.value = !postController.sitMale.value;
-            } else if (widget.catagory == 5) {
+            } else if (widget.catagory == 'Female Sit') {
               postController.sitFemale.value = !postController.sitFemale.value;
-            } else if (widget.catagory == 6) {
+            } else if (widget.catagory == 'Sub-let') {
               postController.sublet.value = !postController.sublet.value;
-            } else if (widget.catagory == 7) {
+            } else if (widget.catagory == 'Hostel') {
               postController.hostel.value = !postController.hostel.value;
-            } else if (widget.catagory == 8) {
+            } else if (widget.catagory == 'Shop') {
               postController.shop.value = !postController.shop.value;
-            } else if (widget.catagory == 9) {
-              postController.garage.value = !postController.garage.value;
+            } else if (widget.catagory == 'Only Garage') {
+              postController.onlygarage.value =
+                  !postController.onlygarage.value;
             }
-
             // postController.allCategoryCheck();
           },
           avatar: Icon(

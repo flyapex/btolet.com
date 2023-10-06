@@ -35,12 +35,12 @@ class SelectImageState extends State<SelectImage> {
         selectedIds: true ? _selectedImages.map((e) => e.id).toList() : null,
         pickerOptions: HLPickerOptions(
           mediaType: MediaType.image,
-          enablePreview: true,
+          enablePreview: false,
           // isExportThumbnail: _isExportThumbnail,
           thumbnailCompressFormat: CompressFormat.jpg,
           thumbnailCompressQuality: 0.9,
           recordVideoMaxSecond: 40,
-          maxSelectedAssets: 10,
+          maxSelectedAssets: 12,
           usedCameraButton: true,
           numberOfColumn: 3,
         ),
@@ -177,42 +177,46 @@ class SelectImageState extends State<SelectImage> {
                         separatorBuilder: (BuildContext context, int index) =>
                             const SizedBox(width: 8.0),
                       ),
-                      Row(
-                        children: [
-                          SizedBox(
-                            height: 44,
-                            child: ElevatedButton(
-                              onPressed: () async {
-                                getImage();
-                              },
-                              style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                    const Color(0xff7F6BFC)),
-                              ),
-                              child: const Padding(
-                                padding: EdgeInsets.only(left: 20, right: 20),
-                                child: Row(
-                                  children: <Widget>[
-                                    Icon(
-                                      Icons.add_a_photo,
-                                      color: Colors.white,
+                      _selectedImages.length != 12
+                          ? Row(
+                              children: [
+                                SizedBox(
+                                  height: 44,
+                                  child: ElevatedButton(
+                                    onPressed: () async {
+                                      getImage();
+                                    },
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              const Color(0xff7F6BFC)),
                                     ),
-                                    SizedBox(width: 10),
-                                    Text(
-                                      "Select Image",
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                        letterSpacing: 0.8,
-                                        color: Colors.white,
+                                    child: const Padding(
+                                      padding:
+                                          EdgeInsets.only(left: 20, right: 20),
+                                      child: Row(
+                                        children: <Widget>[
+                                          Icon(
+                                            Icons.add_a_photo,
+                                            color: Colors.white,
+                                          ),
+                                          SizedBox(width: 10),
+                                          Text(
+                                            "Select Image",
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              letterSpacing: 0.8,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                  ],
+                                  ),
                                 ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                              ],
+                            )
+                          : const SizedBox(),
                     ],
                   ),
                 ),

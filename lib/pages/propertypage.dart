@@ -1,21 +1,25 @@
-import 'dart:io';
 import 'dart:ui';
+import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
 import 'package:maps_launcher/maps_launcher.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
-class ToletPage extends StatelessWidget {
-  const ToletPage({super.key});
+class PropertyPage extends StatefulWidget {
+  const PropertyPage({super.key});
 
   @override
+  State<PropertyPage> createState() => _PropertyPageState();
+}
+
+class _PropertyPageState extends State<PropertyPage> {
+  var height = Get.height;
+  var width = Get.width;
+  @override
   Widget build(BuildContext context) {
-    var height = Get.height;
-    var width = Get.width;
-    // LocationController locationController = Get.put(LocationController());
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Container(
@@ -30,14 +34,7 @@ class ToletPage extends StatelessWidget {
                 const SizedBox(width: 20),
                 Expanded(
                   child: InkWell(
-                    onTap: () async {
-                      final call = Uri.parse('tel:01612217208');
-                      if (await canLaunchUrl(call)) {
-                        launchUrl(call);
-                      } else {
-                        throw 'Could not launch $call';
-                      }
-                    },
+                    onTap: () async {},
                     child: Container(
                       padding: const EdgeInsets.only(
                         // left: 11,
@@ -73,24 +70,7 @@ class ToletPage extends StatelessWidget {
                 const SizedBox(width: 10),
                 Expanded(
                   child: InkWell(
-                    onTap: () async {
-                      String appUrl;
-                      String phone = '+8801612217208';
-                      String message = 'Surprice Bitch! ';
-                      if (Platform.isAndroid) {
-                        appUrl =
-                            "whatsapp://send?phone=$phone&text=${Uri.parse(message)}";
-                      } else {
-                        appUrl =
-                            "https://api.whatsapp.com/send?phone=$phone=${Uri.parse(message)}"; // URL for non-Android devices
-                      }
-
-                      if (await canLaunchUrl(Uri.parse(appUrl))) {
-                        await launchUrl(Uri.parse(appUrl));
-                      } else {
-                        throw 'Could not launch $appUrl';
-                      }
-                    },
+                    onTap: () async {},
                     child: Container(
                       padding: const EdgeInsets.only(
                         // left: 11,
@@ -132,24 +112,7 @@ class ToletPage extends StatelessWidget {
                 const SizedBox(width: 10),
                 Expanded(
                   child: InkWell(
-                    onTap: () async {
-                      const uri = 'sms:+8801612217208?body=hello%20there';
-                      // ignore: deprecated_member_use
-                      if (await canLaunch(uri)) {
-                        // ignore: deprecated_member_use
-                        await launch(uri);
-                      } else {
-                        // iOS
-                        const uri = 'sms:8801612217208?body=hello%20there';
-                        // ignore: deprecated_member_use
-                        if (await canLaunch(uri)) {
-                          // ignore: deprecated_member_use
-                          await launch(uri);
-                        } else {
-                          throw 'Could not launch $uri';
-                        }
-                      }
-                    },
+                    onTap: () async {},
                     child: Container(
                       padding: const EdgeInsets.only(
                         // left: 11,
@@ -201,7 +164,7 @@ class ToletPage extends StatelessWidget {
                     // borderRadius: BorderRadius.circular(10),
                     image: DecorationImage(
                       image: NetworkImage(
-                          'https://images.unsplash.com/photo-1501183638710-841dd1904471?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'),
+                          'https://images.unsplash.com/photo-1487958449943-2429e8be8625?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -215,7 +178,7 @@ class ToletPage extends StatelessWidget {
                           color: Colors.grey.withOpacity(0.1),
                           image: const DecorationImage(
                             image: NetworkImage(
-                                'https://images.unsplash.com/photo-1501183638710-841dd1904471?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'),
+                                'https://images.unsplash.com/photo-1487958449943-2429e8be8625?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -279,16 +242,17 @@ class ToletPage extends StatelessWidget {
                 )
               ],
             ),
+
             Column(
               children: [
                 const SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.only(left: 20, right: 20),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       const Text(
-                        "৳ 2000",
+                        "৳ 2.12 Lak",
                         style: TextStyle(
                           fontSize: 30,
                           color: Color(0xff083437),
@@ -536,82 +500,27 @@ class ToletPage extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 15),
-                      const Details(
-                        type: "Property Name",
-                        detailstext: "Sabbair Moonjil | Abc",
-                        icon: Icons.home_rounded,
-                      ),
-                      const SizedBox(height: 15),
-                      const Details(
+                      const DetailsProperty(
                         type: "Property Type",
-                        detailstext: "Family, Bachelor",
+                        detailstext: "Flat",
                         icon: Icons.business_outlined,
                       ),
                       const SizedBox(height: 15),
-                      // const Details(
-                      //   type: "Bedrooms",
-                      //   detailstext: "5",
-                      //   icon: Icons.bedroom_parent_outlined,
-                      // ),
-                      // const SizedBox(height: 15),
-                      // const Details(
-                      //   type: "Bathrooms",
-                      //   detailstext: "2",
-                      //   icon: Icons.bathtub_outlined,
-                      // ),
-                      // const SizedBox(height: 15),
-                      const Details(
-                        type: "Dining",
-                        detailstext: "2",
-                        icon: Icons.dining_outlined,
+                      const DetailsProperty(
+                        type: "Condition",
+                        detailstext: "New or Under Construction",
+                        icon: Icons.construction_outlined,
                       ),
-                      const SizedBox(height: 15),
-                      const Details(
-                        type: "Kitchen",
-                        detailstext: "1",
-                        icon: Icons.kitchen_rounded,
-                      ),
-                      // const SizedBox(height: 15),
-                      // const Details(
-                      //   type: "Room Size",
-                      //   detailstext: "450 m\u00b2(4,849 ft\u00b2)",
-                      //   icon: Icons.all_inclusive_rounded,
-                      // ),
-                      const SizedBox(height: 15),
-                      const Details(
-                        type: "Floor",
-                        detailstext: "3rd",
-                        icon: Icons.person_pin_circle_rounded,
-                      ),
-                      const SizedBox(height: 15),
-                      const Details(
-                        type: "Facing",
-                        detailstext: "North",
-                        icon: Icons.window_outlined,
-                      ),
-                      const SizedBox(height: 15),
-                      const Details(
-                        type: "Facilities",
-                        detailstext: "Lift , Car Parking",
-                        icon: Icons.search_sharp,
-                        textColor: Colors.green,
-                      ),
-                      const SizedBox(height: 15),
-                      const Details(
-                        type: "Maintenance",
-                        detailstext: "300 ৳/mon",
+                      const SizedBox(height: 20),
+                      const DetailsProperty(
+                        type: "EMI",
+                        detailstext: "Yes",
                         icon: Icons.monetization_on_outlined,
                       ),
-                      const SizedBox(height: 15),
-                      const Details(
-                        type: "Rent From",
-                        detailstext: "19-10-2023",
-                        icon: Icons.access_time,
-                      ),
-                      const SizedBox(height: 15),
-                      const Details(
-                        type: "Short Address",
-                        detailstext: "Nirala scool, 334 no building",
+                      const SizedBox(height: 20),
+                      const DetailsProperty(
+                        type: "Property Size",
+                        detailstext: "1,350 ",
                         icon: Icons.share_location_rounded,
                       ),
                       const SizedBox(height: 20),
@@ -622,42 +531,38 @@ class ToletPage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      const SizedBox(height: 10),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Feather.menu,
-                            color: const Color(0xff8595A9).withOpacity(0.5),
-                            size: 18,
-                          ),
-                          const SizedBox(width: 10),
-                          const Text("Discription"),
-                        ],
-                      ),
                       const SizedBox(height: 20),
-                      Container(
-                        height: 100,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: const Color(0xffE3E8FF),
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        child: const Padding(
-                          padding: EdgeInsets.only(
-                            top: 20,
-                            left: 20,
-                            right: 15,
-                            bottom: 20,
+                      ExpandablePanel(
+                        header: const Text(
+                          'Floor Plan',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.black,
                           ),
-                          child: Text(
-                            "2 bedroom with attached bathroom,big hall with ",
-                            textAlign: TextAlign.justify,
-                            overflow: TextOverflow.clip,
-                            // maxLines: 5,
+                        ),
+                        collapsed: const SizedBox(),
+                        expanded: Container(
+                          height: 300,
+                          width: width,
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            image: DecorationImage(
+                              image: NetworkImage(
+                                  'https://cubicasa-wordpress-uploads.s3.amazonaws.com/uploads/2019/07/simple-stylish.png'),
+                              fit: BoxFit.contain,
+                            ),
                           ),
                         ),
                       ),
+                      const Text(
+                        'Video',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.black,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                      const YoutubeVideo(),
                       const SizedBox(height: 20),
                       const Text(
                         "Posted In",
@@ -722,13 +627,13 @@ class ToletPage extends StatelessWidget {
   }
 }
 
-class Details extends StatelessWidget {
+class DetailsProperty extends StatelessWidget {
   final String type;
   final String detailstext;
   final IconData icon;
   final Color textColor;
 
-  const Details({
+  const DetailsProperty({
     super.key,
     required this.type,
     required this.detailstext,
@@ -766,6 +671,43 @@ class Details extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class YoutubeVideo extends StatefulWidget {
+  const YoutubeVideo({super.key});
+
+  @override
+  State<YoutubeVideo> createState() => _YoutubeVideoState();
+}
+
+class _YoutubeVideoState extends State<YoutubeVideo> {
+  var videoUrl = "GzU8KqOY8YA";
+  var _controller;
+  @override
+  void initState() {
+    _controller = YoutubePlayerController.fromVideoId(
+      videoId: videoUrl,
+      autoPlay: false,
+      params: const YoutubePlayerParams(
+        showFullscreenButton: true,
+      ),
+    );
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 200,
+      width: Get.width,
+      child: YoutubePlayer(
+        controller: _controller,
+        aspectRatio: 16 / 9,
+        enableFullScreenOnVerticalDrag: true,
+      ),
     );
   }
 }

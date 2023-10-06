@@ -1,13 +1,15 @@
 import 'package:btolet/api/google_api.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'dart:ui' as ui;
 
 class LocationController extends GetxController {
   late GoogleMapController mapController;
 
-  RxBool mapMode = true.obs;
+  RxBool mapMode = false.obs;
 
   RxDouble currentlatitude = 0.0.obs;
   RxDouble currentlongitude = 0.0.obs;
@@ -91,5 +93,32 @@ class LocationController extends GetxController {
     } finally {
       cordinateToLocationLoding.value = false;
     }
+  }
+
+  //---------------Multi map
+  Map<MarkerId, Marker> markers = <MarkerId, Marker>{}.obs;
+  final markerList = [
+    [
+      'Nirala Residential Area',
+      22.798499,
+      89.552697,
+      'Khulna',
+    ],
+    [
+      'Khulna',
+      22.798222,
+      89.555208,
+      'Khulna',
+    ]
+  ];
+
+  Future<Uint8List> createMarkerImageFromAsset(String path, int width) async {
+    ByteData data = await rootBundle.load(path);
+    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
+        targetWidth: width);
+    ui.FrameInfo fi = await codec.getNextFrame();
+    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!
+        .buffer
+        .asUint8List();
   }
 }

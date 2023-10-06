@@ -1,3 +1,4 @@
+import 'package:btolet/controller/location_controller.dart';
 import 'package:btolet/controller/post_controller.dart';
 import 'package:btolet/model/postmodel.dart';
 import 'package:flutter/material.dart';
@@ -441,6 +442,7 @@ class LocationSmall extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    LocationController locationController = Get.put(LocationController());
     return Container(
       color: Colors.white,
       child: Material(
@@ -472,9 +474,9 @@ class LocationSmall extends StatelessWidget {
                       const SizedBox(width: 10),
                       SizedBox(
                         width: Get.width / 1.5,
-                        child: const Text(
-                          "Nirala 14, Khulna, Khulna Division .....",
-                          style: TextStyle(
+                        child: Text(
+                          locationController.locationAddress.value,
+                          style: const TextStyle(
                             fontSize: 18,
                             color: Colors.black,
                             letterSpacing: 0.1,

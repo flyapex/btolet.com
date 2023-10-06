@@ -20,11 +20,11 @@ class MyApp extends StatelessWidget {
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.dark,
       systemNavigationBarColor: Colors.transparent,
-      systemNavigationBarIconBrightness: Brightness.light,
+      systemNavigationBarIconBrightness: Brightness.dark,
     ));
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'BTolet',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
@@ -85,39 +85,4 @@ class MapLodingPage extends StatelessWidget {
           : const HomeView(),
     );
   }
-}
-
-Future<T?> showTopModalSheet<T>(
-  BuildContext context,
-  Widget child, {
-  bool barrierDismissible = true,
-  BorderRadiusGeometry? borderRadius,
-}) {
-  return showGeneralDialog<T?>(
-    context: context,
-    barrierDismissible: barrierDismissible,
-    transitionDuration: const Duration(milliseconds: 250),
-    barrierLabel: MaterialLocalizations.of(context).dialogLabel,
-    barrierColor: Colors.black.withOpacity(0.5),
-    pageBuilder: (context, _, __) => child,
-    transitionBuilder: (context, animation, secondaryAnimation, child) {
-      return SlideTransition(
-        // ignore: sort_child_properties_last
-        child: Column(
-          children: [
-            Material(
-              borderRadius: borderRadius,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [child],
-              ),
-            )
-          ],
-        ),
-        position: CurvedAnimation(parent: animation, curve: Curves.easeOutCubic)
-            .drive(
-                Tween<Offset>(begin: const Offset(0, -1.0), end: Offset.zero)),
-      );
-    },
-  );
 }
