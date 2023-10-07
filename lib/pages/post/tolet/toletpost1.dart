@@ -1,23 +1,24 @@
 import 'package:btolet/controller/post_controller.dart';
 import 'package:btolet/model/postmodel.dart';
+import 'package:btolet/widget/btn.dart';
 import 'package:btolet/widget/imagepicker.dart';
-import 'package:btolet/widget/sorting/sortingtolet.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-import '../btn.dart';
+import '../sorting/sortingtolet.dart';
 
-class PostPage1 extends StatefulWidget {
-  const PostPage1({super.key});
+class ToletPostPage1 extends StatefulWidget {
+  const ToletPostPage1({super.key});
 
   @override
-  State<PostPage1> createState() => _PostPage1State();
+  State<ToletPostPage1> createState() => _ToletPostPage1State();
 }
 
-class _PostPage1State extends State<PostPage1> {
+class _ToletPostPage1State extends State<ToletPostPage1> {
   final PostController postController = Get.find();
   double space = 20.0;
   DateTime? _chosenDateTime;

@@ -29,6 +29,7 @@ class ToletPage extends StatelessWidget {
               children: [
                 const SizedBox(width: 20),
                 Expanded(
+                  flex: 1,
                   child: InkWell(
                     onTap: () async {
                       final call = Uri.parse('tel:01612217208');
@@ -56,12 +57,13 @@ class ToletPage extends StatelessWidget {
                           Icon(
                             Icons.call,
                             color: Colors.white,
+                            size: 26,
                           ),
                           SizedBox(width: 5),
                           Text(
                             'CALL',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 16,
                               color: Colors.white,
                             ),
                           ),
@@ -72,65 +74,7 @@ class ToletPage extends StatelessWidget {
                 ),
                 const SizedBox(width: 10),
                 Expanded(
-                  child: InkWell(
-                    onTap: () async {
-                      String appUrl;
-                      String phone = '+8801612217208';
-                      String message = 'Surprice Bitch! ';
-                      if (Platform.isAndroid) {
-                        appUrl =
-                            "whatsapp://send?phone=$phone&text=${Uri.parse(message)}";
-                      } else {
-                        appUrl =
-                            "https://api.whatsapp.com/send?phone=$phone=${Uri.parse(message)}"; // URL for non-Android devices
-                      }
-
-                      if (await canLaunchUrl(Uri.parse(appUrl))) {
-                        await launchUrl(Uri.parse(appUrl));
-                      } else {
-                        throw 'Could not launch $appUrl';
-                      }
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.only(
-                        // left: 11,
-                        // right: 11,
-                        bottom: 9,
-                        top: 9,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.green,
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            height: 22,
-                            width: 22,
-                            child: SvgPicture.asset(
-                              'assets/icons/wapp.svg',
-                              height: 10,
-                              width: 22,
-                              // ignore: deprecated_member_use
-                              color: Colors.white,
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          const Text(
-                            'APP',
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
+                  flex: 1,
                   child: InkWell(
                     onTap: () async {
                       const uri = 'sms:+8801612217208?body=hello%20there';
@@ -165,14 +109,73 @@ class ToletPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(
-                            Feather.message_square,
+                            Icons.message,
                             color: Colors.white,
+                            size: 26,
                           ),
                           SizedBox(width: 10),
                           Text(
                             'SMS',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 16,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  flex: 2,
+                  child: InkWell(
+                    onTap: () async {
+                      String appUrl;
+                      String phone = '+8801612217208';
+                      String message = 'Surprice Bitch! ';
+                      if (Platform.isAndroid) {
+                        appUrl =
+                            "whatsapp://send?phone=$phone&text=${Uri.parse(message)}";
+                      } else {
+                        appUrl =
+                            "https://api.whatsapp.com/send?phone=$phone=${Uri.parse(message)}"; // URL for non-Android devices
+                      }
+
+                      if (await canLaunchUrl(Uri.parse(appUrl))) {
+                        await launchUrl(Uri.parse(appUrl));
+                      } else {
+                        throw 'Could not launch $appUrl';
+                      }
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.only(
+                        // left: 11,
+                        // right: 11,
+                        bottom: 9,
+                        top: 9,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.green,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: 26,
+                            width: 26,
+                            child: SvgPicture.asset(
+                              'assets/icons/wapp.svg',
+                              height: 10,
+                              width: 22,
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          const Text(
+                            'WhatsApp',
+                            style: TextStyle(
+                              fontSize: 16,
                               color: Colors.white,
                             ),
                           ),
@@ -438,7 +441,7 @@ class ToletPage extends StatelessWidget {
                             ),
                             const SizedBox(width: 10),
                             SizedBox(
-                              width: width / 1.6,
+                              width: width / 1.7,
                               child: const Text(
                                 // locationController.locationAddress.value,
                                 "khulna, Nirala",

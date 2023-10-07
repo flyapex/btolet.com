@@ -4,17 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import 'postpage1.dart';
-import 'postpage2.dart';
+import 'toletpost1.dart';
+import 'toletpost2.dart';
 
-class PostNow extends StatefulWidget {
-  const PostNow({super.key});
+class PostNowTolet extends StatefulWidget {
+  const PostNowTolet({super.key});
 
   @override
-  State<PostNow> createState() => _PostNowState();
+  State<PostNowTolet> createState() => _PostNowToletState();
 }
 
-class _PostNowState extends State<PostNow> {
+class _PostNowToletState extends State<PostNowTolet> {
   final PostController postController = Get.put(PostController());
 
   @override
@@ -60,8 +60,8 @@ class _PostNowState extends State<PostNow> {
               controller: postController.pageController,
               onPageChanged: (int i) {},
               children: const [
-                PostPage1(),
-                PostPage2(),
+                ToletPostPage1(),
+                ToletPostPage2(),
               ],
             ),
           ),

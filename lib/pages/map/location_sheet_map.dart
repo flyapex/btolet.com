@@ -267,8 +267,7 @@ class _LocationSheetState extends State<LocationSheet> {
                                       //       .locationAddress.value=
                                     },
                                     icon: Icon(
-                                      // Icons.my_location,
-                                      Feather.check_circle,
+                                      Feather.check,
                                       color: Colors.black.withOpacity(0.5),
                                       size: 22,
                                     ),

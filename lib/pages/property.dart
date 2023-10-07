@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:btolet/pages/post/sorting/sortingproperty.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
@@ -52,32 +53,52 @@ class PropertyHome extends StatelessWidget {
                     ],
                   ),
                 ),
-                Container(
-                  height: 35,
-                  width: 100,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(4),
-                    border: Border.all(color: Colors.black.withOpacity(0.3)),
-                  ),
-                  child: const Padding(
-                    padding: EdgeInsets.only(left: 5, right: 5),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(
-                              Feather.sliders,
-                              color: Colors.black45,
-                              size: 20,
-                            ),
-                            SizedBox(width: 6),
-                            Text('Filter'),
-                          ],
+                InkWell(
+                  onTap: () {
+                    Get.bottomSheet(
+                      const SortingProperty(),
+                      elevation: 20.0,
+                      enableDrag: true,
+                      backgroundColor: Colors.white,
+                      isScrollControlled: true,
+                      ignoreSafeArea: true,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20.0),
+                          topRight: Radius.circular(20.0),
                         ),
-                        Icon(Feather.chevron_down),
-                      ],
+                      ),
+                      enterBottomSheetDuration:
+                          const Duration(milliseconds: 170),
+                    );
+                  },
+                  child: Container(
+                    height: 35,
+                    width: 100,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(4),
+                      border: Border.all(color: Colors.black.withOpacity(0.3)),
+                    ),
+                    child: const Padding(
+                      padding: EdgeInsets.only(left: 5, right: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                Feather.sliders,
+                                color: Colors.black45,
+                                size: 20,
+                              ),
+                              SizedBox(width: 6),
+                              Text('Filter'),
+                            ],
+                          ),
+                          Icon(Feather.chevron_down),
+                        ],
+                      ),
                     ),
                   ),
                 ),

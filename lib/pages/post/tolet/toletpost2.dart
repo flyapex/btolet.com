@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 
-class PostPage2 extends StatefulWidget {
-  const PostPage2({super.key});
+class ToletPostPage2 extends StatefulWidget {
+  const ToletPostPage2({super.key});
 
   @override
-  State<PostPage2> createState() => _PostPage2State();
+  State<ToletPostPage2> createState() => _ToletPostPage2State();
 }
 
-class _PostPage2State extends State<PostPage2> {
+class _ToletPostPage2State extends State<ToletPostPage2> {
   final PostController postController = Get.find();
 
   double space = 20.0;

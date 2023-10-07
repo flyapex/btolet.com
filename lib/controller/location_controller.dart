@@ -7,7 +7,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class LocationController extends GetxController {
   late GoogleMapController mapController;
 
-  RxBool mapMode = true.obs;
+  RxBool mapMode = false.obs;
+  RxBool showMapBoxTolet = true.obs;
 
   RxDouble currentlatitude = 0.0.obs;
   RxDouble currentlongitude = 0.0.obs;
@@ -94,14 +95,4 @@ class LocationController extends GetxController {
   }
 
   //---------------Multi map
-
-  final markerList = [
-    {
-      'Nirala Residential Area',
-      22.798499,
-      89.552697,
-      'Khulna',
-    },
-    {'Nirala Residential Area', 22.798499, 89.552697, 'Khulna'},
-  ];
 }

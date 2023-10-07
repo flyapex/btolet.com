@@ -1,5 +1,4 @@
 import 'dart:ui';
-import 'package:btolet/widget/sorting/sortingtolet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
@@ -7,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
 import 'package:marquee/marquee.dart';
 
+import 'post/sorting/sortingtolet.dart';
 import 'toletpage.dart';
 
 class ToletHome extends StatelessWidget {

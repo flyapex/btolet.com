@@ -70,7 +70,7 @@ class MapLodingPage extends StatelessWidget {
                         ),
 
                         const Text(
-                          'Welcome Galib',
+                          'Welcome Sabbir',
                           style: TextStyle(
                               fontSize: 40, fontWeight: FontWeight.bold),
                         ),

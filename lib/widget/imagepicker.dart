@@ -40,7 +40,7 @@ class SelectImageState extends State<SelectImage> {
           thumbnailCompressFormat: CompressFormat.jpg,
           thumbnailCompressQuality: 0.9,
           recordVideoMaxSecond: 40,
-          maxSelectedAssets: 12,
+          maxSelectedAssets: widget.imagnumber,
           usedCameraButton: true,
           numberOfColumn: 3,
         ),
