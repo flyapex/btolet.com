@@ -1,3 +1,8 @@
+List<String> postedBy = [
+  "Owner",
+  "Agent",
+  "Developer",
+];
 List<String> type = [
   "New",
   "Used",

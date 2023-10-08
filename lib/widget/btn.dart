@@ -282,6 +282,7 @@ class SmallTextBox extends StatefulWidget {
   final TextInputType textType;
   final double topPadding;
   final TextEditingController controller;
+
   final double iconh;
   final double iconw;
   final double widthh;

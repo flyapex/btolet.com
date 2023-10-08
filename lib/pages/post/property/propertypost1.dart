@@ -4,6 +4,7 @@ import 'package:btolet/pages/post/sorting/sortingproperty.dart';
 import 'package:btolet/widget/btn.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -149,6 +150,40 @@ class _PostProperty1State extends State<PostProperty1> {
                           ),
                           const SizedBox(height: 20),
                           const PriceBox(),
+                          const SizedBox(height: 20),
+                          SmallTextBox(
+                            topPadding: 0,
+                            title: "Rode Size",
+                            textType: TextInputType.number,
+                            hintText: "20 m",
+                            titlelenth: 500,
+                            suffixtext: "m",
+                            controller: postController.price,
+                            iconh: 23,
+                            iconw: 23,
+                            widthh: 2.35,
+                          ),
+                          const SizedBox(height: 20),
+                          const Text(
+                            'Optional',
+                            style: TextStyle(
+                              color: Colors.black54,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          const Row(
+                            children: [
+                              CustomeChipPorperty(
+                                text: "Electricity",
+                                icon: Icons.balcony_rounded,
+                              ),
+                              SizedBox(width: 10),
+                              CustomeChipPorperty(
+                                text: "Drain",
+                                icon: Icons.balcony_rounded,
+                              ),
+                            ],
+                          ),
                         ],
                       )
                     : Column(
@@ -277,7 +312,7 @@ class _PostProperty1State extends State<PostProperty1> {
                               children: [
                                 SmallTextBox(
                                   topPadding: 0,
-                                  title: "Tota Floor",
+                                  title: "Total Floor",
                                   textType: TextInputType.number,
                                   hintText: "12",
                                   titlelenth: 500,
@@ -290,11 +325,11 @@ class _PostProperty1State extends State<PostProperty1> {
                                 SizedBox(width: space),
                                 SmallTextBox(
                                   topPadding: 0,
-                                  title: "Total Unit",
+                                  title: "Floor Number",
                                   textType: TextInputType.number,
-                                  hintText: "3",
+                                  hintText: "12",
                                   titlelenth: 500,
-                                  suffixtext: "Unit",
+                                  suffixtext: "th",
                                   controller: postController.price,
                                   iconh: 23,
                                   iconw: 23,
@@ -318,11 +353,11 @@ class _PostProperty1State extends State<PostProperty1> {
                                 SizedBox(width: space),
                                 SmallTextBox(
                                   topPadding: 0,
-                                  title: "Price *",
+                                  title: "Total Unit",
                                   textType: TextInputType.number,
-                                  hintText: "20,000 ৳",
+                                  hintText: "3",
                                   titlelenth: 500,
-                                  suffixtext: "৳",
+                                  suffixtext: "Unit",
                                   controller: postController.price,
                                   iconh: 23,
                                   iconw: 23,
@@ -331,83 +366,97 @@ class _PostProperty1State extends State<PostProperty1> {
                               ],
                             ),
                           ),
+                          SizedBox(height: space),
+                          SmallTextBox(
+                            topPadding: 0,
+                            title: "Price *",
+                            textType: TextInputType.number,
+                            hintText: "20,000 ৳",
+                            titlelenth: 500,
+                            suffixtext: "৳",
+                            controller: postController.price,
+                            iconh: 23,
+                            iconw: 23,
+                            widthh: 2.35,
+                          ),
+                          SizedBox(height: space),
+                          const Text(
+                            'Aminities(op)',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.black,
+                            ),
+                          ),
+                          SizedBox(height: space),
+                          const Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Wrap(
+                                  spacing: 10,
+                                  children: [
+                                    CustomeChipPorperty(
+                                      text: "Balcony",
+                                      icon: Icons.balcony_rounded,
+                                    ),
+                                    CustomeChipPorperty(
+                                      text: "Parking",
+                                      icon: Icons.directions_bike,
+                                    ),
+                                    CustomeChipPorperty(
+                                      text: "CCTV",
+                                      icon: Icons.photo_camera,
+                                    ),
+                                    CustomeChipPorperty(
+                                      text: "GAS",
+                                      icon:
+                                          Icons.local_fire_department_outlined,
+                                    ),
+                                    CustomeChipPorperty(
+                                      text: "Elevator",
+                                      icon: Icons.elevator_outlined,
+                                    ),
+                                    CustomeChipPorperty(
+                                      text: "Security Guard",
+                                      icon: Icons.security_rounded,
+                                    ),
+                                    CustomeChipPorperty(
+                                      text: "Power Backup",
+                                      icon: Icons.power_settings_new_rounded,
+                                    ),
+                                    CustomeChipPorperty(
+                                      text: "Fire Alarm",
+                                      icon: Icons.fire_extinguisher,
+                                    ),
+                                    CustomeChipPorperty(
+                                      text: "Gaser",
+                                      icon: Icons.gas_meter_outlined,
+                                    ),
+                                    CustomeChipPorperty(
+                                      text: "Wasa Connection",
+                                      icon: Icons.gas_meter_outlined,
+                                    ),
+                                    CustomeChipPorperty(
+                                      text: "Fire exit",
+                                      icon: Icons.gas_meter_outlined,
+                                    ),
+                                    CustomeChipPorperty(
+                                      text: "West Disposal",
+                                      icon: Icons.gas_meter_outlined,
+                                    ),
+                                    CustomeChipPorperty(
+                                      text: "Garden",
+                                      icon: Icons.gas_meter_outlined,
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                          SizedBox(height: space),
                         ],
                       ),
 
-                SizedBox(height: space),
-                const Text(
-                  'Aminities(op)',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.black,
-                  ),
-                ),
-                SizedBox(height: space),
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Wrap(
-                        spacing: 10,
-                        children: [
-                          CustomeChipPorperty(
-                            text: "Balcony",
-                            icon: Icons.balcony_rounded,
-                          ),
-                          CustomeChipPorperty(
-                            text: "Parking",
-                            icon: Icons.directions_bike,
-                          ),
-                          CustomeChipPorperty(
-                            text: "CCTV",
-                            icon: Icons.photo_camera,
-                          ),
-                          CustomeChipPorperty(
-                            text: "GAS",
-                            icon: Icons.local_fire_department_outlined,
-                          ),
-                          CustomeChipPorperty(
-                            text: "Elevator",
-                            icon: Icons.elevator_outlined,
-                          ),
-                          CustomeChipPorperty(
-                            text: "Security Guard",
-                            icon: Icons.security_rounded,
-                          ),
-                          CustomeChipPorperty(
-                            text: "Power Backup",
-                            icon: Icons.power_settings_new_rounded,
-                          ),
-                          CustomeChipPorperty(
-                            text: "Fire Alarm",
-                            icon: Icons.fire_extinguisher,
-                          ),
-                          CustomeChipPorperty(
-                            text: "Gaser",
-                            icon: Icons.gas_meter_outlined,
-                          ),
-                          CustomeChipPorperty(
-                            text: "Wasa Connection",
-                            icon: Icons.gas_meter_outlined,
-                          ),
-                          CustomeChipPorperty(
-                            text: "Fire exit",
-                            icon: Icons.gas_meter_outlined,
-                          ),
-                          CustomeChipPorperty(
-                            text: "West Disposal",
-                            icon: Icons.gas_meter_outlined,
-                          ),
-                          CustomeChipPorperty(
-                            text: "Garden",
-                            icon: Icons.gas_meter_outlined,
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-                SizedBox(height: space),
                 // const Text(
                 //   'Select image *',
                 //   style: TextStyle(
@@ -421,12 +470,28 @@ class _PostProperty1State extends State<PostProperty1> {
                 //   imagnumber: 1,
                 // ),
                 SizedBox(height: space),
-                const Text(
-                  'Select floor Plan (Optional)',
-                  style: TextStyle(
-                    color: Color(0xff7B7B7B),
-                    letterSpacing: 0.7,
-                  ),
+                Row(
+                  children: [
+                    SizedBox(
+                      height: 18,
+                      width: 18,
+                      child: SvgPicture.asset(
+                        'assets/icons/floor.svg',
+                        colorFilter: const ColorFilter.mode(
+                          Color(0xff083437),
+                          BlendMode.srcIn,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    const Text(
+                      'Select floor Plan (Optional)',
+                      style: TextStyle(
+                        color: Color(0xff7B7B7B),
+                        letterSpacing: 0.7,
+                      ),
+                    ),
+                  ],
                 ),
                 SizedBox(height: space),
                 const SelectImageProperty(
@@ -448,6 +513,14 @@ class _PostProperty1State extends State<PostProperty1> {
                   iconh: 23,
                   iconw: 23,
                   widthh: 1.2,
+                  // icon: Feather.youtube,
+                ),
+
+                SizedBox(height: space),
+                const SelectVideoProperty(
+                  icon: Feather.play_circle,
+                  videoNumber: 1,
+                  color: Color(0xff4E4FEB),
                 ),
                 SizedBox(height: space),
                 const SelectImageProperty(
@@ -455,12 +528,7 @@ class _PostProperty1State extends State<PostProperty1> {
                   imagnumber: 12,
                   color: Color(0xff4E4FEB),
                 ),
-                SizedBox(height: space),
-                const SelectVideoProperty(
-                  icon: Feather.play_circle,
-                  videoNumber: 1,
-                  color: Color(0xff4E4FEB),
-                ),
+
                 const SizedBox(height: 300),
               ],
             ),

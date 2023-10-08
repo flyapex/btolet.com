@@ -85,4 +85,7 @@ class PostController extends GetxController {
   var fireexit = false.obs;
   var westdisposal = false.obs;
   var garden = false.obs;
+
+  var drain = false.obs;
+  var electricity = false.obs;
 }

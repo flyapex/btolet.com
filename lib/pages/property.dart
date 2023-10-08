@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:btolet/pages/post/sorting/sortingproperty.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
@@ -237,12 +238,12 @@ class PostsProperty extends StatelessWidget {
               ),
             ],
           ),
-          const Padding(
-            padding: EdgeInsets.only(left: 15),
+          Padding(
+            padding: const EdgeInsets.only(left: 15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   "৳ 2000 ",
                   style: TextStyle(
                     fontSize: 24,
@@ -250,7 +251,7 @@ class PostsProperty extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Row(
+                const Row(
                   children: [
                     Icon(
                       Feather.map_pin,
@@ -266,43 +267,64 @@ class PostsProperty extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 4),
+                const SizedBox(height: 4),
                 Row(
                   children: [
-                    Icon(
-                      Icons.chair_outlined,
-                      size: 16,
-                      color: Colors.black45,
+                    Padding(
+                      padding: const EdgeInsets.only(top: 2),
+                      child: SizedBox(
+                        height: 28,
+                        width: 28,
+                        child: SvgPicture.asset(
+                          'assets/icons/property/bed.svg',
+                          colorFilter: ColorFilter.mode(
+                            Colors.black.withOpacity(0.5),
+                            BlendMode.srcIn,
+                          ),
+                        ),
+                      ),
                     ),
-                    SizedBox(width: 6),
-                    Text(
+                    const SizedBox(width: 6),
+                    const Text(
                       "3",
                       style: TextStyle(
                         color: Color(0xff083437),
                       ),
                     ),
-                    SizedBox(width: 10),
-                    Icon(
-                      Icons.shower_outlined,
-                      size: 16,
-                      color: Colors.black45,
+                    const SizedBox(width: 10),
+                    SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: SvgPicture.asset(
+                        'assets/icons/property/bath.svg',
+                        colorFilter: ColorFilter.mode(
+                          Colors.black.withOpacity(0.5),
+                          BlendMode.srcIn,
+                        ),
+                      ),
                     ),
-                    SizedBox(width: 6),
-                    Text(
+                    const SizedBox(width: 6),
+                    const Text(
                       "2",
                       style: TextStyle(
                         color: Color(0xff083437),
                       ),
                     ),
-                    SizedBox(width: 10),
-                    Icon(
-                      Icons.all_inclusive,
-                      size: 16,
-                      color: Colors.black45,
+                    const SizedBox(width: 10),
+                    SizedBox(
+                      height: 21,
+                      width: 21,
+                      child: SvgPicture.asset(
+                        'assets/icons/property/size.svg',
+                        colorFilter: ColorFilter.mode(
+                          Colors.black.withOpacity(0.5),
+                          BlendMode.srcIn,
+                        ),
+                      ),
                     ),
-                    SizedBox(width: 6),
-                    Text(
-                      "3 m",
+                    const SizedBox(width: 6),
+                    const Text(
+                      "1250 (ft\u00b2)",
                       style: TextStyle(
                         color: Color(0xff083437),
                       ),

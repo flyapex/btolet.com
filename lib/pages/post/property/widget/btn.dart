@@ -386,6 +386,10 @@ class CustomeChipPorperty extends StatelessWidget {
           return postController.westdisposal.value;
         case "Garden":
           return postController.garden.value;
+        case "Electricity":
+          return postController.electricity.value;
+        case "Drain":
+          return postController.drain.value;
         default:
           return false;
       }
@@ -444,7 +448,14 @@ class CustomeChipPorperty extends StatelessWidget {
               break;
 
             case "Garden":
-              postController.pgaser.value = !postController.pgaser.value;
+              postController.garden.value = !postController.garden.value;
+              break;
+            case "Electricity":
+              postController.electricity.value =
+                  !postController.electricity.value;
+              break;
+            case "Drain":
+              postController.drain.value = !postController.drain.value;
               break;
             default:
               break;

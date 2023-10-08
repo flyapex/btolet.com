@@ -8,6 +8,8 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 import 'controller/location_controller.dart';
 import 'pages/map/multi_map.dart';
+import 'pages/post/sorting/sortingproperty.dart';
+import 'pages/post/sorting/sortingtolet.dart';
 import 'pages/post/tolet/posttolet.dart';
 import 'pages/property.dart';
 import 'pages/tolet.dart';
@@ -106,7 +108,6 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                       width: wt / 3.5,
                       child: UnicornOutlineButton(
                         onPressed: () {
-                          print(postController.postpage.value);
                           postController.tabController.index.isEven
                               ? Get.bottomSheet(
                                   const PostNowTolet(),
@@ -153,14 +154,24 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            const Icon(Icons.add),
+                            SizedBox(
+                              height: 18,
+                              width: 18,
+                              child: SvgPicture.asset(
+                                'assets/icons/plus.svg',
+                                colorFilter: const ColorFilter.mode(
+                                  Color(0xff083437),
+                                  BlendMode.srcIn,
+                                ),
+                              ),
+                            ),
                             const SizedBox(width: 6),
-                            Text(
-                              'Sell',
+                            const Text(
+                              "Post",
                               style: TextStyle(
-                                color: Colors.black.withOpacity(0.70),
+                                color: Color(0xff083437),
                                 fontSize: 18,
-                                fontWeight: FontWeight.w400,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ],
@@ -265,7 +276,41 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                                 size: 28,
                               ),
                             ),
-                            onTap: () {},
+                            onTap: () {
+                              postController.tabController.index.isEven
+                                  ? Get.bottomSheet(
+                                      const SortingTolet(),
+                                      elevation: 20.0,
+                                      enableDrag: true,
+                                      backgroundColor: Colors.white,
+                                      isScrollControlled: true,
+                                      ignoreSafeArea: true,
+                                      shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(20.0),
+                                          topRight: Radius.circular(20.0),
+                                        ),
+                                      ),
+                                      enterBottomSheetDuration:
+                                          const Duration(milliseconds: 170),
+                                    )
+                                  : Get.bottomSheet(
+                                      const SortingProperty(),
+                                      elevation: 20.0,
+                                      enableDrag: true,
+                                      backgroundColor: Colors.white,
+                                      isScrollControlled: true,
+                                      ignoreSafeArea: true,
+                                      shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(20.0),
+                                          topRight: Radius.circular(20.0),
+                                        ),
+                                      ),
+                                      enterBottomSheetDuration:
+                                          const Duration(milliseconds: 170),
+                                    );
+                            },
                           ),
                         ),
                       ),
@@ -416,30 +461,62 @@ class CustomTab extends SliverPersistentHeaderDelegate {
           // const Tab(icon: Icon(Icons.business_outlined)),
           Tab(
             child: SizedBox(
-              height: 30,
-              width: 30,
-              child: SvgPicture.asset(
-                'assets/icons/tolet.svg',
-                colorFilter: const ColorFilter.mode(
-                  // Color(0xff083437),
-                  Colors.black87,
-                  BlendMode.srcIn,
-                ),
+              width: Get.width / 4,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 28,
+                    width: 28,
+                    child: SvgPicture.asset(
+                      'assets/icons/tolet.svg',
+                      colorFilter: const ColorFilter.mode(
+                        // Color(0xff083437),
+                        Colors.black54,
+                        BlendMode.srcIn,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  const Text(
+                    'Rent',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
 
           Tab(
             child: SizedBox(
-              height: 30,
-              width: 30,
-              child: SvgPicture.asset(
-                'assets/icons/building.svg',
-                colorFilter: const ColorFilter.mode(
-                  // Color(0xff083437),
-                  Colors.black87,
-                  BlendMode.srcIn,
-                ),
+              width: Get.width / 4,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 30,
+                    width: 30,
+                    child: SvgPicture.asset(
+                      'assets/icons/building.svg',
+                      colorFilter: const ColorFilter.mode(
+                        // Color(0xff083437),
+                        Colors.black87,
+                        BlendMode.srcIn,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  const Text(
+                    'Buy',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
               ),
             ),
           ),

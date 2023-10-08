@@ -6,6 +6,7 @@ import 'package:another_xlider/models/tooltip/tooltip.dart';
 import 'package:another_xlider/models/trackbar.dart';
 import 'package:btolet/controller/post_controller.dart';
 import 'package:btolet/model/postmodel.dart';
+import 'package:btolet/pages/post/property/widget/btn.dart';
 import 'package:btolet/widget/btn.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -65,16 +66,16 @@ class SortHere extends StatefulWidget {
 
 class _SortHereState extends State<SortHere> with TickerProviderStateMixin {
   PostController postController = Get.put(PostController());
-  double startval1 = 0, endval1 = 50000;
+  double startval1 = 1, endval1 = 100;
   String priceText = "Any Price";
   sliderText(startval1, endval1) {
     setState(() {
-      if (startval1 == 0 && endval1 == 50000) {
+      if (startval1 == 1 && endval1 == 100) {
         priceText = "Any Price";
-      } else if (endval1 == 50000) {
-        priceText = '৳ ${startval1.toInt()} to ${endval1.toInt()}+/month';
+      } else if (endval1 == 100) {
+        priceText = '৳ ${startval1.toInt()} to ${endval1.toInt()} LAKH+';
       } else {
-        priceText = '৳ ${startval1.toInt()} to ${endval1.toInt()}/month';
+        priceText = '৳ ${startval1.toInt()} to ${endval1.toInt()} LAKH';
       }
     });
   }
@@ -118,7 +119,7 @@ class _SortHereState extends State<SortHere> with TickerProviderStateMixin {
                     ),
                   ),
                   FlutterSlider(
-                    step: const FlutterSliderStep(step: 500),
+                    step: const FlutterSliderStep(step: 1),
                     trackBar: FlutterSliderTrackBar(
                       activeTrackBarHeight: 10,
                       inactiveTrackBarHeight: 10,
@@ -161,8 +162,8 @@ class _SortHereState extends State<SortHere> with TickerProviderStateMixin {
                     handlerWidth: 28,
                     values: [startval1, endval1],
                     rangeSlider: true,
-                    max: 50000,
-                    min: 0,
+                    max: 100,
+                    min: 1,
                     onDragging: (handlerIndex, lowerValue, upperValue) {
                       setState(() {
                         startval1 = lowerValue;
@@ -182,17 +183,17 @@ class _SortHereState extends State<SortHere> with TickerProviderStateMixin {
                   const SizedBox(height: 20),
                   SelectableChips(
                     categorylist: prooms,
-                    catagoryName: 'Bedroom',
+                    catagoryName: 'Beds',
                     icon: Icons.bed_outlined,
                   ),
                   SelectableChips(
                     categorylist: prooms,
-                    catagoryName: 'Bathroom',
+                    catagoryName: 'Baths',
                     icon: Icons.bathtub_outlined,
                   ),
                   SelectableChips(
                     categorylist: prooms,
-                    catagoryName: 'Kitchen',
+                    catagoryName: 'Kitchens',
                     icon: Icons.kitchen_outlined,
                   ),
                   SelectableChips(
@@ -200,11 +201,20 @@ class _SortHereState extends State<SortHere> with TickerProviderStateMixin {
                     catagoryName: 'Dining',
                     icon: Icons.self_improvement_sharp,
                   ),
-                  SelectableChips(
-                    categorylist: prooms,
-                    catagoryName: 'Balcony',
-                    icon: Icons.balcony_rounded,
+                  // SelectableChips(
+                  //   categorylist: prooms,
+                  //   catagoryName: 'Balcony',
+                  //   icon: Icons.balcony_rounded,
+                  // ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    'Aminities(op)',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.black,
+                    ),
                   ),
+                  const SizedBox(height: 20),
                   const Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -212,41 +222,57 @@ class _SortHereState extends State<SortHere> with TickerProviderStateMixin {
                         child: Wrap(
                           spacing: 10,
                           children: [
-                            CustomeChip(
+                            CustomeChipPorperty(
                               text: "Balcony",
                               icon: Icons.balcony_rounded,
                             ),
-                            CustomeChip(
+                            CustomeChipPorperty(
                               text: "Parking",
                               icon: Icons.directions_bike,
                             ),
-                            CustomeChip(
+                            CustomeChipPorperty(
                               text: "CCTV",
                               icon: Icons.photo_camera,
                             ),
-                            CustomeChip(
+                            CustomeChipPorperty(
                               text: "GAS",
                               icon: Icons.local_fire_department_outlined,
                             ),
-                            CustomeChip(
-                              text: "Lift",
+                            CustomeChipPorperty(
+                              text: "Elevator",
                               icon: Icons.elevator_outlined,
                             ),
-                            CustomeChip(
+                            CustomeChipPorperty(
                               text: "Security Guard",
                               icon: Icons.security_rounded,
                             ),
-                            CustomeChip(
-                              text: "WIFI",
-                              icon: Icons.wifi_rounded,
-                            ),
-                            CustomeChip(
+                            CustomeChipPorperty(
                               text: "Power Backup",
                               icon: Icons.power_settings_new_rounded,
                             ),
-                            CustomeChip(
+                            CustomeChipPorperty(
                               text: "Fire Alarm",
                               icon: Icons.fire_extinguisher,
+                            ),
+                            CustomeChipPorperty(
+                              text: "Gaser",
+                              icon: Icons.gas_meter_outlined,
+                            ),
+                            CustomeChipPorperty(
+                              text: "Wasa Connection",
+                              icon: Icons.gas_meter_outlined,
+                            ),
+                            CustomeChipPorperty(
+                              text: "Fire exit",
+                              icon: Icons.gas_meter_outlined,
+                            ),
+                            CustomeChipPorperty(
+                              text: "West Disposal",
+                              icon: Icons.gas_meter_outlined,
+                            ),
+                            CustomeChipPorperty(
+                              text: "Garden",
+                              icon: Icons.gas_meter_outlined,
                             ),
                           ],
                         ),

@@ -1,8 +1,11 @@
 import 'package:btolet/controller/post_controller.dart';
+import 'package:btolet/model/postmodel.dart';
 import 'package:btolet/widget/btn.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
+
+import 'widget/btn.dart';
 
 class PostProperty2 extends StatefulWidget {
   const PostProperty2({super.key});
@@ -83,6 +86,17 @@ class _PostProperty2State extends State<PostProperty2> {
                   icon: Feather.file_text,
                 ),
                 const SizedBox(height: 30),
+                const Text(
+                  'You are',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.black54,
+                  ),
+                ),
+                SelectableChipsType(
+                  categorylist: postedBy,
+                ),
+                const SizedBox(height: 20),
                 Text(
                   'Connect with others',
                   style: TextStyle(

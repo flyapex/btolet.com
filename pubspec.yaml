@@ -91,6 +91,7 @@ flutter:
   assets:
     - assets/logo/
     - assets/icons/
+    - assets/icons/property/
     - assets/map/
     - assets/lottie/
   #   - images/a_dot_ham.jpeg
