@@ -325,7 +325,7 @@ class _LocationSheetMapState extends State<LocationSheetMap> {
   ScrollController scrollController = ScrollController();
   @override
   void initState() {
-    locationController.searchSuggstion();
+    // locationController.searchSuggstion();
     focusNode.requestFocus();
     super.initState();
   }
@@ -400,14 +400,14 @@ class _LocationSheetMapState extends State<LocationSheetMap> {
                                   onChanged: (value) async {
                                     // locationController.suggstions.clear();
 
-                                    locationController.searchText.value = value;
-                                    locationController.searchSuggstion();
+                                    // locationController.searchText.value = value;
+                                    // locationController.searchSuggstion();
                                   },
                                   onEditingComplete: () {
                                     //  locationController.suggstions.clear();
                                   },
                                   onFieldSubmitted: (value) {
-                                    locationController.searchSuggstion();
+                                    // locationController.searchSuggstion();
                                   },
                                   decoration: InputDecoration(
                                     hintText: 'Nirala, Khulna, Bangladesh',
@@ -475,46 +475,6 @@ class _LocationSheetMapState extends State<LocationSheetMap> {
                   ],
                 ),
                 const SizedBox(height: 10),
-                SizedBox(
-                  height:
-                      (htt / 1.8) - MediaQuery.of(context).viewInsets.bottom,
-                  child: ListView.builder(
-                    // controller: scrollController,
-                    // primary: false,
-                    // shrinkWrap: false,
-                    // physics: const NeverScrollableScrollPhysics(),
-                    physics: const BouncingScrollPhysics(
-                        parent: AlwaysScrollableScrollPhysics()),
-                    itemCount: locationController.suggstions.length,
-                    itemBuilder: (context, index) {
-                      return locationController.isLoadingsuggstion.value
-                          ? const Center(child: CircularProgressIndicator())
-                          : LocationListTail(
-                              location: locationController
-                                  .suggstions[index].displayName
-                                  .toString(),
-                              press: () async {
-                                Get.back();
-                                locationController.mapController.animateCamera(
-                                  CameraUpdate.newCameraPosition(
-                                    CameraPosition(
-                                      target: LatLng(
-                                        double.parse(locationController
-                                            .suggstions[index].lat),
-                                        double.parse(locationController
-                                            .suggstions[index].lon),
-                                      ),
-                                      zoom: 16.0,
-                                    ),
-                                  ),
-                                );
-                                // List<SearchInfo> suggestions =
-                                //     await addressSuggestion("nirala", limitInformation: 10);
-                              },
-                            );
-                    },
-                  ),
-                )
               ],
             ),
           ),

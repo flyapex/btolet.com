@@ -1,15 +1,14 @@
 import 'package:btolet/controller/post_controller.dart';
-import 'package:btolet/model/postmodel.dart';
+import 'package:btolet/pages/post/tolet/widget/textbox.dart';
 import 'package:btolet/widget/btn.dart';
 import 'package:btolet/widget/imagepicker.dart';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-
-import '../sorting/sortingtolet.dart';
+import 'widget/chips.dart';
+import 'widget/drapdown.dart';
 
 class ToletPostPage1 extends StatefulWidget {
   const ToletPostPage1({super.key});
@@ -100,19 +99,18 @@ class _ToletPostPage1State extends State<ToletPostPage1> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SmallTextBox(
+                TextInputBox(
                   topPadding: 0,
                   title: "Property Name",
                   textType: TextInputType.text,
                   hintText: "Masud Monjil",
                   titlelenth: 500,
                   suffixtext: "",
-                  controller: postController.propertyName,
+                  controller: postController.propertyNameTolet,
                   iconh: 23,
                   iconw: 23,
                   widthh: 2.35 / 2,
                 ),
-
                 SizedBox(height: space),
                 Text(
                   'Category *',
@@ -121,102 +119,107 @@ class _ToletPostPage1State extends State<ToletPostPage1> {
                     color: Colors.black.withOpacity(0.5),
                   ),
                 ),
+                IconButton(
+                  onPressed: () {
+                    postController.getSelectedCategoryName();
+                    // postController.isGarage();
+                  },
+                  icon: const Icon(Icons.check_box),
+                ),
                 const SizedBox(height: 10),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Expanded(
                       child: Wrap(
                         spacing: 10,
-                        children: [
-                          CatagoryCpx(catagory: 'Family'),
-                          CatagoryCpx(catagory: 'Bachelor'),
-                          CatagoryCpx(catagory: 'Male Sit'),
-                          CatagoryCpx(catagory: 'Female Sit'),
-                          CatagoryCpx(catagory: 'Sub-let'),
-                          CatagoryCpx(catagory: 'Hostel'),
-                          CatagoryCpx(catagory: 'Shop'),
-                          CatagoryCpx(catagory: 'Office'),
-                          CatagoryCpx(catagory: 'Only Garage'),
-                        ],
+                        children:
+                            postController.categories.entries.map((entry) {
+                          final category = entry.key;
+                          final categoryState = entry.value;
+                          return CategoryToletChip(
+                            category: category,
+                            categoryState: categoryState,
+                          );
+                        }).toList(),
                       ),
                     ),
                   ],
                 ),
-                postController.onlygarage.value
+                postController.categories['Only Garage']!.value
                     ? const SizedBox()
                     : SizedBox(height: space),
-                postController.onlygarage.value
+                postController.categories['Only Garage']!.value
                     ? const SizedBox()
-                    : Row(
+                    : const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          DragdownBoxSmall(
+                          DropDownBtn(
                             title: "Bedroom *",
-                            catagoryName: rooms,
+                            category: Category.bedrooms,
                             widthh: 2.35,
                             topPadding: 0,
                           ),
-                          DragdownBoxSmall(
+                          DropDownBtn(
                             title: "Bathroom",
-                            catagoryName: bath,
+                            category: Category.bathrooms,
                             widthh: 2.35,
                             topPadding: 0,
                           ),
                         ],
                       ),
-                postController.onlygarage.value
+                postController.categories['Only Garage']!.value
                     ? const SizedBox()
                     : SizedBox(height: space),
-                postController.onlygarage.value
+                postController.categories['Only Garage']!.value
                     ? const SizedBox()
-                    : Row(
+                    : const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          DragdownBoxSmall(
+                          DropDownBtn(
                             title: "Dining",
-                            catagoryName: floors,
+                            category: Category.dining,
                             widthh: 2.35,
                             topPadding: 0,
                           ),
-                          DragdownBoxSmall(
+                          DropDownBtn(
                             title: "Kitchne",
-                            catagoryName: kitchen,
+                            category: Category.kitchen,
                             widthh: 2.35,
                             topPadding: 0,
                           ),
                         ],
                       ),
-                postController.onlygarage.value
+                postController.categories['Only Garage']!.value
                     ? const SizedBox()
                     : SizedBox(height: space),
-                postController.onlygarage.value
+                postController.categories['Only Garage']!.value
                     ? const SizedBox()
-                    : Row(
+                    : const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          DragdownBoxSmall(
+                          DropDownBtn(
                             title: "Floor No",
-                            catagoryName: floors,
+                            category: Category.floorno,
                             widthh: 2.35,
                             topPadding: 0,
                           ),
-                          DragdownBoxSmall(
+                          DropDownBtn(
                             title: "Facing",
-                            catagoryName: kitchen,
+                            category: Category.facing,
                             widthh: 2.35,
                             topPadding: 0,
                           ),
                         ],
                       ),
 
-                postController.onlygarage.value
+                postController.categories['Only Garage']!.value
                     ? const SizedBox()
                     : SizedBox(height: space),
-                postController.onlygarage.value
+                postController.categories['Only Garage']!.value
                     ? SizedBox(height: space)
                     : const SizedBox(),
-                postController.onlygarage.value
+                postController.categories['Only Garage']!.value
                     ? SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Row(
@@ -267,7 +270,7 @@ class _ToletPostPage1State extends State<ToletPostPage1> {
                               ],
                             ),
                             const SizedBox(width: 20),
-                            SmallTextBox(
+                            TextInputBox(
                               topPadding: 0,
                               title: "Garag  Rent*",
                               textType: TextInputType.number,
@@ -287,14 +290,14 @@ class _ToletPostPage1State extends State<ToletPostPage1> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            SmallTextBox(
+                            TextInputBox(
                               topPadding: 0,
                               title: "Room Size (ft\u00b2)",
                               textType: TextInputType.number,
                               hintText: "230 ",
                               titlelenth: 500,
                               suffixtext: "৳",
-                              controller: postController.squireft,
+                              controller: postController.roomSizeTolet,
                               iconh: 23,
                               iconw: 23,
                               widthh: 2.35,
@@ -347,37 +350,37 @@ class _ToletPostPage1State extends State<ToletPostPage1> {
                           ],
                         ),
                       ),
-                postController.onlygarage.value
+                postController.categories['Only Garage']!.value
                     ? const SizedBox()
                     : SizedBox(height: space),
-                postController.onlygarage.value
+                postController.categories['Only Garage']!.value
                     ? const SizedBox()
                     : SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            SmallTextBox(
+                            TextInputBox(
                               topPadding: 0,
                               title: "Maintenance(Monthly) *",
                               textType: TextInputType.number,
                               hintText: "300",
                               titlelenth: 4,
                               suffixtext: "",
-                              controller: postController.maintenance,
+                              controller: postController.maintenanceTolet,
                               iconh: 23,
                               iconw: 23,
                               widthh: 2.35,
                             ),
                             SizedBox(width: space),
-                            SmallTextBox(
+                            TextInputBox(
                               topPadding: 0,
                               title: "Rent *",
                               textType: TextInputType.number,
                               hintText: "20,000 ৳",
                               titlelenth: 500,
                               suffixtext: "৳",
-                              controller: postController.price,
+                              controller: postController.rentTolet,
                               iconh: 23,
                               iconw: 23,
                               widthh: 2.35,
@@ -385,10 +388,11 @@ class _ToletPostPage1State extends State<ToletPostPage1> {
                           ],
                         ),
                       ),
-                postController.onlygarage.value
+                postController.categories['Only Garage']!.value
                     ? const SizedBox()
                     : SizedBox(height: space),
-                postController.onlygarage.value
+
+                postController.categories['Only Garage']!.value
                     ? const SizedBox()
                     : const Text(
                         'Fasalitis(op)',
@@ -397,64 +401,40 @@ class _ToletPostPage1State extends State<ToletPostPage1> {
                           color: Colors.black,
                         ),
                       ),
-                postController.onlygarage.value
+                postController.categories['Only Garage']!.value
                     ? const SizedBox()
                     : SizedBox(height: space),
-                postController.onlygarage.value
+                IconButton(
+                  onPressed: () {
+                    postController.getFasalitiesNameTolet();
+                  },
+                  icon: const Icon(Icons.check_box),
+                ),
+                postController.categories['Only Garage']!.value
                     ? const SizedBox()
-                    : const Row(
+                    : Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Expanded(
                             child: Wrap(
                               spacing: 10,
-                              children: [
-                                CustomeChip(
-                                  text: "Balcony",
-                                  icon: Icons.balcony_rounded,
-                                ),
-                                CustomeChip(
-                                  text: "Parking",
-                                  icon: Icons.directions_bike,
-                                ),
-                                CustomeChip(
-                                  text: "CCTV",
-                                  icon: Icons.photo_camera,
-                                ),
-                                CustomeChip(
-                                  text: "GAS",
-                                  icon: Icons.local_fire_department_outlined,
-                                ),
-                                CustomeChip(
-                                  text: "Lift",
-                                  icon: Icons.elevator_outlined,
-                                ),
-                                CustomeChip(
-                                  text: "Security Guard",
-                                  icon: Icons.security_rounded,
-                                ),
-                                CustomeChip(
-                                  text: "WIFI",
-                                  icon: Icons.wifi_rounded,
-                                ),
-                                CustomeChip(
-                                  text: "Power Backup",
-                                  icon: Icons.power_settings_new_rounded,
-                                ),
-                                CustomeChip(
-                                  text: "Fire Alarm",
-                                  icon: Icons.fire_extinguisher,
-                                ),
-                                CustomeChip(
-                                  text: "Gaser",
-                                  icon: Icons.gas_meter_outlined,
-                                ),
-                              ],
+                              children: postController.fasalitisTolet.entries
+                                  .map((entry) {
+                                final String text = entry.key;
+                                final FasalitisTolet fasalitisTolet =
+                                    entry.value;
+                                final categoryState = fasalitisTolet.state;
+
+                                return FasalitisToletChip(
+                                  text: text,
+                                  icon: fasalitisTolet.icon,
+                                  categoryState: categoryState,
+                                );
+                              }).toList(),
                             ),
-                          )
+                          ),
                         ],
                       ),
-
                 SizedBox(height: space),
                 const Text(
                   'Select image *',
@@ -492,7 +472,7 @@ class _ToletPostPage1State extends State<ToletPostPage1> {
                 // ),
                 const SelectImage(
                   icon: Feather.camera,
-                  imagnumber: 1,
+                  imagnumber: 12,
                 ),
                 SizedBox(height: space),
                 DescriptionTextBox(
@@ -500,7 +480,7 @@ class _ToletPostPage1State extends State<ToletPostPage1> {
                   textType: TextInputType.text,
                   hintText:
                       "\nSpecify house condition, extra features and house etc👀",
-                  controller: postController.description,
+                  controller: postController.discriptionTolet,
                   icon: Feather.file_text,
                 ),
                 const SizedBox(height: 30),

@@ -1,5 +1,6 @@
 import 'package:btolet/controller/post_controller.dart';
 import 'package:btolet/model/postmodel.dart';
+import 'package:btolet/pages/post/tolet/widget/textbox.dart';
 import 'package:btolet/widget/btn.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
@@ -64,7 +65,7 @@ class _PostProperty2State extends State<PostProperty2> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const LocationSmall(),
-                SmallTextBox(
+                TextInputBox(
                   topPadding: 0,
                   title: "Short Address",
                   textType: TextInputType.streetAddress,

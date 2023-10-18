@@ -30,7 +30,8 @@ class LocationController extends GetxController {
     currentlatitude.value = position.latitude;
     currentlongitude.value = position.longitude;
     isLoading.value = false;
-    coordinateToLocationDetails(currentlatitude.value, currentlongitude.value);
+    await coordinateToLocationDetails(
+        currentlatitude.value, currentlongitude.value);
   }
 
   void onMyLocationButtonPressed() {
@@ -53,38 +54,48 @@ class LocationController extends GetxController {
 
   TextEditingController searchController = TextEditingController();
   RxString locationAddress = ''.obs;
+  RxString locationAddressShort = 'GG'.obs;
 
-  RxBool isLoadingsuggstion = false.obs;
-  var suggstions = [].obs;
-  var searchText = ''.obs;
-  searchSuggstion() async {
-    try {
-      isLoadingsuggstion.value = true;
-      var response = await GoogleMapApi.searchSuggstion(
-          searchText.value == '' ? locationAddress.value : searchText.value);
-      if (response != null) {
-        suggstions.clear();
-        suggstions.addAll(response);
-      } else {
-        print("Error");
-      }
-    } finally {
-      isLoadingsuggstion.value = false;
-    }
-  }
+  // RxBool isLoadingsuggstion = false.obs;
+  // var suggstions = [].obs;
+  // var searchText = ''.obs;
+  // searchSuggstion() async {
+  //   try {
+  //     isLoadingsuggstion.value = true;
+  //     var response = await GoogleMapApi.searchSuggstion(
+  //         searchText.value == '' ? locationAddress.value : searchText.value);
+  //     if (response != null) {
+  //       suggstions.clear();
+  //       suggstions.addAll(response);
+  //     } else {
+  //       print("Error");
+  //     }
+  //   } finally {
+  //     isLoadingsuggstion.value = false;
+  //   }
+  // }
 
   RxBool cordinateToLocationLoding = true.obs;
   coordinateToLocationDetails(double latitude, double longitude) async {
     try {
       var response = await GoogleMapApi.coordinateToLocationDetailsapi(
-          latitude, longitude);
+        latitude,
+        longitude,
+      );
       if (response != null) {
-        // return response;
-        // searchController.text = response;
-        // searchController.selection = TextSelection(
-        //   baseOffset: 0,
-        //   extentOffset: response.length,
-        // );
+        // print('-------------------------------------------------');
+        // print(response.name);
+        // print(response.street);
+        // print(response.isoCountryCode);
+        // print(response.country);
+        // print(response.postalCode);
+        // print(response.administrativeArea);
+        // print(response.subAdministrativeArea);
+        // print(response.locality);
+        // print(response.subLocality);
+        // print(response.thoroughfare);
+        // print(response.subThoroughfare);
+
         locationAddress.value = response;
       } else {
         print("Error");

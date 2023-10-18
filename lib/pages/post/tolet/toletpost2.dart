@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 
+import 'widget/textbox.dart';
+
 class ToletPostPage2 extends StatefulWidget {
   const ToletPostPage2({super.key});
 
@@ -61,14 +63,14 @@ class _ToletPostPage2State extends State<ToletPostPage2> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const LocationSmall(),
-                SmallTextBox(
+                TextInputBox(
                   topPadding: 0,
                   title: "Short Address",
                   textType: TextInputType.streetAddress,
                   hintText: "Uttara sector 16, Road-3, Dhaka",
                   titlelenth: 500,
                   suffixtext: "",
-                  controller: postController.shortAddress,
+                  controller: postController.shortAddressTolet,
                   iconh: 23,
                   iconw: 23,
                   widthh: 2.35 / 2,
@@ -142,7 +144,7 @@ class _ToletPostPage2State extends State<ToletPostPage2> {
                         title: 'Name',
                         textType: TextInputType.name,
                         hintText: "Sabbir Cudna",
-                        controller: postController.name,
+                        controller: postController.nameTolet,
                         icon: 'assets/icons/text.svg',
                         iconh: 21,
                         iconw: 21,
@@ -156,7 +158,7 @@ class _ToletPostPage2State extends State<ToletPostPage2> {
                   title: "Phone",
                   textType: TextInputType.number,
                   hintText: '013XXXX',
-                  controller: postController.number,
+                  controller: postController.numberTolet,
                   icon: 'assets/icons/call.svg',
                   iconh: 21,
                   iconw: 21,
@@ -168,7 +170,7 @@ class _ToletPostPage2State extends State<ToletPostPage2> {
                   title: "WhatsApp",
                   textType: TextInputType.number,
                   hintText: '017XXXX',
-                  controller: postController.wapp,
+                  controller: postController.wappnumberTolet,
                   icon: 'assets/icons/wapp.svg',
                   iconh: 22,
                   iconw: 22,

@@ -10,6 +10,8 @@ import 'package:maps_launcher/maps_launcher.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
+import 'toletpage.dart';
+
 class PropertyPage extends StatefulWidget {
   const PropertyPage({super.key});
 
@@ -253,28 +255,18 @@ class _PropertyPageState extends State<PropertyPage> {
                         ),
                         Row(
                           children: [
-                            InkWell(
-                              child: const Padding(
-                                padding: EdgeInsets.all(5),
-                                child: Icon(
-                                  Feather.share_2,
-                                  color: Colors.white,
-                                  size: 22,
-                                ),
-                              ),
-                              onTap: () {},
-                            ),
                             const SizedBox(width: 10),
                             LikeButton(
                               size: 32,
                               likeBuilder: (bool isLiked) {
                                 return Icon(
-                                    isLiked
-                                        ? Icons.favorite
-                                        : Icons.favorite_border_outlined,
-                                    color: isLiked
-                                        ? Colors.lightBlue
-                                        : Colors.white);
+                                  isLiked
+                                      ? Icons.favorite
+                                      : Icons.favorite_border_outlined,
+                                  color: isLiked
+                                      ? Colors.lightBlue
+                                      : const Color(0xff083437),
+                                );
                               },
                               animationDuration:
                                   const Duration(milliseconds: 400),
@@ -299,104 +291,55 @@ class _PropertyPageState extends State<PropertyPage> {
                 //   child: Column(
                 //     crossAxisAlignment: CrossAxisAlignment.center,
                 //     children: [
-                const Padding(
-                  padding: EdgeInsets.only(left: 20),
-                  child: Text(
-                    "৳ 2.12 Lak",
-                    style: TextStyle(
-                      fontSize: 30,
-                      color: Color(0xff083437),
-                      fontWeight: FontWeight.bold,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(left: 20),
+                      child: Text(
+                        "৳ 2.12 Lak",
+                        style: TextStyle(
+                          fontSize: 30,
+                          color: Color(0xff083437),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
-                  ),
+                    InkWell(
+                      child: const Padding(
+                        padding: EdgeInsets.only(right: 20),
+                        child: Icon(
+                          Feather.share_2,
+                          color: Color(0xff083437),
+                          size: 22,
+                        ),
+                      ),
+                      onTap: () {},
+                    ),
+                  ],
                 ),
-                //       const SizedBox(height: 10),
-                //       Row(
-                //         mainAxisAlignment: MainAxisAlignment.start,
-                //         crossAxisAlignment: CrossAxisAlignment.end,
-                //         children: [
-                //           Row(
-                //             crossAxisAlignment: CrossAxisAlignment.end,
-                //             children: [
-                //               SizedBox(
-                //                 height: 30,
-                //                 width: 30,
-                //                 child: SvgPicture.asset(
-                //                   'assets/icons/bed.svg',
-                //                   colorFilter: const ColorFilter.mode(
-                //                     Color(0xff083437),
-                //                     BlendMode.srcIn,
-                //                   ),
-                //                 ),
-                //               ),
-                //               const SizedBox(width: 10),
-                //               const Text(
-                //                 '3 Beds',
-                //                 style: TextStyle(
-                //                   color: Color(0xff083437),
-                //                   fontWeight: FontWeight.bold,
-                //                   fontSize: 16,
-                //                 ),
-                //               ),
-                //             ],
-                //           ),
-                //           const SizedBox(width: 20),
-                //           Row(
-                //             crossAxisAlignment: CrossAxisAlignment.end,
-                //             children: [
-                //               SizedBox(
-                //                 height: 28,
-                //                 width: 28,
-                //                 child: SvgPicture.asset(
-                //                   'assets/icons/bath.svg',
-                //                   colorFilter: const ColorFilter.mode(
-                //                     Color(0xff083437),
-                //                     BlendMode.srcIn,
-                //                   ),
-                //                 ),
-                //               ),
-                //               const SizedBox(width: 10),
-                //               const Text(
-                //                 '3 Baths',
-                //                 style: TextStyle(
-                //                   color: Color(0xff083437),
-                //                   fontWeight: FontWeight.bold,
-                //                   fontSize: 16,
-                //                 ),
-                //               ),
-                //             ],
-                //           ),
-                //           const SizedBox(width: 20),
-                //           Row(
-                //             crossAxisAlignment: CrossAxisAlignment.end,
-                //             children: [
-                //               SizedBox(
-                //                 height: 20,
-                //                 width: 20,
-                //                 child: SvgPicture.asset(
-                //                   'assets/icons/size.svg',
-                //                   colorFilter: const ColorFilter.mode(
-                //                     Color(0xff083437),
-                //                     BlendMode.srcIn,
-                //                   ),
-                //                 ),
-                //               ),
-                //               const SizedBox(width: 10),
-                //               const Text(
-                //                 '1,350 (ft\u00b2)',
-                //                 style: TextStyle(
-                //                   color: Color(0xff083437),
-                //                   fontWeight: FontWeight.bold,
-                //                   fontSize: 16,
-                //                 ),
-                //               ),
-                //             ],
-                //           ),
-                //         ],
+                // const Padding(
+                //   padding: EdgeInsets.only(left: 20),
+                //   child: Row(
+                //     children: [
+                //       Icon(
+                //         Icons.call,
+                //         size: 33,
+                //         color: Color(0xff083437),
+                //       ),
+                //       SizedBox(width: 10),
+                //       Text(
+                //         "Call For Price",
+                //         style: TextStyle(
+                //           fontSize: 30,
+                //           color: Color(0xff083437),
+                //           fontWeight: FontWeight.bold,
+                //         ),
                 //       ),
                 //     ],
                 //   ),
                 // ),
+
                 const SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.only(left: 20, right: 20),
@@ -538,75 +481,118 @@ class _PropertyPageState extends State<PropertyPage> {
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(color: Colors.blueAccent),
                         ),
-                        child: const Center(
-                          child: Wrap(
-                            crossAxisAlignment: WrapCrossAlignment.center,
-                            alignment: WrapAlignment.spaceBetween,
-                            spacing: 20,
-                            runSpacing: 20,
-                            children: [
-                              DetailsCircle(
-                                icon: 'assets/icons/property/bed.svg',
-                                title: 'Beds',
-                                subtitle: '2',
-                              ),
-                              DetailsCircle(
-                                icon: 'assets/icons/property/bath.svg',
-                                title: 'Baths',
-                                subtitle: '1',
-                              ),
-                              DetailsCircle(
-                                icon: 'assets/icons/property/size.svg',
-                                title: 'Size',
-                                subtitle: '1,350 (ft\u00b2)',
-                              ),
-                              DetailsCircle(
-                                icon: 'assets/icons/property/users.svg',
-                                title: 'I am',
-                                subtitle: 'Agent',
-                              ),
-                              DetailsCircle(
-                                icon: 'assets/icons/property/kitchen.svg',
-                                title: 'Kitchen',
-                                subtitle: '2',
-                              ),
-                              DetailsCircle(
-                                icon: 'assets/icons/property/dining.svg',
-                                title: 'Dining',
-                                subtitle: '2',
-                              ),
-                              DetailsCircle(
-                                icon: 'assets/icons/property/window.svg',
-                                title: 'Facing',
-                                subtitle: 'North',
-                              ),
-                              DetailsCircle(
-                                icon: 'assets/icons/property/floor.svg',
-                                title: 'Floor',
-                                subtitle: '12th',
-                              ),
-                              DetailsCircle(
-                                icon: 'assets/icons/property/floor.svg',
-                                title: 'Floor No.',
-                                subtitle: '3rd',
-                              ),
-                              DetailsCircle(
-                                icon: 'assets/icons/property/floorplan.svg',
-                                title: 'Unit',
-                                subtitle: '3',
-                              ),
-                              DetailsCircle(
-                                icon: 'assets/icons/property/emi.svg',
-                                title: 'EMI',
-                                subtitle: 'YES',
-                              ),
-                              DetailsCircle(
-                                icon: 'assets/icons/property/new.svg',
-                                title: 'Type',
-                                subtitle: 'NEW',
-                              ),
-                            ],
-                          ),
+                        child: const Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          // crossAxisAlignment: CrossAxisAlignment.center,
+                          // crossAxisAlignment: WrapCrossAlignment.center,
+                          // alignment: WrapAlignment.start,
+                          // spacing: 10,
+                          // runSpacing: 10,
+                          children: [
+                            SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                DetailsCircle(
+                                  icon: 'assets/icons/property/bed.svg',
+                                  title: 'Beds',
+                                  subtitle: '2',
+                                  iconheight: 32,
+                                  iconwidth: 32,
+                                ),
+                                DetailsCircle(
+                                  icon: 'assets/icons/property/bath.svg',
+                                  title: 'Baths',
+                                  subtitle: '1',
+                                  iconheight: 30,
+                                  iconwidth: 30,
+                                ),
+                                DetailsCircle(
+                                  icon: 'assets/icons/property/kitchen.svg',
+                                  title: 'Kitchen',
+                                  subtitle: '2',
+                                  iconheight: 30,
+                                  iconwidth: 30,
+                                ),
+                                DetailsCircle(
+                                  icon: 'assets/icons/property/dining.svg',
+                                  title: 'Dining',
+                                  subtitle: '2',
+                                  iconheight: 34,
+                                  iconwidth: 34,
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 20),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                DetailsCircle(
+                                  icon: 'assets/icons/property/size.svg',
+                                  title: 'Size',
+                                  subtitle: '1,350 (ft\u00b2)',
+                                  iconheight: 30,
+                                  iconwidth: 30,
+                                ),
+                                DetailsCircle(
+                                  icon: 'assets/icons/property/window.svg',
+                                  title: 'Facing',
+                                  subtitle: 'North',
+                                  iconheight: 30,
+                                  iconwidth: 30,
+                                ),
+                                DetailsCircle(
+                                  icon: 'assets/icons/property/floor.svg',
+                                  title: 'Total Floor',
+                                  subtitle: '12th',
+                                  iconheight: 28,
+                                  iconwidth: 28,
+                                ),
+                                DetailsCircle(
+                                  icon: 'assets/icons/property/floor.svg',
+                                  title: 'Floor No.',
+                                  subtitle: '3rd',
+                                  iconheight: 28,
+                                  iconwidth: 28,
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 20),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                DetailsCircle(
+                                  icon: 'assets/icons/property/floorplan.svg',
+                                  title: 'Total Unit',
+                                  subtitle: '3',
+                                  iconheight: 25,
+                                  iconwidth: 25,
+                                ),
+                                DetailsCircle(
+                                  icon: 'assets/icons/property/emi.svg',
+                                  title: 'EMI',
+                                  subtitle: 'YES',
+                                  iconheight: 30,
+                                  iconwidth: 30,
+                                ),
+                                DetailsCircle(
+                                  icon: 'assets/icons/property/new.svg',
+                                  title: 'Condition',
+                                  subtitle: 'NEW',
+                                  iconheight: 30,
+                                  iconwidth: 30,
+                                ),
+                                DetailsCircle(
+                                  icon: 'assets/icons/property/users.svg',
+                                  title: 'Posted by',
+                                  subtitle: 'Agent',
+                                  iconheight: 28,
+                                  iconwidth: 28,
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 10),
+                          ],
                         ),
                       ),
                       const SizedBox(height: 15),
@@ -675,57 +661,58 @@ class _PropertyPageState extends State<PropertyPage> {
                           left: 10,
                           top: 10,
                         ),
-                        child: Expanded(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Amenities(text: 'Balcony'),
-                                  Amenities(text: 'Parking'),
-                                  Amenities(text: 'CCTV'),
-                                  Amenities(text: 'GAS'),
-                                  Amenities(text: 'ELEVATOR'),
-                                  Amenities(text: 'Security Guard'),
-                                  Amenities(text: 'Power Backup'),
-                                ],
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Amenities(text: 'Fire Alarm'),
-                                  Amenities(text: 'Fire exit'),
-                                  Amenities(text: 'Gaser'),
-                                  Amenities(text: 'Wasa Connection'),
-                                  Amenities(text: 'West Disposal'),
-                                  Amenities(text: 'Garden'),
-                                ],
-                              ),
-                            ],
-                          ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Amenities(text: 'Balcony'),
+                                Amenities(text: 'Parking'),
+                                Amenities(text: 'CCTV'),
+                                Amenities(text: 'GAS'),
+                                Amenities(text: 'ELEVATOR'),
+                                Amenities(text: 'Security Guard'),
+                                Amenities(text: 'Power Backup'),
+                              ],
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Amenities(text: 'Fire Alarm'),
+                                Amenities(text: 'Fire exit'),
+                                Amenities(text: 'Gaser'),
+                                Amenities(text: 'Wasa Connection'),
+                                Amenities(text: 'West Disposal'),
+                                Amenities(text: 'Garden'),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
 
                       const SizedBox(height: 20),
                       Container(
-                        padding: const EdgeInsets.only(
-                          top: 10,
-                          left: 10,
-                        ),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(color: Colors.blueAccent),
                         ),
                         child: ExpandablePanel(
-                          header: const Text(
-                            'Floor Plan',
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.black,
+                          header: Container(
+                            padding: const EdgeInsets.only(
+                              top: 10,
+                              left: 10,
+                              bottom: 10,
+                            ),
+                            child: const Text(
+                              'Floor Plan',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.black,
+                              ),
                             ),
                           ),
                           collapsed: const SizedBox(),
@@ -752,7 +739,56 @@ class _PropertyPageState extends State<PropertyPage> {
                           // fontStyle: FontStyle.italic,
                         ),
                       ),
+                      const SizedBox(height: 20),
                       const YoutubeVideo(),
+                      const SizedBox(height: 20),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                Feather.menu,
+                                color: const Color(0xff8595A9).withOpacity(0.5),
+                                size: 18,
+                              ),
+                              const SizedBox(width: 10),
+                              const Text("Discription"),
+                            ],
+                          ),
+                          const Text(
+                            'id: 234',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.black54,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      Container(
+                        height: 100,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: const Color(0xffE3E8FF),
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: const Padding(
+                          padding: EdgeInsets.only(
+                            top: 20,
+                            left: 20,
+                            right: 15,
+                            bottom: 20,
+                          ),
+                          child: Text(
+                            "2 bedroom with attached bathroom,big hall with ",
+                            textAlign: TextAlign.justify,
+                            overflow: TextOverflow.clip,
+                            // maxLines: 5,
+                          ),
+                        ),
+                      ),
                       const SizedBox(height: 20),
                       const Text(
                         "propertyed In",
@@ -775,6 +811,13 @@ class _PropertyPageState extends State<PropertyPage> {
                             ),
                           ),
                         ),
+                      ),
+
+                      const SizedBox(height: 20),
+                      const Details(
+                        type: "Short Address",
+                        detailstext: "Nirala scool, 334 no building",
+                        icon: Icons.share_location_rounded,
                       ),
                       // Container(
                       //   height: 100,
@@ -859,12 +902,16 @@ class DetailsCircle extends StatelessWidget {
   final String icon;
   final String title;
   final String subtitle;
+  final double iconheight;
+  final double iconwidth;
 
   const DetailsCircle(
       {super.key,
       required this.icon,
       required this.title,
-      required this.subtitle});
+      required this.subtitle,
+      required this.iconheight,
+      required this.iconwidth});
 
   @override
   Widget build(BuildContext context) {
@@ -874,18 +921,18 @@ class DetailsCircle extends StatelessWidget {
           height: 60,
           width: 60,
           decoration: BoxDecoration(
-            color: const Color(0xffCBECFF),
+            color: Colors.blue.shade50.withOpacity(0.6),
             // color: Colors.blue.withOpacity(0.2),
             borderRadius: BorderRadius.circular(100),
           ),
           child: Center(
             child: SizedBox(
-              height: 30,
-              width: 30,
+              height: iconheight,
+              width: iconwidth,
               child: SvgPicture.asset(
                 icon,
-                colorFilter: const ColorFilter.mode(
-                  Color(0xff0670AC),
+                colorFilter: ColorFilter.mode(
+                  Colors.blue[600]!,
                   // Colors.blue,
                   BlendMode.srcIn,
                 ),
@@ -907,7 +954,7 @@ class DetailsCircle extends StatelessWidget {
           subtitle,
           style: const TextStyle(
             fontSize: 16,
-            color: Colors.black38,
+            color: Colors.black45,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -972,7 +1019,7 @@ class YoutubeVideo extends StatefulWidget {
 }
 
 class _YoutubeVideoState extends State<YoutubeVideo> {
-  var videoUrl = "GzU8KqOY8YA";
+  var videoUrl = "6KLSz3owo20";
   // ignore: prefer_typing_uninitialized_variables
   var _controller;
   @override

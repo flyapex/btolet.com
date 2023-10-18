@@ -179,8 +179,12 @@ class _SortHereState extends State<SortHere> with TickerProviderStateMixin {
                   ),
                   const SizedBox(height: 20),
                   const PorpertyChips(),
-                  const Text('Fasalitis'),
                   const SizedBox(height: 20),
+                  const Text('I am Looking For'),
+                  SelectableChipsType(
+                    categorylist: type,
+                  ),
+
                   SelectableChips(
                     categorylist: prooms,
                     catagoryName: 'Beds',

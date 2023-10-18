@@ -1,3 +1,5 @@
+import 'package:btolet/controller/user_controller.dart';
+import 'package:btolet/widget/terms/termsandcondition.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
@@ -12,6 +14,8 @@ class CustomeDrawer extends StatefulWidget {
 class _CustomeDrawerState extends State<CustomeDrawer>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
+
+  UserController userController = Get.find();
 
   @override
   void initState() {
@@ -33,235 +37,259 @@ class _CustomeDrawerState extends State<CustomeDrawer>
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      child: ListView(
-        children: [
-          UserAccountsDrawerHeader(
-            decoration: const BoxDecoration(color: Colors.blue),
-            accountName: const Text('Sabbir 69'),
-            currentAccountPicture: const CircleAvatar(
-              backgroundImage: NetworkImage(
-                  'https://lh3.googleusercontent.com/a/AAcHTtdx1wQM-1NXgarrI1Ya4-6q0OtKawcqY55DHK3YBw'),
-            ),
-            accountEmail: const Text(
-              'sabbir69@gmail.com',
-              style: TextStyle(color: Colors.white),
-            ),
-            otherAccountsPictures: [
-              IconButton(
-                icon: Icon(
-                  Get.isDarkMode ? Icons.brightness_2 : Icons.wb_sunny,
-                  color: Colors.white,
-                  size: 25,
-                ),
-                onPressed: () {},
+    return Obx(
+      () => Drawer(
+        child: ListView(
+          padding: const EdgeInsets.all(0.0),
+          children: [
+            UserAccountsDrawerHeader(
+              decoration: const BoxDecoration(color: Colors.blue),
+              accountName: Text(userController.name.value),
+              currentAccountPicture: CircleAvatar(
+                backgroundImage: NetworkImage(userController.image.value),
               ),
-              IconButton(
-                onPressed: () async {
-                  Navigator.pop(context);
+              accountEmail: Text(
+                userController.email.value,
+                style: const TextStyle(color: Colors.white),
+              ),
+              otherAccountsPictures: [
+                IconButton(
+                  icon: Icon(
+                    Get.isDarkMode ? Icons.brightness_2 : Icons.wb_sunny,
+                    color: Colors.white,
+                    size: 25,
+                  ),
+                  onPressed: () {},
+                ),
+                IconButton(
+                  onPressed: () async {
+                    Navigator.pop(context);
+                  },
+                  icon: const Icon(
+                    Feather.toggle_right,
+                    color: Colors.white,
+                    size: 25,
+                  ),
+                )
+              ],
+            ),
+
+            ListTile(
+              title: const Row(
+                children: [
+                  Icon(
+                    Feather.user,
+                    color: Colors.black38,
+                  ),
+                  SizedBox(
+                    width: 30,
+                  ),
+                  Text(
+                    'Profile',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ],
+              ),
+              onTap: () {},
+            ),
+            ListTile(
+              onTap: () {
+                // Navigator.pop(context);
+                // Get.bottomSheet(
+                //   const Verify(),
+                //   elevation: 20.0,
+                //   enableDrag: true,
+                //   backgroundColor: Colors.white,
+                //   isScrollControlled: true,
+                //   ignoreSafeArea: true,
+                //   shape: const RoundedRectangleBorder(
+                //     borderRadius: BorderRadius.only(
+                //       topLeft: Radius.circular(20.0),
+                //       topRight: Radius.circular(20.0),
+                //     ),
+                //   ),
+                //   enterBottomSheetDuration: const Duration(milliseconds: 170),
+                // );
+              },
+              title: const Row(
+                children: [
+                  Icon(
+                    Feather.heart,
+                    color: Colors.black38,
+                  ),
+                  SizedBox(
+                    width: 30,
+                  ),
+                  Text(
+                    'Saved',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ],
+              ),
+            ),
+            ListTile(
+              title: const Row(
+                children: [
+                  Icon(
+                    Feather.edit,
+                    color: Colors.black38,
+                  ),
+                  SizedBox(
+                    width: 30,
+                  ),
+                  Text(
+                    'My Post',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ],
+              ),
+              onTap: () {},
+            ),
+            ListTile(
+              title: const Row(
+                children: [
+                  Icon(
+                    Icons.auto_fix_high_outlined,
+                    color: Colors.black38,
+                  ),
+                  SizedBox(
+                    width: 30,
+                  ),
+                  Text(
+                    'My Ads',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ],
+              ),
+              onTap: () {},
+            ),
+
+            ListTile(
+              title: const Row(
+                children: [
+                  Icon(
+                    Feather.radio,
+                    color: Colors.black38,
+                  ),
+                  SizedBox(
+                    width: 30,
+                  ),
+                  Text(
+                    'Feedback',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ],
+              ),
+              onTap: () {},
+            ),
+            ListTile(
+              title: const Row(
+                children: [
+                  Icon(
+                    Feather.help_circle,
+                    color: Colors.black38,
+                  ),
+                  SizedBox(
+                    width: 30,
+                  ),
+                  Text(
+                    'FAQ',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ],
+              ),
+              onTap: () {},
+            ),
+            Container(
+              height: 0.3,
+              color: Colors.black45,
+            ),
+            ListTile(
+              title: InkWell(
+                onTap: () {
+                  Get.to(const Terms());
                 },
-                icon: const Icon(
-                  Feather.toggle_right,
-                  color: Colors.white,
-                  size: 25,
+                child: const Row(
+                  children: [
+                    Icon(
+                      Feather.search,
+                      color: Colors.black38,
+                    ),
+                    SizedBox(
+                      width: 30,
+                    ),
+                    Text(
+                      'Terms & Condition',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ],
                 ),
-              )
-            ],
-          ),
-          ListTile(
-            title: const Row(
-              children: [
-                Icon(
-                  Feather.user,
-                  color: Colors.black38,
-                ),
-                SizedBox(
-                  width: 30,
-                ),
-                Text(
-                  'Profile',
-                  style: TextStyle(color: Colors.black),
-                ),
-              ],
+              ),
             ),
-            onTap: () {},
-          ),
-          ListTile(
-            onTap: () {
-              // Navigator.pop(context);
-              // Get.bottomSheet(
-              //   const Verify(),
-              //   elevation: 20.0,
-              //   enableDrag: true,
-              //   backgroundColor: Colors.white,
-              //   isScrollControlled: true,
-              //   ignoreSafeArea: true,
-              //   shape: const RoundedRectangleBorder(
-              //     borderRadius: BorderRadius.only(
-              //       topLeft: Radius.circular(20.0),
-              //       topRight: Radius.circular(20.0),
-              //     ),
-              //   ),
-              //   enterBottomSheetDuration: const Duration(milliseconds: 170),
-              // );
-            },
-            title: const Row(
-              children: [
-                Icon(
-                  Feather.heart,
-                  color: Colors.black38,
+            InkWell(
+              onTap: () {},
+              child: ListTile(
+                title: const Row(
+                  children: [
+                    Icon(
+                      Feather.phone_call,
+                      color: Colors.black38,
+                    ),
+                    SizedBox(
+                      width: 30,
+                    ),
+                    Text(
+                      'Contact Us',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ],
                 ),
-                SizedBox(
-                  width: 30,
-                ),
-                Text(
-                  'Favourite',
-                  style: TextStyle(color: Colors.black),
-                ),
-              ],
+                onTap: () {},
+              ),
             ),
-          ),
-          ListTile(
-            title: const Row(
-              children: [
-                Icon(
-                  Icons.phone,
-                  color: Colors.black38,
-                ),
-                SizedBox(
-                  width: 30,
-                ),
-                Text(
-                  'Calls',
-                  style: TextStyle(color: Colors.black),
-                ),
-              ],
-            ),
-            onTap: () {},
-          ),
-          ListTile(
-            title: const Row(
-              children: [
-                Icon(
-                  Icons.place_outlined,
-                  color: Colors.black38,
-                ),
-                SizedBox(
-                  width: 30,
-                ),
-                Text(
-                  'People Nearby',
-                  style: TextStyle(color: Colors.black),
-                ),
-              ],
-            ),
-            onTap: () {},
-          ),
-          ListTile(
-            title: const Row(
-              children: [
-                Icon(
-                  Icons.bookmark_border,
-                  color: Colors.black38,
-                ),
-                SizedBox(
-                  width: 30,
-                ),
-                Text(
-                  'Saved Messages',
-                  style: TextStyle(color: Colors.black),
-                ),
-              ],
-            ),
-            onTap: () {},
-          ),
-          ListTile(
-            title: const Row(
-              children: [
-                Icon(
-                  Feather.alert_circle,
-                  color: Colors.black38,
-                ),
-                SizedBox(
-                  width: 30,
-                ),
-                Text(
-                  'About us',
-                  style: TextStyle(color: Colors.black),
-                ),
-              ],
-            ),
-            onTap: () {},
-          ),
-          const Divider(
-            color: Colors.black,
-          ),
-          InkWell(
-            onTap: () {},
-            child: ListTile(
+            ListTile(
               title: const Row(
                 children: [
                   Icon(
-                    Icons.person_add,
+                    Feather.alert_circle,
                     color: Colors.black38,
                   ),
                   SizedBox(
                     width: 30,
                   ),
                   Text(
-                    'Invite Friends',
+                    'About us',
                     style: TextStyle(color: Colors.black),
                   ),
                 ],
               ),
               onTap: () {},
             ),
-          ),
-          InkWell(
-            onTap: () {},
-            child: ListTile(
-              title: const Row(
-                children: [
-                  Icon(
-                    Icons.group,
-                    color: Colors.black38,
-                  ),
-                  SizedBox(
-                    width: 30,
-                  ),
-                  Text(
-                    '24/7 Support',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                ],
-              ),
-              onTap: () {},
-            ),
-          ),
-          InkWell(
-            onTap: () {
-              // dbController.getUserID();
-            },
-            child: ListTile(
-              title: const Row(
-                children: [
-                  Icon(
-                    Feather.log_out,
-                    color: Colors.black38,
-                  ),
-                  SizedBox(
-                    width: 30,
-                  ),
-                  Text(
-                    'LOGOUT',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                ],
-              ),
-              onTap: () {},
-            ),
-          ),
-        ],
+            // InkWell(
+            //   onTap: () {
+            //     // dbController.getUserID();
+            //   },
+            //   child: ListTile(
+            //     title: const Row(
+            //       children: [
+            //         Icon(
+            //           Feather.log_out,
+            //           color: Colors.black38,
+            //         ),
+            //         SizedBox(
+            //           width: 30,
+            //         ),
+            //         Text(
+            //           'LOGOUT',
+            //           style: TextStyle(color: Colors.black),
+            //         ),
+            //       ],
+            //     ),
+            //     onTap: () {},
+            //   ),
+            // ),
+          ],
+        ),
       ),
     );
   }

@@ -7,6 +7,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 import 'controller/location_controller.dart';
+import 'controller/user_controller.dart';
+import 'pages/map/map_button_top.dart';
 import 'pages/map/multi_map.dart';
 import 'pages/post/sorting/sortingproperty.dart';
 import 'pages/post/sorting/sortingtolet.dart';
@@ -14,8 +16,60 @@ import 'pages/post/tolet/posttolet.dart';
 import 'pages/property.dart';
 import 'pages/tolet.dart';
 import 'pages/map/location_sheet_map.dart';
-import 'pages/map/map_button_top.dart';
 import 'widget/drawer.dart';
+import 'package:lottie/lottie.dart';
+
+class MapLodingPage extends StatelessWidget {
+  const MapLodingPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    LocationController locationController = Get.put(LocationController());
+    return Obx(
+      () => locationController.isLoading.value
+          ? Scaffold(
+              backgroundColor: Colors.white,
+              body: Stack(
+                alignment: Alignment.center,
+                children: [
+                  const LocationSheet(),
+                  Container(
+                    color: Colors.white,
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(left: 30, right: 30),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        const SizedBox(),
+                        // Lottie.asset('assets/lottie/location.json'),
+                        // Lottie.asset('assets/lottie/globe.json'),
+                        Align(
+                          alignment: Alignment.center,
+                          child: SizedBox(
+                            child: Lottie.asset(
+                              'assets/lottie/location.json',
+                            ),
+                          ),
+                        ),
+
+                        const Text(
+                          'Welcome Sabbir',
+                          style: TextStyle(
+                              fontSize: 40, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(),
+                        const SizedBox(),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            )
+          : const HomeView(),
+    );
+  }
+}
 
 class HomeView extends StatefulWidget {
   const HomeView({
@@ -51,8 +105,10 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
   double wt = Get.width;
 
   final scrollController = ScrollController();
+  UserController userController = Get.put(UserController());
   @override
   void initState() {
+    userController.getnote();
     locationController.getCurrnetlanlongLocation();
     scrollController.addListener(() {
       if (scrollController.position.pixels > 0) {
@@ -204,9 +260,10 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                         onPressed: () {
                           Scaffold.of(context).openDrawer();
                         },
-                        icon: const CircleAvatar(
+                        icon: CircleAvatar(
                           backgroundImage: NetworkImage(
-                              "https://lh3.googleusercontent.com/a/AAcHTtdx1wQM-1NXgarrI1Ya4-6q0OtKawcqY55DHK3YBw"),
+                            userController.image.value,
+                          ),
                         ),
                       ),
                       const SizedBox(width: 6),
@@ -226,14 +283,18 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                             splashColor: Colors.black12,
                             child: Row(
                               children: [
-                                Text(
-                                  'Khulna',
-                                  style: TextStyle(
-                                    color: const Color(0xff1A3259)
-                                        .withOpacity(0.8),
-                                    decoration: TextDecoration.underline,
-                                    decorationStyle: TextDecorationStyle.dotted,
-                                    fontSize: 14,
+                                Obx(
+                                  () => Text(
+                                    locationController
+                                        .locationAddressShort.value,
+                                    style: TextStyle(
+                                      color: const Color(0xff1A3259)
+                                          .withOpacity(0.8),
+                                      decoration: TextDecoration.underline,
+                                      decorationStyle:
+                                          TextDecorationStyle.dotted,
+                                      fontSize: 14,
+                                    ),
                                   ),
                                 ),
                                 const SizedBox(width: 2),
@@ -318,18 +379,20 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                     Padding(
                       padding: const EdgeInsets.only(right: 20),
                       child: MapButton(
-                        width: 90,
+                        width: 96,
                         height: 40,
+                        fontSize: 17,
                         onTap: () {},
                         onDoubleTap: () {},
                         onSwipe: () {},
                         value: locationController.mapMode.value,
-                        iconOn: Feather.map_pin,
-                        iconOff: Feather.align_left,
-                        textOn: Feather.align_left,
-                        textOff: Feather.map_pin,
+                        textOn: 'LIST',
+                        textOff: 'MAP',
                         colorOn: Colors.blue,
                         colorOff: Colors.blue,
+                        iconOn: Feather.map_pin,
+                        iconOff: Feather.align_left,
+                        textSize: 16.0,
                         onChanged: (bool state) {
                           locationController.mapMode.value =
                               !locationController.mapMode.value;
@@ -337,6 +400,28 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                         animationDuration: const Duration(milliseconds: 250),
                       ),
                     ),
+                    // Padding(
+                    //   padding: const EdgeInsets.only(right: 20),
+                    //   child: MapButton(
+                    //     width: 90,
+                    //     height: 40,
+                    //     onTap: () {},
+                    //     onDoubleTap: () {},
+                    //     onSwipe: () {},
+                    //     value: locationController.mapMode.value,
+                    //     iconOff: Feather.align_left,
+                    //     textOn: Feather.align_left,
+                    //     iconOn: Feather.map_pin,
+                    //     textOff: Feather.map_pin,
+                    //     colorOn: Colors.blue,
+                    //     colorOff: Colors.blue,
+                    //     onChanged: (bool state) {
+                    //       locationController.mapMode.value =
+                    //           !locationController.mapMode.value;
+                    //     },
+                    //     animationDuration: const Duration(milliseconds: 250),
+                    //   ),
+                    // ),
                     // ClipRRect(
                     //   borderRadius: BorderRadius.circular(50),
                     //   child: Material(

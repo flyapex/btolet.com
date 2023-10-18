@@ -1,6 +1,7 @@
 import 'package:btolet/controller/post_controller.dart';
 import 'package:btolet/model/postmodel.dart';
 import 'package:btolet/pages/post/sorting/sortingproperty.dart';
+import 'package:btolet/pages/post/tolet/widget/textbox.dart';
 import 'package:btolet/widget/btn.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -133,7 +134,7 @@ class _PostProperty1State extends State<PostProperty1> {
                                   topPadding: 0,
                                 ),
                                 SizedBox(width: space),
-                                SmallTextBox(
+                                TextInputBox(
                                   topPadding: 0,
                                   title: "Mesurement",
                                   textType: TextInputType.number,
@@ -151,7 +152,7 @@ class _PostProperty1State extends State<PostProperty1> {
                           const SizedBox(height: 20),
                           const PriceBox(),
                           const SizedBox(height: 20),
-                          SmallTextBox(
+                          TextInputBox(
                             topPadding: 0,
                             title: "Rode Size",
                             textType: TextInputType.number,
@@ -190,7 +191,7 @@ class _PostProperty1State extends State<PostProperty1> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const SizedBox(height: 20),
-                          SmallTextBox(
+                          TextInputBox(
                             topPadding: 0,
                             title: "Property Name",
                             textType: TextInputType.text,
@@ -242,7 +243,7 @@ class _PostProperty1State extends State<PostProperty1> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                SmallTextBox(
+                                TextInputBox(
                                   topPadding: 0,
                                   title: "SIZE (ft\u00b2)",
                                   textType: TextInputType.number,
@@ -310,7 +311,7 @@ class _PostProperty1State extends State<PostProperty1> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                SmallTextBox(
+                                TextInputBox(
                                   topPadding: 0,
                                   title: "Total Floor",
                                   textType: TextInputType.number,
@@ -323,7 +324,7 @@ class _PostProperty1State extends State<PostProperty1> {
                                   widthh: 2.35,
                                 ),
                                 SizedBox(width: space),
-                                SmallTextBox(
+                                TextInputBox(
                                   topPadding: 0,
                                   title: "Floor Number",
                                   textType: TextInputType.number,
@@ -351,7 +352,7 @@ class _PostProperty1State extends State<PostProperty1> {
                                   topPadding: 0,
                                 ),
                                 SizedBox(width: space),
-                                SmallTextBox(
+                                TextInputBox(
                                   topPadding: 0,
                                   title: "Total Unit",
                                   textType: TextInputType.number,
@@ -367,7 +368,7 @@ class _PostProperty1State extends State<PostProperty1> {
                             ),
                           ),
                           SizedBox(height: space),
-                          SmallTextBox(
+                          TextInputBox(
                             topPadding: 0,
                             title: "Price *",
                             textType: TextInputType.number,
@@ -502,7 +503,7 @@ class _PostProperty1State extends State<PostProperty1> {
                   color: Colors.amber,
                 ),
                 SizedBox(height: space),
-                SmallTextBox(
+                TextInputBox(
                   topPadding: 0,
                   title: "YT Video",
                   textType: TextInputType.number,
