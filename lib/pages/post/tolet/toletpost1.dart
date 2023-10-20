@@ -1,7 +1,6 @@
 import 'package:btolet/controller/post_controller.dart';
 import 'package:btolet/pages/post/tolet/widget/textbox.dart';
 import 'package:btolet/widget/btn.dart';
-import 'package:btolet/widget/imagepicker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
@@ -9,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'widget/chips.dart';
 import 'widget/drapdown.dart';
+import 'widget/imagepicker.dart';
 
 class ToletPostPage1 extends StatefulWidget {
   const ToletPostPage1({super.key});
@@ -21,6 +21,7 @@ class _ToletPostPage1State extends State<ToletPostPage1> {
   final PostController postController = Get.find();
   double space = 20.0;
   DateTime? _chosenDateTime;
+
   void _showDatePicker(ctx) {
     var now = DateTime.now();
     DateTime minDate = DateTime(now.year, now.month);
@@ -40,6 +41,7 @@ class _ToletPostPage1State extends State<ToletPostPage1> {
                       onDateTimeChanged: (val) {
                         setState(() {
                           _chosenDateTime = val;
+                          postController.rentFrom = val;
                         });
                       },
                     ),
@@ -51,6 +53,12 @@ class _ToletPostPage1State extends State<ToletPostPage1> {
                 ],
               ),
             ));
+  }
+
+  @override
+  void initState() {
+    postController.rentFrom = DateTime.now();
+    super.initState();
   }
 
   @override
@@ -119,13 +127,13 @@ class _ToletPostPage1State extends State<ToletPostPage1> {
                     color: Colors.black.withOpacity(0.5),
                   ),
                 ),
-                IconButton(
-                  onPressed: () {
-                    postController.getSelectedCategoryName();
-                    // postController.isGarage();
-                  },
-                  icon: const Icon(Icons.check_box),
-                ),
+                // IconButton(
+                //   onPressed: () {
+                //     postController.getSelectedCategoryName();
+                //     // postController.isGarage();
+                //   },
+                //   icon: const Icon(Icons.check_box),
+                // ),
                 const SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -404,12 +412,12 @@ class _ToletPostPage1State extends State<ToletPostPage1> {
                 postController.categories['Only Garage']!.value
                     ? const SizedBox()
                     : SizedBox(height: space),
-                IconButton(
-                  onPressed: () {
-                    postController.getFasalitiesNameTolet();
-                  },
-                  icon: const Icon(Icons.check_box),
-                ),
+                // IconButton(
+                //   onPressed: () {
+                //     postController.getFasalitiesNameTolet();
+                //   },
+                //   icon: const Icon(Icons.check_box),
+                // ),
                 postController.categories['Only Garage']!.value
                     ? const SizedBox()
                     : Row(
@@ -470,7 +478,7 @@ class _ToletPostPage1State extends State<ToletPostPage1> {
                 //     ),
                 //   ),
                 // ),
-                const SelectImage(
+                const SelectImageTolet(
                   icon: Feather.camera,
                   imagnumber: 12,
                 ),

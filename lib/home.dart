@@ -6,6 +6,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
+import 'controller/db_controller.dart';
 import 'controller/location_controller.dart';
 import 'controller/user_controller.dart';
 import 'pages/map/map_button_top.dart';
@@ -25,6 +26,15 @@ class MapLodingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     LocationController locationController = Get.put(LocationController());
+    UserController userController = Get.put(UserController());
+    final DBController dbController = Get.put(DBController());
+
+    getUserDetails() async {
+      await userController.userDetailsByID(await dbController.getUserID());
+    }
+
+    getUserDetails();
+
     return Obx(
       () => locationController.isLoading.value
           ? Scaffold(
@@ -53,10 +63,12 @@ class MapLodingPage extends StatelessWidget {
                           ),
                         ),
 
-                        const Text(
-                          'Welcome Sabbir',
-                          style: TextStyle(
-                              fontSize: 40, fontWeight: FontWeight.bold),
+                        Text(
+                          'Welcome ${userController.name.value}',
+                          style: const TextStyle(
+                            fontSize: 40,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         const SizedBox(),
                         const SizedBox(),
@@ -83,6 +95,7 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
   LocationController locationController = Get.put(LocationController());
   PostController postController = Get.put(PostController());
+
   // late TabController _tabController = postController.tabController;
 
   late final AnimationController _controller = AnimationController(
@@ -106,10 +119,12 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
 
   final scrollController = ScrollController();
   UserController userController = Get.put(UserController());
+
   @override
   void initState() {
     userController.getnote();
     locationController.getCurrnetlanlongLocation();
+
     scrollController.addListener(() {
       if (scrollController.position.pixels > 0) {
         if (scrollController.position.userScrollDirection ==
@@ -126,9 +141,9 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
 
       if (scrollController.position.atEdge) {
         if (scrollController.position.pixels == 0) {
-          print("You're at the top.");
+          // print("You're at the top.");
         } else {
-          print("You're at the bottom.");
+          // print("You're at the bottom.");
         }
       }
     });
@@ -486,9 +501,9 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                           if (metrics.atEdge) {
                             bool isTop = metrics.pixels == 0;
                             if (isTop) {
-                              print('At the top');
+                              // print('At the top');
                             } else {
-                              print('At the bottom');
+                              // print('At the bottom');
                             }
                           }
                           return true;
@@ -501,9 +516,9 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                     if (metrics.atEdge) {
                       bool isTop = metrics.pixels == 0;
                       if (isTop) {
-                        print('At the top');
+                        // print('At the top');
                       } else {
-                        print('At the bottom');
+                        // print('At the bottom');
                       }
                     }
                     return true;

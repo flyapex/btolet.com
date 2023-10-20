@@ -6,33 +6,34 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 import 'package:hl_image_picker_android/hl_image_picker_android.dart';
 
-class SelectImage extends StatefulWidget {
+class SelectImageTolet extends StatefulWidget {
   final IconData icon;
 
   final int imagnumber;
-  const SelectImage({
+  const SelectImageTolet({
     required this.icon,
     Key? key,
     required this.imagnumber,
   }) : super(key: key);
 
   @override
-  SelectImageState createState() => SelectImageState();
+  SelectImageToletState createState() => SelectImageToletState();
 }
 
-class SelectImageState extends State<SelectImage> {
+class SelectImageToletState extends State<SelectImageTolet> {
   PostController postController = Get.find();
 
   final _picker = HLImagePickerAndroid();
-
-  List<HLPickerItem> _selectedImages = [];
 
   Future<void> getImage() async {
     try {
       final images = await _picker.openPicker(
         cropping: false,
         // ignore: dead_code
-        selectedIds: true ? _selectedImages.map((e) => e.id).toList() : null,
+        selectedIds: true
+            ? postController.selectedImages.map((e) => e.id).toList()
+            // ignore: dead_code
+            : null,
         pickerOptions: HLPickerOptions(
           mediaType: MediaType.image,
           enablePreview: false,
@@ -46,8 +47,8 @@ class SelectImageState extends State<SelectImage> {
         ),
       );
       setState(() {
-        _selectedImages = images;
         postController.selectedImages = images;
+        postController.selectedImages;
       });
     } catch (e) {
       debugPrint(e.toString());
@@ -58,7 +59,7 @@ class SelectImageState extends State<SelectImage> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        _selectedImages.isEmpty
+        postController.selectedImages.isEmpty
             ? Row(
                 children: [
                   SizedBox(
@@ -107,17 +108,24 @@ class SelectImageState extends State<SelectImage> {
                         padding: const EdgeInsets.all(8),
                         physics: const NeverScrollableScrollPhysics(),
                         scrollDirection: Axis.horizontal,
-                        itemCount: _selectedImages.length,
+                        itemCount: postController.selectedImages.length,
                         itemBuilder: (_, index) {
-                          File? imageFile = File(_selectedImages[index].path);
-                          if (_selectedImages[index].type == "video") {
-                            imageFile = _selectedImages[index].thumbnail != null
-                                ? File(_selectedImages[index].thumbnail!)
+                          File? imageFile =
+                              File(postController.selectedImages[index].path);
+                          if (postController.selectedImages[index].type ==
+                              "video") {
+                            imageFile = postController
+                                        .selectedImages[index].thumbnail !=
+                                    null
+                                ? File(postController
+                                    .selectedImages[index].thumbnail!)
                                 : null;
                           }
                           return imageFile != null
                               ? InkWell(
-                                  onTap: _selectedImages[index].type == "video"
+                                  onTap: postController
+                                              .selectedImages[index].type ==
+                                          "video"
                                       ? () {}
                                       : null,
                                   child: Stack(
@@ -140,7 +148,8 @@ class SelectImageState extends State<SelectImage> {
                                                     splashColor: Colors.white,
                                                     onTap: () {
                                                       setState(() {
-                                                        _selectedImages
+                                                        postController
+                                                            .selectedImages
                                                             .removeAt(index);
                                                       });
                                                     },
@@ -178,7 +187,7 @@ class SelectImageState extends State<SelectImage> {
                         separatorBuilder: (BuildContext context, int index) =>
                             const SizedBox(width: 8.0),
                       ),
-                      _selectedImages.length != 12
+                      postController.selectedImages.length != 12
                           ? Row(
                               children: [
                                 SizedBox(
@@ -226,63 +235,3 @@ class SelectImageState extends State<SelectImage> {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-  // SizedBox(
-  //                                       height: 240,
-  //                                       width: double.infinity,
-  //                                       child: ListView.separated(
-  //                                         padding: const EdgeInsets.all(8),
-  //                                         physics:
-  //                                             const AlwaysScrollableScrollPhysics(),
-  //                                         scrollDirection: Axis.horizontal,
-  //                                         itemCount: _selectedImages.length,
-  //                                         itemBuilder: (_, index) {
-  //                                           File? imageFile = File(
-  //                                               _selectedImages[index].path);
-  //                                           if (_selectedImages[index].type ==
-  //                                               "video") {
-  //                                             imageFile = _selectedImages[index]
-  //                                                         .thumbnail !=
-  //                                                     null
-  //                                                 ? File(_selectedImages[index]
-  //                                                     .thumbnail!)
-  //                                                 : null;
-  //                                           }
-  //                                           return imageFile != null
-  //                                               ? InkWell(
-  //                                                   onTap:
-  //                                                       _selectedImages[index]
-  //                                                                   .type ==
-  //                                                               "video"
-  //                                                           ? () {}
-  //                                                           : null,
-  //                                                   child:
-  //                                                       Image.file(imageFile))
-  //                                               : Container(
-  //                                                   decoration: BoxDecoration(
-  //                                                     color: Colors.grey[300],
-  //                                                     borderRadius:
-  //                                                         BorderRadius.circular(
-  //                                                             4),
-  //                                                   ),
-  //                                                   alignment: Alignment.center,
-  //                                                   width: 320,
-  //                                                   height: double.infinity,
-  //                                                   child: const Text(
-  //                                                       'No thumbnail'));
-  //                                         },
-  //                                         separatorBuilder:
-  //                                             (BuildContext context,
-  //                                                     int index) =>
-  //                                                 const SizedBox(width: 8.0),
-  //                                       ),
-  //                                     ),

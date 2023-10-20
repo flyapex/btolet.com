@@ -1,10 +1,22 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:btolet/api/api.dart';
+import 'package:btolet/controller/location_controller.dart';
+import 'package:btolet/model/apimodel.dart';
 import 'package:btolet/pages/post/tolet/widget/drapdown.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hl_image_picker_android/hl_image_picker_android.dart';
+
+import 'db_controller.dart';
 
 class PostController extends GetxController {
+  final DBController dbController = Get.put(DBController());
+  final LocationController locationController = Get.find();
   late TabController tabController;
   var pageController = PageController();
+  List<HLPickerItem> selectedImages = [];
 
   TextEditingController propertyNameTolet = TextEditingController();
   TextEditingController roomSizeTolet = TextEditingController();
@@ -13,8 +25,9 @@ class PostController extends GetxController {
   TextEditingController discriptionTolet = TextEditingController();
   TextEditingController shortAddressTolet = TextEditingController();
   TextEditingController nameTolet = TextEditingController();
-  TextEditingController numberTolet = TextEditingController();
+  TextEditingController phonenumberTolet = TextEditingController();
   TextEditingController wappnumberTolet = TextEditingController();
+  late DateTime rentFrom;
 
   var categories = {
     'Family': false.obs,
@@ -36,6 +49,7 @@ class PostController extends GetxController {
         .toList();
 
     print('Selected Categories: $selectedCategories');
+    return selectedCategories.toString();
   }
 
   var fasalitisTolet = {
@@ -62,6 +76,7 @@ class PostController extends GetxController {
         .toList();
 
     print('Selected Categories: $selectedCategories');
+    return selectedCategories.toString();
   }
 
   final bedrooms = 'select'.obs;
@@ -141,6 +156,115 @@ class PostController extends GetxController {
     }
   }
 
+  updateProfile() async {
+    try {
+      var res = await ApiService.profileUpdateapi(
+        ProfileUpdate(
+          uid: dbController.getUserID(),
+          name: nameTolet.text,
+          phone: phonenumberTolet.text,
+          wapp: wappnumberTolet.text,
+        ),
+      );
+      if (res == null) {
+        return false;
+      } else {
+        await snakberSuccess(res);
+      }
+    } finally {}
+  }
+
+  newPOST() async {
+    List<String> imageBase64List = [];
+
+    for (int i = 0; i < 12; i++) {
+      if (i < selectedImages.length) {
+        imageBase64List.add(
+          base64Encode(await File(selectedImages[i].path).readAsBytes()),
+        );
+      } else {
+        imageBase64List.add("");
+      }
+    }
+    try {
+      var response = await ApiService.newPostTolet(
+        PostToServerTolet(
+          uid: dbController.getUserID(),
+          propertyname: propertyNameTolet.text,
+          category: getSelectedCategoryName(),
+          bed: bedrooms.value,
+          bath: bathrooms.value,
+          dining: dining.value,
+          kitchen: kitchen.value,
+          floornumber: floorno.value,
+          facing: facing.value,
+          roomsize: roomSizeTolet.text,
+          rentfrom: rentFrom,
+          mentenance: int.parse(maintenanceTolet.text),
+          rent: int.parse(rentTolet.text),
+          fasalitis: getFasalitiesNameTolet(),
+          image1: imageBase64List[0],
+          image2: imageBase64List[1],
+          image3: imageBase64List[2],
+          image4: imageBase64List[3],
+          image5: imageBase64List[4],
+          image6: imageBase64List[5],
+          image7: imageBase64List[6],
+          image8: imageBase64List[7],
+          image9: imageBase64List[8],
+          image10: imageBase64List[9],
+          image11: imageBase64List[10],
+          image12: imageBase64List[11],
+          description: discriptionTolet.text,
+          geolon: locationController.currentlongitude.value.toString(),
+          geolat: locationController.currentlatitude.value.toString(),
+          location: locationController.locationAddressShort.value.toString(),
+          shortaddress: shortAddressTolet.text,
+          phone: phonenumberTolet.text,
+          wapp: wappnumberTolet.text,
+        ),
+      );
+      if (response != null) {
+        updateProfile();
+
+        return response;
+      } else {
+        return null;
+      }
+    } finally {}
+  }
+
+  snakberSuccess(text) {
+    return Get.snackbar(
+      'You are awarsome',
+      "",
+      snackPosition: SnackPosition.BOTTOM,
+      messageText: Text(
+        text,
+        style: const TextStyle(
+          fontSize: 14,
+        ),
+        maxLines: 1,
+      ),
+      duration: const Duration(seconds: 5),
+      backgroundColor: Colors.black.withOpacity(0.5),
+      colorText: Colors.white,
+      borderRadius: 4,
+      margin: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
+      maxWidth: 400.0,
+      mainButton: TextButton(
+        onPressed: () {
+          Get.back();
+        },
+        child: const Text(
+          'Okay',
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
+    );
+  }
+
   //------------------------sorting
   var family = false.obs;
   var bachelor = false.obs;
@@ -183,11 +307,7 @@ class PostController extends GetxController {
   TextEditingController wapp = TextEditingController();
   TextEditingController name = TextEditingController();
 
-  late String image1 = '';
-  late String image2 = '';
-  late String image3 = '';
-  late String image4 = '';
-  late String image5 = '';
+  // List<HLPickerItem> selectedImages = [];
 
   //*-------------------------------------------------
   var postpage = false.obs;

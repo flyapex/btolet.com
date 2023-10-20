@@ -54,7 +54,7 @@ class LocationController extends GetxController {
 
   TextEditingController searchController = TextEditingController();
   RxString locationAddress = ''.obs;
-  RxString locationAddressShort = 'GG'.obs;
+  RxString locationAddressShort = 'Location'.obs;
 
   // RxBool isLoadingsuggstion = false.obs;
   // var suggstions = [].obs;
@@ -95,7 +95,8 @@ class LocationController extends GetxController {
         // print(response.subLocality);
         // print(response.thoroughfare);
         // print(response.subThoroughfare);
-
+        currentlatitude.value = latitude;
+        currentlongitude.value = longitude;
         locationAddress.value = response;
       } else {
         print("Error");

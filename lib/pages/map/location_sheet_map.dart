@@ -28,23 +28,23 @@ class _LocationSheetState extends State<LocationSheet> {
     locationController.mapController = controller;
   }
 
-  openSearchSheet() async {
-    await Get.bottomSheet(
-      const LocationSheetMap(),
-      elevation: 20.0,
-      enableDrag: true,
-      backgroundColor: Colors.white,
-      isScrollControlled: true,
-      ignoreSafeArea: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20.0),
-          topRight: Radius.circular(20.0),
-        ),
-      ),
-      enterBottomSheetDuration: const Duration(milliseconds: 170),
-    );
-  }
+  // openSearchSheet() async {
+  //   await Get.bottomSheet(
+  //     const LocationSheetMap(),
+  //     elevation: 20.0,
+  //     enableDrag: true,
+  //     backgroundColor: Colors.white,
+  //     isScrollControlled: true,
+  //     ignoreSafeArea: true,
+  //     shape: const RoundedRectangleBorder(
+  //       borderRadius: BorderRadius.only(
+  //         topLeft: Radius.circular(20.0),
+  //         topRight: Radius.circular(20.0),
+  //       ),
+  //     ),
+  //     enterBottomSheetDuration: const Duration(milliseconds: 170),
+  //   );
+  // }
 
   @override
   void initState() {
@@ -151,7 +151,7 @@ class _LocationSheetState extends State<LocationSheet> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      openSearchSheet();
+                      // openSearchSheet();
                     },
                     child: Align(
                       alignment: Alignment.bottomCenter,
@@ -265,6 +265,8 @@ class _LocationSheetState extends State<LocationSheet> {
                                     onPressed: () {
                                       // locationController
                                       //       .locationAddress.value=
+                                      // locationController.locationAddress.value
+                                      Get.back();
                                     },
                                     icon: Icon(
                                       Feather.check,
@@ -365,6 +367,14 @@ class _LocationSheetMapState extends State<LocationSheetMap> {
                   ),
                 ),
                 const SizedBox(height: 15),
+                Container(
+                  height: 100,
+                  width: 100,
+                  decoration: BoxDecoration(
+                    color: Colors.red,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

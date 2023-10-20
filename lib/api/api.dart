@@ -43,7 +43,7 @@ class ApiService {
     if (response.statusCode == 200 && response.body.isEmpty) {
       return null;
     } else {
-      return userDetailsFromJson(response.body);
+      return userDetailsFromJson(response.body)[0];
     }
   }
 
@@ -61,35 +61,6 @@ class ApiService {
     }
   }
 
-  // get current cloation
-  static Future getlocation(uid) async {
-    var response = await http.post(
-      Uri.parse('$baseUrl/getlocation'),
-      body: jsonEncode({"uid": uid}),
-      headers: headers,
-    );
-    if (response.statusCode == 200) {
-      return locationModelFromJson(response.body)[0];
-    } else {
-      return null;
-    }
-  }
-
-  // update current location
-  static Future setLocaation(data) async {
-    var response = await http.post(
-      Uri.parse('$baseUrl/setlocation'),
-      body: locationUpdateModelToJson(data),
-      headers: headers,
-    );
-
-    if (response.statusCode == 200) {
-      return response;
-    } else {
-      return null;
-    }
-  }
-
   // on lunch app get user details by uid
   static Future userdetails(uid) async {
     var response = await http.post(
@@ -101,19 +72,31 @@ class ApiService {
     if (response.statusCode == 200 && response.body.isEmpty) {
       return null;
     } else {
-      return userDetailsFromJson(response.body);
+      return userDetailsFromJson(response.body)[0];
     }
   }
 
-  static Future profileUpdate(ProfileUpadte data) async {
+  static Future newPostTolet(PostToServerTolet data) async {
     var response = await http.post(
-      Uri.parse('$baseUrl/profileUpdate'),
-      body: jsonEncode(profileUpadteToJson(data)),
+      Uri.parse('$baseUrl/newpostTolet'),
+      body: postToServerToletToJson(data),
       headers: headers,
     );
-
     if (response.statusCode == 200) {
-      return response;
+      return response.body;
+    } else {
+      return null;
+    }
+  }
+
+  static Future profileUpdateapi(ProfileUpdate data) async {
+    var response = await http.post(
+      Uri.parse('$baseUrl/profileUpdate'),
+      body: profileUpdateToJson(data),
+      headers: headers,
+    );
+    if (response.statusCode == 200) {
+      return response.body;
     } else {
       return null;
     }

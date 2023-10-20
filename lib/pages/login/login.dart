@@ -145,6 +145,7 @@ class SingupPage extends StatelessWidget {
 
                     var isUser =
                         await userController.userChackEmail(user?.email);
+                    print(isUser);
                     if (isUser == false) {
                       userController.name.value = user!.displayName!;
                       userController.email.value = user.email;

@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 class UserController extends GetxController {
   var banneradsList = [].obs;
   var bannerLoding = true.obs;
-  // var fatchOneTime = true.obs;
+  var fatchOneTime = true.obs;
   Future bannerApi() async {
     try {
       banneradsList.clear();
@@ -17,7 +17,7 @@ class UserController extends GetxController {
         bannerLoding(false);
       }
     } finally {
-      // fatchOneTime(false);
+      fatchOneTime(false);
     }
   }
 
@@ -39,9 +39,9 @@ class UserController extends GetxController {
       if (user == null) {
         return false;
       } else {
+        print(image.value);
         name.value = user.name;
-        name.value = user.name;
-        email = user.email;
+        email.value = user.email;
         image.value = user.image;
         phone.value = user.phone;
         wapp.value = user.wapp;
@@ -70,7 +70,6 @@ class UserController extends GetxController {
     }
   }
 
-  var fatchOneTime = true.obs;
   var note = 'Hello from Btolet.com )'.obs;
   void getnote() async {
     try {
@@ -80,5 +79,29 @@ class UserController extends GetxController {
         fatchOneTime.value = false;
       }
     } finally {}
+  }
+
+  var isLoadingUserDetails = false.obs;
+  userDetailsByID(id) async {
+    try {
+      isLoadingUserDetails(true);
+      var user = await ApiService.userdetails(id);
+      if (user == null) {
+        return null;
+      } else {
+        print(image.value);
+        name.value = user.name;
+        email.value = user.email;
+        image.value = user.image;
+        phone.value = user.phone;
+        wapp.value = user.wapp;
+        geolocation.value = user.geolocation;
+        signature.value = user.signature;
+        time = user.time;
+        return user;
+      }
+    } finally {
+      isLoadingUserDetails(false);
+    }
   }
 }

@@ -1,4 +1,5 @@
 import 'package:btolet/controller/post_controller.dart';
+import 'package:btolet/pages/post/tolet/widget/location.dart';
 import 'package:btolet/widget/btn.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
@@ -39,7 +40,15 @@ class _ToletPostPage2State extends State<ToletPostPage2> {
                       // side: const BorderSide(width: 3, color: Colors.red),
                       borderRadius: BorderRadius.circular(100)),
                   elevation: 0,
-                  onPressed: () async {},
+                  onPressed: () async {
+                    // print('--------------------');
+                    // print(locationController.currentlatitude.value);
+                    // print(locationController.currentlongitude.value);
+                    var res = await postController.newPOST();
+                    print(res);
+                    Get.back();
+                    await postController.snakberSuccess(res);
+                  },
                   icon: const Icon(
                     Icons.check_circle_outline_rounded,
                     color: Colors.white,
@@ -62,7 +71,7 @@ class _ToletPostPage2State extends State<ToletPostPage2> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const LocationSmall(),
+                const LocationTolet(),
                 TextInputBox(
                   topPadding: 0,
                   title: "Short Address",
@@ -158,7 +167,7 @@ class _ToletPostPage2State extends State<ToletPostPage2> {
                   title: "Phone",
                   textType: TextInputType.number,
                   hintText: '013XXXX',
-                  controller: postController.numberTolet,
+                  controller: postController.phonenumberTolet,
                   icon: 'assets/icons/call.svg',
                   iconh: 21,
                   iconw: 21,

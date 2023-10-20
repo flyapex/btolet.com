@@ -26,10 +26,10 @@ class _ImageSlideToletState extends State<ImageSlideTolet> {
   late Timer _timer;
 
   Future getBannerAds() async {
-    // if (bannerController.fatchOneTime.value) {
-    //   await bannerController.bannerApi();
-    // }
-    await bannerController.bannerApi();
+    if (bannerController.fatchOneTime.value) {
+      await bannerController.bannerApi();
+    }
+    // await bannerController.bannerApi();
   }
 
   @override

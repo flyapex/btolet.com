@@ -71,12 +71,12 @@ class GoogleMapApi {
       // print(response.body);
       Map<String, dynamic> data = jsonDecode(response.body);
 
-      String displayName = data['display_name'];
+      // String displayName = data['display_name'];
       // String city = data['address']['city'];
-      print('-----------------------------------------------------');
-      print('Display Name: $displayName');
-      print(data['address']['city']);
-      print(data['address']['suburb']);
+      // print('-----------------------------------------------------');
+      // print('Display Name: $displayName');
+      // print(data['address']['city']);
+      // print(data['address']['suburb']);
       locationController.locationAddressShort.value =
           data['address']['suburb'].toString();
       return data['display_name'].toString();
