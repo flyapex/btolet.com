@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 
+import 'widget/phone.dart';
 import 'widget/textbox.dart';
 
 class ToletPostPage2 extends StatefulWidget {
@@ -44,10 +45,17 @@ class _ToletPostPage2State extends State<ToletPostPage2> {
                     // print('--------------------');
                     // print(locationController.currentlatitude.value);
                     // print(locationController.currentlongitude.value);
-                    var res = await postController.newPOST();
-                    print(res);
-                    Get.back();
-                    await postController.snakberSuccess(res);
+                    postController.flagActiveFlag.value = true;
+                    postController.allToletFlagCheck();
+                    if (postController.toletAllFlag.value) {
+                      var res = await postController.newPOST();
+                      print(res);
+                      Get.back();
+                      await postController.snakberSuccess(res);
+                    } else {
+                      print('gg');
+                    }
+                    postController.toletAllFlag.value = false;
                   },
                   icon: const Icon(
                     Icons.check_circle_outline_rounded,
@@ -161,7 +169,7 @@ class _ToletPostPage2State extends State<ToletPostPage2> {
                     ),
                   ],
                 ),
-                NumberBox(
+                NumberBoxTolet(
                   topPadding: 15,
                   bottomPadding: 6,
                   title: "Phone",
@@ -173,7 +181,7 @@ class _ToletPostPage2State extends State<ToletPostPage2> {
                   iconw: 21,
                   color: const Color(0xff6E7FFC),
                 ),
-                NumberBox(
+                NumberBoxTolet(
                   topPadding: 10,
                   bottomPadding: 6,
                   title: "WhatsApp",

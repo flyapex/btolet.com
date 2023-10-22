@@ -52,6 +52,29 @@ class _DropDownBtnState extends State<DropDownBtn> {
   Widget build(BuildContext context) {
     final List<String> categoryValues =
         postController.categoryData[widget.category] ?? [];
+    getBorderColor() {
+      if (widget.category == Category.bedrooms) {
+        return postController.flagActiveFlag.value
+            ? postController.bedFlag.value
+                ? Colors.white
+                : Colors.red
+            : Colors.white;
+      } else if (widget.category == Category.bathrooms) {
+        return postController.flagActiveFlag.value
+            ? postController.bathFlag.value
+                ? Colors.white
+                : Colors.red
+            : Colors.white;
+      } else if (widget.category == Category.kitchen) {
+        return postController.flagActiveFlag.value
+            ? postController.kitchenFlag.value
+                ? Colors.white
+                : Colors.red
+            : Colors.white;
+      } else {
+        return Colors.white;
+      }
+    }
 
     return Obx(() {
       return Column(
@@ -70,7 +93,7 @@ class _DropDownBtnState extends State<DropDownBtn> {
             decoration: BoxDecoration(
               color: const Color(0xffF2F3F5),
               border: Border.all(
-                color: Colors.white,
+                color: getBorderColor(),
               ),
               borderRadius: BorderRadius.circular(6),
             ),
@@ -105,6 +128,8 @@ class _DropDownBtnState extends State<DropDownBtn> {
                         onChanged: (val) {
                           postController.setCategoryValue(
                               widget.category, val.toString());
+
+                          postController.allToletFlagCheck();
                         },
                       ),
                     ),

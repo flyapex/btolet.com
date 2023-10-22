@@ -52,20 +52,17 @@ class _TextInputBoxState extends State<TextInputBox> {
     color: Colors.black.withOpacity(0.5),
   );
   var iconColorChange = false;
-  // checkFlagColor() {
-  //   if (widget.title == 'Maintenance(Monthly) *' &&
-  //       postController.maintenanceFlag.value == false) {
-  //     return Colors.redAccent;
-  //   } else if (widget.title == 'Price *' &&
-  //       postController.priceFlag.value == false) {
-  //     return Colors.redAccent;
-  //   } else if (widget.title == 'Short Address *' &&
-  //       postController.shortaddressFlag.value == false) {
-  //     return Colors.redAccent;
-  //   } else {
-  //     return Colors.white;
-  //   }
-  // }
+  getBorderColor() {
+    if (widget.controller == postController.rentTolet) {
+      return postController.flagActiveFlag.value
+          ? postController.priceFlag.value
+              ? Colors.white
+              : Colors.red
+          : Colors.white;
+    } else {
+      return Colors.white;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +83,7 @@ class _TextInputBoxState extends State<TextInputBox> {
             color: const Color(0xffF2F3F5),
             borderRadius: BorderRadius.circular(6),
             border: Border.all(
-              color: Colors.white,
+              color: getBorderColor(),
             ),
           ),
           child: Row(
@@ -131,11 +128,12 @@ class _TextInputBoxState extends State<TextInputBox> {
                       hintStyle: textstyleh,
                     ),
                     onChanged: (val) {
-                      // if (val != '') {
-                      //   // postController.istitletxt.value == true;
-                      //   // widget.flag = true;
-                      //   // postController.page2chack();
-                      // }
+                      postController.allToletFlagCheck();
+                      if (val != '') {
+                        // postController.istitletxt.value == true;
+                        // widget.flag = true;
+                        // postController.page2chack();
+                      }
                       // postController.allCategoryCheck();
                     },
                   ),

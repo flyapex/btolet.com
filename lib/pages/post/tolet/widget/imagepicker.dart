@@ -69,8 +69,12 @@ class SelectImageToletState extends State<SelectImageTolet> {
                         getImage();
                       },
                       style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(const Color(0xff7F6BFC)),
+                        backgroundColor: MaterialStateProperty.all(
+                            postController.flagActiveFlag.value
+                                ? postController.bedFlag.value
+                                    ? const Color(0xff7F6BFC)
+                                    : Colors.red
+                                : const Color(0xff7F6BFC)),
                       ),
                       child: const Padding(
                         padding: EdgeInsets.only(left: 20, right: 20),

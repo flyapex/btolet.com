@@ -201,39 +201,6 @@ class LocationModel {
       };
 }
 
-//update location model
-
-LocationUpdateModel locationUpdateModelFromJson(String str) =>
-    LocationUpdateModel.fromJson(json.decode(str));
-
-String locationUpdateModelToJson(LocationUpdateModel data) =>
-    json.encode(data.toJson());
-
-class LocationUpdateModel {
-  LocationUpdateModel({
-    required this.uid,
-    required this.division,
-    required this.city,
-  });
-
-  int uid;
-  String division;
-  String city;
-
-  factory LocationUpdateModel.fromJson(Map<String, dynamic> json) =>
-      LocationUpdateModel(
-        uid: json["uid"],
-        division: json["division"],
-        city: json["city"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "uid": uid,
-        "division": division,
-        "city": city,
-      };
-}
-
 // To parse this JSON data, do
 //
 //     final profileUpadte = profileUpadteFromJson(jsonString);

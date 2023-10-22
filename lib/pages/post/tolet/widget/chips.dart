@@ -1,3 +1,4 @@
+import 'package:btolet/controller/post_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -13,6 +14,7 @@ class CategoryToletChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    PostController postController = Get.find();
     return Obx(
       () {
         return FilterChip(
@@ -26,6 +28,9 @@ class CategoryToletChip extends StatelessWidget {
           selected: categoryState.value,
           onSelected: (value) {
             categoryState.value = !categoryState.value;
+            if (postController.getSelectedCategoryName().isNotEmpty) {
+              postController.categoryFlag.value = true;
+            }
           },
           avatar: Icon(
             categoryState.value ? Icons.check_circle_rounded : Icons.add,
@@ -36,9 +41,13 @@ class CategoryToletChip extends StatelessWidget {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
           side: BorderSide(
-            color: categoryState.value
-                ? const Color(0xff0166EE)
-                : Colors.black.withOpacity(0.1),
+            color: postController.flagActiveFlag.value
+                ? postController.categoryFlag.value
+                    ? Colors.black.withOpacity(0.1)
+                    : Colors.red
+                : categoryState.value
+                    ? const Color(0xff0166EE)
+                    : Colors.black.withOpacity(0.1),
           ),
           elevation: 0.3,
           selectedShadowColor: Colors.black.withOpacity(0.5),

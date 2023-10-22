@@ -24,7 +24,9 @@ class UserController extends GetxController {
   // RxInt uid = 0.obs;
   RxString name = ''.obs;
   RxString email = ''.obs;
-  RxString image = ''.obs;
+  RxString image =
+      'https://lh3.googleusercontent.com/a/ACg8ocI5SL5XCQO4EArybQ1127wXGS6x5kvrG2hNVpXBCfFsflY'
+          .obs;
   RxString phone = ''.obs;
   RxString wapp = ''.obs;
   RxString geolocation = ''.obs;
@@ -36,6 +38,7 @@ class UserController extends GetxController {
     try {
       isLoading(true);
       var user = await ApiService.userCheck(email);
+      print(user);
       if (user == null) {
         return false;
       } else {

@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:btolet/model/apimodel.dart';
 import 'package:http/http.dart' as http;
 
-// var baseUrl = 'https://btolet.com/api';
-var baseUrl = 'http://10.0.2.2:3000/api';
+var baseUrl = 'https://btolet.com/api';
+// var baseUrl = 'http://10.0.2.2:3000/api';
 
 var headers = {
   "content-type": 'application/json;charset=UTF-8',
@@ -39,8 +39,9 @@ class ApiService {
       body: jsonEncode({"email": email}),
       headers: headers,
     );
-
-    if (response.statusCode == 200 && response.body.isEmpty) {
+    print(response.body);
+    print(response.body.isEmpty);
+    if (response.statusCode == 200 && jsonDecode(response.body).isEmpty) {
       return null;
     } else {
       return userDetailsFromJson(response.body)[0];
@@ -69,7 +70,7 @@ class ApiService {
       headers: headers,
     );
 
-    if (response.statusCode == 200 && response.body.isEmpty) {
+    if (response.statusCode == 200 && jsonDecode(response.body).isEmpty) {
       return null;
     } else {
       return userDetailsFromJson(response.body)[0];

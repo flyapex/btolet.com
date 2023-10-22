@@ -8,6 +8,7 @@ import 'package:btolet/pages/post/tolet/widget/drapdown.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hl_image_picker_android/hl_image_picker_android.dart';
+import 'package:vibration/vibration.dart';
 
 import 'db_controller.dart';
 
@@ -42,14 +43,14 @@ class PostController extends GetxController {
   };
   final selectedFilters = <String>[].obs;
 
-  getSelectedCategoryName() {
+  List getSelectedCategoryName() {
     final selectedCategories = categories.entries
         .where((entry) => entry.value.value)
         .map((entry) => entry.key)
         .toList();
 
     print('Selected Categories: $selectedCategories');
-    return selectedCategories.toString();
+    return selectedCategories;
   }
 
   var fasalitisTolet = {
@@ -76,7 +77,7 @@ class PostController extends GetxController {
         .toList();
 
     print('Selected Categories: $selectedCategories');
-    return selectedCategories.toString();
+    return selectedCategories;
   }
 
   final bedrooms = 'select'.obs;
@@ -101,7 +102,7 @@ class PostController extends GetxController {
       "7 th",
       "8 th",
       "9 th",
-      "10 th"
+      "10 th",
     ],
     Category.facing: [
       "East",
@@ -191,18 +192,18 @@ class PostController extends GetxController {
         PostToServerTolet(
           uid: dbController.getUserID(),
           propertyname: propertyNameTolet.text,
-          category: getSelectedCategoryName(),
+          category: getSelectedCategoryName().toString(),
           bed: bedrooms.value,
           bath: bathrooms.value,
-          dining: dining.value,
+          dining: dining.value == "select" ? "" : dining.value,
           kitchen: kitchen.value,
-          floornumber: floorno.value,
-          facing: facing.value,
+          floornumber: floorno.value == "select" ? "" : floorno.value,
+          facing: facing.value == "select" ? "" : facing.value,
           roomsize: roomSizeTolet.text,
           rentfrom: rentFrom,
           mentenance: int.parse(maintenanceTolet.text),
           rent: int.parse(rentTolet.text),
-          fasalitis: getFasalitiesNameTolet(),
+          fasalitis: getFasalitiesNameTolet().toString(),
           image1: imageBase64List[0],
           image2: imageBase64List[1],
           image3: imageBase64List[2],
@@ -263,6 +264,77 @@ class PostController extends GetxController {
         ),
       ),
     );
+  }
+
+  var flagActiveFlag = false.obs;
+  var categoryFlag = false.obs;
+  var bedFlag = false.obs;
+  var bathFlag = false.obs;
+  var kitchenFlag = false.obs;
+  var priceFlag = false.obs;
+  var imageFlag = false.obs;
+  var phoneFlag = false.obs;
+  var toletAllFlag = false.obs;
+
+  allToletFlagCheck() {
+    void animateToPage(val) {
+      pageController.animateToPage(
+        val,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.bounceInOut,
+      );
+      Vibration.vibrate(pattern: [10, 20, 10]);
+    }
+
+    if (!categoryFlag.value || getSelectedCategoryName().isEmpty) {
+      pageController.animateToPage(
+        0,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.bounceInOut,
+      );
+      categoryFlag.value = false;
+    }
+    if (bedrooms.value != "select") {
+      bedFlag.value = true;
+    } else {
+      animateToPage(0);
+    }
+    if (bathrooms.value != "select") {
+      bathFlag.value = true;
+    } else {
+      animateToPage(0);
+    }
+    if (kitchen.value != "select") {
+      kitchenFlag.value = true;
+    } else {
+      animateToPage(0);
+    }
+    if (rentTolet.text.isNotEmpty) {
+      priceFlag.value = true;
+    } else {
+      animateToPage(0);
+    }
+    if (selectedImages.isNotEmpty) {
+      imageFlag.value = true;
+    } else {
+      animateToPage(0);
+    }
+    if (phonenumberTolet.text != "" || wappnumberTolet.text != "") {
+      phoneFlag.value = true;
+    } else {
+      animateToPage(1);
+    }
+    if ([
+      categoryFlag,
+      bedFlag,
+      bathFlag,
+      kitchenFlag,
+      priceFlag,
+      imageFlag,
+      phoneFlag
+    ].every((flag) => flag.value)) {
+      toletAllFlag.value = true;
+    }
   }
 
   //------------------------sorting
