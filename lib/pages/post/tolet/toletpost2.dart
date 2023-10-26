@@ -4,6 +4,7 @@ import 'package:btolet/widget/btn.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
+import 'package:vibration/vibration.dart';
 
 import 'widget/phone.dart';
 import 'widget/textbox.dart';
@@ -47,6 +48,7 @@ class _ToletPostPage2State extends State<ToletPostPage2> {
                     // print(locationController.currentlongitude.value);
                     postController.flagActiveFlag.value = true;
                     postController.allToletFlagCheck();
+                    Vibration.vibrate(pattern: [10, 20, 10]);
                     if (postController.toletAllFlag.value) {
                       var res = await postController.newPOST();
                       print(res);

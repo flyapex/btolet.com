@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:btolet/api/api.dart';
 import 'package:btolet/controller/location_controller.dart';
 import 'package:btolet/model/apimodel.dart';
@@ -8,8 +7,6 @@ import 'package:btolet/pages/post/tolet/widget/drapdown.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hl_image_picker_android/hl_image_picker_android.dart';
-import 'package:vibration/vibration.dart';
-
 import 'db_controller.dart';
 
 class PostController extends GetxController {
@@ -28,6 +25,7 @@ class PostController extends GetxController {
   TextEditingController nameTolet = TextEditingController();
   TextEditingController phonenumberTolet = TextEditingController();
   TextEditingController wappnumberTolet = TextEditingController();
+  TextEditingController garagetxtcontroller = TextEditingController();
   late DateTime rentFrom;
 
   var categories = {
@@ -188,43 +186,83 @@ class PostController extends GetxController {
       }
     }
     try {
-      var response = await ApiService.newPostTolet(
-        PostToServerTolet(
-          uid: dbController.getUserID(),
-          propertyname: propertyNameTolet.text,
-          category: getSelectedCategoryName().toString(),
-          bed: bedrooms.value,
-          bath: bathrooms.value,
-          dining: dining.value == "select" ? "" : dining.value,
-          kitchen: kitchen.value,
-          floornumber: floorno.value == "select" ? "" : floorno.value,
-          facing: facing.value == "select" ? "" : facing.value,
-          roomsize: roomSizeTolet.text,
-          rentfrom: rentFrom,
-          mentenance: int.parse(maintenanceTolet.text),
-          rent: int.parse(rentTolet.text),
-          fasalitis: getFasalitiesNameTolet().toString(),
-          image1: imageBase64List[0],
-          image2: imageBase64List[1],
-          image3: imageBase64List[2],
-          image4: imageBase64List[3],
-          image5: imageBase64List[4],
-          image6: imageBase64List[5],
-          image7: imageBase64List[6],
-          image8: imageBase64List[7],
-          image9: imageBase64List[8],
-          image10: imageBase64List[9],
-          image11: imageBase64List[10],
-          image12: imageBase64List[11],
-          description: discriptionTolet.text,
-          geolon: locationController.currentlongitude.value.toString(),
-          geolat: locationController.currentlatitude.value.toString(),
-          location: locationController.locationAddressShort.value.toString(),
-          shortaddress: shortAddressTolet.text,
-          phone: phonenumberTolet.text,
-          wapp: wappnumberTolet.text,
-        ),
-      );
+      var response = categories['Only Garage']!.value
+          ? await ApiService.newPostTolet(
+              PostToServerTolet(
+                uid: dbController.getUserID(),
+                propertyname: propertyNameTolet.text,
+                category: getSelectedCategoryName().toString(),
+                bed: "",
+                bath: "",
+                dining: "",
+                kitchen: "",
+                floornumber: "",
+                facing: "",
+                roomsize: "",
+                rentfrom: rentFrom,
+                mentenance: 0,
+                rent: int.parse(garagetxtcontroller.text),
+                fasalitis: "",
+                image1: imageBase64List[0],
+                image2: imageBase64List[1],
+                image3: imageBase64List[2],
+                image4: imageBase64List[3],
+                image5: imageBase64List[4],
+                image6: imageBase64List[5],
+                image7: imageBase64List[6],
+                image8: imageBase64List[7],
+                image9: imageBase64List[8],
+                image10: imageBase64List[9],
+                image11: imageBase64List[10],
+                image12: imageBase64List[11],
+                description: discriptionTolet.text,
+                geolon: locationController.currentlongitude.value.toString(),
+                geolat: locationController.currentlatitude.value.toString(),
+                location:
+                    locationController.locationAddressShort.value.toString(),
+                shortaddress: shortAddressTolet.text,
+                phone: phonenumberTolet.text,
+                wapp: wappnumberTolet.text,
+              ),
+            )
+          : await ApiService.newPostTolet(
+              PostToServerTolet(
+                uid: dbController.getUserID(),
+                propertyname: propertyNameTolet.text,
+                category: getSelectedCategoryName().toString(),
+                bed: bedrooms.value,
+                bath: bathrooms.value,
+                dining: dining.value == "select" ? "" : dining.value,
+                kitchen: kitchen.value,
+                floornumber: floorno.value == "select" ? "" : floorno.value,
+                facing: facing.value == "select" ? "" : facing.value,
+                roomsize: roomSizeTolet.text,
+                rentfrom: rentFrom,
+                mentenance: int.parse(maintenanceTolet.text),
+                rent: int.parse(rentTolet.text),
+                fasalitis: getFasalitiesNameTolet().toString(),
+                image1: imageBase64List[0],
+                image2: imageBase64List[1],
+                image3: imageBase64List[2],
+                image4: imageBase64List[3],
+                image5: imageBase64List[4],
+                image6: imageBase64List[5],
+                image7: imageBase64List[6],
+                image8: imageBase64List[7],
+                image9: imageBase64List[8],
+                image10: imageBase64List[9],
+                image11: imageBase64List[10],
+                image12: imageBase64List[11],
+                description: discriptionTolet.text,
+                geolon: locationController.currentlongitude.value.toString(),
+                geolat: locationController.currentlatitude.value.toString(),
+                location:
+                    locationController.locationAddressShort.value.toString(),
+                shortaddress: shortAddressTolet.text,
+                phone: phonenumberTolet.text,
+                wapp: wappnumberTolet.text,
+              ),
+            );
       if (response != null) {
         updateProfile();
 
@@ -276,65 +314,179 @@ class PostController extends GetxController {
   var phoneFlag = false.obs;
   var toletAllFlag = false.obs;
 
+  void animateToPage(val) {
+    pageController.animateToPage(
+      val,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.bounceInOut,
+    );
+    // Vibration.vibrate(pattern: [10, 20, 10]);
+    // print('object');
+  }
+
   allToletFlagCheck() {
-    void animateToPage(val) {
-      pageController.animateToPage(
-        val,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.bounceInOut,
-      );
-      Vibration.vibrate(pattern: [10, 20, 10]);
+    if (categories['Only Garage']!.value) {
+      print(rentTolet.text.isNotEmpty);
+      print(selectedImages.isNotEmpty);
+      if (garagetxtcontroller.text.isNotEmpty) {
+        priceFlag.value = true;
+      } else {
+        animateToPage(0);
+      }
+      if (selectedImages.isNotEmpty) {
+        imageFlag.value = true;
+      } else {
+        animateToPage(0);
+      }
+      if (phonenumberTolet.text != "" || wappnumberTolet.text != "") {
+        phoneFlag.value = true;
+      }
+      if (imageFlag.value && priceFlag.value & phoneFlag.value) {
+        toletAllFlag.value = true;
+      }
+    } else {
+      if (!categoryFlag.value || getSelectedCategoryName().isEmpty) {
+        pageController.animateToPage(
+          0,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.bounceInOut,
+        );
+        categoryFlag.value = false;
+      }
+      if (bedrooms.value != "select") {
+        bedFlag.value = true;
+      } else {
+        animateToPage(0);
+      }
+      if (bathrooms.value != "select") {
+        bathFlag.value = true;
+      } else {
+        animateToPage(0);
+      }
+      if (kitchen.value != "select") {
+        kitchenFlag.value = true;
+      } else {
+        animateToPage(0);
+      }
+      if (rentTolet.text.isNotEmpty) {
+        priceFlag.value = true;
+      } else {
+        animateToPage(0);
+      }
+      if (selectedImages.isNotEmpty) {
+        imageFlag.value = true;
+      } else {
+        animateToPage(0);
+      }
+      if (phonenumberTolet.text != "" || wappnumberTolet.text != "") {
+        phoneFlag.value = true;
+      } else {
+        // animateToPage(1);
+      }
+      if ([
+        categoryFlag,
+        bedFlag,
+        bathFlag,
+        kitchenFlag,
+        priceFlag,
+        imageFlag,
+        phoneFlag
+      ].every((flag) => flag.value)) {
+        toletAllFlag.value = true;
+      }
+    }
+  }
+
+  //* All Tolet POST
+  var toletpage = 1.obs;
+  var toletlodingPosts = false.obs;
+  var allToletPost = [].obs;
+  var toletStopLoding = false.obs;
+  void getAllPost() async {
+    int itemCoutn = allToletPost.length;
+    if (toletStopLoding.value) {
+    } else {
+      toletlodingPosts(true);
+      try {
+        var response = await ApiService.getAllToletPost(toletpage.value);
+        if (response != null) {
+          allToletPost.addAll(response);
+          print(allToletPost.length);
+          if (response.isEmpty) {
+            toletlodingPosts(false);
+          }
+          toletpage = toletpage + 1;
+        }
+      } finally {
+        toletlodingPosts(false);
+        if (itemCoutn == allToletPost.length) {
+          toletStopLoding.value = true;
+        }
+      }
+    }
+  }
+
+  var singlepostToletloding = false.obs;
+  late ToletSinglePost singlepostTolet;
+  void getSinglePost(postid) async {
+    imageList.clear();
+    singlepostToletloding(true);
+    try {
+      var response = await ApiService.getSinglePostTolet(postid);
+      if (response != null) {
+        singlepostTolet = response;
+        getImageList();
+        if (response.isEmpty) {
+          singlepostToletloding(false);
+        }
+      }
+    } finally {
+      singlepostToletloding(false);
+    }
+  }
+
+  var imageList = [].obs;
+  getImageList() {
+    if (singlepostTolet.image1 != '') {
+      imageList.add(singlepostTolet.image1);
+    }
+    if (singlepostTolet.image2 != '') {
+      imageList.add(singlepostTolet.image2);
+    }
+    if (singlepostTolet.image3 != '') {
+      imageList.add(singlepostTolet.image3);
+    }
+    if (singlepostTolet.image4 != '') {
+      imageList.add(singlepostTolet.image4);
+    }
+    if (singlepostTolet.image5 != '') {
+      imageList.add(singlepostTolet.image5);
+    }
+    if (singlepostTolet.image6 != '') {
+      imageList.add(singlepostTolet.image6);
+    }
+    if (singlepostTolet.image7 != '') {
+      imageList.add(singlepostTolet.image7);
+    }
+    if (singlepostTolet.image8 != '') {
+      imageList.add(singlepostTolet.image8);
+    }
+    if (singlepostTolet.image9 != '') {
+      imageList.add(singlepostTolet.image9);
+    }
+    if (singlepostTolet.image10 != '') {
+      imageList.add(singlepostTolet.image10);
+    }
+    if (singlepostTolet.image11 != '') {
+      imageList.add(singlepostTolet.image11);
+    }
+    if (singlepostTolet.image12 != '') {
+      imageList.add(singlepostTolet.image12);
     }
 
-    if (!categoryFlag.value || getSelectedCategoryName().isEmpty) {
-      pageController.animateToPage(
-        0,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.bounceInOut,
-      );
-      categoryFlag.value = false;
-    }
-    if (bedrooms.value != "select") {
-      bedFlag.value = true;
-    } else {
-      animateToPage(0);
-    }
-    if (bathrooms.value != "select") {
-      bathFlag.value = true;
-    } else {
-      animateToPage(0);
-    }
-    if (kitchen.value != "select") {
-      kitchenFlag.value = true;
-    } else {
-      animateToPage(0);
-    }
-    if (rentTolet.text.isNotEmpty) {
-      priceFlag.value = true;
-    } else {
-      animateToPage(0);
-    }
-    if (selectedImages.isNotEmpty) {
-      imageFlag.value = true;
-    } else {
-      animateToPage(0);
-    }
-    if (phonenumberTolet.text != "" || wappnumberTolet.text != "") {
-      phoneFlag.value = true;
-    } else {
-      animateToPage(1);
-    }
-    if ([
-      categoryFlag,
-      bedFlag,
-      bathFlag,
-      kitchenFlag,
-      priceFlag,
-      imageFlag,
-      phoneFlag
-    ].every((flag) => flag.value)) {
-      toletAllFlag.value = true;
-    }
+    print('------------------------------');
+    print(imageList.length);
+    return imageList;
   }
 
   //------------------------sorting
@@ -373,7 +525,7 @@ class PostController extends GetxController {
   TextEditingController shortAddress = TextEditingController();
   TextEditingController description = TextEditingController();
   TextEditingController squireft = TextEditingController();
-  TextEditingController garagetxtcontroller = TextEditingController();
+
   TextEditingController price = TextEditingController();
   TextEditingController number = TextEditingController();
   TextEditingController wapp = TextEditingController();

@@ -33,30 +33,29 @@ class ApiService {
   }
 
   // check user exist in db or not
-  static Future userCheck(email) async {
-    var response = await http.post(
-      Uri.parse('$baseUrl/login'),
-      body: jsonEncode({"email": email}),
-      headers: headers,
-    );
-    print(response.body);
-    print(response.body.isEmpty);
-    if (response.statusCode == 200 && jsonDecode(response.body).isEmpty) {
-      return null;
-    } else {
-      return userDetailsFromJson(response.body)[0];
-    }
-  }
+  // static Future userCheck(email) async {
+  //   var response = await http.post(
+  //     Uri.parse('$baseUrl/login'),
+  //     body: jsonEncode({"email": email}),
+  //     headers: headers,
+  //   );
+
+  //   if (response.statusCode == 200 && jsonDecode(response.body).isEmpty) {
+  //     return null;
+  //   } else {
+  //     return userDetailsFromJson(response.body)[0];
+  //   }
+  // }
 
 //NEW USER
-  static Future createNewUser(Newuser data) async {
+  static Future userLogin(Newuser data) async {
     var response = await http.post(
-      Uri.parse('$baseUrl/signup'),
+      Uri.parse('$baseUrl/login'),
       body: newuserToJson(data),
       headers: headers,
     );
     if (response.statusCode == 200) {
-      return nweuserResFromJson(response.body).insertId;
+      return userDetailsFromJson(response.body)[0];
     } else {
       return null;
     }
@@ -98,6 +97,33 @@ class ApiService {
     );
     if (response.statusCode == 200) {
       return response.body;
+    } else {
+      return null;
+    }
+  }
+
+  static Future getAllToletPost(page) async {
+    final response = await http.post(
+      Uri.parse("$baseUrl/postlist"),
+      headers: headers,
+      body: jsonEncode({"page": page}),
+    );
+
+    if (response.statusCode == 200) {
+      return toletPostListFromJson(response.body);
+    } else {
+      return null;
+    }
+  }
+
+  static Future getSinglePostTolet(postid) async {
+    final response = await http.post(
+      Uri.parse("$baseUrl/tolet/post"),
+      headers: headers,
+      body: jsonEncode({"post_id": postid}),
+    );
+    if (response.statusCode == 200) {
+      return toletSinglePostFromJson(response.body);
     } else {
       return null;
     }

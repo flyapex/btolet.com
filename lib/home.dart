@@ -130,11 +130,11 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
         if (scrollController.position.userScrollDirection ==
             ScrollDirection.reverse) {
           if (_offsetAnimation.isCompleted) _controller.reverse();
-          print("---------reverse--------");
+          // print("---------reverse--------");
         }
         if (scrollController.position.userScrollDirection ==
             ScrollDirection.forward) {
-          print("---------forward--------");
+          // print("---------forward--------");
           _controller.forward();
         }
       }
@@ -501,9 +501,10 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                           if (metrics.atEdge) {
                             bool isTop = metrics.pixels == 0;
                             if (isTop) {
-                              // print('At the top');
+                              print('At the top ToletHome');
                             } else {
-                              // print('At the bottom');
+                              print('At the bottom ToletHome');
+                              postController.getAllPost();
                             }
                           }
                           return true;
@@ -516,9 +517,9 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                     if (metrics.atEdge) {
                       bool isTop = metrics.pixels == 0;
                       if (isTop) {
-                        // print('At the top');
+                        print('At the top PropertyHome');
                       } else {
-                        // print('At the bottom');
+                        print('At the bottom PropertyHome');
                       }
                     }
                     return true;

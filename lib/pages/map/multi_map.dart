@@ -1,5 +1,4 @@
 import 'package:btolet/controller/location_controller.dart';
-import 'package:btolet/pages/toletpage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -153,7 +152,7 @@ class MapBoxTolet extends StatelessWidget {
           children: [
             InkWell(
               onTap: () {
-                Get.to(const ToletPage());
+                // Get.to(ToletPage());
               },
               child: Container(
                 height: 100,

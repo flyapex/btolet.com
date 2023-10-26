@@ -76,46 +76,6 @@ class Newuser {
       };
 }
 
-NweuserRes nweuserResFromJson(String str) =>
-    NweuserRes.fromJson(json.decode(str));
-
-String nweuserResToJson(NweuserRes data) => json.encode(data.toJson());
-
-class NweuserRes {
-  NweuserRes({
-    required this.fieldCount,
-    required this.affectedRows,
-    required this.insertId,
-    required this.info,
-    required this.serverStatus,
-    required this.warningStatus,
-  });
-
-  int fieldCount;
-  int affectedRows;
-  int insertId;
-  String info;
-  int serverStatus;
-  int warningStatus;
-
-  factory NweuserRes.fromJson(Map<String, dynamic> json) => NweuserRes(
-        fieldCount: json["fieldCount"],
-        affectedRows: json["affectedRows"],
-        insertId: json["insertId"],
-        info: json["info"],
-        serverStatus: json["serverStatus"],
-        warningStatus: json["warningStatus"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "fieldCount": fieldCount,
-        "affectedRows": affectedRows,
-        "insertId": insertId,
-        "info": info,
-        "serverStatus": serverStatus,
-        "warningStatus": warningStatus,
-      };
-}
 // To parse this JSON data, do
 //
 //     final userDetails = userDetailsFromJson(jsonString);
@@ -174,69 +134,6 @@ class UserDetails {
       };
 }
 
-List<LocationModel> locationModelFromJson(String str) =>
-    List<LocationModel>.from(
-        json.decode(str).map((x) => LocationModel.fromJson(x)));
-
-String locationModelToJson(List<LocationModel> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
-
-class LocationModel {
-  LocationModel({
-    required this.division,
-    required this.city,
-  });
-
-  String division;
-  String city;
-
-  factory LocationModel.fromJson(Map<String, dynamic> json) => LocationModel(
-        division: json["division"],
-        city: json["city"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "division": division,
-        "city": city,
-      };
-}
-
-// To parse this JSON data, do
-//
-//     final profileUpadte = profileUpadteFromJson(jsonString);
-
-ProfileUpadte profileUpadteFromJson(String str) =>
-    ProfileUpadte.fromJson(json.decode(str));
-
-String profileUpadteToJson(ProfileUpadte data) => json.encode(data.toJson());
-
-class ProfileUpadte {
-  int uid;
-  String name;
-  String phone;
-  String wapp;
-
-  ProfileUpadte({
-    required this.uid,
-    required this.name,
-    required this.phone,
-    required this.wapp,
-  });
-
-  factory ProfileUpadte.fromJson(Map<String, dynamic> json) => ProfileUpadte(
-        uid: json["uid"],
-        name: json["name"],
-        phone: json["phone"],
-        wapp: json["wapp"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "uid": uid,
-        "name": name,
-        "phone": phone,
-        "wapp": wapp,
-      };
-}
 // To parse this JSON data, do
 //
 //     final notes = notesFromJson(jsonString);
@@ -276,7 +173,6 @@ class Notes {
         "active": active,
       };
 }
-
 // To parse this JSON data, do
 //
 //     final toletPostList = toletPostListFromJson(jsonString);
@@ -289,15 +185,16 @@ String toletPostListToJson(List<ToletPostList> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class ToletPostList {
-  final int postId;
-  final int uid;
-  final int bed;
-  final int bath;
-  final int roomsize;
-  final int rent;
-  final String image1;
-  final String location;
-  final DateTime time;
+  int postId;
+  int uid;
+  String bed;
+  String bath;
+  String roomsize;
+  String kitchen;
+  int rent;
+  String image1;
+  String location;
+  DateTime time;
 
   ToletPostList({
     required this.postId,
@@ -305,6 +202,7 @@ class ToletPostList {
     required this.bed,
     required this.bath,
     required this.roomsize,
+    required this.kitchen,
     required this.rent,
     required this.image1,
     required this.location,
@@ -317,6 +215,7 @@ class ToletPostList {
         bed: json["bed"],
         bath: json["bath"],
         roomsize: json["roomsize"],
+        kitchen: json["kitchen"],
         rent: json["rent"],
         image1: json["image1"],
         location: json["location"],
@@ -329,6 +228,7 @@ class ToletPostList {
         "bed": bed,
         "bath": bath,
         "roomsize": roomsize,
+        "kitchen": kitchen,
         "rent": rent,
         "image1": image1,
         "location": location,
@@ -524,5 +424,180 @@ class ProfileUpdate {
         "name": name,
         "phone": phone,
         "wapp": wapp,
+      };
+}
+
+// To parse this JSON data, do
+//
+//     final toletSinglePost = toletSinglePostFromJson(jsonString);
+
+ToletSinglePost toletSinglePostFromJson(String str) =>
+    ToletSinglePost.fromJson(json.decode(str));
+
+String toletSinglePostToJson(ToletSinglePost data) =>
+    json.encode(data.toJson());
+
+class ToletSinglePost {
+  int postId;
+  int uid;
+  String propertyname;
+  String category;
+  String bed;
+  String bath;
+  String dining;
+  String kitchen;
+  String floornumber;
+  String facing;
+  String roomsize;
+  DateTime rentfrom;
+  int mentenance;
+  int rent;
+  String fasalitis;
+  String image1;
+  String image2;
+  String image3;
+  String image4;
+  String image5;
+  String image6;
+  String image7;
+  String image8;
+  String image9;
+  String image10;
+  String image11;
+  String image12;
+  String description;
+  String geolon;
+  String geolat;
+  String location;
+  String shortaddress;
+  String phone;
+  String wapp;
+  int click;
+  int payment;
+  int topAds;
+  DateTime time;
+
+  ToletSinglePost({
+    required this.postId,
+    required this.uid,
+    required this.propertyname,
+    required this.category,
+    required this.bed,
+    required this.bath,
+    required this.dining,
+    required this.kitchen,
+    required this.floornumber,
+    required this.facing,
+    required this.roomsize,
+    required this.rentfrom,
+    required this.mentenance,
+    required this.rent,
+    required this.fasalitis,
+    required this.image1,
+    required this.image2,
+    required this.image3,
+    required this.image4,
+    required this.image5,
+    required this.image6,
+    required this.image7,
+    required this.image8,
+    required this.image9,
+    required this.image10,
+    required this.image11,
+    required this.image12,
+    required this.description,
+    required this.geolon,
+    required this.geolat,
+    required this.location,
+    required this.shortaddress,
+    required this.phone,
+    required this.wapp,
+    required this.click,
+    required this.payment,
+    required this.topAds,
+    required this.time,
+  });
+
+  factory ToletSinglePost.fromJson(Map<String, dynamic> json) =>
+      ToletSinglePost(
+        postId: json["post_id"],
+        uid: json["uid"],
+        propertyname: json["propertyname"],
+        category: json["category"],
+        bed: json["bed"],
+        bath: json["bath"],
+        dining: json["dining"],
+        kitchen: json["kitchen"],
+        floornumber: json["floornumber"],
+        facing: json["facing"],
+        roomsize: json["roomsize"],
+        rentfrom: DateTime.parse(json["rentfrom"]),
+        mentenance: json["mentenance"],
+        rent: json["rent"],
+        fasalitis: json["fasalitis"],
+        image1: json["image1"],
+        image2: json["image2"],
+        image3: json["image3"],
+        image4: json["image4"],
+        image5: json["image5"],
+        image6: json["image6"],
+        image7: json["image7"],
+        image8: json["image8"],
+        image9: json["image9"],
+        image10: json["image10"],
+        image11: json["image11"],
+        image12: json["image12"],
+        description: json["description"],
+        geolon: json["geolon"],
+        geolat: json["geolat"],
+        location: json["location"],
+        shortaddress: json["shortaddress"],
+        phone: json["phone"],
+        wapp: json["wapp"],
+        click: json["click"],
+        payment: json["payment"],
+        topAds: json["top_ads"],
+        time: DateTime.parse(json["time"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "post_id": postId,
+        "uid": uid,
+        "propertyname": propertyname,
+        "category": category,
+        "bed": bed,
+        "bath": bath,
+        "dining": dining,
+        "kitchen": kitchen,
+        "floornumber": floornumber,
+        "facing": facing,
+        "roomsize": roomsize,
+        "rentfrom": rentfrom.toIso8601String(),
+        "mentenance": mentenance,
+        "rent": rent,
+        "fasalitis": fasalitis,
+        "image1": image1,
+        "image2": image2,
+        "image3": image3,
+        "image4": image4,
+        "image5": image5,
+        "image6": image6,
+        "image7": image7,
+        "image8": image8,
+        "image9": image9,
+        "image10": image10,
+        "image11": image11,
+        "image12": image12,
+        "description": description,
+        "geolon": geolon,
+        "geolat": geolat,
+        "location": location,
+        "shortaddress": shortaddress,
+        "phone": phone,
+        "wapp": wapp,
+        "click": click,
+        "payment": payment,
+        "top_ads": topAds,
+        "time": time.toIso8601String(),
       };
 }

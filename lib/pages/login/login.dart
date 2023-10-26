@@ -1,6 +1,7 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:btolet/api/google_api.dart';
 import 'package:btolet/controller/db_controller.dart';
+import 'package:btolet/controller/location_controller.dart';
 import 'package:btolet/controller/user_controller.dart';
 import 'package:btolet/features/permissionpage.dart';
 import 'package:btolet/model/apimodel.dart';
@@ -31,6 +32,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: unused_local_variable
+    LocationController locationController = Get.put(LocationController());
     return Scaffold(
       body: Stack(
         alignment: Alignment.center,
@@ -58,6 +61,7 @@ class SingupPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     UserController userController = Get.put(UserController());
+
     final DBController dbController = Get.find();
     return Stack(
       children: [
@@ -143,41 +147,52 @@ class SingupPage extends StatelessWidget {
                   onTap: () async {
                     var user = await GoogleSignInApi.login();
 
-                    var isUser =
-                        await userController.userChackEmail(user?.email);
-                    print('-------------------------');
-                    // print(isUser);
-                    if (isUser == false) {
-                      userController.name.value = user!.displayName!;
-                      userController.email.value = user.email;
-                      userController.image.value = user.photoUrl ?? "";
+                    var userdetails = await userController.userLogin(
+                      Newuser(
+                        name: user!.displayName!,
+                        email: user.email,
+                        image: user.photoUrl ?? "",
+                        geolocation: userController.geolocation.value,
+                        signature: userController.signature.value,
+                      ),
+                      // Newuser(
+                      //   name: userController.name.value,
+                      //   email: userController.email.value,
+                      //   image: userController.image.value,
+                      //   geolocation: userController.geolocation.value,
+                      //   signature: userController.signature.value,
+                      // ),
+                    );
 
-                      var response = await userController.creatNewUser(
-                        Newuser(
-                          name: userController.name.value,
-                          email: userController.email.value,
-                          image: userController.image.value,
-                          geolocation: userController.geolocation.value,
-                          signature: userController.signature.value,
-                        ),
-                      );
-
+                    if (userdetails == false) {
                       Get.snackbar(
-                        'Congrats👏🤝',
-                        'UID:$response',
+                        'ERROR👏🤝',
+                        'We Will back soon',
                         snackPosition: SnackPosition.BOTTOM,
                         backgroundColor: Colors.white,
                         borderRadius: 10,
                         margin: const EdgeInsets.all(10),
                       );
-                      dbController.saveUserId(response);
-                      Get.offAll(
-                        const PermissionPage(),
-                        transition: Transition.circularReveal,
-                        duration: const Duration(milliseconds: 600),
-                      );
+                      // Get.snackbar(
+                      //   'Congrats👏🤝',
+                      //   'UID:$response',
+                      //   snackPosition: SnackPosition.BOTTOM,
+                      //   backgroundColor: Colors.white,
+                      //   borderRadius: 10,
+                      //   margin: const EdgeInsets.all(10),
+                      // );
+                      // dbController.saveUserId(response);
+                      // Get.offAll(
+                      //   const PermissionPage(),
+                      //   transition: Transition.circularReveal,
+                      //   duration: const Duration(milliseconds: 600),
+                      // );
                     } else {
-                      dbController.saveUserId(isUser);
+                      // userController.name.value = user!.displayName!;
+                      // userController.email.value = user.email;
+                      // userController.image.value = user.photoUrl ?? "";
+
+                      dbController.saveUserId(userdetails.uid);
                       Get.offAll(
                         const PermissionPage(),
                         transition: Transition.circularReveal,
@@ -185,7 +200,7 @@ class SingupPage extends StatelessWidget {
                       );
                       Get.snackbar(
                         'Congrats👏🤝',
-                        'Welcome Back',
+                        'Welcome ${userdetails.name}',
                         snackPosition: SnackPosition.BOTTOM,
                         backgroundColor: Colors.white,
                         borderRadius: 10,

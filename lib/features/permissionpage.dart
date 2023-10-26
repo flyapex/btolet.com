@@ -86,6 +86,7 @@ class _PermissionPageState extends State<PermissionPage> {
                         'Give Permissions',
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
+                          color: Colors.white,
                         ),
                       ),
                       elevation: 0.2,

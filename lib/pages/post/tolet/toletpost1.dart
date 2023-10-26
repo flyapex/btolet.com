@@ -304,7 +304,7 @@ class _ToletPostPage1State extends State<ToletPostPage1> {
                               textType: TextInputType.number,
                               hintText: "230 ",
                               titlelenth: 500,
-                              suffixtext: "৳",
+                              suffixtext: "ft\u00b2",
                               controller: postController.roomSizeTolet,
                               iconh: 23,
                               iconw: 23,

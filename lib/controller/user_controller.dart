@@ -1,8 +1,10 @@
 import 'package:btolet/api/api.dart';
+import 'package:btolet/controller/post_controller.dart';
 import 'package:btolet/model/apimodel.dart';
 import 'package:get/get.dart';
 
 class UserController extends GetxController {
+  PostController postController = Get.put(PostController());
   var banneradsList = [].obs;
   var bannerLoding = true.obs;
   var fatchOneTime = true.obs;
@@ -34,44 +36,45 @@ class UserController extends GetxController {
   late DateTime time = ''.obs as DateTime;
 
   var isLoading = false.obs;
-  userChackEmail(email) async {
+  userLogin(Newuser data) async {
     try {
       isLoading(true);
-      var user = await ApiService.userCheck(email);
-      print(user);
-      if (user == null) {
+      var userdetails = await ApiService.userLogin(data);
+      if (userdetails == null) {
         return false;
       } else {
-        print(image.value);
-        name.value = user.name;
-        email.value = user.email;
-        image.value = user.image;
-        phone.value = user.phone;
-        wapp.value = user.wapp;
-        geolocation.value = user.geolocation;
-        signature.value = user.signature;
-        time = user.time;
-        return user.uid;
+        name.value = userdetails.name;
+        email.value = userdetails.email;
+        image.value = userdetails.image;
+        phone.value = userdetails.phone;
+        wapp.value = userdetails.wapp;
+        geolocation.value = userdetails.geolocation;
+        signature.value = userdetails.signature;
+        time = userdetails.time;
+        postController.nameTolet.text = userdetails.name;
+        postController.phonenumberTolet.text = userdetails.phone;
+        postController.wappnumberTolet.text = userdetails.wapp;
+        return userdetails;
       }
     } finally {
       isLoading(false);
     }
   }
 
-  creatNewUser(Newuser data) async {
-    try {
-      isLoading(true);
-      var response = await ApiService.createNewUser(data);
-      if (response != null) {
-        // print(response);
-        return response;
-      } else {
-        return null;
-      }
-    } finally {
-      isLoading(false);
-    }
-  }
+  // creatNewUser(Newuser data) async {
+  //   try {
+  //     isLoading(true);
+  //     var response = await ApiService.userLogin(data);
+  //     if (response != null) {
+  //       // print(response);
+  //       return response;
+  //     } else {
+  //       return null;
+  //     }
+  //   } finally {
+  //     isLoading(false);
+  //   }
+  // }
 
   var note = 'Hello from Btolet.com )'.obs;
   void getnote() async {
@@ -92,7 +95,6 @@ class UserController extends GetxController {
       if (user == null) {
         return null;
       } else {
-        print(image.value);
         name.value = user.name;
         email.value = user.email;
         image.value = user.image;
@@ -101,6 +103,9 @@ class UserController extends GetxController {
         geolocation.value = user.geolocation;
         signature.value = user.signature;
         time = user.time;
+        postController.nameTolet.text = user.name;
+        postController.phonenumberTolet.text = user.phone;
+        postController.wappnumberTolet.text = user.wapp;
         return user;
       }
     } finally {
