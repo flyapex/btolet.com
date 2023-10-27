@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 class UserController extends GetxController {
   PostController postController = Get.put(PostController());
+
   var banneradsList = [].obs;
   var bannerLoding = true.obs;
   var fatchOneTime = true.obs;

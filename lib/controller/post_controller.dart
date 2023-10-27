@@ -1,10 +1,11 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:btolet/api/api.dart';
 import 'package:btolet/controller/location_controller.dart';
 import 'package:btolet/model/apimodel.dart';
 import 'package:btolet/pages/post/tolet/widget/drapdown.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
 import 'package:hl_image_picker_android/hl_image_picker_android.dart';
 import 'db_controller.dart';
@@ -12,6 +13,7 @@ import 'db_controller.dart';
 class PostController extends GetxController {
   final DBController dbController = Get.put(DBController());
   final LocationController locationController = Get.find();
+
   late TabController tabController;
   var pageController = PageController();
   List<HLPickerItem> selectedImages = [];
@@ -178,91 +180,114 @@ class PostController extends GetxController {
 
     for (int i = 0; i < 12; i++) {
       if (i < selectedImages.length) {
-        imageBase64List.add(
-          base64Encode(await File(selectedImages[i].path).readAsBytes()),
+        Uint8List? compressedImage =
+            await FlutterImageCompress.compressWithFile(
+          selectedImages[i].path,
+          minHeight: 1200,
+          minWidth: 800,
+          quality: 25,
+          rotate: 0,
         );
+        String base64Image = base64Encode(compressedImage!);
+        imageBase64List.add(base64Image);
       } else {
         imageBase64List.add("");
       }
     }
+
+    // for (int i = 0; i < 12; i++) {
+    //   if (i < selectedImages.length) {
+    //     imageBase64List.add(
+    //       base64Encode(await File(selectedImages[i].path).readAsBytes()),
+    //     );
+    //   } else {
+    //     imageBase64List.add("");
+    //   }
+    // }
+
+    // ignore: prefer_typing_uninitialized_variables
+    var response;
     try {
-      var response = categories['Only Garage']!.value
-          ? await ApiService.newPostTolet(
-              PostToServerTolet(
-                uid: dbController.getUserID(),
-                propertyname: propertyNameTolet.text,
-                category: getSelectedCategoryName().toString(),
-                bed: "",
-                bath: "",
-                dining: "",
-                kitchen: "",
-                floornumber: "",
-                facing: "",
-                roomsize: "",
-                rentfrom: rentFrom,
-                mentenance: 0,
-                rent: int.parse(garagetxtcontroller.text),
-                fasalitis: "",
-                image1: imageBase64List[0],
-                image2: imageBase64List[1],
-                image3: imageBase64List[2],
-                image4: imageBase64List[3],
-                image5: imageBase64List[4],
-                image6: imageBase64List[5],
-                image7: imageBase64List[6],
-                image8: imageBase64List[7],
-                image9: imageBase64List[8],
-                image10: imageBase64List[9],
-                image11: imageBase64List[10],
-                image12: imageBase64List[11],
-                description: discriptionTolet.text,
-                geolon: locationController.currentlongitude.value.toString(),
-                geolat: locationController.currentlatitude.value.toString(),
-                location:
-                    locationController.locationAddressShort.value.toString(),
-                shortaddress: shortAddressTolet.text,
-                phone: phonenumberTolet.text,
-                wapp: wappnumberTolet.text,
-              ),
-            )
-          : await ApiService.newPostTolet(
-              PostToServerTolet(
-                uid: dbController.getUserID(),
-                propertyname: propertyNameTolet.text,
-                category: getSelectedCategoryName().toString(),
-                bed: bedrooms.value,
-                bath: bathrooms.value,
-                dining: dining.value == "select" ? "" : dining.value,
-                kitchen: kitchen.value,
-                floornumber: floorno.value == "select" ? "" : floorno.value,
-                facing: facing.value == "select" ? "" : facing.value,
-                roomsize: roomSizeTolet.text,
-                rentfrom: rentFrom,
-                mentenance: int.parse(maintenanceTolet.text),
-                rent: int.parse(rentTolet.text),
-                fasalitis: getFasalitiesNameTolet().toString(),
-                image1: imageBase64List[0],
-                image2: imageBase64List[1],
-                image3: imageBase64List[2],
-                image4: imageBase64List[3],
-                image5: imageBase64List[4],
-                image6: imageBase64List[5],
-                image7: imageBase64List[6],
-                image8: imageBase64List[7],
-                image9: imageBase64List[8],
-                image10: imageBase64List[9],
-                image11: imageBase64List[10],
-                image12: imageBase64List[11],
-                description: discriptionTolet.text,
-                geolon: locationController.currentlongitude.value.toString(),
-                geolat: locationController.currentlatitude.value.toString(),
-                location:
-                    locationController.locationAddressShort.value.toString(),
-                shortaddress: shortAddressTolet.text,
-                phone: phonenumberTolet.text,
-                wapp: wappnumberTolet.text,
-              ),
-            );
+      if (categories['Only Garage']!.value) {
+        print("Only Garage");
+        response = await ApiService.newPostTolet(
+          PostToServerTolet(
+            uid: dbController.getUserID(),
+            propertyname: propertyNameTolet.text,
+            category: getSelectedCategoryName().toString(),
+            bed: "",
+            bath: "",
+            dining: "",
+            kitchen: "",
+            floornumber: "",
+            facing: "",
+            roomsize: "",
+            rentfrom: rentFrom,
+            mentenance: 0,
+            rent: int.parse(garagetxtcontroller.text),
+            fasalitis: "",
+            image1: imageBase64List[0],
+            image2: imageBase64List[1],
+            image3: imageBase64List[2],
+            image4: imageBase64List[3],
+            image5: imageBase64List[4],
+            image6: imageBase64List[5],
+            image7: imageBase64List[6],
+            image8: imageBase64List[7],
+            image9: imageBase64List[8],
+            image10: imageBase64List[9],
+            image11: imageBase64List[10],
+            image12: imageBase64List[11],
+            description: discriptionTolet.text,
+            geolon: locationController.currentlongitude.value.toString(),
+            geolat: locationController.currentlatitude.value.toString(),
+            location: locationController.locationAddressShort.value.toString(),
+            shortaddress: shortAddressTolet.text,
+            phone: phonenumberTolet.text,
+            wapp: wappnumberTolet.text,
+          ),
+        );
+      } else {
+        print("TOlet");
+        print("TOlet");
+        response = await ApiService.newPostTolet(
+          PostToServerTolet(
+            uid: dbController.getUserID(),
+            propertyname: propertyNameTolet.text,
+            category: getSelectedCategoryName().toString(),
+            bed: bedrooms.value,
+            bath: bathrooms.value,
+            dining: dining.value == "select" ? "" : dining.value,
+            kitchen: kitchen.value,
+            floornumber: floorno.value == "select" ? "" : floorno.value,
+            facing: facing.value == "select" ? "" : facing.value,
+            roomsize: roomSizeTolet.text,
+            rentfrom: rentFrom,
+            mentenance: int.parse(maintenanceTolet.text),
+            rent: int.parse(rentTolet.text),
+            fasalitis: getFasalitiesNameTolet().toString(),
+            image1: imageBase64List[0],
+            image2: imageBase64List[1],
+            image3: imageBase64List[2],
+            image4: imageBase64List[3],
+            image5: imageBase64List[4],
+            image6: imageBase64List[5],
+            image7: imageBase64List[6],
+            image8: imageBase64List[7],
+            image9: imageBase64List[8],
+            image10: imageBase64List[9],
+            image11: imageBase64List[10],
+            image12: imageBase64List[11],
+            description: discriptionTolet.text,
+            geolon: locationController.currentlongitude.value.toString(),
+            geolat: locationController.currentlatitude.value.toString(),
+            location: locationController.locationAddressShort.value.toString(),
+            shortaddress: shortAddressTolet.text,
+            phone: phonenumberTolet.text,
+            wapp: wappnumberTolet.text,
+          ),
+        );
+      }
       if (response != null) {
         updateProfile();
 
@@ -408,7 +433,11 @@ class PostController extends GetxController {
     } else {
       toletlodingPosts(true);
       try {
-        var response = await ApiService.getAllToletPost(toletpage.value);
+        var response = await ApiService.getAllToletPost(
+          toletpage.value,
+          locationController.currentlatitude,
+          locationController.currentlongitude,
+        );
         if (response != null) {
           allToletPost.addAll(response);
           print(allToletPost.length);

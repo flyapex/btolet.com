@@ -1,4 +1,5 @@
 import 'package:btolet/controller/location_controller.dart';
+import 'package:btolet/controller/post_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
@@ -20,6 +21,8 @@ class _LocationSheetState extends State<LocationSheet> {
   double latitude = 0;
   double longitude = 0;
   LocationController locationController = Get.put(LocationController());
+  PostController postController = Get.find();
+
   bool rippleAnimation = true;
   late String _mapStyle;
 
@@ -265,7 +268,7 @@ class _LocationSheetState extends State<LocationSheet> {
                                     onPressed: () {
                                       // locationController
                                       //       .locationAddress.value=
-                                      // locationController.locationAddress.value
+
                                       Get.back();
                                     },
                                     icon: Icon(

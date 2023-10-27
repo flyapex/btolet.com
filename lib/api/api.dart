@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:btolet/model/apimodel.dart';
 import 'package:http/http.dart' as http;
 
-var baseUrl = 'https://btolet.com/api';
-// var baseUrl = 'http://10.0.2.2:3000/api';
+// var baseUrl = 'https://btolet.com/api';
+var baseUrl = 'http://10.0.2.2:3000/api';
 
 var headers = {
   "content-type": 'application/json;charset=UTF-8',
@@ -77,11 +77,13 @@ class ApiService {
   }
 
   static Future newPostTolet(PostToServerTolet data) async {
+    print("Now Posting");
     var response = await http.post(
       Uri.parse('$baseUrl/newpostTolet'),
       body: postToServerToletToJson(data),
       headers: headers,
     );
+    print(response.body);
     if (response.statusCode == 200) {
       return response.body;
     } else {
@@ -102,11 +104,17 @@ class ApiService {
     }
   }
 
-  static Future getAllToletPost(page) async {
+  static Future getAllToletPost(page, geolat, geolon) async {
     final response = await http.post(
       Uri.parse("$baseUrl/postlist"),
       headers: headers,
-      body: jsonEncode({"page": page}),
+      body: jsonEncode(
+        {
+          "page": page,
+          "geolat": geolat.toString(),
+          "geolon": geolon.toString(),
+        },
+      ),
     );
 
     if (response.statusCode == 200) {
@@ -124,6 +132,15 @@ class ApiService {
     );
     if (response.statusCode == 200) {
       return toletSinglePostFromJson(response.body);
+    } else {
+      return null;
+    }
+  }
+
+  static Future mapTolet() async {
+    final response = await http.get(Uri.parse("$baseUrl/map/posts"));
+    if (response.statusCode == 200) {
+      return mapToletFromJson(response.body);
     } else {
       return null;
     }

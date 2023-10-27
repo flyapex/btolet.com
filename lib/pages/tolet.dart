@@ -28,6 +28,7 @@ class _ToletHomeState extends State<ToletHome> {
   UserController userController = Get.find();
 
   PostController postController = Get.put(PostController());
+
   @override
   void initState() {
     postController.getAllPost();
@@ -53,6 +54,7 @@ class _ToletHomeState extends State<ToletHome> {
           ),
           onRefresh: () async {
             postController.allToletPost.clear();
+            postController.allToletPost.sentToStream;
             postController.toletpage.value = 1;
             postController.toletStopLoding(false);
             postController.getAllPost();

@@ -601,3 +601,40 @@ class ToletSinglePost {
         "time": time.toIso8601String(),
       };
 }
+// To parse this JSON data, do
+//
+//     final mapTolet = mapToletFromJson(jsonString);
+
+List<MapTolet> mapToletFromJson(String str) =>
+    List<MapTolet>.from(json.decode(str).map((x) => MapTolet.fromJson(x)));
+
+String mapToletToJson(List<MapTolet> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
+class MapTolet {
+  int postId;
+  String geolon;
+  String geolat;
+  int rent;
+
+  MapTolet({
+    required this.postId,
+    required this.geolon,
+    required this.geolat,
+    required this.rent,
+  });
+
+  factory MapTolet.fromJson(Map<String, dynamic> json) => MapTolet(
+        postId: json["post_id"],
+        geolon: json["geolon"],
+        geolat: json["geolat"],
+        rent: json["rent"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "post_id": postId,
+        "geolon": geolon,
+        "geolat": geolat,
+        "rent": rent,
+      };
+}

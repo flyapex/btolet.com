@@ -1,3 +1,4 @@
+import 'package:btolet/api/api.dart';
 import 'package:btolet/api/google_api.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -8,7 +9,7 @@ class LocationController extends GetxController {
   late GoogleMapController mapController;
 
   RxBool mapMode = false.obs;
-  RxBool showMapBoxTolet = true.obs;
+  RxBool showMapBoxTolet = false.obs;
 
   RxDouble currentlatitude = 0.0.obs;
   RxDouble currentlongitude = 0.0.obs;
@@ -107,4 +108,19 @@ class LocationController extends GetxController {
   }
 
   //---------------Multi map
+
+  var mapToletList = [].obs;
+  var mapLoding = false.obs;
+  Future mapApi() async {
+    try {
+      mapToletList.clear();
+      mapLoding(true);
+      var response = await ApiService.mapTolet();
+      if (response != null) {
+        mapToletList.addAll(response);
+        mapLoding(false);
+        return response;
+      }
+    } finally {}
+  }
 }
