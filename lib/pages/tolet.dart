@@ -25,15 +25,30 @@ class ToletHome extends StatefulWidget {
 }
 
 class _ToletHomeState extends State<ToletHome> {
+  final scrollController = ScrollController();
   UserController userController = Get.find();
-
   PostController postController = Get.put(PostController());
 
   @override
   void initState() {
     postController.getAllPost();
     userController.getnote();
+    scrollController.addListener(() {
+      if (scrollController.position.atEdge) {
+        if (scrollController.position.pixels == 0) {
+          // print("You're at the top.");
+        } else {
+          postController.getAllPost();
+        }
+      }
+    });
     super.initState();
+  }
+
+  @override
+  void deactivate() {
+    scrollController.dispose();
+    super.deactivate();
   }
 
   @override
@@ -54,12 +69,14 @@ class _ToletHomeState extends State<ToletHome> {
           ),
           onRefresh: () async {
             postController.allToletPost.clear();
-            postController.allToletPost.sentToStream;
+            postController.allToletPost.refresh();
             postController.toletpage.value = 1;
-            postController.toletStopLoding(false);
             postController.getAllPost();
+            postController.allToletPost.sentToStream;
           },
           child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            controller: scrollController,
             padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -139,90 +156,17 @@ class _ToletHomeState extends State<ToletHome> {
                     ),
                   ],
                 ),
-                // Scrollbar(
-                //   radius: const Radius.circular(20),
-                //   child: ListView.builder(
-                //     physics: const NeverScrollableScrollPhysics(),
-                //     shrinkWrap: true,
-                //     itemCount: 50,
-                //     itemBuilder: (context, i) {
-                //       return InkWell(
-                //         onTap: () {
-                //           Get.to(
-                //             () => const ToletPage(),
-                //             transition: Transition.circularReveal,
-                //             duration: const Duration(milliseconds: 600),
-                //           );
-                //         },
-                //         child: const Padding(
-                //           padding: EdgeInsets.only(top: 20),
-                //           child: Posts(),
-                //         ),
-                //       );
-                //     },
-                //   ),
-                // ),
-                // StreamBuilder(
-                //   stream: postController.allToletPost.stream,
-                //   builder: (BuildContext context, AsyncSnapshot snapshot) {
-                //     if (snapshot.data == null) {
-                //       return const Center(
-                //         child: CircularProgressIndicator(),
-                //       );
-                //     } else {
-                //       return ListView.builder(
-                //         physics: const NeverScrollableScrollPhysics(),
-                //         // controller: scrollController,
-                //         shrinkWrap: true,
-                //         itemCount: snapshot.data.length + 1,
-                //         itemBuilder: (c, i) {
-                //           if (i < snapshot.data.length) {
-                //             return Padding(
-                //               padding: const EdgeInsets.only(top: 20),
-                //               child: PostsTolet(
-                //                 postData: snapshot.data[i],
-                //               ),
-                //             );
-                //           } else {
-                //             if (postController.toletlodingPosts.value) {
-                //               return const Padding(
-                //                 padding: EdgeInsets.all(8.0),
-                //                 child: Center(
-                //                   child: SizedBox(
-                //                     width: 40.0,
-                //                     height: 40.0,
-                //                     child: CircularProgressIndicator(
-                //                       value: null,
-                //                       strokeWidth: 4,
-                //                       color: Colors.blueAccent,
-                //                     ),
-                //                   ),
-                //                 ),
-                //               );
-                //             } else {
-                //               return const Padding(
-                //                 padding: EdgeInsets.all(8.0),
-                //                 child: Center(
-                //                   child: Text('nothing more to load!'),
-                //                 ),
-                //               );
-                //             }
-                //           }
-                //         },
-                //       );
-                //     }
-                //   },
-                // )
-
                 StreamBuilder(
                   stream: postController.allToletPost.stream,
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
+                    if (snapshot.data == null) {
                       // Show a loading indicator
                       return const Center(
-                        child: CircularProgressIndicator(),
+                        child: CircularProgressIndicator(
+                          color: Colors.red,
+                        ),
                       );
-                    } else if (snapshot.hasData) {
+                    } else {
                       return ListView.builder(
                         // key: UniqueKey(),
                         physics: const NeverScrollableScrollPhysics(),
@@ -262,10 +206,6 @@ class _ToletHomeState extends State<ToletHome> {
                             }
                           }
                         },
-                      );
-                    } else {
-                      return const Center(
-                        child: Text('No data available'),
                       );
                     }
                   },

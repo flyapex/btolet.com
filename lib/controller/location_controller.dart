@@ -123,4 +123,19 @@ class LocationController extends GetxController {
       }
     } finally {}
   }
+
+  var mapPostToletList = [].obs;
+  var mapPostLoding = false.obs;
+  Future mapPostApi(geolat, geolon) async {
+    try {
+      mapPostToletList.clear();
+      mapPostLoding(true);
+      var response = await ApiService.codinateTopost(geolat, geolon);
+      if (response != null) {
+        mapPostToletList.addAll(response);
+        mapPostLoding(false);
+        return response;
+      }
+    } finally {}
+  }
 }

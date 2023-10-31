@@ -5,10 +5,12 @@ import 'package:another_xlider/models/slider_step.dart';
 import 'package:another_xlider/models/tooltip/tooltip.dart';
 import 'package:another_xlider/models/trackbar.dart';
 import 'package:btolet/controller/post_controller.dart';
+import 'package:btolet/pages/post/tolet/widget/chips.dart';
 import 'package:btolet/widget/btn.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class SortingTolet extends StatefulWidget {
   const SortingTolet({super.key});
@@ -18,6 +20,13 @@ class SortingTolet extends StatefulWidget {
 }
 
 class _SortingToletState extends State<SortingTolet> {
+  PostController postController = Get.find();
+  @override
+  void initState() {
+    postController.sortingPostCount();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Listener(
@@ -49,6 +58,65 @@ class _SortingToletState extends State<SortingTolet> {
             const Expanded(
               child: SortHere(),
             ),
+            SizedBox(
+              height: 80,
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: InkWell(
+                      onTap: () {},
+                      child: Container(
+                        height: 40,
+                        margin: const EdgeInsets.only(left: 10, right: 10),
+                        child: const Center(
+                          child: Text(
+                            "Clear All",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 3,
+                    child: Container(
+                      height: 40,
+                      margin: const EdgeInsets.only(left: 10, right: 10),
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                            Colors.orange,
+                          ),
+                        ),
+                        onPressed: () async {
+                          postController.sortingPostCount();
+                        },
+                        child: Obx(
+                          () => Text(
+                            "Show ${postController.totalResult}  Property",
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -72,9 +140,11 @@ class _SortHereState extends State<SortHere> with TickerProviderStateMixin {
       if (startval1 == 0 && endval1 == 50000) {
         priceText = "Any Price";
       } else if (endval1 == 50000) {
-        priceText = '৳ ${startval1.toInt()} to ${endval1.toInt()}+/month';
+        priceText =
+            '৳ ${NumberFormat.decimalPattern().format(startval1.toInt())} to ${NumberFormat.decimalPattern().format(endval1.toInt())}+/month';
       } else {
-        priceText = '৳ ${startval1.toInt()} to ${endval1.toInt()}/month';
+        priceText =
+            '৳ ${NumberFormat.decimalPattern().format(startval1.toInt())} to ${NumberFormat.decimalPattern().format(endval1.toInt())}/month';
       }
     });
   }
@@ -168,6 +238,8 @@ class _SortHereState extends State<SortHere> with TickerProviderStateMixin {
                         startval1 = lowerValue;
                         endval1 = upperValue;
                         sliderText(startval1, endval1);
+                        postController.rentmin.value = startval1.toInt();
+                        postController.rentmax.value = endval1.toInt();
                       });
                     },
                   ),
@@ -200,22 +272,22 @@ class _SortHereState extends State<SortHere> with TickerProviderStateMixin {
                               ).createShader(rect);
                             },
                             blendMode: BlendMode.dstOut,
-                            child: ListView(
-                              // scrollDirection: Axis.horizontal,
-                              children: const [
-                                Wrap(
-                                  spacing: 10,
-                                  children: [
-                                    CatagoryCpx(catagory: 'Family'),
-                                    CatagoryCpx(catagory: 'Bachelor'),
-                                    CatagoryCpx(catagory: 'Male Sit'),
-                                    CatagoryCpx(catagory: 'Female Sit'),
-                                    CatagoryCpx(catagory: 'Sub-let'),
-                                    CatagoryCpx(catagory: 'Hostel'),
-                                    CatagoryCpx(catagory: 'Shop'),
-                                    CatagoryCpx(catagory: 'Office'),
-                                    CatagoryCpx(catagory: 'Only Garage'),
-                                  ],
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: Wrap(
+                                    spacing: 10,
+                                    children: postController.categories.entries
+                                        .map((entry) {
+                                      final category = entry.key;
+                                      final categoryState = entry.value;
+                                      return CategoryToletChip(
+                                        category: category,
+                                        categoryState: categoryState,
+                                      );
+                                    }).toList(),
+                                  ),
                                 ),
                               ],
                             ),
@@ -268,7 +340,6 @@ class _SortHereState extends State<SortHere> with TickerProviderStateMixin {
                       ],
                     ),
                   ),
-
                   const SizedBox(height: 20),
                   const Row(
                     children: [
@@ -278,7 +349,7 @@ class _SortHereState extends State<SortHere> with TickerProviderStateMixin {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  const Rowbtn(),
+                  const SortButton(type: 1), // 1 for bed
                   const SizedBox(height: 20),
                   const Row(
                     children: [
@@ -287,237 +358,102 @@ class _SortHereState extends State<SortHere> with TickerProviderStateMixin {
                       Text('Bathroom'),
                     ],
                   ),
-
                   const SizedBox(height: 20),
-                  // ignore: prefer_const_constructors
-                  Rowbtn(),
+                  const SortButton(type: 2), // 2 for bath
                   const SizedBox(height: 20),
                   const Text('Fasalitis'),
                   const SizedBox(height: 20),
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Expanded(
                         child: Wrap(
                           spacing: 10,
-                          children: [
-                            CustomeChip(
-                              text: "Balcony",
-                              icon: Icons.balcony_rounded,
-                            ),
-                            CustomeChip(
-                              text: "Parking",
-                              icon: Icons.directions_bike,
-                            ),
-                            CustomeChip(
-                              text: "CCTV",
-                              icon: Icons.photo_camera,
-                            ),
-                            CustomeChip(
-                              text: "GAS",
-                              icon: Icons.local_fire_department_outlined,
-                            ),
-                            CustomeChip(
-                              text: "Lift",
-                              icon: Icons.elevator_outlined,
-                            ),
-                            CustomeChip(
-                              text: "Security Guard",
-                              icon: Icons.security_rounded,
-                            ),
-                            CustomeChip(
-                              text: "WIFI",
-                              icon: Icons.wifi_rounded,
-                            ),
-                            CustomeChip(
-                              text: "Power Backup",
-                              icon: Icons.power_settings_new_rounded,
-                            ),
-                            CustomeChip(
-                              text: "Fire Alarm",
-                              icon: Icons.fire_extinguisher,
-                            ),
-                          ],
+                          children: postController.fasalitisTolet.entries
+                              .map((entry) {
+                            final String text = entry.key;
+                            final FasalitisTolet fasalitisTolet = entry.value;
+                            final categoryState = fasalitisTolet.state;
+
+                            return FasalitisToletChip(
+                              text: text,
+                              icon: fasalitisTolet.icon,
+                              categoryState: categoryState,
+                            );
+                          }).toList(),
                         ),
-                      )
+                      ),
                     ],
                   ),
-
                   const SizedBox(height: 200),
                 ],
               ),
             ),
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              height: 50,
-              margin: const EdgeInsets.only(top: 10, bottom: 10),
-              decoration: const BoxDecoration(
-                color: Colors.white,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(left: 20, right: 20),
-                    child: Text(
-                      'Clear All',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Center(
-                      child: Container(
-                        padding: const EdgeInsets.only(
-                            left: 10, right: 10, top: 10, bottom: 10),
-                        decoration: BoxDecoration(
-                          color: Colors.orange,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: const Text(
-                          'Show 123,23 Property',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+
+          // Align(
+          //   alignment: Alignment.bottomCenter,
+          //   child: Container(
+          //     height: 50,
+          //     margin: const EdgeInsets.only(top: 10, bottom: 10),
+          //     decoration: const BoxDecoration(
+          //       color: Colors.white,
+          //     ),
+          //     child: Row(
+          //       mainAxisAlignment: MainAxisAlignment.spaceAround,
+          //       children: [
+          //         const Padding(
+          //           padding: EdgeInsets.only(left: 20, right: 20),
+          //           child: Text(
+          //             'Clear All',
+          //             style: TextStyle(
+          //               fontSize: 18,
+          //               color: Colors.black,
+          //             ),
+          //           ),
+          //         ),
+          //         Expanded(
+          //           child: Center(
+          //             child: Container(
+          //               padding: const EdgeInsets.only(
+          //                   left: 10, right: 10, top: 10, bottom: 10),
+          //               decoration: BoxDecoration(
+          //                 color: Colors.orange,
+          //                 borderRadius: BorderRadius.circular(10),
+          //               ),
+          //               child: const Text(
+          //                 'Show 123,23 Property',
+          //                 style: TextStyle(
+          //                   fontSize: 18,
+          //                   color: Colors.white,
+          //                 ),
+          //               ),
+          //             ),
+          //           ),
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );
   }
 }
 
-class CustomeChip extends StatelessWidget {
-  final String text;
-
-  final IconData icon;
-  const CustomeChip({
-    super.key,
-    required this.text,
-    required this.icon,
-  });
+class SortButton extends StatefulWidget {
+  final int type;
+  const SortButton({super.key, required this.type});
 
   @override
-  Widget build(BuildContext context) {
-    final PostController postController = Get.find();
-    getController() {
-      switch (text) {
-        case "Balcony":
-          return postController.balcony.value;
-        case "Parking":
-          return postController.parking.value;
-        case "CCTV":
-          return postController.cctv.value;
-        case "GAS":
-          return postController.gas.value;
-        case "Lift":
-          return postController.lift.value;
-        case "Security Guard":
-          return postController.security.value;
-        case "WIFI":
-          return postController.wifi.value;
-        case "Power Backup":
-          return postController.powerbackup.value;
-        case "Fire Alarm":
-          return postController.firealarm.value;
-        case "Gaser":
-          return postController.gaser.value;
-        default:
-          return false;
-      }
-    }
-
-    return Obx(
-      () => FilterChip(
-        showCheckmark: false,
-        label: Text(text),
-        selected: getController(),
-        onSelected: (value) {
-          // postController.lift.value = !postController.lift.value;
-          switch (text) {
-            case "Balcony":
-              postController.balcony.value = !postController.balcony.value;
-              break;
-            case "Parking":
-              postController.parking.value = !postController.parking.value;
-              break;
-            case "CCTV":
-              postController.cctv.value = !postController.cctv.value;
-              break;
-            case "GAS":
-              postController.gas.value = !postController.gas.value;
-              break;
-            case "Lift":
-              postController.lift.value = !postController.lift.value;
-              break;
-            case "Security Guard":
-              postController.security.value = !postController.security.value;
-              break;
-            case "WIFI":
-              postController.wifi.value = !postController.wifi.value;
-              break;
-            case "Power Backup":
-              postController.powerbackup.value =
-                  !postController.powerbackup.value;
-              break;
-            case "Fire Alarm":
-              postController.firealarm.value = !postController.firealarm.value;
-              break;
-            case "Gaser":
-              postController.gaser.value = !postController.gaser.value;
-              break;
-            default:
-              break;
-          }
-        },
-        avatar: Icon(
-          icon,
-          // getController() ? Icons.check : icon,
-          color: getController()
-              ? const Color(0xff0166EE)
-              : const Color.fromARGB(255, 192, 194, 198),
-          // color: getController()
-          //     ? const Color(0xff0166EE)
-          //     : const Color.fromARGB(255, 192, 194, 198),
-        ),
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-        side: BorderSide(
-          color: getController()
-              ? const Color(0xff0166EE)
-              : Colors.black.withOpacity(0.1),
-        ),
-        elevation: 0.3,
-        selectedShadowColor: Colors.black.withOpacity(0.5),
-        shadowColor: Colors.black.withOpacity(0.5),
-        backgroundColor: Colors.white,
-        selectedColor: Colors.white,
-      ),
-    );
-  }
+  State<SortButton> createState() => _SortButtonState();
 }
 
-class Rowbtn extends StatefulWidget {
-  const Rowbtn({super.key});
-
-  @override
-  State<Rowbtn> createState() => _RowbtnState();
-}
-
-class _RowbtnState extends State<Rowbtn> {
+class _SortButtonState extends State<SortButton> {
   List<String> categories = ['1', '2', '3', '4', '5', '6+'];
-  List<bool> isSelected = [false, false, false, false, true, true];
+  List<bool> isSelected = [false, false, false, false, false, false];
+  final PostController postController = Get.find();
+
   @override
   Widget build(BuildContext context) {
     return DefaultTextStyle(
@@ -547,6 +483,19 @@ class _RowbtnState extends State<Rowbtn> {
               onSelected: (bool selected) {
                 setState(() {
                   isSelected[index] = selected;
+                  if (widget.type == 1) {
+                    if (selected) {
+                      postController.bedsort.add(categories[index]);
+                    } else {
+                      postController.bedsort.remove(categories[index]);
+                    }
+                  } else {
+                    if (selected) {
+                      postController.bathsort.add(categories[index]);
+                    } else {
+                      postController.bathsort.remove(categories[index]);
+                    }
+                  }
                 });
               },
               avatar: Icon(
@@ -576,119 +525,119 @@ class _RowbtnState extends State<Rowbtn> {
   }
 }
 
-class CatagoryCpx extends StatefulWidget {
-  final String catagory;
-  const CatagoryCpx({
-    super.key,
-    required this.catagory,
-  });
+// class CatagoryCpx extends StatefulWidget {
+//   final String catagory;
+//   const CatagoryCpx({
+//     super.key,
+//     required this.catagory,
+//   });
 
-  @override
-  State<CatagoryCpx> createState() => _CatagoryCpxState();
-}
+//   @override
+//   State<CatagoryCpx> createState() => _CatagoryCpxState();
+// }
 
-class _CatagoryCpxState extends State<CatagoryCpx> {
-  final PostController postController = Get.find();
+// class _CatagoryCpxState extends State<CatagoryCpx> {
+//   final PostController postController = Get.find();
 
-  getController() {
-    if (widget.catagory == 'Family') {
-      return postController.family.value;
-    } else if (widget.catagory == 'Bachelor') {
-      return postController.bachelor.value;
-    } else if (widget.catagory == 'Office') {
-      return postController.office.value;
-    } else if (widget.catagory == 'Male Sit') {
-      return postController.sitMale.value;
-    } else if (widget.catagory == 'Female Sit') {
-      return postController.sitFemale.value;
-    } else if (widget.catagory == 'Sub-let') {
-      return postController.sublet.value;
-    } else if (widget.catagory == 'Hostel') {
-      return postController.hostel.value;
-    } else if (widget.catagory == 'Shop') {
-      return postController.shop.value;
-    } else if (widget.catagory == 'Only Garage') {
-      return postController.onlygarage.value;
-    }
-  }
+//   getController() {
+//     if (widget.catagory == 'Family') {
+//       return postController.family.value;
+//     } else if (widget.catagory == 'Bachelor') {
+//       return postController.bachelor.value;
+//     } else if (widget.catagory == 'Office') {
+//       return postController.office.value;
+//     } else if (widget.catagory == 'Male Sit') {
+//       return postController.sitMale.value;
+//     } else if (widget.catagory == 'Female Sit') {
+//       return postController.sitFemale.value;
+//     } else if (widget.catagory == 'Sub-let') {
+//       return postController.sublet.value;
+//     } else if (widget.catagory == 'Hostel') {
+//       return postController.hostel.value;
+//     } else if (widget.catagory == 'Shop') {
+//       return postController.shop.value;
+//     } else if (widget.catagory == 'Only Garage') {
+//       return postController.onlygarage.value;
+//     }
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Obx(
-      () {
-        return FilterChip(
-          showCheckmark: false,
-          label: Text(
-            widget.catagory,
-            style: TextStyle(
-              color: Colors.black.withOpacity(0.5),
-            ),
-          ),
-          selected: getController(),
-          onSelected: (value) {
-            if (widget.catagory == 'Family') {
-              postController.family.value = !postController.family.value;
-            } else if (widget.catagory == 'Bachelor') {
-              postController.bachelor.value = !postController.bachelor.value;
-            } else if (widget.catagory == 'Office') {
-              postController.office.value = !postController.office.value;
-            } else if (widget.catagory == 'Male Sit') {
-              postController.sitMale.value = !postController.sitMale.value;
-            } else if (widget.catagory == 'Female Sit') {
-              postController.sitFemale.value = !postController.sitFemale.value;
-            } else if (widget.catagory == 'Sub-let') {
-              postController.sublet.value = !postController.sublet.value;
-            } else if (widget.catagory == 'Hostel') {
-              postController.hostel.value = !postController.hostel.value;
-            } else if (widget.catagory == 'Shop') {
-              postController.shop.value = !postController.shop.value;
-            } else if (widget.catagory == 'Only Garage') {
-              postController.onlygarage.value =
-                  !postController.onlygarage.value;
-            }
-            // postController.allCategoryCheck();
-          },
-          avatar: Icon(
-            getController() ? Icons.check_circle_rounded : Icons.add,
-            color: getController()
-                ? const Color(0xff0166EE)
-                : const Color.fromARGB(255, 192, 194, 198),
-          ),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-          side: BorderSide(
-            color: getController()
-                ? const Color(0xff0166EE)
-                : Colors.black.withOpacity(0.1),
-          ),
-          elevation: 0.3,
-          selectedShadowColor: Colors.black.withOpacity(0.5),
-          shadowColor: Colors.black.withOpacity(0.5),
-          backgroundColor: Colors.white,
-          selectedColor: Colors.white,
-        );
-      },
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Obx(
+//       () {
+//         return FilterChip(
+//           showCheckmark: false,
+//           label: Text(
+//             widget.catagory,
+//             style: TextStyle(
+//               color: Colors.black.withOpacity(0.5),
+//             ),
+//           ),
+//           selected: getController(),
+//           onSelected: (value) {
+//             if (widget.catagory == 'Family') {
+//               postController.family.value = !postController.family.value;
+//             } else if (widget.catagory == 'Bachelor') {
+//               postController.bachelor.value = !postController.bachelor.value;
+//             } else if (widget.catagory == 'Office') {
+//               postController.office.value = !postController.office.value;
+//             } else if (widget.catagory == 'Male Sit') {
+//               postController.sitMale.value = !postController.sitMale.value;
+//             } else if (widget.catagory == 'Female Sit') {
+//               postController.sitFemale.value = !postController.sitFemale.value;
+//             } else if (widget.catagory == 'Sub-let') {
+//               postController.sublet.value = !postController.sublet.value;
+//             } else if (widget.catagory == 'Hostel') {
+//               postController.hostel.value = !postController.hostel.value;
+//             } else if (widget.catagory == 'Shop') {
+//               postController.shop.value = !postController.shop.value;
+//             } else if (widget.catagory == 'Only Garage') {
+//               postController.onlygarage.value =
+//                   !postController.onlygarage.value;
+//             }
+//             // postController.allCategoryCheck();
+//           },
+//           avatar: Icon(
+//             getController() ? Icons.check_circle_rounded : Icons.add,
+//             color: getController()
+//                 ? const Color(0xff0166EE)
+//                 : const Color.fromARGB(255, 192, 194, 198),
+//           ),
+//           shape:
+//               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+//           side: BorderSide(
+//             color: getController()
+//                 ? const Color(0xff0166EE)
+//                 : Colors.black.withOpacity(0.1),
+//           ),
+//           elevation: 0.3,
+//           selectedShadowColor: Colors.black.withOpacity(0.5),
+//           shadowColor: Colors.black.withOpacity(0.5),
+//           backgroundColor: Colors.white,
+//           selectedColor: Colors.white,
+//         );
+//       },
+//     );
+//   }
+// }
 
-class CustomScrollPhysics extends ScrollPhysics {
-  final Function(double) onScroll;
+// class CustomScrollPhysics extends ScrollPhysics {
+//   final Function(double) onScroll;
 
-  const CustomScrollPhysics({required this.onScroll, ScrollPhysics? parent})
-      : super(parent: parent);
+//   const CustomScrollPhysics({required this.onScroll, ScrollPhysics? parent})
+//       : super(parent: parent);
 
-  @override
-  CustomScrollPhysics applyTo(ScrollPhysics? ancestor) {
-    return CustomScrollPhysics(
-      onScroll: onScroll,
-      parent: buildParent(ancestor),
-    );
-  }
+//   @override
+//   CustomScrollPhysics applyTo(ScrollPhysics? ancestor) {
+//     return CustomScrollPhysics(
+//       onScroll: onScroll,
+//       parent: buildParent(ancestor),
+//     );
+//   }
 
-  @override
-  double applyPhysicsToUserOffset(ScrollMetrics position, double offset) {
-    onScroll(position.pixels);
-    return super.applyPhysicsToUserOffset(position, offset);
-  }
-}
+//   @override
+//   double applyPhysicsToUserOffset(ScrollMetrics position, double offset) {
+//     onScroll(position.pixels);
+//     return super.applyPhysicsToUserOffset(position, offset);
+//   }
+// }

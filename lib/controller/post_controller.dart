@@ -43,14 +43,17 @@ class PostController extends GetxController {
   };
   final selectedFilters = <String>[].obs;
 
-  List getSelectedCategoryName() {
+  String getSelectedCategoryName() {
     final selectedCategories = categories.entries
         .where((entry) => entry.value.value)
         .map((entry) => entry.key)
         .toList();
 
-    print('Selected Categories: $selectedCategories');
-    return selectedCategories;
+    // print('Selected Categories: $selectedCategories');
+    String jsonStringArray = jsonEncode(selectedCategories);
+    print('Selected jsonStringArray : $jsonStringArray');
+
+    return jsonStringArray;
   }
 
   var fasalitisTolet = {
@@ -70,14 +73,16 @@ class PostController extends GetxController {
     'Gaser': FasalitisTolet(state: false.obs, icon: Icons.gas_meter_outlined),
   };
 
-  getFasalitiesNameTolet() {
+  String getFasalitiesNameTolet() {
     final selectedCategories = fasalitisTolet.entries
         .where((entry) => entry.value.state.value)
         .map((entry) => entry.key)
         .toList();
 
-    print('Selected Categories: $selectedCategories');
-    return selectedCategories;
+    String jsonStringArray = jsonEncode(selectedCategories);
+    print('Selected jsonStringArray : $jsonStringArray');
+
+    return jsonStringArray;
   }
 
   final bedrooms = 'select'.obs;
@@ -170,7 +175,7 @@ class PostController extends GetxController {
       if (res == null) {
         return false;
       } else {
-        await snakberSuccess(res);
+        // await snakberSuccess(res);
       }
     } finally {}
   }
@@ -185,7 +190,7 @@ class PostController extends GetxController {
           selectedImages[i].path,
           minHeight: 1200,
           minWidth: 800,
-          quality: 25,
+          quality: 20,
           rotate: 0,
         );
         String base64Image = base64Encode(compressedImage!);
@@ -214,7 +219,7 @@ class PostController extends GetxController {
           PostToServerTolet(
             uid: dbController.getUserID(),
             propertyname: propertyNameTolet.text,
-            category: getSelectedCategoryName().toString(),
+            category: getSelectedCategoryName(),
             bed: "",
             bath: "",
             dining: "",
@@ -249,12 +254,12 @@ class PostController extends GetxController {
         );
       } else {
         print("TOlet");
-        print("TOlet");
+
         response = await ApiService.newPostTolet(
           PostToServerTolet(
             uid: dbController.getUserID(),
             propertyname: propertyNameTolet.text,
-            category: getSelectedCategoryName().toString(),
+            category: getSelectedCategoryName(),
             bed: bedrooms.value,
             bath: bathrooms.value,
             dining: dining.value == "select" ? "" : dining.value,
@@ -263,9 +268,10 @@ class PostController extends GetxController {
             facing: facing.value == "select" ? "" : facing.value,
             roomsize: roomSizeTolet.text,
             rentfrom: rentFrom,
-            mentenance: int.parse(maintenanceTolet.text),
+            mentenance: int.parse(
+                maintenanceTolet.text == "" ? "0" : maintenanceTolet.text),
             rent: int.parse(rentTolet.text),
-            fasalitis: getFasalitiesNameTolet().toString(),
+            fasalitis: getFasalitiesNameTolet(),
             image1: imageBase64List[0],
             image2: imageBase64List[1],
             image3: imageBase64List[2],
@@ -307,11 +313,12 @@ class PostController extends GetxController {
         text,
         style: const TextStyle(
           fontSize: 14,
+          color: Colors.white,
         ),
         maxLines: 1,
       ),
       duration: const Duration(seconds: 5),
-      backgroundColor: Colors.black.withOpacity(0.5),
+      backgroundColor: Colors.black.withOpacity(0.1),
       colorText: Colors.white,
       borderRadius: 4,
       margin: const EdgeInsets.all(10.0),
@@ -424,35 +431,25 @@ class PostController extends GetxController {
 
   //* All Tolet POST
   var toletpage = 1.obs;
-  var toletlodingPosts = false.obs;
+  var toletlodingPosts = true.obs;
   var allToletPost = [].obs;
-  var toletStopLoding = false.obs;
   void getAllPost() async {
-    int itemCoutn = allToletPost.length;
-    if (toletStopLoding.value) {
-    } else {
-      toletlodingPosts(true);
-      try {
-        var response = await ApiService.getAllToletPost(
-          toletpage.value,
-          locationController.currentlatitude,
-          locationController.currentlongitude,
-        );
-        if (response != null) {
-          allToletPost.addAll(response);
-          print(allToletPost.length);
-          if (response.isEmpty) {
-            toletlodingPosts(false);
-          }
-          toletpage = toletpage + 1;
+    toletlodingPosts(true);
+    try {
+      var response = await ApiService.getAllToletPost(
+        toletpage.value,
+        locationController.currentlatitude,
+        locationController.currentlongitude,
+      );
+      if (response != null) {
+        allToletPost.addAll(response);
+        print(allToletPost.length);
+        if (response.isEmpty) {
+          toletlodingPosts(false);
         }
-      } finally {
-        toletlodingPosts(false);
-        if (itemCoutn == allToletPost.length) {
-          toletStopLoding.value = true;
-        }
+        toletpage = toletpage + 1;
       }
-    }
+    } finally {}
   }
 
   var singlepostToletloding = false.obs;
@@ -516,6 +513,76 @@ class PostController extends GetxController {
     print('------------------------------');
     print(imageList.length);
     return imageList;
+  }
+
+  var totalResult = 0.obs;
+  var rentmin = 0.obs;
+  var rentmax = 100000.obs;
+
+  var bedsort = [].obs;
+  var bathsort = [].obs;
+
+  String getSortbed(mainList) {
+    String jsonStringArray = jsonEncode(mainList
+        .map((element) => element is String ? element : element.toString())
+        .toList());
+
+    return mainList.isEmpty ? '' : jsonStringArray;
+  }
+
+  String getCategorySort() {
+    final selectedCategories = categories.entries
+        .where((entry) => entry.value.value)
+        .map((entry) => entry.key);
+
+    return selectedCategories.isEmpty
+        ? ''
+        : jsonEncode(selectedCategories.toList());
+  }
+
+  String getFasalitisSort() {
+    final selectedCategories = fasalitisTolet.entries
+        .where((entry) => entry.value.state.value)
+        .map((entry) => entry.key)
+        .toList();
+
+    return selectedCategories.isEmpty
+        ? ''
+        : jsonEncode(selectedCategories.toList());
+  }
+
+  void sortingPostCount() async {
+    try {
+      // print('geolon: ${locationController.currentlongitude.value.toString()}');
+      // print('geolat: ${locationController.currentlatitude.value.toString()}');
+      // print('page: 1');
+      // print('category: ${getCategorySort()}');
+      // print('fasalitis: ${getFasalitisSort()}');
+      // print('rentmin: ${rentmin.value}');
+      // print('rentmax: ${rentmax.value}');
+      // print('bed: ${getSortbed(bedsort)}');
+      // print('bath: ${getSortbed(bathsort)}');
+
+      SortingPost sortingPost = SortingPost(
+        geolon: locationController.currentlongitude.value.toString(),
+        geolat: locationController.currentlatitude.value.toString(),
+        page: 1,
+        category: getCategorySort(),
+        fasalitis: getFasalitisSort(),
+        rentmin: rentmin.value,
+        rentmax: rentmax.value,
+        bed: getSortbed(bedsort),
+        bath: getSortbed(bathsort),
+      );
+
+      String requestBody = sortingPostToJson(sortingPost);
+
+      var response = await ApiService.sortingPostCount(requestBody);
+
+      if (response != null) {
+        totalResult.value = response;
+      }
+    } finally {}
   }
 
   //------------------------sorting

@@ -638,3 +638,129 @@ class MapTolet {
         "rent": rent,
       };
 }
+// To parse this JSON data, do
+//
+//     final mapPostTolet = mapPostToletFromJson(jsonString);
+
+List<MapPostTolet> mapPostToletFromJson(String str) => List<MapPostTolet>.from(
+    json.decode(str).map((x) => MapPostTolet.fromJson(x)));
+
+String mapPostToletToJson(List<MapPostTolet> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
+class MapPostTolet {
+  int postId;
+  int uid;
+  String bed;
+  String bath;
+  String roomsize;
+  String kitchen;
+  int rent;
+  String image1;
+  String location;
+  DateTime time;
+  String geolon;
+  String geolat;
+  double distance;
+
+  MapPostTolet({
+    required this.postId,
+    required this.uid,
+    required this.bed,
+    required this.bath,
+    required this.roomsize,
+    required this.kitchen,
+    required this.rent,
+    required this.image1,
+    required this.location,
+    required this.time,
+    required this.geolon,
+    required this.geolat,
+    required this.distance,
+  });
+
+  factory MapPostTolet.fromJson(Map<String, dynamic> json) => MapPostTolet(
+        postId: json["post_id"],
+        uid: json["uid"],
+        bed: json["bed"],
+        bath: json["bath"],
+        roomsize: json["roomsize"],
+        kitchen: json["kitchen"],
+        rent: json["rent"],
+        image1: json["image1"],
+        location: json["location"],
+        time: DateTime.parse(json["time"]),
+        geolon: json["geolon"],
+        geolat: json["geolat"],
+        distance: json["distance"].toDouble(),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "post_id": postId,
+        "uid": uid,
+        "bed": bed,
+        "bath": bath,
+        "roomsize": roomsize,
+        "kitchen": kitchen,
+        "rent": rent,
+        "image1": image1,
+        "location": location,
+        "time": time.toIso8601String(),
+        "geolon": geolon,
+        "geolat": geolat,
+        "distance": distance,
+      };
+}
+
+SortingPost sortingPostFromJson(String str) =>
+    SortingPost.fromJson(json.decode(str));
+
+String sortingPostToJson(SortingPost data) => json.encode(data.toJson());
+
+class SortingPost {
+  String geolat;
+  String geolon;
+  int page;
+  String category;
+  String fasalitis;
+  int rentmin;
+  int rentmax;
+  String bed;
+  String bath;
+
+  SortingPost({
+    required this.geolat,
+    required this.geolon,
+    required this.page,
+    required this.category,
+    required this.fasalitis,
+    required this.rentmin,
+    required this.rentmax,
+    required this.bed,
+    required this.bath,
+  });
+
+  factory SortingPost.fromJson(Map<String, dynamic> json) => SortingPost(
+        geolat: json["geolat"],
+        geolon: json["geolon"],
+        page: json["page"],
+        category: json["category"],
+        fasalitis: json["fasalitis"],
+        rentmin: json["rentmin"],
+        rentmax: json["rentmax"],
+        bed: json["bed"],
+        bath: json["bath"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "geolat": geolat,
+        "geolon": geolon,
+        "page": page,
+        "category": category,
+        "fasalitis": fasalitis,
+        "rentmin": rentmin,
+        "rentmax": rentmax,
+        "bed": bed,
+        "bath": bath,
+      };
+}

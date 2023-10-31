@@ -92,10 +92,11 @@ class HomeView extends StatefulWidget {
   State<HomeView> createState() => _HomeViewState();
 }
 
-class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
+class _HomeViewState extends State<HomeView>
+    with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   LocationController locationController = Get.put(LocationController());
   PostController postController = Get.put(PostController());
-
+  final GlobalKey<NestedScrollViewState> globalKey = GlobalKey();
   // late TabController _tabController = postController.tabController;
 
   late final AnimationController _controller = AnimationController(
@@ -125,41 +126,63 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
     userController.getnote();
     locationController.getCurrnetlanlongLocation();
 
-    scrollController.addListener(() {
-      if (scrollController.position.pixels > 0) {
-        if (scrollController.position.userScrollDirection ==
-            ScrollDirection.reverse) {
-          if (_offsetAnimation.isCompleted) _controller.reverse();
-          // print("---------reverse--------");
-        }
-        if (scrollController.position.userScrollDirection ==
-            ScrollDirection.forward) {
-          // print("---------forward--------");
-          _controller.forward();
-        }
-      }
+    // scrollController.addListener(() {
+    //   if (scrollController.position.pixels > 0) {
+    //     if (scrollController.position.userScrollDirection ==
+    //         ScrollDirection.reverse) {
+    //       if (_offsetAnimation.isCompleted) _controller.reverse();
+    //       // print("---------reverse--------");
+    //     }
+    //     if (scrollController.position.userScrollDirection ==
+    //         ScrollDirection.forward) {
+    //       // print("---------forward--------");
+    //       _controller.forward();
+    //     }
+    //   }
 
-      if (scrollController.position.atEdge) {
-        if (scrollController.position.pixels == 0) {
-          // print("You're at the top.");
-        } else {
-          // print("You're at the bottom.");
-        }
-      }
-    });
+    //   if (scrollController.position.atEdge) {
+    //     if (scrollController.position.pixels == 0) {
+    //       print("You're at the top.");
+    //     } else {
+    //       print("You're at the bottom.");
+    //     }
+    //   }
+    // });
     postController.tabController = TabController(vsync: this, length: 2);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      globalKey.currentState!.innerController.addListener(() {
+        // print('notify');
+        if (globalKey.currentState!.innerController.position.pixels > 0) {
+          if (globalKey
+                  .currentState!.innerController.position.userScrollDirection ==
+              ScrollDirection.reverse) {
+            if (_offsetAnimation.isCompleted) _controller.reverse();
+            // print("---------reverse--------");
+          }
+          if (globalKey
+                  .currentState!.innerController.position.userScrollDirection ==
+              ScrollDirection.forward) {
+            // print("---------forward--------");
+            _controller.forward();
+          }
+        }
+      });
+    });
     super.initState();
   }
 
   @override
   void deactivate() {
-    scrollController.dispose();
+    // scrollController.dispose();
     _controller.dispose();
     super.deactivate();
   }
 
   @override
+  bool get wantKeepAlive => true;
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Obx(
       () => Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -262,8 +285,10 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
           child: NestedScrollView(
             controller: scrollController,
             floatHeaderSlivers: true,
-            headerSliverBuilder: (context, value) {
-              return [
+            key: globalKey,
+            headerSliverBuilder:
+                (BuildContext context, bool innerBoxIsScrolled) {
+              return <Widget>[
                 SliverAppBar(
                   centerTitle: false,
                   automaticallyImplyLeading: false,
@@ -415,71 +440,6 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                         animationDuration: const Duration(milliseconds: 250),
                       ),
                     ),
-                    // Padding(
-                    //   padding: const EdgeInsets.only(right: 20),
-                    //   child: MapButton(
-                    //     width: 90,
-                    //     height: 40,
-                    //     onTap: () {},
-                    //     onDoubleTap: () {},
-                    //     onSwipe: () {},
-                    //     value: locationController.mapMode.value,
-                    //     iconOff: Feather.align_left,
-                    //     textOn: Feather.align_left,
-                    //     iconOn: Feather.map_pin,
-                    //     textOff: Feather.map_pin,
-                    //     colorOn: Colors.blue,
-                    //     colorOff: Colors.blue,
-                    //     onChanged: (bool state) {
-                    //       locationController.mapMode.value =
-                    //           !locationController.mapMode.value;
-                    //     },
-                    //     animationDuration: const Duration(milliseconds: 250),
-                    //   ),
-                    // ),
-                    // ClipRRect(
-                    //   borderRadius: BorderRadius.circular(50),
-                    //   child: Material(
-                    //     child: InkWell(
-                    //       child: const Padding(
-                    //         padding: EdgeInsets.all(5),
-                    //         child: Icon(Icons.search, size: 28),
-                    //       ),
-                    //       onTap: () {},
-                    //     ),
-
-                    //   ),
-                    // ),
-                    // RotatedBox(
-                    //   quarterTurns: 1,
-                    //   child: ClipRRect(
-                    //     borderRadius: BorderRadius.circular(50),
-                    //     child: Material(
-                    //       child: InkWell(
-                    //         child: const Padding(
-                    //           padding: EdgeInsets.all(5),
-                    //           child: Icon(FontAwesome.sliders, size: 26),
-                    //         ),
-                    //         onTap: () {},
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
-                    // Padding(
-                    //   padding: const EdgeInsets.only(right: 20),
-                    //   child: ClipRRect(
-                    //     borderRadius: BorderRadius.circular(50),
-                    //     child: Material(
-                    //       child: InkWell(
-                    //         child: const Padding(
-                    //           padding: EdgeInsets.all(5),
-                    //           child: Icon(Feather.message_square, size: 26),
-                    //         ),
-                    //         onTap: () {},
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
                   ],
                   elevation: 0.0,
                 ),
@@ -489,42 +449,20 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                 ),
               ];
             },
-            body: TabBarView(
-              // physics: const NeverScrollableScrollPhysics(),
-              controller: postController.tabController,
-              children: [
-                locationController.mapMode.value
-                    ? const MultiMap()
-                    : NotificationListener<ScrollEndNotification>(
-                        onNotification: (scrollEnd) {
-                          final metrics = scrollEnd.metrics;
-                          if (metrics.atEdge) {
-                            bool isTop = metrics.pixels == 0;
-                            if (isTop) {
-                              print('At the top ToletHome');
-                            } else {
-                              print('At the bottom ToletHome');
-                              postController.getAllPost();
-                            }
-                          }
-                          return true;
-                        },
-                        child: const ToletHome(),
-                      ),
-                NotificationListener<ScrollEndNotification>(
-                  onNotification: (scrollEnd) {
-                    final metrics = scrollEnd.metrics;
-                    if (metrics.atEdge) {
-                      bool isTop = metrics.pixels == 0;
-                      if (isTop) {
-                        print('At the top PropertyHome');
-                      } else {
-                        print('At the bottom PropertyHome');
-                      }
-                    }
-                    return true;
-                  },
-                  child: const PropertyHome(),
+            body: CustomScrollView(
+              controller: scrollController,
+              slivers: [
+                SliverFillRemaining(
+                  child: TabBarView(
+                    // physics: const NeverScrollableScrollPhysics(),
+                    controller: postController.tabController,
+                    children: [
+                      locationController.mapMode.value
+                          ? const MultiMap()
+                          : const ToletHome(),
+                      const PropertyHome(),
+                    ],
+                  ),
                 ),
               ],
             ),
