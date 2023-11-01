@@ -46,9 +46,9 @@ class _ToletHomeState extends State<ToletHome> {
   }
 
   @override
-  void deactivate() {
+  void dispose() {
     scrollController.dispose();
-    super.deactivate();
+    super.dispose();
   }
 
   @override

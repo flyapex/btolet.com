@@ -172,10 +172,9 @@ class _HomeViewState extends State<HomeView>
   }
 
   @override
-  void deactivate() {
-    // scrollController.dispose();
+  void dispose() {
     _controller.dispose();
-    super.deactivate();
+    super.dispose();
   }
 
   @override

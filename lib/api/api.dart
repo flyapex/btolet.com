@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:btolet/model/apimodel.dart';
 import 'package:http/http.dart' as http;
 
-var baseUrl = 'https://btolet.com/api';
-// var baseUrl = 'http://10.0.2.2:3000/api';
+// var baseUrl = 'https://btolet.com/api';
+var baseUrl = 'http://10.0.2.2:3000/api';
 
 var headers = {
   "content-type": 'application/json;charset=UTF-8',
@@ -77,7 +77,6 @@ class ApiService {
   }
 
   static Future newPostTolet(PostToServerTolet data) async {
-    print(postToServerToletToJson(data));
     var response = await http.post(
       Uri.parse('$baseUrl/newpostTolet'),
       body: postToServerToletToJson(data),
@@ -164,21 +163,7 @@ class ApiService {
     }
   }
 
-  static Future sortingPost(SortingPost data) async {
-    final response = await http.post(
-      Uri.parse("$baseUrl/sort/postlist"),
-      headers: headers,
-      body: data,
-    );
-    if (response.statusCode == 200) {
-      return mapPostToletFromJson(response.body);
-    } else {
-      return null;
-    }
-  }
-
   static Future sortingPostCount(data) async {
-    print(data);
     final response = await http.post(
       Uri.parse("$baseUrl/sort/postcount"),
       headers: headers,
@@ -190,6 +175,19 @@ class ApiService {
       final int totalCount = data['total_count'];
       print(data['total_count']);
       return totalCount;
+    } else {
+      return null;
+    }
+  }
+
+  static Future sortingPost(data) async {
+    final response = await http.post(
+      Uri.parse("$baseUrl/sort/postlist"),
+      headers: headers,
+      body: sortingPostToJson(data),
+    );
+    if (response.statusCode == 200) {
+      return toletPostListFromJson(response.body);
     } else {
       return null;
     }

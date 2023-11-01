@@ -5,12 +5,12 @@ import 'package:another_xlider/models/slider_step.dart';
 import 'package:another_xlider/models/tooltip/tooltip.dart';
 import 'package:another_xlider/models/trackbar.dart';
 import 'package:btolet/controller/post_controller.dart';
-import 'package:btolet/pages/post/tolet/widget/chips.dart';
 import 'package:btolet/widget/btn.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'widget/element.dart';
+import 'widget/sortingtoletpage.dart';
 
 class SortingTolet extends StatefulWidget {
   const SortingTolet({super.key});
@@ -99,7 +99,9 @@ class _SortingToletState extends State<SortingTolet> {
                           ),
                         ),
                         onPressed: () async {
-                          postController.sortingPostCount();
+                          // postController.sortingPostCount();
+
+                          Get.to(() => const ToletSortPage());
                         },
                         child: Obx(
                           () => Text(
@@ -243,103 +245,122 @@ class _SortHereState extends State<SortHere> with TickerProviderStateMixin {
                       });
                     },
                   ),
-                  Center(
-                    child: Stack(
-                      clipBehavior: Clip.none,
-                      alignment: Alignment.bottomCenter,
-                      children: [
-                        AnimatedContainer(
-                          duration: const Duration(microseconds: 500),
-                          width: Get.width,
-                          height: categorySize,
-                          child: ShaderMask(
-                            shaderCallback: (Rect rect) {
-                              return const LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [
-                                  Colors.purple,
-                                  Colors.transparent,
-                                  Colors.transparent,
-                                  Colors.purple
-                                ],
-                                stops: [
-                                  0.0,
-                                  0.1,
-                                  0.9,
-                                  1.0
-                                ], // 10% purple, 80% transparent, 10% purple
-                              ).createShader(rect);
-                            },
-                            blendMode: BlendMode.dstOut,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  child: Wrap(
-                                    spacing: 10,
-                                    children: postController.categories.entries
-                                        .map((entry) {
-                                      final category = entry.key;
-                                      final categoryState = entry.value;
-                                      return CategoryToletChip(
-                                        category: category,
-                                        categoryState: categoryState,
-                                      );
-                                    }).toList(),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Wrap(
+                          spacing: 10,
+                          children:
+                              postController.categories.entries.map((entry) {
+                            final category = entry.key;
+                            final categoryState = entry.value;
+                            return CategoryToletChipSortTolet(
+                              category: category,
+                              categoryState: categoryState,
+                            );
+                          }).toList(),
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              print(categorySize);
-                              categorySize = (categorySize == 117) ? 170 : 117;
-                            });
-                          },
-                          child: Container(
-                            width: 100,
-                            height: 45,
-                            padding: const EdgeInsets.only(top: 15),
-                            decoration: BoxDecoration(
-                              color: Colors.transparent,
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                            child: Center(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        categorySize == 117
-                                            ? 'See more'
-                                            : 'Close',
-                                        style: const TextStyle(
-                                          color: Color(0xff083437),
-                                        ),
-                                      ),
-                                      Icon(
-                                        categorySize == 117
-                                            ? Feather.chevron_down
-                                            : Feather.chevron_up,
-                                        color: const Color(0xff083437),
-                                        size: 18,
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
+                  // Center(
+                  //   child: Stack(
+                  //     clipBehavior: Clip.none,
+                  //     alignment: Alignment.bottomCenter,
+                  //     children: [
+                  //       AnimatedContainer(
+                  //         duration: const Duration(microseconds: 500),
+                  //         width: Get.width,
+                  //         height: categorySize,
+                  //         child: ShaderMask(
+                  //           shaderCallback: (Rect rect) {
+                  //             return const LinearGradient(
+                  //               begin: Alignment.topCenter,
+                  //               end: Alignment.bottomCenter,
+                  //               colors: [
+                  //                 Colors.purple,
+                  //                 Colors.transparent,
+                  //                 Colors.transparent,
+                  //                 Colors.purple
+                  //               ],
+                  //               stops: [
+                  //                 0.0,
+                  //                 0.1,
+                  //                 0.9,
+                  //                 1.0
+                  //               ], // 10% purple, 80% transparent, 10% purple
+                  //             ).createShader(rect);
+                  //           },
+                  //           blendMode: BlendMode.dstOut,
+                  //           child: Row(
+                  //             mainAxisAlignment: MainAxisAlignment.start,
+                  //             children: [
+                  //               Expanded(
+                  //                 child: Wrap(
+                  //                   spacing: 10,
+                  //                   children: postController.categories.entries
+                  //                       .map((entry) {
+                  //                     final category = entry.key;
+                  //                     final categoryState = entry.value;
+                  //                     return CategoryToletChip(
+                  //                       category: category,
+                  //                       categoryState: categoryState,
+                  //                     );
+                  //                   }).toList(),
+                  //                 ),
+                  //               ),
+                  //             ],
+                  //           ),
+                  //         ),
+                  //       ),
+                  //       GestureDetector(
+                  //         onTap: () {
+                  //           setState(() {
+                  //             print(categorySize);
+                  //             categorySize = (categorySize == 117) ? 170 : 117;
+                  //           });
+                  //         },
+                  //         child: Container(
+                  //           width: 100,
+                  //           height: 45,
+                  //           padding: const EdgeInsets.only(top: 15),
+                  //           decoration: BoxDecoration(
+                  //             color: Colors.transparent,
+                  //             borderRadius: BorderRadius.circular(100),
+                  //           ),
+                  //           child: Center(
+                  //             child: Row(
+                  //               mainAxisAlignment: MainAxisAlignment.center,
+                  //               children: [
+                  //                 Row(
+                  //                   mainAxisAlignment: MainAxisAlignment.center,
+                  //                   children: [
+                  //                     Text(
+                  //                       categorySize == 117
+                  //                           ? 'See more'
+                  //                           : 'Close',
+                  //                       style: const TextStyle(
+                  //                         color: Color(0xff083437),
+                  //                       ),
+                  //                     ),
+                  //                     Icon(
+                  //                       categorySize == 117
+                  //                           ? Feather.chevron_down
+                  //                           : Feather.chevron_up,
+                  //                       color: const Color(0xff083437),
+                  //                       size: 18,
+                  //                     )
+                  //                   ],
+                  //                 ),
+                  //               ],
+                  //             ),
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                   const SizedBox(height: 20),
                   const Row(
                     children: [
@@ -375,7 +396,7 @@ class _SortHereState extends State<SortHere> with TickerProviderStateMixin {
                             final FasalitisTolet fasalitisTolet = entry.value;
                             final categoryState = fasalitisTolet.state;
 
-                            return FasalitisToletChip(
+                            return FasalitisSortTolet(
                               text: text,
                               icon: fasalitisTolet.icon,
                               categoryState: categoryState,
@@ -441,89 +462,6 @@ class _SortHereState extends State<SortHere> with TickerProviderStateMixin {
   }
 }
 
-class SortButton extends StatefulWidget {
-  final int type;
-  const SortButton({super.key, required this.type});
-
-  @override
-  State<SortButton> createState() => _SortButtonState();
-}
-
-class _SortButtonState extends State<SortButton> {
-  List<String> categories = ['1', '2', '3', '4', '5', '6+'];
-  List<bool> isSelected = [false, false, false, false, false, false];
-  final PostController postController = Get.find();
-
-  @override
-  Widget build(BuildContext context) {
-    return DefaultTextStyle(
-      style: const TextStyle(
-        color: Colors.black,
-      ),
-      child: SizedBox(
-        height: 40,
-        width: Get.width,
-        child: ListView.separated(
-          scrollDirection: Axis.horizontal,
-          shrinkWrap: true,
-          // physics: const NeverScrollableScrollPhysics(),
-          itemCount: categories.length,
-          itemBuilder: (context, index) {
-            return FilterChip(
-              showCheckmark: false,
-              // padding: const EdgeInsets.only(left: 5, right: 5),
-              labelPadding: const EdgeInsets.only(right: 5, left: 5),
-              label: Text(
-                categories[index],
-                style: TextStyle(
-                  color: Colors.black.withOpacity(0.5),
-                ),
-              ),
-              selected: isSelected[index],
-              onSelected: (bool selected) {
-                setState(() {
-                  isSelected[index] = selected;
-                  if (widget.type == 1) {
-                    if (selected) {
-                      postController.bedsort.add(categories[index]);
-                    } else {
-                      postController.bedsort.remove(categories[index]);
-                    }
-                  } else {
-                    if (selected) {
-                      postController.bathsort.add(categories[index]);
-                    } else {
-                      postController.bathsort.remove(categories[index]);
-                    }
-                  }
-                });
-              },
-              avatar: Icon(
-                isSelected[index] ? Icons.check_circle_rounded : Icons.add,
-                color: isSelected[index]
-                    ? const Color(0xff0166EE)
-                    : const Color.fromARGB(255, 192, 194, 198),
-              ),
-              elevation: 0.3,
-              side: BorderSide(
-                color: isSelected[index]
-                    ? const Color(0xff0166EE)
-                    : Colors.black.withOpacity(0.1),
-              ),
-              selectedShadowColor: Colors.black.withOpacity(0.5),
-              shadowColor: Colors.black.withOpacity(0.5),
-              backgroundColor: Colors.white,
-              selectedColor: Colors.white,
-            );
-          },
-          separatorBuilder: (context, index) {
-            return const SizedBox(width: 10);
-          },
-        ),
-      ),
-    );
-  }
-}
 
 // class CatagoryCpx extends StatefulWidget {
 //   final String catagory;

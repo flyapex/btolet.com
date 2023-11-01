@@ -585,6 +585,36 @@ class PostController extends GetxController {
     } finally {}
   }
 
+  //* All Tolet POST
+  var toletsortpage = 1.obs;
+  var toletsortlodingPosts = true.obs;
+  var allToletSortedPost = [].obs;
+  void getAllSortedPost() async {
+    toletsortlodingPosts(true);
+    try {
+      SortingPost sortingPost = SortingPost(
+        geolon: locationController.currentlongitude.value.toString(),
+        geolat: locationController.currentlatitude.value.toString(),
+        page: toletsortpage.value,
+        category: getCategorySort(),
+        fasalitis: getFasalitisSort(),
+        rentmin: rentmin.value,
+        rentmax: rentmax.value,
+        bed: getSortbed(bedsort),
+        bath: getSortbed(bathsort),
+      );
+
+      var response = await ApiService.sortingPost(sortingPost);
+      if (response != null) {
+        allToletSortedPost.addAll(response);
+        if (response.isEmpty) {
+          toletsortlodingPosts(false);
+        }
+        toletsortpage = toletsortpage + 1;
+      }
+    } finally {}
+  }
+
   //------------------------sorting
   var family = false.obs;
   var bachelor = false.obs;
