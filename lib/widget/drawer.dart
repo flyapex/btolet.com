@@ -1,5 +1,10 @@
+import 'package:btolet/controller/db_controller.dart';
 import 'package:btolet/controller/user_controller.dart';
-import 'package:btolet/widget/terms/termsandcondition.dart';
+import 'package:btolet/pages/drawer/myads.dart';
+import 'package:btolet/pages/drawer/mypost.dart';
+import 'package:btolet/pages/drawer/profile.dart';
+import 'package:btolet/pages/drawer/saved.dart';
+import 'package:btolet/pages/drawer/termsandcondition.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
@@ -16,6 +21,7 @@ class _CustomeDrawerState extends State<CustomeDrawer>
   late AnimationController _controller;
 
   UserController userController = Get.find();
+  DBController dbController = Get.find();
 
   @override
   void initState() {
@@ -44,7 +50,8 @@ class _CustomeDrawerState extends State<CustomeDrawer>
           children: [
             UserAccountsDrawerHeader(
               decoration: const BoxDecoration(color: Colors.blue),
-              accountName: Text(userController.name.value),
+              accountName: Text(
+                  "${userController.name.value} (${dbController.getUserID()})"),
               currentAccountPicture: CircleAvatar(
                 backgroundImage: NetworkImage(userController.image.value),
               ),
@@ -63,7 +70,7 @@ class _CustomeDrawerState extends State<CustomeDrawer>
                 ),
                 IconButton(
                   onPressed: () async {
-                    Navigator.pop(context);
+                    Get.back();
                   },
                   icon: const Icon(
                     Feather.toggle_right,
@@ -90,7 +97,13 @@ class _CustomeDrawerState extends State<CustomeDrawer>
                   ),
                 ],
               ),
-              onTap: () {},
+              onTap: () {
+                Get.to(
+                  () => const Profile(),
+                  transition: Transition.circularReveal,
+                  duration: const Duration(milliseconds: 500),
+                );
+              },
             ),
             ListTile(
               onTap: () {
@@ -110,6 +123,12 @@ class _CustomeDrawerState extends State<CustomeDrawer>
                 //   ),
                 //   enterBottomSheetDuration: const Duration(milliseconds: 170),
                 // );
+
+                Get.to(
+                  () => const Saved(),
+                  transition: Transition.circularReveal,
+                  duration: const Duration(milliseconds: 500),
+                );
               },
               title: const Row(
                 children: [
@@ -143,7 +162,13 @@ class _CustomeDrawerState extends State<CustomeDrawer>
                   ),
                 ],
               ),
-              onTap: () {},
+              onTap: () {
+                Get.to(
+                  () => const MyPost(),
+                  transition: Transition.circularReveal,
+                  duration: const Duration(milliseconds: 500),
+                );
+              },
             ),
             ListTile(
               title: const Row(
@@ -161,7 +186,13 @@ class _CustomeDrawerState extends State<CustomeDrawer>
                   ),
                 ],
               ),
-              onTap: () {},
+              onTap: () {
+                Get.to(
+                  () => const Myads(),
+                  transition: Transition.circularReveal,
+                  duration: const Duration(milliseconds: 500),
+                );
+              },
             ),
 
             ListTile(

@@ -85,7 +85,7 @@ class _ToletHomeState extends State<ToletHome> {
                 const SizedBox(height: 20),
                 const ImageSlideTolet(
                   topPadding: 10.0,
-                  hight: 180,
+                  hight: 160, //180
                 ),
                 const SizedBox(height: 20),
                 Row(
@@ -221,9 +221,11 @@ class _ToletHomeState extends State<ToletHome> {
 
 class PostsTolet extends StatefulWidget {
   final ToletPostList postData;
+  final bool isLikedvalue;
   const PostsTolet({
     super.key,
     required this.postData,
+    this.isLikedvalue = false,
   });
 
   @override
@@ -232,6 +234,7 @@ class PostsTolet extends StatefulWidget {
 
 class _PostsToletState extends State<PostsTolet> {
   PostController postController = Get.find();
+  UserController userController = Get.find();
   @override
   void initState() {
     // postController.singlepostTolet.clear();
@@ -465,6 +468,7 @@ class _PostsToletState extends State<PostsTolet> {
                 // ),
                 LikeButton(
                   size: 26,
+                  isLiked: widget.isLikedvalue,
                   mainAxisAlignment: MainAxisAlignment.end,
                   circleColor: const CircleColor(
                     start: Color(0xff00ddff),
@@ -478,10 +482,16 @@ class _PostsToletState extends State<PostsTolet> {
                   likeBuilder: (bool isLiked) {
                     return Icon(
                       isLiked ? Icons.favorite : Icons.favorite_border_outlined,
-                      color: isLiked ? Colors.deepPurpleAccent : Colors.grey,
+                      color:
+                          isLiked ? Colors.blue.withOpacity(0.9) : Colors.grey,
                     );
                   },
                   animationDuration: const Duration(milliseconds: 400),
+                  onTap: (isLiked) async {
+                    print(!isLiked);
+                    userController.savedFavPostTolet(widget.postData.postId);
+                    return !isLiked;
+                  },
                 ),
                 const SizedBox(height: 20),
                 Text(

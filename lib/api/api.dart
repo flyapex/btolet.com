@@ -192,4 +192,40 @@ class ApiService {
       return null;
     }
   }
+
+  static Future getsavedPostTolet(int page, int uid) async {
+    final response = await http.post(
+      Uri.parse("$baseUrl/savedtoletpostlist"),
+      headers: headers,
+      body: jsonEncode(
+        {
+          "uid": uid,
+          "page": page,
+        },
+      ),
+    );
+    if (response.statusCode == 200) {
+      return toletPostListFromJson(response.body);
+    } else {
+      return null;
+    }
+  }
+
+  static Future savedPostTolet(int uid, int pid) async {
+    final response = await http.post(
+      Uri.parse("$baseUrl/savetolet"),
+      headers: headers,
+      body: jsonEncode(
+        {
+          "uid": uid,
+          "pid": pid,
+        },
+      ),
+    );
+    if (response.statusCode == 200) {
+      print(response.body);
+    } else {
+      return null;
+    }
+  }
 }

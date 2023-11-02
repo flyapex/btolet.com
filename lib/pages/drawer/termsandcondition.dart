@@ -28,7 +28,9 @@ class Terms extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '''You must accept these terms of service to use
+                  '''
+ACCEPTANCE OF TERMS
+You must accept these terms of service to use
         BTOLET.com. This is a legal agreement
         ('Agreement"') between You and
         BTOLET.com Pvt. Ltd. ("Company"), for use
@@ -43,26 +45,6 @@ class Terms extends StatelessWidget {
         modify or discontinue, temporarily or
         permanently, the Service (or any part thereof)
         with or without notice.
-        
-        ACCEPTANCE OF TERMS
-        You must accept these terms of service to use
-        BTOLET.com. This is a legal agreement
-        ('Agreement"') between You and
-        BTOLET.com Pvt. Ltd. ("Company"), for use
-        of the BTOLET.com services. "You" refers to
-        the person who has registered or taken any
-        services from BTOLET.com. You have to
-        acknowledge these terms as a contract
-        between you and BTOLET.com.
-        SERVICES
-        The Company may at its sole discretion modify
-        the features of the Services from time to time
-        without prior notice. BTOLET.com reserves
-        the right at any time and from time to time to
-        modify or discontinue, temporarily or
-        permanently, the Service (or any part thereof)
-        with or without notice.
-        
         
         ACCOUNTS, PASSWORD AND SECURITY
         You will receive a password and account

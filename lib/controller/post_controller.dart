@@ -176,6 +176,7 @@ class PostController extends GetxController {
         return false;
       } else {
         // await snakberSuccess(res);
+        return res;
       }
     } finally {}
   }
@@ -321,7 +322,7 @@ class PostController extends GetxController {
       backgroundColor: Colors.black.withOpacity(0.1),
       colorText: Colors.white,
       borderRadius: 4,
-      margin: const EdgeInsets.all(10.0),
+      margin: const EdgeInsets.only(left: 10, right: 10, bottom: 25),
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
       maxWidth: 400.0,
       mainButton: TextButton(

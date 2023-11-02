@@ -1,10 +1,13 @@
 import 'package:btolet/api/api.dart';
+import 'package:btolet/controller/db_controller.dart';
 import 'package:btolet/controller/post_controller.dart';
 import 'package:btolet/model/apimodel.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class UserController extends GetxController {
   PostController postController = Get.put(PostController());
+  DBController dbController = Get.find();
 
   var banneradsList = [].obs;
   var bannerLoding = true.obs;
@@ -107,10 +110,61 @@ class UserController extends GetxController {
         postController.nameTolet.text = user.name;
         postController.phonenumberTolet.text = user.phone;
         postController.wappnumberTolet.text = user.wapp;
+
+        userNameTxtController.text = user.name;
+        emailTxtController.text = user.email;
+        phoneTxtController.text = user.phone;
+        wappTxtController.text = user.wapp;
         return user;
       }
     } finally {
       isLoadingUserDetails(false);
     }
   }
+
+  late TabController tabControllerDrawer;
+  TextEditingController userNameTxtController = TextEditingController();
+  TextEditingController emailTxtController = TextEditingController();
+  TextEditingController phoneTxtController = TextEditingController();
+  TextEditingController wappTxtController = TextEditingController();
+
+  var savedPostToletPage = 1.obs;
+  var savedPostToletloding = true.obs;
+  var allToletSavedPost = [].obs;
+  void getAllsavedPostTolet() async {
+    savedPostToletloding(true);
+    try {
+      var response = await ApiService.getsavedPostTolet(
+        savedPostToletPage.value,
+        await dbController.getUserID(),
+      );
+      if (response != null) {
+        allToletSavedPost.addAll(response);
+        print(allToletSavedPost.length);
+        if (response.isEmpty) {
+          savedPostToletloding(false);
+        }
+        savedPostToletPage = savedPostToletPage + 1;
+      }
+    } finally {}
+  }
+
+  void savedFavPostTolet(int pid) async {
+    try {
+      var response =
+          await ApiService.savedPostTolet(await dbController.getUserID(), pid);
+      if (response != null) {
+        allToletSavedPost.addAll(response);
+        print(allToletSavedPost.length);
+        if (response.isEmpty) {
+          savedPostToletloding(false);
+        }
+        savedPostToletPage = savedPostToletPage + 1;
+      }
+    } finally {}
+  }
+
+  //* ADS
+  TextEditingController adsUrlTxtController = TextEditingController();
+  RxString adsUrl = 'https://btolet.com/'.obs;
 }
