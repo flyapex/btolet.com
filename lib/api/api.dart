@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:btolet/model/apimodel.dart';
 import 'package:http/http.dart' as http;
 
-// var baseUrl = 'https://btolet.com/api';
-var baseUrl = 'http://10.0.2.2:3000/api';
+var baseUrl = 'https://btolet.com/api';
+// var baseUrl = 'http://10.0.2.2:3000/api';
 
 var headers = {
   "content-type": 'application/json;charset=UTF-8',
@@ -193,9 +193,28 @@ class ApiService {
     }
   }
 
+  static Future savedPostTolet(int uid, int pid, bool status) async {
+    final response = await http.post(
+      Uri.parse("$baseUrl/savetolet"),
+      headers: headers,
+      body: jsonEncode(
+        {
+          "uid": uid,
+          "pid": pid,
+          "status": status,
+        },
+      ),
+    );
+    if (response.statusCode == 200) {
+      print(response.body);
+    } else {
+      return null;
+    }
+  }
+
   static Future getsavedPostTolet(int page, int uid) async {
     final response = await http.post(
-      Uri.parse("$baseUrl/savedtoletpostlist"),
+      Uri.parse("$baseUrl/getsavedtoletpostlist"),
       headers: headers,
       body: jsonEncode(
         {
@@ -211,14 +230,32 @@ class ApiService {
     }
   }
 
-  static Future savedPostTolet(int uid, int pid) async {
+  static Future getMypostTolet(int page, int uid) async {
     final response = await http.post(
-      Uri.parse("$baseUrl/savetolet"),
+      Uri.parse("$baseUrl/user/mypostTolet"),
       headers: headers,
       body: jsonEncode(
         {
           "uid": uid,
-          "pid": pid,
+          "page": page,
+        },
+      ),
+    );
+    if (response.statusCode == 200) {
+      return toletPostListFromJson(response.body);
+    } else {
+      return null;
+    }
+  }
+
+  static Future getMypostDeleteTolet(int uid, int postId) async {
+    final response = await http.post(
+      Uri.parse("$baseUrl/user/delete/mypostTolet"),
+      headers: headers,
+      body: jsonEncode(
+        {
+          "uid": uid,
+          "post_id": postId,
         },
       ),
     );

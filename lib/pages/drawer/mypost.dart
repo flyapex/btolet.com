@@ -102,7 +102,7 @@ class _MyToletPageState extends State<MyToletPage> {
 
   @override
   void initState() {
-    userController.getAllsavedPostTolet();
+    userController.getmypostPageTolet();
     scrollController.addListener(() {
       if (scrollController.position.atEdge) {
         if (scrollController.position.pixels == 0) {
@@ -110,17 +110,19 @@ class _MyToletPageState extends State<MyToletPage> {
         } else {
           print("You're at the Bottom.");
 
-          userController.getAllsavedPostTolet();
+          userController.getmypostPageTolet();
         }
       }
     });
+
     super.initState();
   }
 
   @override
   void dispose() {
-    userController.savedPostToletPage.value = 1;
-    userController.allToletSavedPost.clear();
+    userController.mypostPageTolet.value = 1;
+    userController.mypostListTolet.clear();
+
     super.dispose();
   }
 
@@ -140,17 +142,17 @@ class _MyToletPageState extends State<MyToletPage> {
           },
         ),
         onRefresh: () async {
-          userController.allToletSavedPost.clear();
-          userController.allToletSavedPost.refresh();
-          userController.savedPostToletPage.value = 1;
-          userController.getAllsavedPostTolet();
-          userController.allToletSavedPost.sentToStream;
+          userController.mypostListTolet.clear();
+          userController.mypostListTolet.refresh();
+          userController.mypostPageTolet.value = 1;
+          userController.getmypostPageTolet();
+          userController.mypostListTolet.sentToStream;
         },
         child: Scrollbar(
           child: Padding(
             padding: const EdgeInsets.only(left: 20, right: 20),
             child: StreamBuilder(
-              stream: userController.allToletSavedPost.stream,
+              stream: userController.mypostListTolet.stream,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.data == null) {
                   // Show a loading indicator
@@ -160,22 +162,21 @@ class _MyToletPageState extends State<MyToletPage> {
                     ),
                   );
                 } else {
-                  return ListView.builder(
-                    // key: UniqueKey(),
-                    // physics: const NeverScrollableScrollPhysics(),
+                  return AnimatedList(
+                    key: userController.deleteKeyMypost,
                     controller: scrollController,
-                    shrinkWrap: true,
-                    itemCount: snapshot.data.length + 1,
-                    itemBuilder: (c, i) {
+                    initialItemCount: userController.mypostListTolet.length,
+                    itemBuilder: (context, i, animation) {
                       if (i < snapshot.data.length) {
                         return Padding(
                           padding: const EdgeInsets.only(top: 20),
                           child: MyPostsTolet(
                             postData: snapshot.data[i],
+                            index: i,
                           ),
                         );
                       } else {
-                        if (userController.savedPostToletloding.value) {
+                        if (userController.mypostPagelodingTolet.value) {
                           return const Padding(
                             padding: EdgeInsets.all(8.0),
                             child: Center(
@@ -231,22 +232,27 @@ class MyTPropertyPage extends StatelessWidget {
 class MyPostsTolet extends StatefulWidget {
   final ToletPostList postData;
   final bool isLikedvalue;
+  final int index;
   const MyPostsTolet({
     super.key,
     required this.postData,
     this.isLikedvalue = false,
+    required this.index,
   });
 
   @override
   State<MyPostsTolet> createState() => _MyPostsToletState();
 }
 
-class _MyPostsToletState extends State<MyPostsTolet> {
+class _MyPostsToletState extends State<MyPostsTolet>
+    with TickerProviderStateMixin {
   PostController postController = Get.find();
   UserController userController = Get.find();
+
   @override
   void initState() {
     // postController.singlepostTolet.clear();
+
     super.initState();
   }
 
@@ -260,13 +266,37 @@ class _MyPostsToletState extends State<MyPostsTolet> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.pop(context, true);
+                ToletPostList removedItem =
+                    userController.mypostListTolet.removeAt(widget.index);
+
+                userController.deleteKeyMypost.currentState!.removeItem(
+                  widget.index,
+                  (context, animation) => SlideTransition(
+                    position: animation.drive(
+                      Tween<Offset>(
+                        begin: const Offset(2, 0.0),
+                        end: const Offset(0.0, 0.0),
+                      ).chain(
+                        CurveTween(curve: Curves.easeIn),
+                      ),
+                    ),
+                    child: MyPostsTolet(
+                      postData: removedItem,
+                      index: widget.index,
+                    ),
+                  ),
+                  duration: const Duration(
+                    milliseconds: 600,
+                  ),
+                );
+                userController.deleteMypostTolet(widget.postData.postId);
+                Get.back();
               },
               child: const Text('Yes'),
             ),
             TextButton(
               onPressed: () {
-                Navigator.pop(context, false);
+                Get.back();
               },
               child: const Text('No'),
             ),
@@ -330,11 +360,6 @@ class _MyPostsToletState extends State<MyPostsTolet> {
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                           color: Colors.grey.withOpacity(0.1),
-                          // image: const DecorationImage(
-                          //   image: NetworkImage(
-                          //       'https://images.unsplash.com/photo-1501183638710-841dd1904471?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'),
-                          //   fit: BoxFit.cover,
-                          // ),
                         ),
                         child:
                             Image.memory(base64Decode(widget.postData.image1)),

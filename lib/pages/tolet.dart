@@ -306,11 +306,6 @@ class _PostsToletState extends State<PostsTolet> {
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                           color: Colors.grey.withOpacity(0.1),
-                          // image: const DecorationImage(
-                          //   image: NetworkImage(
-                          //       'https://images.unsplash.com/photo-1501183638710-841dd1904471?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'),
-                          //   fit: BoxFit.cover,
-                          // ),
                         ),
                         child:
                             Image.memory(base64Decode(widget.postData.image1)),
@@ -489,7 +484,10 @@ class _PostsToletState extends State<PostsTolet> {
                   animationDuration: const Duration(milliseconds: 400),
                   onTap: (isLiked) async {
                     print(!isLiked);
-                    userController.savedFavPostTolet(widget.postData.postId);
+                    userController.savedFavPostTolet(
+                      widget.postData.postId,
+                      !isLiked,
+                    );
                     return !isLiked;
                   },
                 ),

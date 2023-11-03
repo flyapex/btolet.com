@@ -149,10 +149,11 @@ class UserController extends GetxController {
     } finally {}
   }
 
-  void savedFavPostTolet(int pid) async {
+  final GlobalKey<AnimatedListState> deleteKeySaved = GlobalKey();
+  void savedFavPostTolet(int pid, bool status) async {
     try {
-      var response =
-          await ApiService.savedPostTolet(await dbController.getUserID(), pid);
+      var response = await ApiService.savedPostTolet(
+          await dbController.getUserID(), pid, status);
       if (response != null) {
         allToletSavedPost.addAll(response);
         print(allToletSavedPost.length);
@@ -161,6 +162,39 @@ class UserController extends GetxController {
         }
         savedPostToletPage = savedPostToletPage + 1;
       }
+    } finally {}
+  }
+
+  var mypostPageTolet = 1.obs;
+  var mypostPagelodingTolet = true.obs;
+  var mypostListTolet = [].obs;
+  void getmypostPageTolet() async {
+    mypostPagelodingTolet(true);
+    try {
+      var response = await ApiService.getMypostTolet(
+        mypostPageTolet.value,
+        await dbController.getUserID(),
+      );
+      if (response != null) {
+        mypostListTolet.addAll(response);
+        print(mypostListTolet.length);
+        if (response.isEmpty) {
+          mypostPagelodingTolet(false);
+        }
+        mypostPageTolet = mypostPageTolet + 1;
+        mypostPagelodingTolet(false);
+      }
+    } finally {}
+  }
+
+  final GlobalKey<AnimatedListState> deleteKeyMypost = GlobalKey();
+  void deleteMypostTolet(int postid) async {
+    try {
+      var response = await ApiService.getMypostDeleteTolet(
+        await dbController.getUserID(),
+        postid,
+      );
+      if (response != null) {}
     } finally {}
   }
 
