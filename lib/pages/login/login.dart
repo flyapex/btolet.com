@@ -194,10 +194,11 @@ class SingupPage extends StatelessWidget {
 
                       dbController.saveUserId(userdetails.uid);
                       Get.offAll(
-                        const PermissionPage(),
+                        () => const PermissionPage(),
                         transition: Transition.circularReveal,
                         duration: const Duration(milliseconds: 600),
                       );
+
                       Get.snackbar(
                         'Congrats👏🤝',
                         'Welcome ${userdetails.name}',

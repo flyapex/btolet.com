@@ -325,7 +325,8 @@ class _HomeViewState extends State<HomeView>
                                 Obx(
                                   () => Text(
                                     locationController
-                                        .locationAddressShort.value,
+                                        .locationAddressShort.value
+                                        .split(',')[0],
                                     style: TextStyle(
                                       color: const Color(0xff1A3259)
                                           .withOpacity(0.8),
@@ -433,6 +434,7 @@ class _HomeViewState extends State<HomeView>
                         iconOff: Feather.align_left,
                         textSize: 16.0,
                         onChanged: (bool state) {
+                          print(state);
                           locationController.mapMode.value =
                               !locationController.mapMode.value;
                         },

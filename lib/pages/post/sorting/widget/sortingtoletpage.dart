@@ -1,6 +1,8 @@
 import 'package:btolet/controller/post_controller.dart';
 import 'package:btolet/pages/tolet.dart';
+import 'package:btolet/widget/shimmer/shimmer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 
 class ToletSortPage extends StatefulWidget {
@@ -39,6 +41,20 @@ class _ToletSortPageState extends State<ToletSortPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Sorted Post'),
+        centerTitle: false,
+        leadingWidth: 54,
+        leading: Align(
+          alignment: Alignment.centerRight,
+          child: IconButton(
+            onPressed: () {
+              Get.back();
+            },
+            icon: const Icon(Feather.chevron_left),
+          ),
+        ),
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
@@ -50,11 +66,7 @@ class _ToletSortPageState extends State<ToletSortPage> {
                   stream: postController.allToletSortedPost.stream,
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
                     if (snapshot.data == null) {
-                      return const Center(
-                        child: CircularProgressIndicator(
-                          color: Colors.red,
-                        ),
-                      );
+                      return const PostListSimmer(topPadding: 20);
                     } else {
                       return ListView.builder(
                         // key: UniqueKey(),
@@ -71,20 +83,7 @@ class _ToletSortPageState extends State<ToletSortPage> {
                             );
                           } else {
                             if (postController.toletsortlodingPosts.value) {
-                              return const Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Center(
-                                  child: SizedBox(
-                                    width: 40.0,
-                                    height: 40.0,
-                                    child: CircularProgressIndicator(
-                                      value: null,
-                                      strokeWidth: 4,
-                                      color: Colors.blueAccent,
-                                    ),
-                                  ),
-                                ),
-                              );
+                              return const PostListSimmer(topPadding: 20);
                             } else {
                               return const Padding(
                                 padding: EdgeInsets.all(8.0),

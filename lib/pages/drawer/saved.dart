@@ -6,6 +6,7 @@ import 'package:btolet/controller/user_controller.dart';
 import 'package:btolet/model/apimodel.dart';
 import 'package:btolet/pages/property.dart';
 import 'package:btolet/pages/toletpage.dart';
+import 'package:btolet/widget/shimmer/shimmer.dart';
 
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
@@ -157,11 +158,7 @@ class _SavedToletPageState extends State<SavedToletPage> {
               stream: userController.allToletSavedPost.stream,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.data == null) {
-                  return const Center(
-                    child: CircularProgressIndicator(
-                      color: Colors.red,
-                    ),
-                  );
+                  return const PostListSimmer(topPadding: 20);
                 } else {
                   return AnimatedList(
                     key: userController.deleteKeySaved,
@@ -179,20 +176,7 @@ class _SavedToletPageState extends State<SavedToletPage> {
                         );
                       } else {
                         if (userController.savedPostToletloding.value) {
-                          return const Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Center(
-                              child: SizedBox(
-                                width: 40.0,
-                                height: 40.0,
-                                child: CircularProgressIndicator(
-                                  value: null,
-                                  strokeWidth: 4,
-                                  color: Colors.blueAccent,
-                                ),
-                              ),
-                            ),
-                          );
+                          return const PostListSimmer(topPadding: 20);
                         } else {
                           return const Padding(
                             padding: EdgeInsets.all(8.0),
@@ -528,10 +512,13 @@ class _PostsToletSavedState extends State<PostsToletSaved> {
                             CurveTween(curve: Curves.easeIn),
                           ),
                         ),
-                        child: PostsToletSaved(
-                          postData: removedItem,
-                          index: widget.index,
-                          isLikedvalue: false,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 20),
+                          child: PostsToletSaved(
+                            postData: removedItem,
+                            index: widget.index,
+                            isLikedvalue: false,
+                          ),
                         ),
                       ),
                       duration: const Duration(

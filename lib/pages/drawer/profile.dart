@@ -15,19 +15,19 @@ class Profile extends StatelessWidget {
     PostController postController = Get.find();
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: Colors.blue,
+        centerTitle: false,
+        backgroundColor: Colors.white,
         title: const Text(
           'Profile',
           style: TextStyle(
             fontSize: 16,
-            color: Colors.white,
+            color: Colors.black,
           ),
         ),
         leading: IconButton(
           icon: const Icon(
             Feather.chevron_left,
-            color: Colors.white,
+            color: Colors.black,
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),

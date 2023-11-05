@@ -5,6 +5,7 @@ import 'package:btolet/controller/user_controller.dart';
 import 'package:btolet/model/apimodel.dart';
 import 'package:btolet/pages/toletpage.dart';
 import 'package:btolet/widget/imageslidetolet.dart';
+import 'package:btolet/widget/shimmer/shimmer.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -160,12 +161,12 @@ class _ToletHomeState extends State<ToletHome> {
                   stream: postController.allToletPost.stream,
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
                     if (snapshot.data == null) {
-                      // Show a loading indicator
-                      return const Center(
-                        child: CircularProgressIndicator(
-                          color: Colors.red,
-                        ),
-                      );
+                      // return const Center(
+                      //   child: CircularProgressIndicator(
+                      //     color: Colors.red,
+                      //   ),
+                      // );
+                      return const PostListSimmer(topPadding: 20);
                     } else {
                       return ListView.builder(
                         // key: UniqueKey(),
@@ -182,20 +183,21 @@ class _ToletHomeState extends State<ToletHome> {
                             );
                           } else {
                             if (postController.toletlodingPosts.value) {
-                              return const Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Center(
-                                  child: SizedBox(
-                                    width: 40.0,
-                                    height: 40.0,
-                                    child: CircularProgressIndicator(
-                                      value: null,
-                                      strokeWidth: 4,
-                                      color: Colors.blueAccent,
-                                    ),
-                                  ),
-                                ),
-                              );
+                              return const PostListSimmer(topPadding: 20);
+                              // return const Padding(
+                              //   padding: EdgeInsets.all(8.0),
+                              //   child: Center(
+                              //     child: SizedBox(
+                              //       width: 40.0,
+                              //       height: 40.0,
+                              //       child: CircularProgressIndicator(
+                              //         value: null,
+                              //         strokeWidth: 4,
+                              //         color: Colors.red,
+                              //       ),
+                              //     ),
+                              //   ),
+                              // );
                             } else {
                               return const Padding(
                                 padding: EdgeInsets.all(8.0),

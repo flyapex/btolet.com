@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:btolet/controller/user_controller.dart';
+import 'package:btolet/widget/shimmer/shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ImageSlideTolet extends StatefulWidget {
   final double topPadding;
@@ -69,26 +71,12 @@ class _ImageSlideToletState extends State<ImageSlideTolet> {
           decoration: BoxDecoration(
             color: bannerController.bannerLoding.value
                 ? Colors.white
-                // ? Color(0xffE3E8FF)
                 : Colors.transparent,
             borderRadius: BorderRadius.circular(6),
           ),
           child: bannerController.bannerLoding.value
-              // ? const Center(child: CircularProgressIndicator())
-              ? Center(
-                  // child: Lottie.asset(
-                  //   'assets/lottie/banner4.json',
-                  //   // width: 70,
-
-                  //   fit: BoxFit.fitHeight,
-                  // ),
-                  child: Container(
-                    height: 200,
-                    decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                  ),
+              ? const Center(
+                  child: AdsBannerShimmer(),
                 )
               : Stack(
                   children: [
@@ -96,17 +84,30 @@ class _ImageSlideToletState extends State<ImageSlideTolet> {
                       controller: pageController,
                       itemCount: bannerController.banneradsList.length,
                       itemBuilder: (context, index) {
-                        return Container(
-                          height: 200,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(6),
-                            image: DecorationImage(
-                              image: MemoryImage(
-                                base64Decode(
-                                  bannerController.banneradsList[index].image,
+                        return InkWell(
+                          onTap: () async {
+                            final Uri url = Uri.parse(
+                                bannerController.banneradsList[index].url);
+
+                            if (!await launchUrl(
+                              url,
+                              mode: LaunchMode.externalApplication,
+                            )) {
+                              throw Exception('Could not launch $url');
+                            }
+                          },
+                          child: Container(
+                            height: 200,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(6),
+                              image: DecorationImage(
+                                image: MemoryImage(
+                                  base64Decode(
+                                    bannerController.banneradsList[index].image,
+                                  ),
                                 ),
+                                fit: BoxFit.cover,
                               ),
-                              fit: BoxFit.cover,
                             ),
                           ),
                         );
@@ -127,11 +128,7 @@ class _ImageSlideToletState extends State<ImageSlideTolet> {
                             dotColor: Colors.white,
                             activeDotColor: Colors.white,
                           ),
-                          onDotClicked: (index) {
-                            // setState(() {
-                            //   _currentPage = index;
-                            // });
-                          },
+                          onDotClicked: (index) {},
                         ),
                       ),
                     ),

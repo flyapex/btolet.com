@@ -12,31 +12,51 @@ String bannerListModelToJson(List<BannerListModel> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class BannerListModel {
+  int bId;
+  int uid;
+  String image;
+  String url;
+  String number;
+  int durationDay;
+  int amount;
+  DateTime postTime;
+  int active;
+
   BannerListModel({
     required this.bId,
+    required this.uid,
     required this.image,
-    required this.text,
+    required this.url,
+    required this.number,
+    required this.durationDay,
+    required this.amount,
     required this.postTime,
+    required this.active,
   });
-
-  int bId;
-  String image;
-  String text;
-  DateTime postTime;
 
   factory BannerListModel.fromJson(Map<String, dynamic> json) =>
       BannerListModel(
         bId: json["b_id"],
+        uid: json["uid"],
         image: json["image"],
-        text: json["text"],
+        url: json["url"],
+        number: json["number"],
+        durationDay: json["duration_day"],
+        amount: json["amount"],
         postTime: DateTime.parse(json["post_time"]),
+        active: json["active"],
       );
 
   Map<String, dynamic> toJson() => {
         "b_id": bId,
+        "uid": uid,
         "image": image,
-        "text": text,
+        "url": url,
+        "number": number,
+        "duration_day": durationDay,
+        "amount": amount,
         "post_time": postTime.toIso8601String(),
+        "active": active,
       };
 }
 

@@ -110,7 +110,7 @@ class LocationController extends GetxController {
   //---------------Multi map
 
   var mapToletList = [].obs;
-  var mapLoding = false.obs;
+  var mapLoding = true.obs;
   Future mapApi() async {
     try {
       mapToletList.clear();
@@ -125,7 +125,7 @@ class LocationController extends GetxController {
   }
 
   var mapPostToletList = [].obs;
-  var mapPostLoding = false.obs;
+  var mapPostLoding = true.obs;
   Future mapPostApi(geolat, geolon) async {
     try {
       mapPostToletList.clear();

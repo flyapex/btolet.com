@@ -63,11 +63,13 @@ dependencies:
   video_player: ^2.7.2
   get_storage: ^2.1.1
   animated_text_kit: ^4.2.2
-  geocoding: ^2.1.1
+  # geocoding: ^2.1.1
   timeago: ^3.5.0
   dio: ^5.3.3
   custom_refresh_indicator: ^2.2.1
   flutter_image_compress: ^2.1.0
+  shimmer: ^3.0.0
+  google_mobile_ads: ^3.1.0
 
 
 

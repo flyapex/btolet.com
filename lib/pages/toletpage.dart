@@ -3,10 +3,13 @@ import 'dart:io';
 import 'dart:ui';
 import 'package:btolet/controller/post_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:label_marker/label_marker.dart';
 import 'package:like_button/like_button.dart';
 import 'package:maps_launcher/maps_launcher.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -29,7 +32,34 @@ class _ToletPageState extends State<ToletPage> {
   void initState() {
     print(widget.postid);
     postController.getSinglePost(widget.postid);
+    rootBundle.loadString('assets/map/map_style.txt').then((string) {
+      _mapStyle = string;
+    });
+    addMarker();
     super.initState();
+  }
+
+  late String _mapStyle;
+  Set<Marker> markers = {};
+  void addMarker() async {
+    await markers.addLabelMarker(
+      LabelMarker(
+        label:
+            "৳ ${NumberFormat.decimalPattern().format(postController.singlepostTolet.rent)}",
+        // label: data.rent.toString(),
+        markerId: MarkerId(postController.singlepostTolet.postId.toString()),
+        position: LatLng(double.parse(postController.singlepostTolet.geolat),
+            double.parse(postController.singlepostTolet.geolon)),
+        backgroundColor: Colors.orange,
+        infoWindow: InfoWindow(
+          title:
+              '${postController.singlepostTolet.bed}bed,${postController.singlepostTolet.bath}bath,${postController.singlepostTolet.kitchen}kitchen',
+        ),
+        onTap: () async {},
+      ),
+    );
+
+    setState(() {});
   }
 
   @override
@@ -443,9 +473,12 @@ class _ToletPageState extends State<ToletPage> {
                             children: [
                               InkWell(
                                 onTap: () async {
-                                  var lat = 22.789698;
-                                  var lng = 89.559075;
-                                  MapsLauncher.launchCoordinates(lat, lng);
+                                  MapsLauncher.launchCoordinates(
+                                    double.parse(
+                                        postController.singlepostTolet.geolat),
+                                    double.parse(
+                                        postController.singlepostTolet.geolon),
+                                  );
                                 },
                                 child: Row(
                                   children: [
@@ -580,21 +613,23 @@ class _ToletPageState extends State<ToletPage> {
                                   ),
                                 ],
                               ),
-                              const SizedBox(height: 15),
+
                               Details(
                                 type: "Property Name",
                                 detailstext:
                                     postController.singlepostTolet.propertyname,
                                 icon: Icons.home_rounded,
                               ),
-                              const SizedBox(height: 15),
+
                               Details(
                                 type: "Property Type",
-                                detailstext:
-                                    postController.singlepostTolet.category,
+                                detailstext: json
+                                    .decode(
+                                        postController.singlepostTolet.category)
+                                    .join(", "),
                                 icon: Icons.business_outlined,
                               ),
-                              const SizedBox(height: 15),
+
                               // const Details(
                               //   type: "Bedrooms",
                               //   detailstext: "5",
@@ -613,7 +648,7 @@ class _ToletPageState extends State<ToletPage> {
                                     postController.singlepostTolet.dining,
                                 icon: Icons.dining_outlined,
                               ),
-                              const SizedBox(height: 15),
+
                               Details(
                                 type: "Kitchen",
                                 detailstext:
@@ -626,36 +661,38 @@ class _ToletPageState extends State<ToletPage> {
                               //   detailstext: "450 m\u00b2(4,849 ft\u00b2)",
                               //   icon: Icons.all_inclusive_rounded,
                               // ),
-                              const SizedBox(height: 15),
+
                               Details(
                                 type: "Floor",
                                 detailstext:
                                     postController.singlepostTolet.floornumber,
                                 icon: Icons.person_pin_circle_rounded,
                               ),
-                              const SizedBox(height: 15),
+
                               Details(
                                 type: "Facing",
                                 detailstext:
                                     postController.singlepostTolet.facing,
                                 icon: Icons.window_outlined,
                               ),
-                              const SizedBox(height: 15),
+
                               Details(
                                 type: "Rent From",
                                 detailstext:
                                     "${postController.singlepostTolet.time.day}",
                                 icon: Icons.access_time,
                               ),
-                              const SizedBox(height: 15),
+
                               Details(
                                 type: "Facilities",
-                                detailstext:
-                                    postController.singlepostTolet.fasalitis,
+                                detailstext: json
+                                    .decode(postController
+                                        .singlepostTolet.fasalitis)
+                                    .join(", "),
                                 icon: Icons.search_sharp,
                                 textColor: Colors.green,
                               ),
-                              const SizedBox(height: 15),
+
                               Details(
                                 type: "Maintenance",
                                 detailstext:
@@ -663,7 +700,6 @@ class _ToletPageState extends State<ToletPage> {
                                 icon: Icons.monetization_on_outlined,
                               ),
 
-                              const SizedBox(height: 15),
                               Details(
                                 type: "Short Address",
                                 detailstext:
@@ -727,18 +763,74 @@ class _ToletPageState extends State<ToletPage> {
                               ),
                               const SizedBox(height: 20),
                               Container(
-                                height: 100,
+                                height: 130,
                                 decoration: BoxDecoration(
-                                  color: Colors.red,
+                                  color: Colors.white,
                                   borderRadius: BorderRadius.circular(6),
-                                  image: const DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: NetworkImage(
-                                      "https://media.wired.com/photos/59269cd37034dc5f91bec0f1/master/w_1920,c_limit/GoogleMapTA.jpg",
+                                ),
+                                child: Stack(
+                                  children: [
+                                    GoogleMap(
+                                      onMapCreated: (controller) {
+                                        controller.setMapStyle(_mapStyle);
+                                      },
+                                      mapType: MapType.normal,
+                                      zoomControlsEnabled: false,
+                                      myLocationButtonEnabled: false,
+                                      initialCameraPosition: CameraPosition(
+                                        target: LatLng(
+                                          double.parse(postController
+                                              .singlepostTolet.geolat),
+                                          double.parse(postController
+                                              .singlepostTolet.geolon),
+                                        ),
+                                        zoom: 16.0,
+                                      ),
+                                      mapToolbarEnabled: false,
+                                      markers: markers,
+                                      compassEnabled: true,
                                     ),
-                                  ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Align(
+                                        alignment: Alignment.bottomRight,
+                                        child: InkWell(
+                                          onTap: () {
+                                            MapsLauncher.launchCoordinates(
+                                              double.parse(postController
+                                                  .singlepostTolet.geolat),
+                                              double.parse(postController
+                                                  .singlepostTolet.geolon),
+                                            );
+                                          },
+                                          child: const CircleAvatar(
+                                            radius: 20,
+                                            backgroundColor: Colors.blue,
+                                            child: Icon(
+                                              // Icons.turn_right,
+                                              Feather.navigation,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  ],
                                 ),
                               ),
+                              // Container(
+                              //   height: 100,
+                              //   decoration: BoxDecoration(
+                              //     color: Colors.red,
+                              //     borderRadius: BorderRadius.circular(6),
+                              //     image: const DecorationImage(
+                              //       fit: BoxFit.cover,
+                              //       image: NetworkImage(
+                              //         "https://media.wired.com/photos/59269cd37034dc5f91bec0f1/master/w_1920,c_limit/GoogleMapTA.jpg",
+                              //       ),
+                              //     ),
+                              //   ),
+                              // ),
                               // Container(
                               //   height: 100,
                               //   width: width,
@@ -797,35 +889,42 @@ class Details extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: Row(
+    return detailstext.isEmpty
+        ? const SizedBox()
+        : Column(
             children: [
-              Icon(
-                icon,
-                color: const Color(0xff083437),
-              ),
-              const SizedBox(width: 10),
-              Text(
-                type,
-                style: const TextStyle(
-                  color: Color(0xff083437),
-                ),
+              const SizedBox(height: 15),
+              Row(
+                children: [
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Icon(
+                          icon,
+                          color: const Color(0xff083437),
+                        ),
+                        const SizedBox(width: 10),
+                        Text(
+                          type,
+                          style: const TextStyle(
+                            color: Color(0xff083437),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      detailstext,
+                      style: TextStyle(
+                        color: textColor,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
-          ),
-        ),
-        Expanded(
-          child: Text(
-            detailstext,
-            style: TextStyle(
-              color: textColor,
-            ),
-          ),
-        ),
-      ],
-    );
+          );
   }
 }
 

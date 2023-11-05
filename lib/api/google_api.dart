@@ -77,8 +77,11 @@ class GoogleMapApi {
       // print('Display Name: $displayName');
       // print(data['address']['city']);
       // print(data['address']['suburb']);
-      locationController.locationAddressShort.value =
-          data['address']['suburb'].toString();
+      // print(data['address']['suburb']['city']);
+      // print(response.body);
+      var suburb = data["address"]["suburb"];
+      var city = data["address"]["city"];
+      locationController.locationAddressShort.value = suburb + ", " + city;
       return data['display_name'].toString();
 
       // return mapSuggstionModelFromJson(response.body);
