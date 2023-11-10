@@ -10,7 +10,16 @@ import 'pages/login/login.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // 0D8D49BE872F9CDB19FA9A709F0500DC
   MobileAds.instance.initialize();
+  MobileAds.instance
+    ..initialize()
+    ..updateRequestConfiguration(
+      RequestConfiguration(testDeviceIds: [
+        '0D8D49BE872F9CDB19FA9A709F0500DC',
+        '6AE4A6FCA1ACDDF6DF236166FAD1D606'
+      ]),
+    );
   await GetStorage.init();
   runApp(const MyApp());
 }

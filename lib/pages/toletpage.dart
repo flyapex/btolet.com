@@ -1,7 +1,8 @@
 import 'dart:convert';
-import 'dart:io';
 import 'dart:ui';
+import 'package:btolet/controller/ads_controller.dart';
 import 'package:btolet/controller/post_controller.dart';
+import 'package:btolet/widget/shimmer/shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -13,7 +14,6 @@ import 'package:label_marker/label_marker.dart';
 import 'package:like_button/like_button.dart';
 import 'package:maps_launcher/maps_launcher.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class ToletPage extends StatefulWidget {
@@ -26,17 +26,30 @@ class ToletPage extends StatefulWidget {
 
 class _ToletPageState extends State<ToletPage> {
   PostController postController = Get.find();
+  AdsController adsController = Get.put(AdsController());
   // late ToletSinglePost data;   data = await postController.singlepostTolet;
 
   @override
   void initState() {
-    print(widget.postid);
     postController.getSinglePost(widget.postid);
     rootBundle.loadString('assets/map/map_style.txt').then((string) {
       _mapStyle = string;
     });
     addMarker();
     super.initState();
+    adsController.createInterstitialAd();
+    adsController.createRewardedAd();
+    adsController.createRewardedInterstitialAd();
+    // _loadBannerAd();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    // _bannerAd.dispose();
+    adsController.interstitialAd?.dispose();
+    adsController.rewardedAd?.dispose();
+    adsController.rewardedInterstitialAd?.dispose();
   }
 
   late String _mapStyle;
@@ -69,11 +82,7 @@ class _ToletPageState extends State<ToletPage> {
 
     return Obx(
       () => postController.singlepostToletloding.value
-          ? const Scaffold(
-              body: Center(
-                child: CircularProgressIndicator(),
-              ),
-            )
+          ? const SinglePostShimmer()
           : Scaffold(
               floatingActionButtonLocation:
                   FloatingActionButtonLocation.centerDocked,
@@ -91,13 +100,16 @@ class _ToletPageState extends State<ToletPage> {
                           flex: 1,
                           child: InkWell(
                             onTap: () async {
-                              final call = Uri.parse(
-                                  'tel:${postController.singlepostTolet.phone}');
-                              if (await canLaunchUrl(call)) {
-                                launchUrl(call);
-                              } else {
-                                throw 'Could not launch $call';
-                              }
+                              adsController.showRewardedAd(
+                                  postController.singlepostTolet.phone);
+
+                              // final call = Uri.parse(
+                              //     'tel:${postController.singlepostTolet.phone}');
+                              // if (await canLaunchUrl(call)) {
+                              //   launchUrl(call);
+                              // } else {
+                              //   throw 'Could not launch $call';
+                              // }
                             },
                             child: Container(
                               padding: const EdgeInsets.only(
@@ -137,24 +149,26 @@ class _ToletPageState extends State<ToletPage> {
                           flex: 1,
                           child: InkWell(
                             onTap: () async {
-                              var uri =
-                                  'sms:${postController.singlepostTolet.phone}?body=hello%20there';
-                              // ignore: deprecated_member_use
-                              if (await canLaunch(uri)) {
-                                // ignore: deprecated_member_use
-                                await launch(uri);
-                              } else {
-                                // iOS
-                                var uri =
-                                    'sms:${postController.singlepostTolet.phone}?body=hello%20there';
-                                // ignore: deprecated_member_use
-                                if (await canLaunch(uri)) {
-                                  // ignore: deprecated_member_use
-                                  await launch(uri);
-                                } else {
-                                  throw 'Could not launch $uri';
-                                }
-                              }
+                              adsController.showRewardedInterstitialAd();
+
+                              // var uri =
+                              //     'sms:${postController.singlepostTolet.phone}?body=hello%20there';
+                              // // ignore: deprecated_member_use
+                              // if (await canLaunch(uri)) {
+                              //   // ignore: deprecated_member_use
+                              //   await launch(uri);
+                              // } else {
+                              //   // iOS
+                              //   var uri =
+                              //       'sms:${postController.singlepostTolet.phone}?body=hello%20there';
+                              //   // ignore: deprecated_member_use
+                              //   if (await canLaunch(uri)) {
+                              //     // ignore: deprecated_member_use
+                              //     await launch(uri);
+                              //   } else {
+                              //     throw 'Could not launch $uri';
+                              //   }
+                              // }
                             },
                             child: Container(
                               padding: const EdgeInsets.only(
@@ -193,23 +207,24 @@ class _ToletPageState extends State<ToletPage> {
                           flex: 2,
                           child: InkWell(
                             onTap: () async {
-                              String appUrl;
-                              String phone =
-                                  postController.singlepostTolet.wapp;
-                              String message = 'Surprice Bitch! ';
-                              if (Platform.isAndroid) {
-                                appUrl =
-                                    "whatsapp://send?phone=$phone&text=${Uri.parse(message)}";
-                              } else {
-                                appUrl =
-                                    "https://api.whatsapp.com/send?phone=$phone=${Uri.parse(message)}"; // URL for non-Android devices
-                              }
+                              adsController.showInterstitialAd();
+                              // String appUrl;
+                              // String phone =
+                              //     postController.singlepostTolet.wapp;
+                              // String message = 'Surprice Bitch! ';
+                              // if (Platform.isAndroid) {
+                              //   appUrl =
+                              //       "whatsapp://send?phone=$phone&text=${Uri.parse(message)}";
+                              // } else {
+                              //   appUrl =
+                              //       "https://api.whatsapp.com/send?phone=$phone=${Uri.parse(message)}"; // URL for non-Android devices
+                              // }
 
-                              if (await canLaunchUrl(Uri.parse(appUrl))) {
-                                await launchUrl(Uri.parse(appUrl));
-                              } else {
-                                throw 'Could not launch $appUrl';
-                              }
+                              // if (await canLaunchUrl(Uri.parse(appUrl))) {
+                              //   await launchUrl(Uri.parse(appUrl));
+                              // } else {
+                              //   throw 'Could not launch $appUrl';
+                              // }
                             },
                             child: Container(
                               padding: const EdgeInsets.only(

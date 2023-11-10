@@ -1,10 +1,11 @@
 import 'dart:convert';
-
 import 'package:btolet/model/apimodel.dart';
 import 'package:http/http.dart' as http;
 
-var baseUrl = 'https://btolet.com/api';
+// var baseUrl = 'https://btolet.com/api';
 // var baseUrl = 'http://10.0.2.2:3000/api';
+var baseUrl = 'http://109.123.234.150/api';
+// var baseUrl = 'http://109.123.234.150:4000/api';
 
 var headers = {
   "content-type": 'application/json;charset=UTF-8',
@@ -14,8 +15,10 @@ var headers = {
 class ApiService {
   // loding banner ads api
   static Future banner() async {
+    print("data Loding");
     final response = await http.get(Uri.parse("$baseUrl/banner"));
     if (response.statusCode == 200) {
+      print("data Loding End");
       return bannerListModelFromJson(response.body);
     } else {
       return null;

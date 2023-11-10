@@ -453,7 +453,7 @@ class PostController extends GetxController {
     } finally {}
   }
 
-  var singlepostToletloding = false.obs;
+  var singlepostToletloding = true.obs;
   late ToletSinglePost singlepostTolet;
   void getSinglePost(postid) async {
     imageList.clear();
