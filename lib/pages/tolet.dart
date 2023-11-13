@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:ui';
+import 'package:btolet/controller/location_controller.dart';
 import 'package:btolet/controller/post_controller.dart';
 import 'package:btolet/controller/user_controller.dart';
 import 'package:btolet/model/apimodel.dart';
@@ -29,7 +30,7 @@ class _ToletHomeState extends State<ToletHome> {
   final scrollController = ScrollController();
   UserController userController = Get.find();
   PostController postController = Get.put(PostController());
-
+  LocationController locationController = Get.find();
   @override
   void initState() {
     postController.getAllPost();
@@ -92,17 +93,29 @@ class _ToletHomeState extends State<ToletHome> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    RichText(
-                      text: TextSpan(
-                        text: ' 11,983 ads in ',
-                        style: TextStyle(
-                            fontSize: 16, color: Colors.black.withOpacity(0.8)),
-                        children: const [
-                          TextSpan(
-                            text: 'Khulna',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ],
+                    Obx(
+                      () => RichText(
+                        text: TextSpan(
+                          text:
+                              "${NumberFormat.decimalPattern().format(locationController.currentPostCount.value)} ads in ",
+                          // text: ' 11,983 ads in ',
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.black.withOpacity(0.8)),
+                          children: [
+                            TextSpan(
+                              text: locationController
+                                          .locationAddressShort.value ==
+                                      "Location"
+                                  ? "Location"
+                                  : locationController
+                                      .locationAddressShort.value
+                                      .split(', ')[1],
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     InkWell(
@@ -166,7 +179,10 @@ class _ToletHomeState extends State<ToletHome> {
                       //     color: Colors.red,
                       //   ),
                       // );
-                      return const PostListSimmer(topPadding: 20);
+                      return const PostListSimmer(
+                        topPadding: 20,
+                        count: 10,
+                      );
                     } else {
                       return ListView.builder(
                         // key: UniqueKey(),
@@ -183,21 +199,15 @@ class _ToletHomeState extends State<ToletHome> {
                             );
                           } else {
                             if (postController.toletlodingPosts.value) {
-                              return const PostListSimmer(topPadding: 20);
-                              // return const Padding(
-                              //   padding: EdgeInsets.all(8.0),
-                              //   child: Center(
-                              //     child: SizedBox(
-                              //       width: 40.0,
-                              //       height: 40.0,
-                              //       child: CircularProgressIndicator(
-                              //         value: null,
-                              //         strokeWidth: 4,
-                              //         color: Colors.red,
-                              //       ),
-                              //     ),
-                              //   ),
+                              // return const PostListSimmer(
+                              //   topPadding: 20,
+                              //   count: 4,
                               // );
+                              return const Center(
+                                child: CircularProgressIndicator(
+                                  color: Colors.red,
+                                ),
+                              );
                             } else {
                               return const Padding(
                                 padding: EdgeInsets.all(8.0),

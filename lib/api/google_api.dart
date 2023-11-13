@@ -79,9 +79,15 @@ class GoogleMapApi {
       // print(data['address']['suburb']);
       // print(data['address']['suburb']['city']);
       // print(response.body);
+
       var suburb = data["address"]["suburb"];
       var city = data["address"]["city"];
       locationController.locationAddressShort.value = suburb + ", " + city;
+      // print(city);
+      if (locationController.locationAddress.value.isNotEmpty) {
+        locationController.getCurrentPostCount(city);
+      }
+      // print(city);
       return data['display_name'].toString();
 
       // return mapSuggstionModelFromJson(response.body);

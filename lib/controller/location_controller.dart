@@ -107,6 +107,18 @@ class LocationController extends GetxController {
     }
   }
 
+// Current locaiton Count
+
+  var currentPostCount = 123.obs;
+  Future getCurrentPostCount(location) async {
+    try {
+      var response = await ApiService.postCountArea(location);
+      if (response != null) {
+        currentPostCount.value = response;
+      }
+    } finally {}
+  }
+
   //---------------Multi map
 
   var mapToletList = [].obs;

@@ -517,6 +517,7 @@ class PostController extends GetxController {
   }
 
   var totalResult = 0.obs;
+  var totalResultloding = false.obs;
   var rentmin = 0.obs;
   var rentmax = 100000.obs;
 
@@ -554,6 +555,7 @@ class PostController extends GetxController {
 
   void sortingPostCount() async {
     try {
+      totalResultloding(true);
       // print('geolon: ${locationController.currentlongitude.value.toString()}');
       // print('geolat: ${locationController.currentlatitude.value.toString()}');
       // print('page: 1');
@@ -563,7 +565,6 @@ class PostController extends GetxController {
       // print('rentmax: ${rentmax.value}');
       // print('bed: ${getSortbed(bedsort)}');
       // print('bath: ${getSortbed(bathsort)}');
-
       SortingPost sortingPost = SortingPost(
         geolon: locationController.currentlongitude.value.toString(),
         geolat: locationController.currentlatitude.value.toString(),
@@ -582,6 +583,7 @@ class PostController extends GetxController {
 
       if (response != null) {
         totalResult.value = response;
+        totalResultloding(false);
       }
     } finally {}
   }

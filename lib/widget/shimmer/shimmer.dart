@@ -84,20 +84,27 @@ class AdsBannerShimmer extends StatelessWidget {
 }
 
 class PostListSimmer extends StatelessWidget {
+  final int count;
   final double topPadding;
-  const PostListSimmer({super.key, this.topPadding = 10});
+  const PostListSimmer({super.key, this.topPadding = 10, this.count = 3});
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
-      itemCount: 6,
+      itemCount: count,
       itemBuilder: (_, i) {
-        return Padding(
-          padding: EdgeInsets.only(top: topPadding),
-          child: _buildPostItem(),
-        );
+        if (i + 1 == count) {
+          return Container(
+            height: 100,
+          );
+        } else {
+          return Padding(
+            padding: EdgeInsets.only(top: topPadding),
+            child: _buildPostItem(),
+          );
+        }
       },
     );
   }

@@ -128,7 +128,7 @@ class _TextInputBoxState extends State<TextInputBox> {
                       hintStyle: textstyleh,
                     ),
                     onChanged: (val) {
-                      postController.allToletFlagCheck();
+                      // postController.allToletFlagCheck();
                       if (val != '') {
                         // postController.istitletxt.value == true;
                         // widget.flag = true;

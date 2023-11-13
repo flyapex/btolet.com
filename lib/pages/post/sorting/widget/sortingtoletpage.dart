@@ -66,7 +66,10 @@ class _ToletSortPageState extends State<ToletSortPage> {
                   stream: postController.allToletSortedPost.stream,
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
                     if (snapshot.data == null) {
-                      return const PostListSimmer(topPadding: 20);
+                      return const PostListSimmer(
+                        topPadding: 20,
+                        count: 10,
+                      );
                     } else {
                       return ListView.builder(
                         // key: UniqueKey(),
@@ -83,7 +86,10 @@ class _ToletSortPageState extends State<ToletSortPage> {
                             );
                           } else {
                             if (postController.toletsortlodingPosts.value) {
-                              return const PostListSimmer(topPadding: 20);
+                              return const PostListSimmer(
+                                topPadding: 20,
+                                count: 3,
+                              );
                             } else {
                               return const Padding(
                                 padding: EdgeInsets.all(8.0),

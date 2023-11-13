@@ -156,7 +156,10 @@ class _MyToletPageState extends State<MyToletPage> {
               stream: userController.mypostListTolet.stream,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.data == null) {
-                  return const PostListSimmer(topPadding: 20);
+                  return const PostListSimmer(
+                    topPadding: 20,
+                    count: 10,
+                  );
                 } else {
                   return AnimatedList(
                     key: userController.deleteKeyMypost,
@@ -173,7 +176,10 @@ class _MyToletPageState extends State<MyToletPage> {
                         );
                       } else {
                         if (userController.mypostPagelodingTolet.value) {
-                          return const PostListSimmer(topPadding: 20);
+                          return const PostListSimmer(
+                            topPadding: 20,
+                            count: 3,
+                          );
                         } else {
                           return const Padding(
                             padding: EdgeInsets.all(8.0),

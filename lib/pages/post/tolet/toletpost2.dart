@@ -1,4 +1,5 @@
 import 'package:btolet/controller/post_controller.dart';
+import 'package:btolet/controller/user_controller.dart';
 import 'package:btolet/pages/post/tolet/widget/location.dart';
 import 'package:btolet/widget/btn.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,7 @@ class _ToletPostPage2State extends State<ToletPostPage2> {
 
   @override
   Widget build(BuildContext context) {
+    UserController userController = Get.find();
     return InkWell(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -134,10 +136,9 @@ class _ToletPostPage2State extends State<ToletPostPage2> {
                             child: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(100),
-                                image: const DecorationImage(
-                                  image: NetworkImage(
-                                    "https://lh3.googleusercontent.com/a/AAcHTtdx1wQM-1NXgarrI1Ya4-6q0OtKawcqY55DHK3YBw",
-                                  ),
+                                image: DecorationImage(
+                                  image:
+                                      NetworkImage(userController.image.value),
                                   fit: BoxFit.fill,
                                 ),
                               ),

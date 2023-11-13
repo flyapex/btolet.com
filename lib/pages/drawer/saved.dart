@@ -158,7 +158,10 @@ class _SavedToletPageState extends State<SavedToletPage> {
               stream: userController.allToletSavedPost.stream,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.data == null) {
-                  return const PostListSimmer(topPadding: 20);
+                  return const PostListSimmer(
+                    topPadding: 20,
+                    count: 10,
+                  );
                 } else {
                   return AnimatedList(
                     key: userController.deleteKeySaved,
@@ -176,7 +179,10 @@ class _SavedToletPageState extends State<SavedToletPage> {
                         );
                       } else {
                         if (userController.savedPostToletloding.value) {
-                          return const PostListSimmer(topPadding: 20);
+                          return const PostListSimmer(
+                            topPadding: 20,
+                            count: 3,
+                          );
                         } else {
                           return const Padding(
                             padding: EdgeInsets.all(8.0),
