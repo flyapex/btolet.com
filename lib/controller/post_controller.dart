@@ -562,7 +562,7 @@ class PostController extends GetxController {
   }
 
   String getCategorySort() {
-    final selectedCategories = categories.entries
+    final selectedCategories = categoriesSortTolet.entries
         .where((entry) => entry.value.value)
         .map((entry) => entry.key);
 
@@ -572,7 +572,7 @@ class PostController extends GetxController {
   }
 
   String getFasalitisSort() {
-    final selectedCategories = fasalitisTolet.entries
+    final selectedCategories = fasalitisSortTolet.entries
         .where((entry) => entry.value.state.value)
         .map((entry) => entry.key)
         .toList();

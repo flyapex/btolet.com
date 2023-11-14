@@ -130,7 +130,7 @@ class LocationController extends GetxController {
       var response = await ApiService.mapTolet();
       if (response != null) {
         mapToletList.addAll(response);
-        mapLoding(false);
+        // mapLoding(false);
         return response;
       }
     } finally {}

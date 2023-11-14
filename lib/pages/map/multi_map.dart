@@ -77,13 +77,6 @@ class _MultiMapState extends State<MultiMap> {
     setState(() {});
   }
 
-  // void setCustomeMarker() async {
-  //   mapMarker = await BitmapDescriptor.fromAssetImage(
-  //     const ImageConfiguration(),
-  //     'assets/logo/pin.png',
-  //   );
-  // }
-
   @override
   void initState() {
     super.initState();

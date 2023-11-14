@@ -43,7 +43,7 @@ class ApiService {
       headers: headers,
     );
     if (response.statusCode == 200) {
-      print(response.body);
+      // print(response.body);
       return json.decode(response.body)['postCount'];
     } else {
       return null;

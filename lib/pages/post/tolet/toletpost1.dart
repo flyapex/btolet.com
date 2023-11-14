@@ -19,6 +19,7 @@ class ToletPostPage1 extends StatefulWidget {
 
 class _ToletPostPage1State extends State<ToletPostPage1> {
   final PostController postController = Get.find();
+
   double space = 20.0;
   DateTime? _chosenDateTime;
 
@@ -154,295 +155,10 @@ class _ToletPostPage1State extends State<ToletPostPage1> {
                     ),
                   ],
                 ),
-                postController.categories['Only Garage']!.value
-                    ? const SizedBox()
-                    : SizedBox(height: space),
-                postController.categories['Only Garage']!.value
-                    ? const SizedBox()
-                    : const Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          DropDownBtn(
-                            title: "Bedroom *",
-                            category: Category.bedrooms,
-                            widthh: 2.35,
-                            topPadding: 0,
-                          ),
-                          DropDownBtn(
-                            title: "Bathroom",
-                            category: Category.bathrooms,
-                            widthh: 2.35,
-                            topPadding: 0,
-                          ),
-                        ],
-                      ),
-                postController.categories['Only Garage']!.value
-                    ? const SizedBox()
-                    : SizedBox(height: space),
-                postController.categories['Only Garage']!.value
-                    ? const SizedBox()
-                    : const Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          DropDownBtn(
-                            title: "Dining",
-                            category: Category.dining,
-                            widthh: 2.35,
-                            topPadding: 0,
-                          ),
-                          DropDownBtn(
-                            title: "Kitchne",
-                            category: Category.kitchen,
-                            widthh: 2.35,
-                            topPadding: 0,
-                          ),
-                        ],
-                      ),
-                postController.categories['Only Garage']!.value
-                    ? const SizedBox()
-                    : SizedBox(height: space),
-                postController.categories['Only Garage']!.value
-                    ? const SizedBox()
-                    : const Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          DropDownBtn(
-                            title: "Floor No",
-                            category: Category.floorno,
-                            widthh: 2.35,
-                            topPadding: 0,
-                          ),
-                          DropDownBtn(
-                            title: "Facing",
-                            category: Category.facing,
-                            widthh: 2.35,
-                            topPadding: 0,
-                          ),
-                        ],
-                      ),
+                getCategory(),
 
-                postController.categories['Only Garage']!.value
-                    ? const SizedBox()
-                    : SizedBox(height: space),
-                postController.categories['Only Garage']!.value
-                    ? SizedBox(height: space)
-                    : const SizedBox(),
-                postController.categories['Only Garage']!.value
-                    ? SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Rent From',
-                                  style: TextStyle(
-                                    letterSpacing: 0.7,
-                                    color: Colors.black.withOpacity(0.5),
-                                  ),
-                                ),
-                                const SizedBox(height: 20),
-                                SizedBox(
-                                  height: 46,
-                                  width: Get.width / 2.35,
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: const Color(0xffF2F3F5),
-                                      elevation: 0,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(6),
-                                      ),
-                                    ),
-                                    onPressed: () {
-                                      _showDatePicker(context);
-                                    },
-                                    child: _chosenDateTime == null
-                                        ? Text(
-                                            DateFormat()
-                                                .add_MMMd()
-                                                .format(DateTime.now()),
-                                          )
-                                        : Text(
-                                            DateFormat()
-                                                .add_MMMd()
-                                                .format(_chosenDateTime!),
-                                            style: const TextStyle(
-                                              fontSize: 18,
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(width: 20),
-                            TextInputBox(
-                              topPadding: 0,
-                              title: "Garag  Rent*",
-                              textType: TextInputType.number,
-                              hintText: "3,000 ৳",
-                              titlelenth: 4,
-                              suffixtext: "",
-                              controller: postController.garagetxtcontroller,
-                              iconh: 23,
-                              iconw: 23,
-                              widthh: 2.35,
-                            ),
-                          ],
-                        ),
-                      )
-                    : SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            TextInputBox(
-                              topPadding: 0,
-                              title: "Room Size (ft\u00b2)",
-                              textType: TextInputType.number,
-                              hintText: "230 ",
-                              titlelenth: 500,
-                              suffixtext: "ft\u00b2",
-                              controller: postController.roomSizeTolet,
-                              iconh: 23,
-                              iconw: 23,
-                              widthh: 2.35,
-                            ),
-                            SizedBox(width: space),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Rent From',
-                                  style: TextStyle(
-                                    letterSpacing: 0.7,
-                                    color: Colors.black.withOpacity(0.5),
-                                  ),
-                                ),
-                                const SizedBox(height: 20),
-                                SizedBox(
-                                  height: 46,
-                                  width: Get.width / 2.35,
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: const Color(0xffF2F3F5),
-                                      elevation: 0,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(6),
-                                      ),
-                                    ),
-                                    onPressed: () {
-                                      _showDatePicker(context);
-                                    },
-                                    child: _chosenDateTime == null
-                                        ? Text(
-                                            DateFormat()
-                                                .add_MMMd()
-                                                .format(DateTime.now()),
-                                          )
-                                        : Text(
-                                            DateFormat()
-                                                .add_MMMd()
-                                                .format(_chosenDateTime!),
-                                            style: const TextStyle(
-                                              fontSize: 18,
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                postController.categories['Only Garage']!.value
-                    ? const SizedBox()
-                    : SizedBox(height: space),
-                postController.categories['Only Garage']!.value
-                    ? const SizedBox()
-                    : SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            TextInputBox(
-                              topPadding: 0,
-                              title: "Maintenance(Monthly) *",
-                              textType: TextInputType.number,
-                              hintText: "300",
-                              titlelenth: 4,
-                              suffixtext: "",
-                              controller: postController.maintenanceTolet,
-                              iconh: 23,
-                              iconw: 23,
-                              widthh: 2.35,
-                            ),
-                            SizedBox(width: space),
-                            TextInputBox(
-                              topPadding: 0,
-                              title: "Rent *",
-                              textType: TextInputType.number,
-                              hintText: "20,000 ৳",
-                              titlelenth: 500,
-                              suffixtext: "৳",
-                              controller: postController.rentTolet,
-                              iconh: 23,
-                              iconw: 23,
-                              widthh: 2.35,
-                            ),
-                          ],
-                        ),
-                      ),
-                postController.categories['Only Garage']!.value
-                    ? const SizedBox()
-                    : SizedBox(height: space),
+                // postController.categories['Only Garage']!.value
 
-                postController.categories['Only Garage']!.value
-                    ? const SizedBox()
-                    : const Text(
-                        'Fasalitis(op)',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.black,
-                        ),
-                      ),
-                postController.categories['Only Garage']!.value
-                    ? const SizedBox()
-                    : SizedBox(height: space),
-                // IconButton(
-                //   onPressed: () {
-                //     postController.getFasalitiesNameTolet();
-                //   },
-                //   icon: const Icon(Icons.check_box),
-                // ),
-                postController.categories['Only Garage']!.value
-                    ? const SizedBox()
-                    : Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: Wrap(
-                              spacing: 10,
-                              children: postController.fasalitisTolet.entries
-                                  .map((entry) {
-                                final String text = entry.key;
-                                final FasalitisTolet fasalitisTolet =
-                                    entry.value;
-                                final categoryState = fasalitisTolet.state;
-
-                                return FasalitisToletChip(
-                                  text: text,
-                                  icon: fasalitisTolet.icon,
-                                  categoryState: categoryState,
-                                );
-                              }).toList(),
-                            ),
-                          ),
-                        ],
-                      ),
                 SizedBox(height: space),
                 const Text(
                   'Select image *',
@@ -523,5 +239,535 @@ class _ToletPostPage1State extends State<ToletPostPage1> {
         ),
       ),
     );
+  }
+
+  getCategory() {
+    if (postController.categories['Only Garage']!.value) {
+      return Column(
+        children: [
+          SizedBox(height: space),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Rent From',
+                      style: TextStyle(
+                        letterSpacing: 0.7,
+                        color: Colors.black.withOpacity(0.5),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      height: 46,
+                      width: Get.width / 2.35,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xffF2F3F5),
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                        ),
+                        onPressed: () {
+                          _showDatePicker(context);
+                        },
+                        child: _chosenDateTime == null
+                            ? Text(
+                                DateFormat().add_MMMd().format(DateTime.now()),
+                              )
+                            : Text(
+                                DateFormat()
+                                    .add_MMMd()
+                                    .format(_chosenDateTime!),
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.black,
+                                ),
+                              ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(width: 20),
+                TextInputBox(
+                  topPadding: 0,
+                  title: "Garag  Rent*",
+                  textType: TextInputType.number,
+                  hintText: "3,000 ৳",
+                  titlelenth: 4,
+                  suffixtext: "",
+                  controller: postController.garagetxtcontroller,
+                  iconh: 23,
+                  iconw: 23,
+                  widthh: 2.35,
+                ),
+              ],
+            ),
+          )
+        ],
+      );
+    } else if (postController.categories['Office']!.value) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: space),
+          const Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              DropDownBtn(
+                title: "Room",
+                category: Category.bedrooms,
+                widthh: 2.35,
+                topPadding: 0,
+              ),
+              DropDownBtn(
+                title: "Bathroom",
+                category: Category.bathrooms,
+                widthh: 2.35,
+                topPadding: 0,
+              ),
+            ],
+          ),
+          SizedBox(height: space),
+          const Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              DropDownBtn(
+                title: "Floor No",
+                category: Category.floorno,
+                widthh: 2.35,
+                topPadding: 0,
+              ),
+              DropDownBtn(
+                title: "Facing",
+                category: Category.facing,
+                widthh: 2.35,
+                topPadding: 0,
+              ),
+            ],
+          ),
+          SizedBox(height: space),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TextInputBox(
+                  topPadding: 0,
+                  title: "Room Size (ft\u00b2)",
+                  textType: TextInputType.number,
+                  hintText: "230 ",
+                  titlelenth: 500,
+                  suffixtext: "ft\u00b2",
+                  controller: postController.roomSizeTolet,
+                  iconh: 23,
+                  iconw: 23,
+                  widthh: 2.35,
+                ),
+                SizedBox(width: space),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Rent From',
+                      style: TextStyle(
+                        letterSpacing: 0.7,
+                        color: Colors.black.withOpacity(0.5),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      height: 46,
+                      width: Get.width / 2.35,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xffF2F3F5),
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                        ),
+                        onPressed: () {
+                          _showDatePicker(context);
+                        },
+                        child: _chosenDateTime == null
+                            ? Text(
+                                DateFormat().add_MMMd().format(DateTime.now()),
+                              )
+                            : Text(
+                                DateFormat()
+                                    .add_MMMd()
+                                    .format(_chosenDateTime!),
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.black,
+                                ),
+                              ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: space),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TextInputBox(
+                  topPadding: 0,
+                  title: "Maintenance(Monthly)",
+                  textType: TextInputType.number,
+                  hintText: "300",
+                  titlelenth: 4,
+                  suffixtext: "",
+                  controller: postController.maintenanceTolet,
+                  iconh: 23,
+                  iconw: 23,
+                  widthh: 2.35,
+                ),
+                SizedBox(width: space),
+                TextInputBox(
+                  topPadding: 0,
+                  title: "Rent *",
+                  textType: TextInputType.number,
+                  hintText: "20,000 ৳",
+                  titlelenth: 500,
+                  suffixtext: "৳",
+                  controller: postController.rentTolet,
+                  iconh: 23,
+                  iconw: 23,
+                  widthh: 2.35,
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: space),
+          const Text(
+            'Fasalitis(op)',
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.black,
+            ),
+          ),
+          SizedBox(height: space),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Wrap(
+                  spacing: 10,
+                  children: postController.fasalitisTolet.entries.map((entry) {
+                    final String text = entry.key;
+                    final FasalitisTolet fasalitisTolet = entry.value;
+                    final categoryState = fasalitisTolet.state;
+
+                    return FasalitisToletChip(
+                      text: text,
+                      icon: fasalitisTolet.icon,
+                      categoryState: categoryState,
+                    );
+                  }).toList(),
+                ),
+              ),
+            ],
+          ),
+        ],
+      );
+    } else if (postController.categories['Shop']!.value) {
+      return Column(
+        children: [
+          SizedBox(height: space),
+          const Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              DropDownBtn(
+                title: "Floor No *",
+                category: Category.floorno,
+                widthh: 2.35,
+                topPadding: 0,
+              ),
+              DropDownBtn(
+                title: "Facing",
+                category: Category.facing,
+                widthh: 2.35,
+                topPadding: 0,
+              ),
+            ],
+          ),
+          SizedBox(height: space),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TextInputBox(
+                  topPadding: 0,
+                  title: "Room Size (ft\u00b2)",
+                  textType: TextInputType.number,
+                  hintText: "230 ",
+                  titlelenth: 500,
+                  suffixtext: "ft\u00b2",
+                  controller: postController.roomSizeTolet,
+                  iconh: 23,
+                  iconw: 23,
+                  widthh: 2.35,
+                ),
+                SizedBox(width: space),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Rent From',
+                      style: TextStyle(
+                        letterSpacing: 0.7,
+                        color: Colors.black.withOpacity(0.5),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      height: 46,
+                      width: Get.width / 2.35,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xffF2F3F5),
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                        ),
+                        onPressed: () {
+                          _showDatePicker(context);
+                        },
+                        child: _chosenDateTime == null
+                            ? Text(
+                                DateFormat().add_MMMd().format(DateTime.now()),
+                              )
+                            : Text(
+                                DateFormat()
+                                    .add_MMMd()
+                                    .format(_chosenDateTime!),
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.black,
+                                ),
+                              ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: space),
+          TextInputBox(
+            topPadding: 0,
+            title: "Rent *",
+            textType: TextInputType.number,
+            hintText: "20,000 ৳",
+            titlelenth: 500,
+            suffixtext: "৳",
+            controller: postController.rentTolet,
+            iconh: 23,
+            iconw: 23,
+            widthh: 2.35,
+          ),
+        ],
+      );
+    } else {
+      return Column(
+        children: [
+          SizedBox(height: space),
+          const Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              DropDownBtn(
+                title: "Bedroom *",
+                category: Category.bedrooms,
+                widthh: 2.35,
+                topPadding: 0,
+              ),
+              DropDownBtn(
+                title: "Bathroom",
+                category: Category.bathrooms,
+                widthh: 2.35,
+                topPadding: 0,
+              ),
+            ],
+          ),
+          SizedBox(height: space),
+          const Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              DropDownBtn(
+                title: "Dining",
+                category: Category.dining,
+                widthh: 2.35,
+                topPadding: 0,
+              ),
+              DropDownBtn(
+                title: "Kitchne",
+                category: Category.kitchen,
+                widthh: 2.35,
+                topPadding: 0,
+              ),
+            ],
+          ),
+          SizedBox(height: space),
+          const Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              DropDownBtn(
+                title: "Floor No",
+                category: Category.floorno,
+                widthh: 2.35,
+                topPadding: 0,
+              ),
+              DropDownBtn(
+                title: "Facing",
+                category: Category.facing,
+                widthh: 2.35,
+                topPadding: 0,
+              ),
+            ],
+          ),
+          SizedBox(height: space),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TextInputBox(
+                  topPadding: 0,
+                  title: "Room Size (ft\u00b2)",
+                  textType: TextInputType.number,
+                  hintText: "230 ",
+                  titlelenth: 500,
+                  suffixtext: "ft\u00b2",
+                  controller: postController.roomSizeTolet,
+                  iconh: 23,
+                  iconw: 23,
+                  widthh: 2.35,
+                ),
+                SizedBox(width: space),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Rent From',
+                      style: TextStyle(
+                        letterSpacing: 0.7,
+                        color: Colors.black.withOpacity(0.5),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      height: 46,
+                      width: Get.width / 2.35,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xffF2F3F5),
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                        ),
+                        onPressed: () {
+                          _showDatePicker(context);
+                        },
+                        child: _chosenDateTime == null
+                            ? Text(
+                                DateFormat().add_MMMd().format(DateTime.now()),
+                              )
+                            : Text(
+                                DateFormat()
+                                    .add_MMMd()
+                                    .format(_chosenDateTime!),
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.black,
+                                ),
+                              ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: space),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TextInputBox(
+                  topPadding: 0,
+                  title: "Maintenance(Monthly) *",
+                  textType: TextInputType.number,
+                  hintText: "300",
+                  titlelenth: 4,
+                  suffixtext: "",
+                  controller: postController.maintenanceTolet,
+                  iconh: 23,
+                  iconw: 23,
+                  widthh: 2.35,
+                ),
+                SizedBox(width: space),
+                TextInputBox(
+                  topPadding: 0,
+                  title: "Rent *",
+                  textType: TextInputType.number,
+                  hintText: "20,000 ৳",
+                  titlelenth: 500,
+                  suffixtext: "৳",
+                  controller: postController.rentTolet,
+                  iconh: 23,
+                  iconw: 23,
+                  widthh: 2.35,
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: space),
+          const Text(
+            'Fasalitis(op)',
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.black,
+            ),
+          ),
+          SizedBox(height: space),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Wrap(
+                  spacing: 10,
+                  children: postController.fasalitisTolet.entries.map((entry) {
+                    final String text = entry.key;
+                    final FasalitisTolet fasalitisTolet = entry.value;
+                    final categoryState = fasalitisTolet.state;
+
+                    return FasalitisToletChip(
+                      text: text,
+                      icon: fasalitisTolet.icon,
+                      categoryState: categoryState,
+                    );
+                  }).toList(),
+                ),
+              ),
+            ],
+          ),
+        ],
+      );
+    }
   }
 }

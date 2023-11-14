@@ -1,3 +1,4 @@
+import 'package:btolet/controller/location_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
@@ -7,8 +8,34 @@ import 'package:shimmer/shimmer.dart';
 var height = Get.height;
 var width = Get.width;
 
-class MapLodingShimmer extends StatelessWidget {
+class MapLodingShimmer extends StatefulWidget {
   const MapLodingShimmer({super.key});
+
+  @override
+  State<MapLodingShimmer> createState() => _MapLodingShimmerState();
+}
+
+class _MapLodingShimmerState extends State<MapLodingShimmer>
+    with TickerProviderStateMixin {
+  LocationController locationController = Get.find();
+  late final AnimationController _controller;
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(vsync: this);
+    _controller.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        print('gg');
+        locationController.mapLoding(false);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +44,12 @@ class MapLodingShimmer extends StatelessWidget {
       child: SizedBox(
         child: Lottie.asset(
           'assets/lottie/map.json',
-          repeat: true,
+          repeat: false,
           fit: BoxFit.cover,
+          onLoaded: (composition) {
+            _controller.duration = const Duration(milliseconds: 1000);
+            _controller.forward();
+          },
         ),
       ),
     );
