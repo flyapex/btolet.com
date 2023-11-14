@@ -17,7 +17,7 @@ import 'package:like_button/like_button.dart';
 import 'package:lottie/lottie.dart';
 import 'package:marquee/marquee.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'post/sorting/sortingtolet.dart';
+import 'sorting/sortingtolet.dart';
 
 class ToletHome extends StatefulWidget {
   const ToletHome({super.key});

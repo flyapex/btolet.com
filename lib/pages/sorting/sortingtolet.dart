@@ -240,9 +240,13 @@ class _SortHereState extends State<SortHere> with TickerProviderStateMixin {
                         startval1 = lowerValue;
                         endval1 = upperValue;
                         sliderText(startval1, endval1);
+
                         postController.rentmin.value = startval1.toInt();
                         postController.rentmax.value = endval1.toInt();
                       });
+                    },
+                    onDragCompleted: (handlerIndex, lowerValue, upperValue) {
+                      postController.sortingPostCount();
                     },
                   ),
                   Row(
@@ -251,8 +255,8 @@ class _SortHereState extends State<SortHere> with TickerProviderStateMixin {
                       Expanded(
                         child: Wrap(
                           spacing: 10,
-                          children:
-                              postController.categories.entries.map((entry) {
+                          children: postController.categoriesSortTolet.entries
+                              .map((entry) {
                             final category = entry.key;
                             final categoryState = entry.value;
                             return CategoryToletChipSortTolet(
@@ -390,7 +394,7 @@ class _SortHereState extends State<SortHere> with TickerProviderStateMixin {
                       Expanded(
                         child: Wrap(
                           spacing: 10,
-                          children: postController.fasalitisTolet.entries
+                          children: postController.fasalitisSortTolet.entries
                               .map((entry) {
                             final String text = entry.key;
                             final FasalitisTolet fasalitisTolet = entry.value;

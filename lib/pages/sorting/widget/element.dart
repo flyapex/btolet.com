@@ -39,13 +39,9 @@ class CategoryToletChipSortTolet extends StatelessWidget {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
           side: BorderSide(
-            color: postController.flagActiveFlag.value
-                ? postController.categoryFlag.value
-                    ? Colors.black.withOpacity(0.1)
-                    : Colors.red
-                : categoryState.value
-                    ? const Color(0xff0166EE)
-                    : Colors.black.withOpacity(0.1),
+            color: categoryState.value
+                ? const Color(0xff0166EE)
+                : Colors.black.withOpacity(0.1),
           ),
           elevation: 0.3,
           selectedShadowColor: Colors.black.withOpacity(0.5),

@@ -1,6 +1,6 @@
 import 'package:btolet/controller/post_controller.dart';
 import 'package:btolet/model/postmodel.dart';
-import 'package:btolet/pages/post/sorting/sortingproperty.dart';
+import 'package:btolet/pages/sorting/sortingproperty.dart';
 import 'package:btolet/pages/post/tolet/widget/textbox.dart';
 import 'package:btolet/widget/btn.dart';
 import 'package:flutter/cupertino.dart';

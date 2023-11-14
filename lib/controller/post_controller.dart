@@ -516,10 +516,39 @@ class PostController extends GetxController {
     return imageList;
   }
 
-  var totalResult = 0.obs;
-  var totalResultloding = false.obs;
+//*----------------------------------------------Sorting
   var rentmin = 0.obs;
   var rentmax = 100000.obs;
+
+  var categoriesSortTolet = {
+    'Family': false.obs,
+    'Bachelor': false.obs,
+    'Male Sit': false.obs,
+    'Female Sit': false.obs,
+    'Sub-let': false.obs,
+    'Hostel': false.obs,
+    'Shop': false.obs,
+    'Office': false.obs,
+    'Only Garage': false.obs,
+  };
+  var fasalitisSortTolet = {
+    'Balcony': FasalitisTolet(state: false.obs, icon: Icons.balcony_rounded),
+    'Parking': FasalitisTolet(state: false.obs, icon: Icons.directions_bike),
+    'CCTV': FasalitisTolet(state: false.obs, icon: Icons.photo_camera),
+    'GAS': FasalitisTolet(
+        state: false.obs, icon: Icons.local_fire_department_outlined),
+    'Lift': FasalitisTolet(state: false.obs, icon: Icons.elevator_outlined),
+    'Security Guard':
+        FasalitisTolet(state: false.obs, icon: Icons.security_rounded),
+    'WIFI': FasalitisTolet(state: false.obs, icon: Icons.wifi_rounded),
+    'Power Backup': FasalitisTolet(
+        state: false.obs, icon: Icons.power_settings_new_rounded),
+    'Fire Alarm':
+        FasalitisTolet(state: false.obs, icon: Icons.fire_extinguisher),
+    'Gaser': FasalitisTolet(state: false.obs, icon: Icons.gas_meter_outlined),
+  };
+  var totalResult = 0.obs;
+  var totalResultloding = false.obs;
 
   var bedsort = [].obs;
   var bathsort = [].obs;
