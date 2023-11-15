@@ -1,6 +1,5 @@
 import 'package:btolet/controller/post_controller.dart';
 import 'package:btolet/pages/post/tolet/widget/textbox.dart';
-import 'package:btolet/widget/btn.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
@@ -108,7 +107,7 @@ class _ToletPostPage1State extends State<ToletPostPage1> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TextInputBox(
+                TextInputBoxOnly(
                   topPadding: 0,
                   title: "Property Name",
                   textType: TextInputType.text,

@@ -134,7 +134,7 @@ class _ToletPostPage2State extends State<ToletPostPage2> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const LocationTolet(),
-                TextInputBox(
+                TextInputBoxOnly(
                   topPadding: 0,
                   title: "Short Address",
                   textType: TextInputType.streetAddress,

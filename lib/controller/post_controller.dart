@@ -243,7 +243,7 @@ class PostController extends GetxController {
             roomsize: "",
             rentfrom: rentFrom,
             mentenance: 0,
-            rent: int.parse(rentTolet.text),
+            rent: int.parse(rentTolet.text.replaceAll(",", "")),
             garagetype: garage.value,
             fasalitis: "",
             image1: imageBase64List[0],
@@ -285,7 +285,7 @@ class PostController extends GetxController {
             rentfrom: rentFrom,
             mentenance: int.parse(
                 maintenanceTolet.text == "" ? "0" : maintenanceTolet.text),
-            rent: int.parse(rentTolet.text),
+            rent: int.parse(rentTolet.text.replaceAll(",", "")),
             garagetype: "",
             fasalitis: getFasalitiesNameTolet(),
             image1: imageBase64List[0],
@@ -376,13 +376,7 @@ class PostController extends GetxController {
     );
   }
 
-  alltextfield() {
-    if (rentTolet.text.isNotEmpty) {
-      priceFlag.value = true;
-    } else {
-      animateToPage(0);
-    }
-  }
+  // alltextfield() {}
 
   allToletFlagCheck() {
     if (categories['Only Garage']!.value) {
