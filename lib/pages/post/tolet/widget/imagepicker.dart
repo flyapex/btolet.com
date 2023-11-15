@@ -71,7 +71,7 @@ class SelectImageToletState extends State<SelectImageTolet> {
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(
                             postController.flagActiveFlag.value
-                                ? postController.bedFlag.value
+                                ? postController.imageFlag.value
                                     ? const Color(0xff7F6BFC)
                                     : Colors.red
                                 : const Color(0xff7F6BFC)),

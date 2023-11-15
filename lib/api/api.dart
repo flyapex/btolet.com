@@ -4,7 +4,6 @@ import 'package:http/http.dart' as http;
 
 // var baseUrl = 'https://btolet.com/api';
 // var baseUrl = 'http://10.0.2.2:3000/api';
-// var baseUrl = 'http://109.123.234.150/api';
 var baseUrl = 'http://109.123.234.150/api';
 
 var headers = {
@@ -49,21 +48,6 @@ class ApiService {
       return null;
     }
   }
-
-  // check user exist in db or not
-  // static Future userCheck(email) async {
-  //   var response = await http.post(
-  //     Uri.parse('$baseUrl/login'),
-  //     body: jsonEncode({"email": email}),
-  //     headers: headers,
-  //   );
-
-  //   if (response.statusCode == 200 && jsonDecode(response.body).isEmpty) {
-  //     return null;
-  //   } else {
-  //     return userDetailsFromJson(response.body)[0];
-  //   }
-  // }
 
 //NEW USER
   static Future userLogin(Newuser data) async {
@@ -260,7 +244,7 @@ class ApiService {
       ),
     );
     if (response.statusCode == 200) {
-      return toletPostListFromJson(response.body);
+      return myPostListToletFromJson(response.body);
     } else {
       return null;
     }

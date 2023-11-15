@@ -10,6 +10,7 @@ enum Category {
   kitchen,
   floorno,
   facing,
+  garage,
 }
 
 class DropDownBtn extends StatefulWidget {
@@ -68,6 +69,18 @@ class _DropDownBtnState extends State<DropDownBtn> {
       } else if (widget.category == Category.kitchen) {
         return postController.flagActiveFlag.value
             ? postController.kitchenFlag.value
+                ? Colors.white
+                : Colors.red
+            : Colors.white;
+      } else if (widget.category == Category.floorno) {
+        return postController.flagActiveFlag.value
+            ? postController.floorFlag.value
+                ? Colors.white
+                : Colors.red
+            : Colors.white;
+      } else if (widget.category == Category.garage) {
+        return postController.flagActiveFlag.value
+            ? postController.garageFlag.value
                 ? Colors.white
                 : Colors.red
             : Colors.white;

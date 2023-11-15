@@ -31,6 +31,14 @@ class CategoryToletChip extends StatelessWidget {
             if (postController.getSelectedCategoryName().isNotEmpty) {
               postController.categoryFlag.value = true;
             }
+            postController.flagActiveFlag(false);
+            postController.bedFlag(false);
+            postController.bathFlag(false);
+            postController.kitchenFlag(false);
+            postController.priceFlag(false);
+            postController.imageFlag(false);
+            postController.floorFlag(false);
+            postController.phoneFlag(false);
           },
           avatar: Icon(
             categoryState.value ? Icons.check_circle_rounded : Icons.add,

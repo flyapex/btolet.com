@@ -168,7 +168,7 @@ class SingupPage extends StatelessWidget {
                       Get.snackbar(
                         'ERROR👏🤝',
                         'We Will back soon',
-                        snackPosition: SnackPosition.BOTTOM,
+                        snackPosition: SnackPosition.TOP,
                         backgroundColor: Colors.white,
                         borderRadius: 10,
                         margin: const EdgeInsets.all(10),
@@ -202,7 +202,7 @@ class SingupPage extends StatelessWidget {
                       Get.snackbar(
                         'Congrats👏🤝',
                         'Welcome ${userdetails.name}',
-                        snackPosition: SnackPosition.BOTTOM,
+                        snackPosition: SnackPosition.TOP,
                         backgroundColor: Colors.white,
                         borderRadius: 10,
                         margin: const EdgeInsets.all(10),
@@ -215,7 +215,7 @@ class SingupPage extends StatelessWidget {
                     title: "Sign up with Google     ",
                   ),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 15),
                 InkWell(
                   onTap: () async {
                     Get.snackbar(
@@ -240,31 +240,33 @@ class SingupPage extends StatelessWidget {
                     title: "Sign up with Facebook",
                   ),
                 ),
-                const SizedBox(height: 10),
-                InkWell(
-                  onTap: () {
-                    Get.snackbar(
-                      '',
-                      '',
-                      snackPosition: SnackPosition.BOTTOM,
-                      borderRadius: 6,
-                      margin: const EdgeInsets.only(
-                        top: 30,
-                        right: 30,
-                        left: 30,
-                        bottom: 10,
-                      ),
-                      titleText: const Text('Under Deverlopment 👀👀 '),
-                      messageText: const Text('Maybe Google? 👌'),
-                      barBlur: 30,
-                    );
-                  },
-                  child: const SocialIcons(
-                    iconsize: 32,
-                    icon: 'assets/icons/wapp.svg',
-                    title: "Sign up with Whatsapp",
-                  ),
-                ),
+                // const SizedBox(height: 10),
+                // InkWell(
+                //   onTap: () {
+                //     Get.snackbar(
+                //       '',
+                //       '',
+                //       snackPosition: SnackPosition.BOTTOM,
+                //       borderRadius: 6,
+                //       margin: const EdgeInsets.only(
+                //         top: 30,
+                //         right: 30,
+                //         left: 30,
+                //         bottom: 10,
+                //       ),
+                //       titleText: const Text('Under Deverlopment 👀👀 '),
+                //       messageText: const Text('Maybe Google? 👌'),
+                //       barBlur: 30,
+                //     );
+                //   },
+                //   child: const SocialIcons(
+                //     iconsize: 32,
+                //     icon: 'assets/icons/wapp.svg',
+                //     title: "Sign up with Whatsapp",
+                //   ),
+                // ),
+                const SizedBox(height: 50),
+                const SizedBox(height: 50),
                 const SizedBox(height: 50),
                 const SizedBox(height: 50),
               ],

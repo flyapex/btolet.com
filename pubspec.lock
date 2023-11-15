@@ -573,6 +573,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.2"
+  hyper_lint:
+    dependency: transitive
+    description:
+      name: hyper_lint
+      sha256: "08e3c21edefa36b24efb601b088fff3b52b73334e21e2ffe35fb0489c5ba272c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.1"
   intl:
     dependency: "direct main"
     description:
@@ -773,6 +781,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.1"
+  pattern_formatter:
+    dependency: "direct main"
+    description:
+      name: pattern_formatter
+      sha256: "987d24df31179325897f58258132492e86de577c6ae50c8102b9a1342f607688"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   petitparser:
     dependency: transitive
     description:
@@ -921,10 +937,10 @@ packages:
     dependency: "direct main"
     description:
       name: simple_ripple_animation
-      sha256: e194718e95e77be86a8a6421d236ef4dc5ded1113c26e938e3e7f1a722b922a4
+      sha256: "5a6d8827ccfbd64aa55f74887ef9bdd55786df2101ba681fb926e0ee414a11e2"
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.7"
+    version: "0.0.8"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -1270,10 +1286,10 @@ packages:
     dependency: transitive
     description:
       name: win32
-      sha256: "350a11abd2d1d97e0cc7a28a81b781c08002aa2864d9e3f192ca0ffa18b06ed3"
+      sha256: "7c99c0e1e2fa190b48d25c81ca5e42036d5cac81430ef249027d97b0935c553f"
       url: "https://pub.dev"
     source: hosted
-    version: "5.0.9"
+    version: "5.1.0"
   win32_registry:
     dependency: transitive
     description:
@@ -1323,5 +1339,5 @@ packages:
     source: hosted
     version: "2.0.2"
 sdks:
-  dart: ">=3.1.0 <4.0.0"
+  dart: ">=3.1.3 <4.0.0"
   flutter: ">=3.13.0"

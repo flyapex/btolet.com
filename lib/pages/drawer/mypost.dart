@@ -219,7 +219,7 @@ class MyTPropertyPage extends StatelessWidget {
 }
 
 class MyPostsTolet extends StatefulWidget {
-  final ToletPostList postData;
+  final MyPostListTolet postData;
   final bool isLikedvalue;
   final int index;
   const MyPostsTolet({
@@ -255,7 +255,7 @@ class _MyPostsToletState extends State<MyPostsTolet>
           actions: [
             TextButton(
               onPressed: () {
-                ToletPostList removedItem =
+                MyPostListTolet removedItem =
                     userController.mypostListTolet.removeAt(widget.index);
 
                 userController.deleteKeyMypost.currentState!.removeItem(

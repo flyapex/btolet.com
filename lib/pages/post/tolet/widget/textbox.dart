@@ -1,7 +1,7 @@
 import 'package:btolet/controller/post_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:pattern_formatter/numeric_formatter.dart';
 
 class TextInputBox extends StatefulWidget {
   final String title;
@@ -98,9 +98,10 @@ class _TextInputBoxState extends State<TextInputBox> {
                     });
                   },
                   child: TextField(
-                    inputFormatters: [
-                      LengthLimitingTextInputFormatter(widget.titlelenth),
-                    ],
+                    // inputFormatters: [
+                    //   LengthLimitingTextInputFormatter(widget.titlelenth),
+                    // ],
+                    inputFormatters: [ThousandsFormatter()],
                     // maxLength: widget.titlelenth,
                     cursorHeight: 24,
                     cursorWidth: 1.8,
@@ -128,7 +129,7 @@ class _TextInputBoxState extends State<TextInputBox> {
                       hintStyle: textstyleh,
                     ),
                     onChanged: (val) {
-                      // postController.allToletFlagCheck();
+                      postController.alltextfield();
                       if (val != '') {
                         // postController.istitletxt.value == true;
                         // widget.flag = true;

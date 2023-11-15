@@ -3,6 +3,7 @@ import 'package:btolet/api/api.dart';
 import 'package:btolet/controller/location_controller.dart';
 import 'package:btolet/model/apimodel.dart';
 import 'package:btolet/pages/post/tolet/widget/drapdown.dart';
+import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
@@ -13,6 +14,8 @@ import 'db_controller.dart';
 class PostController extends GetxController {
   final DBController dbController = Get.put(DBController());
   final LocationController locationController = Get.find();
+
+  final refreshkey = GlobalKey<CustomRefreshIndicatorState>();
 
   late TabController tabController;
   var pageController = PageController();
@@ -27,7 +30,7 @@ class PostController extends GetxController {
   TextEditingController nameTolet = TextEditingController();
   TextEditingController phonenumberTolet = TextEditingController();
   TextEditingController wappnumberTolet = TextEditingController();
-  TextEditingController garagetxtcontroller = TextEditingController();
+  // TextEditingController garagetxtcontroller = TextEditingController();
   late DateTime rentFrom;
 
   var categories = {
@@ -91,6 +94,7 @@ class PostController extends GetxController {
   final kitchen = 'select'.obs;
   final floorno = 'select'.obs;
   final facing = 'select'.obs;
+  final garage = 'select'.obs;
 
   Map<Category, List<String>> categoryData = {
     Category.bedrooms: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10+"],
@@ -119,6 +123,10 @@ class PostController extends GetxController {
       "South-West",
       "West",
     ],
+    Category.garage: [
+      "Car",
+      "Bike",
+    ],
   };
   String getCategoryValue(Category category) {
     switch (category) {
@@ -134,6 +142,8 @@ class PostController extends GetxController {
         return floorno.value;
       case Category.facing:
         return facing.value;
+      case Category.garage:
+        return garage.value;
     }
   }
 
@@ -156,6 +166,9 @@ class PostController extends GetxController {
         break;
       case Category.facing:
         facing.value = value;
+        break;
+      case Category.garage:
+        garage.value = value;
         break;
       default:
         throw ArgumentError('Invalid category');
@@ -230,7 +243,8 @@ class PostController extends GetxController {
             roomsize: "",
             rentfrom: rentFrom,
             mentenance: 0,
-            rent: int.parse(garagetxtcontroller.text),
+            rent: int.parse(rentTolet.text),
+            garagetype: garage.value,
             fasalitis: "",
             image1: imageBase64List[0],
             image2: imageBase64List[1],
@@ -250,28 +264,29 @@ class PostController extends GetxController {
             location: locationController.locationAddressShort.value.toString(),
             shortaddress: shortAddressTolet.text,
             phone: phonenumberTolet.text,
-            wapp: wappnumberTolet.text,
+            wapp: wappnumberTolet.text.isEmpty ? "" : phonenumberTolet.text,
           ),
         );
       } else {
         print("TOlet");
-
+        print(roomSizeTolet.text);
         response = await ApiService.newPostTolet(
           PostToServerTolet(
             uid: dbController.getUserID(),
             propertyname: propertyNameTolet.text,
             category: getSelectedCategoryName(),
-            bed: bedrooms.value,
-            bath: bathrooms.value,
+            bed: bedrooms.value == "select" ? "" : bedrooms.value,
+            bath: bathrooms.value == "select" ? "" : bathrooms.value,
             dining: dining.value == "select" ? "" : dining.value,
-            kitchen: kitchen.value,
+            kitchen: kitchen.value == "select" ? "" : kitchen.value,
             floornumber: floorno.value == "select" ? "" : floorno.value,
             facing: facing.value == "select" ? "" : facing.value,
-            roomsize: roomSizeTolet.text,
+            roomsize: roomSizeTolet.text == "200" ? "" : roomSizeTolet.text,
             rentfrom: rentFrom,
             mentenance: int.parse(
                 maintenanceTolet.text == "" ? "0" : maintenanceTolet.text),
             rent: int.parse(rentTolet.text),
+            garagetype: "",
             fasalitis: getFasalitiesNameTolet(),
             image1: imageBase64List[0],
             image2: imageBase64List[1],
@@ -291,13 +306,12 @@ class PostController extends GetxController {
             location: locationController.locationAddressShort.value.toString(),
             shortaddress: shortAddressTolet.text,
             phone: phonenumberTolet.text,
-            wapp: wappnumberTolet.text,
+            wapp: wappnumberTolet.text.isEmpty ? "" : phonenumberTolet.text,
           ),
         );
       }
       if (response != null) {
         updateProfile();
-
         return response;
       } else {
         return null;
@@ -318,7 +332,7 @@ class PostController extends GetxController {
         ),
         maxLines: 1,
       ),
-      duration: const Duration(seconds: 5),
+      duration: const Duration(seconds: 3),
       backgroundColor: Colors.black.withOpacity(0.1),
       colorText: Colors.white,
       borderRadius: 4,
@@ -327,6 +341,10 @@ class PostController extends GetxController {
       maxWidth: 400.0,
       mainButton: TextButton(
         onPressed: () {
+          // refreshkey.currentState!.refresh(
+          //   draggingDuration: const Duration(milliseconds: 350),
+          //   draggingCurve: Curves.easeOutBack,
+          // );
           Get.back();
         },
         child: const Text(
@@ -344,24 +362,61 @@ class PostController extends GetxController {
   var kitchenFlag = false.obs;
   var priceFlag = false.obs;
   var imageFlag = false.obs;
+  var floorFlag = false.obs;
+  var garageFlag = false.obs;
   var phoneFlag = false.obs;
   var toletAllFlag = false.obs;
-
+  // Vibration.vibrate(pattern: [10, 20, 10]);
+  // print('object');
   void animateToPage(val) {
     pageController.animateToPage(
       val,
       duration: const Duration(milliseconds: 300),
       curve: Curves.bounceInOut,
     );
-    // Vibration.vibrate(pattern: [10, 20, 10]);
-    // print('object');
+  }
+
+  alltextfield() {
+    if (rentTolet.text.isNotEmpty) {
+      priceFlag.value = true;
+    } else {
+      animateToPage(0);
+    }
   }
 
   allToletFlagCheck() {
     if (categories['Only Garage']!.value) {
-      print(rentTolet.text.isNotEmpty);
-      print(selectedImages.isNotEmpty);
-      if (garagetxtcontroller.text.isNotEmpty) {
+      categoryFlag.value = true;
+      bedFlag.value = true;
+      bathFlag.value = true;
+      kitchenFlag.value = true;
+      floorFlag.value = true;
+
+      if (garage.value != "select") {
+        garageFlag.value = true;
+      } else {
+        animateToPage(0);
+      }
+      if (selectedImages.isNotEmpty) {
+        imageFlag.value = true;
+      } else {
+        animateToPage(0);
+      }
+      if (phonenumberTolet.text != "" || wappnumberTolet.text != "") {
+        phoneFlag.value = true;
+      }
+      if (garageFlag.value &&
+          imageFlag.value &&
+          priceFlag.value &&
+          phoneFlag.value) {
+        toletAllFlag.value = true;
+      }
+    } else if (categories['Office']!.value && categories['Family']!.value) {
+      bedFlag(true);
+      bathFlag(true);
+      kitchenFlag(true);
+      floorFlag(true);
+      if (rentTolet.text.isNotEmpty) {
         priceFlag.value = true;
       } else {
         animateToPage(0);
@@ -374,10 +429,62 @@ class PostController extends GetxController {
       if (phonenumberTolet.text != "" || wappnumberTolet.text != "") {
         phoneFlag.value = true;
       }
-      if (imageFlag.value && priceFlag.value & phoneFlag.value) {
+      if (priceFlag.value && imageFlag.value && phoneFlag.value) {
+        toletAllFlag.value = true;
+      }
+    } else if (categories['Office']!.value) {
+      bedFlag(true);
+      bathFlag(true);
+      kitchenFlag(true);
+      floorFlag(true);
+      if (rentTolet.text.isNotEmpty) {
+        priceFlag.value = true;
+      } else {
+        animateToPage(0);
+      }
+      if (selectedImages.isNotEmpty) {
+        imageFlag.value = true;
+      } else {
+        animateToPage(0);
+      }
+      if (phonenumberTolet.text != "" || wappnumberTolet.text != "") {
+        phoneFlag.value = true;
+      }
+      if (priceFlag.value && imageFlag.value && phoneFlag.value) {
+        toletAllFlag.value = true;
+      }
+    } else if (categories['Shop']!.value) {
+      categoryFlag.value = true;
+      bedFlag.value = true;
+      bathFlag.value = true;
+      kitchenFlag.value = true;
+      if (floorno.value != "select") {
+        floorFlag.value = true;
+      } else {
+        animateToPage(0);
+      }
+      if (rentTolet.text.isNotEmpty) {
+        priceFlag.value = true;
+      } else {
+        animateToPage(0);
+      }
+
+      if (selectedImages.isNotEmpty) {
+        imageFlag.value = true;
+      } else {
+        animateToPage(0);
+      }
+      if (phonenumberTolet.text != "" || wappnumberTolet.text != "") {
+        phoneFlag.value = true;
+      }
+      if (imageFlag.value &&
+          priceFlag.value &&
+          phoneFlag.value &&
+          floorFlag.value) {
         toletAllFlag.value = true;
       }
     } else {
+      floorFlag(true);
       if (!categoryFlag.value || getSelectedCategoryName().isEmpty) {
         pageController.animateToPage(
           0,
@@ -455,7 +562,7 @@ class PostController extends GetxController {
 
   var singlepostToletloding = true.obs;
   late ToletSinglePost singlepostTolet;
-  void getSinglePost(postid) async {
+  getSinglePost(postid) async {
     imageList.clear();
     singlepostToletloding(true);
     try {
@@ -463,9 +570,12 @@ class PostController extends GetxController {
       if (response != null) {
         singlepostTolet = response;
         getImageList();
-        if (response.isEmpty) {
-          singlepostToletloding(false);
-        }
+        // if (response.isEmpty) {
+        //   singlepostToletloding(false);
+        // }
+        return true;
+      } else {
+        return false;
       }
     } finally {
       singlepostToletloding(false);

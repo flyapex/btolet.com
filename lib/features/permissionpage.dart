@@ -34,6 +34,16 @@ class _PermissionPageState extends State<PermissionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // floatingActionButton: FloatingActionButton(onPressed: () {
+      //   Get.snackbar(
+      //     'Congrats👏🤝',
+      //     'Welcome {userdetails.name}',
+      //     snackPosition: SnackPosition.TOP,
+      //     backgroundColor: Colors.white,
+      //     borderRadius: 10,
+      //     margin: const EdgeInsets.all(10),
+      //   );
+      // }),
       backgroundColor: Colors.white,
       body: Container(
         margin: const EdgeInsets.only(left: 20, right: 20),

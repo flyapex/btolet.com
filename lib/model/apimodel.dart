@@ -212,9 +212,11 @@ class ToletPostList {
   String roomsize;
   String kitchen;
   int rent;
+  String garagetype;
   String image1;
   String location;
   DateTime time;
+  double distance;
 
   ToletPostList({
     required this.postId,
@@ -224,9 +226,11 @@ class ToletPostList {
     required this.roomsize,
     required this.kitchen,
     required this.rent,
+    required this.garagetype,
     required this.image1,
     required this.location,
     required this.time,
+    required this.distance,
   });
 
   factory ToletPostList.fromJson(Map<String, dynamic> json) => ToletPostList(
@@ -237,6 +241,76 @@ class ToletPostList {
         roomsize: json["roomsize"],
         kitchen: json["kitchen"],
         rent: json["rent"],
+        garagetype: json["garagetype"],
+        image1: json["image1"],
+        location: json["location"],
+        time: DateTime.parse(json["time"]),
+        distance: json["distance"].toDouble(),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "post_id": postId,
+        "uid": uid,
+        "bed": bed,
+        "bath": bath,
+        "roomsize": roomsize,
+        "kitchen": kitchen,
+        "rent": rent,
+        "garagetype": garagetype,
+        "image1": image1,
+        "location": location,
+        "time": time.toIso8601String(),
+        "distance": distance,
+      };
+}
+// To parse this JSON data, do
+//
+//     final myPostListTolet = myPostListToletFromJson(jsonString);
+
+List<MyPostListTolet> myPostListToletFromJson(String str) =>
+    List<MyPostListTolet>.from(
+        json.decode(str).map((x) => MyPostListTolet.fromJson(x)));
+
+String myPostListToletToJson(List<MyPostListTolet> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
+class MyPostListTolet {
+  int postId;
+  int uid;
+  String bed;
+  String bath;
+  String roomsize;
+  String kitchen;
+  int rent;
+  String garagetype;
+  String image1;
+  String location;
+  DateTime time;
+
+  MyPostListTolet({
+    required this.postId,
+    required this.uid,
+    required this.bed,
+    required this.bath,
+    required this.roomsize,
+    required this.kitchen,
+    required this.rent,
+    required this.garagetype,
+    required this.image1,
+    required this.location,
+    required this.time,
+  });
+
+  factory MyPostListTolet.fromJson(Map<String, dynamic> json) =>
+      MyPostListTolet(
+        postId: json["post_id"],
+        uid: json["uid"],
+        bed: json["bed"],
+        bath: json["bath"],
+        roomsize: json["roomsize"],
+        kitchen: json["kitchen"],
+        rent: json["rent"],
+        garagetype: json["garagetype"],
         image1: json["image1"],
         location: json["location"],
         time: DateTime.parse(json["time"]),
@@ -250,6 +324,7 @@ class ToletPostList {
         "roomsize": roomsize,
         "kitchen": kitchen,
         "rent": rent,
+        "garagetype": garagetype,
         "image1": image1,
         "location": location,
         "time": time.toIso8601String(),
@@ -280,6 +355,7 @@ class PostToServerTolet {
   final DateTime rentfrom;
   final int mentenance;
   final int rent;
+  final String garagetype;
   final String fasalitis;
   final String image1;
   final String image2;
@@ -315,6 +391,7 @@ class PostToServerTolet {
     required this.rentfrom,
     required this.mentenance,
     required this.rent,
+    required this.garagetype,
     required this.fasalitis,
     required this.image1,
     required this.image2,
@@ -352,6 +429,7 @@ class PostToServerTolet {
         rentfrom: DateTime.parse(json["rentfrom"]),
         mentenance: json["mentenance"],
         rent: json["rent"],
+        garagetype: json["garagetype"],
         fasalitis: json["fasalitis"],
         image1: json["image1"],
         image2: json["image2"],
@@ -388,6 +466,7 @@ class PostToServerTolet {
         "rentfrom": rentfrom.toIso8601String(),
         "mentenance": mentenance,
         "rent": rent,
+        "garagetype": garagetype,
         "fasalitis": fasalitis,
         "image1": image1,
         "image2": image2,
@@ -472,6 +551,7 @@ class ToletSinglePost {
   DateTime rentfrom;
   int mentenance;
   int rent;
+  String garagetype;
   String fasalitis;
   String image1;
   String image2;
@@ -512,6 +592,7 @@ class ToletSinglePost {
     required this.rentfrom,
     required this.mentenance,
     required this.rent,
+    required this.garagetype,
     required this.fasalitis,
     required this.image1,
     required this.image2,
@@ -554,6 +635,7 @@ class ToletSinglePost {
         rentfrom: DateTime.parse(json["rentfrom"]),
         mentenance: json["mentenance"],
         rent: json["rent"],
+        garagetype: json["garagetype"],
         fasalitis: json["fasalitis"],
         image1: json["image1"],
         image2: json["image2"],
@@ -595,6 +677,7 @@ class ToletSinglePost {
         "rentfrom": rentfrom.toIso8601String(),
         "mentenance": mentenance,
         "rent": rent,
+        "garagetype": garagetype,
         "fasalitis": fasalitis,
         "image1": image1,
         "image2": image2,

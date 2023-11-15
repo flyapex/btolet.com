@@ -50,14 +50,64 @@ class _ToletPostPage2State extends State<ToletPostPage2> {
                     // print(locationController.currentlongitude.value);
                     postController.flagActiveFlag.value = true;
                     postController.allToletFlagCheck();
+
                     Vibration.vibrate(pattern: [10, 20, 10]);
+                    // if (postController.toletAllFlag.value) {
+                    //   var res = await postController.newPOST();
+                    //   print(res);
+                    //   Get.back();
+                    //   await postController.snakberSuccess(res);
+                    // } else {
+                    //   print('gg');
+                    // }
                     if (postController.toletAllFlag.value) {
+                      Get.back();
+                      print('--------------Posting Now------------------');
                       var res = await postController.newPOST();
                       print(res);
-                      Get.back();
                       await postController.snakberSuccess(res);
+
+                      postController.flagActiveFlag(false);
+                      postController.categoryFlag(false);
+                      postController.bedFlag(false);
+                      postController.bathFlag(false);
+                      postController.kitchenFlag(false);
+                      postController.priceFlag(false);
+                      postController.imageFlag(false);
+                      postController.floorFlag(false);
+                      postController.phoneFlag(false);
+                      postController.categories.forEach((key, value) {
+                        value.value = false;
+                      });
+                      Future.delayed(const Duration(seconds: 2)).then((val) {
+                        postController.refreshkey.currentState!.refresh(
+                          draggingDuration: const Duration(milliseconds: 350),
+                          draggingCurve: Curves.easeOutBack,
+                        );
+                      });
+
+                      // // postController.selectedImages.clear();
+                      postController.rentTolet.clear();
                     } else {
+                      // Get.back();
+                      // await postController.snakberSuccess("Gg");
+                      // Future.delayed(const Duration(seconds: 1)).then((val) {
+                      //   postController.refreshkey.currentState!.refresh(
+                      //     draggingDuration: const Duration(milliseconds: 450),
+                      //     draggingCurve: Curves.easeOutBack,
+                      //   );
+                      // });
+
                       print('gg');
+                      // postController.flagActiveFlag(false);
+                      // postController.categoryFlag(false);
+                      // postController.bedFlag(false);
+                      // postController.bathFlag(false);
+                      // postController.kitchenFlag(false);
+                      // postController.priceFlag(false);
+                      // postController.imageFlag(false);
+                      // postController.floorFlag(false);
+                      // postController.phoneFlag(false);
                     }
                     postController.toletAllFlag.value = false;
                   },

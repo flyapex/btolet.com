@@ -49,7 +49,7 @@ class _CustomeDrawerState extends State<CustomeDrawer>
           padding: const EdgeInsets.all(0.0),
           children: [
             UserAccountsDrawerHeader(
-              decoration: const BoxDecoration(color: Colors.blue),
+              decoration: const BoxDecoration(color: Colors.lightBlue),
               accountName: Text(
                   "${userController.name.value} (${dbController.getUserID()})"),
               currentAccountPicture: CircleAvatar(

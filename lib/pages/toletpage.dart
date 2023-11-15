@@ -29,13 +29,20 @@ class _ToletPageState extends State<ToletPage> {
   AdsController adsController = Get.put(AdsController());
   // late ToletSinglePost data;   data = await postController.singlepostTolet;
 
+  lodeData() async {
+    var data = await postController.getSinglePost(widget.postid);
+    if (data) {
+      addMarker();
+    }
+  }
+
   @override
   void initState() {
-    postController.getSinglePost(widget.postid);
+    lodeData();
     rootBundle.loadString('assets/map/map_style.txt').then((string) {
       _mapStyle = string;
     });
-    addMarker();
+
     super.initState();
     adsController.createInterstitialAd();
     adsController.createRewardedAd();
@@ -353,72 +360,22 @@ class _ToletPageState extends State<ToletPage> {
                                 ),
                               ),
                               const SizedBox(height: 10),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      SizedBox(
-                                        height: 30,
-                                        width: 30,
-                                        child: SvgPicture.asset(
-                                          'assets/icons/bed.svg',
-                                          colorFilter: const ColorFilter.mode(
-                                            Color(0xff083437),
-                                            BlendMode.srcIn,
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 10),
-                                      Text(
-                                        '${postController.singlepostTolet.bed} Beds',
-                                        style: const TextStyle(
-                                          color: Color(0xff083437),
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(width: 20),
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      SizedBox(
-                                        height: 28,
-                                        width: 28,
-                                        child: SvgPicture.asset(
-                                          'assets/icons/bath.svg',
-                                          colorFilter: const ColorFilter.mode(
-                                            Color(0xff083437),
-                                            BlendMode.srcIn,
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 10),
-                                      Text(
-                                        '${postController.singlepostTolet.bath} Baths',
-                                        style: const TextStyle(
-                                          color: Color(0xff083437),
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(width: 20),
-                                  postController.singlepostTolet.roomsize == ''
-                                      ? Row(
+                              postController.singlepostTolet.garagetype == ""
+                                  ? Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Row(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.end,
                                           children: [
                                             SizedBox(
-                                              height: 20,
-                                              width: 20,
+                                              height: 30,
+                                              width: 30,
                                               child: SvgPicture.asset(
-                                                'assets/icons/property/kitchen.svg',
+                                                'assets/icons/bed.svg',
                                                 colorFilter:
                                                     const ColorFilter.mode(
                                                   Color(0xff083437),
@@ -428,44 +385,199 @@ class _ToletPageState extends State<ToletPage> {
                                             ),
                                             const SizedBox(width: 10),
                                             Text(
-                                              "  ${postController.singlepostTolet.kitchen}",
+                                              '${postController.singlepostTolet.bed} Beds',
                                               style: const TextStyle(
                                                 color: Color(0xff083437),
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 16,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(width: 20),
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            SizedBox(
+                                              height: 28,
+                                              width: 28,
+                                              child: SvgPicture.asset(
+                                                'assets/icons/bath.svg',
+                                                colorFilter:
+                                                    const ColorFilter.mode(
+                                                  Color(0xff083437),
+                                                  BlendMode.srcIn,
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(width: 10),
+                                            Text(
+                                              '${postController.singlepostTolet.bath} Baths',
+                                              style: const TextStyle(
+                                                color: Color(0xff083437),
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(width: 20),
+                                        postController
+                                                    .singlepostTolet.roomsize ==
+                                                ''
+                                            ? Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  SizedBox(
+                                                    height: 24,
+                                                    width: 24,
+                                                    child: SvgPicture.asset(
+                                                      'assets/icons/kitchen2.svg',
+                                                      colorFilter:
+                                                          const ColorFilter
+                                                              .mode(
+                                                        Color(0xff083437),
+                                                        BlendMode.srcIn,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  const SizedBox(width: 10),
+                                                  Text(
+                                                    "  ${postController.singlepostTolet.kitchen} Kitchen",
+                                                    style: const TextStyle(
+                                                      color: Color(0xff083437),
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 16,
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
+                                            : Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
+                                                children: [
+                                                  SizedBox(
+                                                    height: 20,
+                                                    width: 20,
+                                                    child: SvgPicture.asset(
+                                                      'assets/icons/size.svg',
+                                                      colorFilter:
+                                                          const ColorFilter
+                                                              .mode(
+                                                        Color(0xff083437),
+                                                        BlendMode.srcIn,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  const SizedBox(width: 10),
+                                                  Text(
+                                                    "  ${NumberFormat.decimalPattern().format(int.parse(postController.singlepostTolet.roomsize))} ft\u00b2",
+                                                    style: const TextStyle(
+                                                      color: Color(0xff083437),
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 16,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                      ],
+                                    )
+                                  : postController.singlepostTolet.garagetype ==
+                                          "Car"
+                                      ? Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            SizedBox(
+                                              height: 25,
+                                              width: 25,
+                                              child: SvgPicture.asset(
+                                                'assets/icons/carparking.svg',
+                                                colorFilter:
+                                                    const ColorFilter.mode(
+                                                  // Color(0xff083437),
+                                                  Colors.black87,
+                                                  BlendMode.srcIn,
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(width: 10),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.only(top: 4),
+                                              child: Text(
+                                                "${postController.singlepostTolet.garagetype} Garage",
+                                                style: const TextStyle(
+                                                  color: Color(0xff083437),
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16,
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(width: 3),
+                                            SizedBox(
+                                              height: 10,
+                                              width: 10,
+                                              child: SvgPicture.asset(
+                                                'assets/icons/security.svg',
+                                                colorFilter:
+                                                    const ColorFilter.mode(
+                                                  // Color(0xff083437),
+                                                  Colors.green,
+                                                  BlendMode.srcIn,
+                                                ),
                                               ),
                                             ),
                                           ],
                                         )
                                       : Row(
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.end,
+                                              CrossAxisAlignment.center,
                                           children: [
                                             SizedBox(
-                                              height: 20,
-                                              width: 20,
+                                              height: 30,
+                                              width: 30,
                                               child: SvgPicture.asset(
-                                                'assets/icons/size.svg',
+                                                'assets/icons/bikeparking.svg',
                                                 colorFilter:
                                                     const ColorFilter.mode(
-                                                  Color(0xff083437),
+                                                  // Color(0xff083437),
+                                                  Colors.black87,
                                                   BlendMode.srcIn,
                                                 ),
                                               ),
                                             ),
                                             const SizedBox(width: 10),
                                             Text(
-                                              "  ${NumberFormat.decimalPattern().format(int.parse(postController.singlepostTolet.roomsize))} ft\u00b2",
+                                              "${postController.singlepostTolet.garagetype} Garage",
                                               style: const TextStyle(
                                                 color: Color(0xff083437),
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 16,
                                               ),
                                             ),
+                                            const SizedBox(width: 3),
+                                            SizedBox(
+                                              height: 10,
+                                              width: 10,
+                                              child: SvgPicture.asset(
+                                                'assets/icons/security.svg',
+                                                colorFilter:
+                                                    const ColorFilter.mode(
+                                                  // Color(0xff083437),
+                                                  Colors.green,
+                                                  BlendMode.srcIn,
+                                                ),
+                                              ),
+                                            ),
                                           ],
                                         ),
-                                ],
-                              ),
                             ],
                           ),
                         ),
@@ -690,28 +802,33 @@ class _ToletPageState extends State<ToletPage> {
                                     postController.singlepostTolet.facing,
                                 icon: Icons.window_outlined,
                               ),
-
                               Details(
                                 type: "Rent From",
-                                detailstext:
-                                    "${postController.singlepostTolet.time.day}",
+                                detailstext: DateFormat('d MMM').format(
+                                    postController.singlepostTolet.time),
                                 icon: Icons.access_time,
                               ),
 
                               Details(
                                 type: "Facilities",
-                                detailstext: json
-                                    .decode(postController
-                                        .singlepostTolet.fasalitis)
-                                    .join(", "),
+                                detailstext: postController
+                                        .singlepostTolet.fasalitis.isEmpty
+                                    ? ""
+                                    : json
+                                        .decode(postController
+                                            .singlepostTolet.fasalitis)
+                                        .join(", "),
                                 icon: Icons.search_sharp,
                                 textColor: Colors.green,
                               ),
 
                               Details(
                                 type: "Maintenance",
-                                detailstext:
-                                    "${postController.singlepostTolet.mentenance} ৳/mon",
+                                detailstext: postController
+                                            .singlepostTolet.mentenance ==
+                                        0
+                                    ? ""
+                                    : "${postController.singlepostTolet.mentenance} ৳/mon",
                                 icon: Icons.monetization_on_outlined,
                               ),
 
@@ -1009,6 +1126,7 @@ class _ImageSlidePageState extends State<ImageSlidePage> {
                                 widget.imageList[index],
                               ),
                             ),
+                            // fit: BoxFit.fitWidth,
                             fit: BoxFit.cover,
                           ),
                         ),
