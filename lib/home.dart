@@ -51,6 +51,79 @@ class MapLodingPage extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.center,
+                        //   children: [
+                        //     SizedBox(
+                        //       height: 40,
+                        //       width: 40,
+                        //       child: SvgPicture.asset(
+                        //         'assets/logo/logo.svg',
+                        //         colorFilter: const ColorFilter.mode(
+                        //           Color(0xff096EFE),
+                        //           // Colors.black87,
+                        //           // Colors.black87,
+                        //           BlendMode.srcIn,
+                        //         ),
+                        //       ),
+                        //     ),
+                        //     AnimatedTextKit(
+                        //       pause: const Duration(milliseconds: 1400),
+                        //       repeatForever: true,
+                        //       animatedTexts: [
+                        //         TypewriterAnimatedText(
+                        //           'Btolet',
+                        //           speed: const Duration(milliseconds: 150),
+                        //           textStyle: const TextStyle(
+                        //             fontSize: 32.0,
+                        //             fontWeight: FontWeight.bold,
+                        //             color: Colors.black,
+                        //           ),
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   ],
+                        // ),
+// Icon(icon)
+
+                        userController.name.value.isEmpty
+                            ? const SizedBox()
+                            : Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  RichText(
+                                    text: TextSpan(
+                                      text: 'welcome ',
+                                      style: const TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black45,
+                                      ),
+                                      children: [
+                                        TextSpan(
+                                          text: userController.name.value
+                                              .toLowerCase(),
+                                          style: const TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Align(
+                                    alignment: Alignment.center,
+                                    child: SizedBox(
+                                      height: 50,
+                                      width: 50,
+                                      child: Lottie.asset(
+                                        'assets/lottie/smile.json',
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+
                         const SizedBox(),
                         // Lottie.asset('assets/lottie/location.json'),
                         // Lottie.asset('assets/lottie/globe.json'),
@@ -63,15 +136,74 @@ class MapLodingPage extends StatelessWidget {
                           ),
                         ),
 
-                        Text(
-                          'Welcome ${userController.name.value}',
-                          style: const TextStyle(
-                            fontSize: 40,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        const SizedBox(),
+                        const SizedBox(),
+
+                        const Column(
+                          children: [
+                            // userController.name.value.isEmpty
+                            // ? const SizedBox()
+                            // : AnimatedTextKit(
+                            //     pause: const Duration(milliseconds: 1400),
+                            //     repeatForever: true,
+                            //     animatedTexts: [
+                            //       FadeAnimatedText(
+                            //         'welcome ${userController.name.value.toLowerCase()}',
+                            //         // speed:
+                            //         //     const Duration(milliseconds: 150),
+                            //         textStyle: const TextStyle(
+                            //           fontSize: 20.0,
+                            //           fontWeight: FontWeight.bold,
+                            //           color: Colors.black45,
+                            //         ),
+                            //       ),
+                            //       FadeAnimatedText(
+                            //         'welcome ${userController.name.value.toLowerCase()}',
+                            //         // speed:
+                            //         //     const Duration(milliseconds: 150),
+                            //         textStyle: const TextStyle(
+                            //           fontSize: 20.0,
+                            //           fontWeight: FontWeight.bold,
+                            //           color: Colors.black45,
+                            //         ),
+                            //       ),
+                            //     ],
+                            //   ),
+                            SizedBox(height: 20),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.location_on,
+                                  size: 18,
+                                  color: Color(0xffa1adb7),
+                                ),
+                                SizedBox(width: 3),
+                                // AnimatedTextKit(
+                                //   pause: const Duration(milliseconds: 1400),
+                                //   repeatForever: true,
+                                //   animatedTexts: [
+                                //     TypewriterAnimatedText(
+                                //       'Locating you',
+                                //       speed: const Duration(milliseconds: 130),
+                                //       textStyle: const TextStyle(
+                                //         fontSize: 14,
+                                //         color: Color(0xffa1adb7),
+                                //       ),
+                                //     ),
+                                //   ],
+                                // ),
+                                Text(
+                                  'Locating you',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Color(0xffa1adb7),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                        const SizedBox(),
-                        const SizedBox(),
                       ],
                     ),
                   ),
