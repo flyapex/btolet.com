@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:pattern_formatter/numeric_formatter.dart';
 import 'widget/chips.dart';
 import 'widget/drapdown.dart';
 import 'widget/imagepicker.dart';
@@ -39,9 +40,11 @@ class _ToletPostPage1State extends State<ToletPostPage1> {
                       minimumDate: minDate,
                       mode: CupertinoDatePickerMode.date,
                       onDateTimeChanged: (val) {
+                        print(val);
+                        postController.rentFrom = val;
                         setState(() {
                           _chosenDateTime = val;
-                          postController.rentFrom = val;
+                          // postController.rentFrom = val;
                         });
                       },
                     ),
@@ -311,9 +314,10 @@ class _ToletPostPage1State extends State<ToletPostPage1> {
             titlelenth: 4,
             suffixtext: "৳",
             controller: postController.rentTolet,
+            numberFormatter: ThousandsFormatter(),
             iconh: 23,
             iconw: 23,
-            widthh: 2.35,
+            widthh: 1.2,
           ),
         ],
       );
@@ -384,11 +388,12 @@ class _ToletPostPage1State extends State<ToletPostPage1> {
               children: [
                 TextInputBox(
                   topPadding: 0,
-                  title: "Room Size (ft\u00b2)",
-                  textType: TextInputType.number,
-                  hintText: "230 ",
+                  // title: "Room Size (ft\u00b2)",
+                  title: "Room Size ",
+                  textType: TextInputType.text,
+                  hintText: "12x12 or ft\u00b2",
                   titlelenth: 500,
-                  suffixtext: "ft\u00b2",
+                  suffixtext: "",
                   controller: postController.roomSizeTolet,
                   iconh: 23,
                   iconw: 23,
@@ -454,6 +459,7 @@ class _ToletPostPage1State extends State<ToletPostPage1> {
                   titlelenth: 4,
                   suffixtext: "",
                   controller: postController.maintenanceTolet,
+                  numberFormatter: ThousandsFormatter(),
                   iconh: 23,
                   iconw: 23,
                   widthh: 2.35,
@@ -467,6 +473,7 @@ class _ToletPostPage1State extends State<ToletPostPage1> {
                   titlelenth: 500,
                   suffixtext: "৳",
                   controller: postController.rentTolet,
+                  numberFormatter: ThousandsFormatter(),
                   iconh: 23,
                   iconw: 23,
                   widthh: 2.35,
@@ -475,12 +482,16 @@ class _ToletPostPage1State extends State<ToletPostPage1> {
             ),
           ),
           SizedBox(height: space),
-          const Text(
-            'Facilities(op)',
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.black,
-            ),
+          const Row(
+            children: [
+              Text(
+                'Facilities(op)',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.black,
+                ),
+              ),
+            ],
           ),
           SizedBox(height: space),
           Row(
@@ -554,11 +565,11 @@ class _ToletPostPage1State extends State<ToletPostPage1> {
               children: [
                 TextInputBox(
                   topPadding: 0,
-                  title: "Room Size (ft\u00b2)",
-                  textType: TextInputType.number,
-                  hintText: "230 ",
+                  title: "Room Size",
+                  textType: TextInputType.text,
+                  hintText: "12x12 or ft\u00b2",
                   titlelenth: 500,
-                  suffixtext: "ft\u00b2",
+                  suffixtext: "",
                   controller: postController.roomSizeTolet,
                   iconh: 23,
                   iconw: 23,
@@ -624,6 +635,7 @@ class _ToletPostPage1State extends State<ToletPostPage1> {
                   titlelenth: 4,
                   suffixtext: "",
                   controller: postController.maintenanceTolet,
+                  numberFormatter: ThousandsFormatter(),
                   iconh: 23,
                   iconw: 23,
                   widthh: 2.35,
@@ -637,6 +649,7 @@ class _ToletPostPage1State extends State<ToletPostPage1> {
                   titlelenth: 500,
                   suffixtext: "৳",
                   controller: postController.rentTolet,
+                  numberFormatter: ThousandsFormatter(),
                   iconh: 23,
                   iconw: 23,
                   widthh: 2.35,
@@ -645,12 +658,16 @@ class _ToletPostPage1State extends State<ToletPostPage1> {
             ),
           ),
           SizedBox(height: space),
-          const Text(
-            'Facilities(op)',
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.black,
-            ),
+          const Row(
+            children: [
+              Text(
+                'Facilities(op)',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.black,
+                ),
+              ),
+            ],
           ),
           SizedBox(height: space),
           Row(
@@ -705,11 +722,11 @@ class _ToletPostPage1State extends State<ToletPostPage1> {
               children: [
                 TextInputBox(
                   topPadding: 0,
-                  title: "Room Size (ft\u00b2)",
-                  textType: TextInputType.number,
-                  hintText: "230 ",
+                  title: "Room Size",
+                  textType: TextInputType.text,
+                  hintText: "12x12 or ft\u00b2",
                   titlelenth: 500,
-                  suffixtext: "ft\u00b2",
+                  suffixtext: "",
                   controller: postController.roomSizeTolet,
                   iconh: 23,
                   iconw: 23,
@@ -770,9 +787,10 @@ class _ToletPostPage1State extends State<ToletPostPage1> {
             titlelenth: 500,
             suffixtext: "৳",
             controller: postController.rentTolet,
+            numberFormatter: ThousandsFormatter(),
             iconh: 23,
             iconw: 23,
-            widthh: 2.35,
+            widthh: 1.2,
           ),
         ],
       );
@@ -841,9 +859,9 @@ class _ToletPostPage1State extends State<ToletPostPage1> {
               children: [
                 TextInputBox(
                   topPadding: 0,
-                  title: "Room Size (ft\u00b2)",
-                  textType: TextInputType.number,
-                  hintText: "230 ",
+                  title: "Room Size",
+                  textType: TextInputType.text,
+                  hintText: "12x12 or ft\u00b2",
                   titlelenth: 500,
                   suffixtext: "ft\u00b2",
                   controller: postController.roomSizeTolet,
@@ -911,6 +929,7 @@ class _ToletPostPage1State extends State<ToletPostPage1> {
                   titlelenth: 4,
                   suffixtext: "",
                   controller: postController.maintenanceTolet,
+                  numberFormatter: ThousandsFormatter(),
                   iconh: 23,
                   iconw: 23,
                   widthh: 2.35,
@@ -924,6 +943,7 @@ class _ToletPostPage1State extends State<ToletPostPage1> {
                   titlelenth: 500,
                   suffixtext: "৳",
                   controller: postController.rentTolet,
+                  numberFormatter: ThousandsFormatter(),
                   iconh: 23,
                   iconw: 23,
                   widthh: 2.35,
@@ -932,12 +952,16 @@ class _ToletPostPage1State extends State<ToletPostPage1> {
             ),
           ),
           SizedBox(height: space),
-          const Text(
-            'Facilities(op)',
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.black,
-            ),
+          const Row(
+            children: [
+              Text(
+                'Facilities(op)',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.black,
+                ),
+              ),
+            ],
           ),
           SizedBox(height: space),
           Row(

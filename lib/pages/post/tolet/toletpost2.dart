@@ -86,7 +86,7 @@ class _ToletPostPage2State extends State<ToletPostPage2> {
                         );
                       });
 
-                      // // postController.selectedImages.clear();
+                      postController.selectedImages.clear();
                       postController.rentTolet.clear();
                     } else {
                       // Get.back();

@@ -233,6 +233,26 @@ class SingupPage extends StatelessWidget {
                       messageText: const Text('Maybe Google? 👌'),
                       barBlur: 30,
                     );
+                    // final LoginResult result =
+                    //     await FacebookAuth.instance.login(
+                    //   permissions: [
+                    //     "email",
+                    //     "public_profile",
+                    //   ],
+                    //   loginBehavior: LoginBehavior.dialogOnly,
+                    // );
+                    // print(result);
+                    // if (result.status == LoginStatus.success) {
+                    //   FacebookAuth.i.getUserData().then(
+                    //     (user) async {
+                    //       print(user);
+                    //       print(user["id"]);
+                    //       print(user["email"]);
+                    //       print(user["name"]);
+                    //       print(user["picture"]["data"]["url"]);
+                    //     },
+                    //   );
+                    // }
                   },
                   child: const SocialIcons(
                     icon: 'assets/icons/fb.svg',

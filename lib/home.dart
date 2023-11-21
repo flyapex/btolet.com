@@ -1,5 +1,5 @@
 import 'package:btolet/controller/post_controller.dart';
-import 'package:btolet/pages/post/property/propertypost.dart';
+import 'package:btolet/features/buypagetemp.dart';
 import 'package:btolet/widget/post_btn.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -14,7 +14,6 @@ import 'pages/map/multi_map.dart';
 import 'pages/sorting/sortingproperty.dart';
 import 'pages/sorting/sortingtolet.dart';
 import 'pages/post/tolet/posttolet.dart';
-import 'pages/property.dart';
 import 'pages/tolet.dart';
 import 'pages/map/location_sheet_map.dart';
 import 'widget/drawer.dart';
@@ -326,6 +325,7 @@ class _HomeViewState extends State<HomeView>
                   child: Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
+                      // color: Colors.white,
                       borderRadius: BorderRadius.circular(200),
                     ),
                     child: SizedBox(
@@ -333,39 +333,56 @@ class _HomeViewState extends State<HomeView>
                       width: wt / 3.5,
                       child: UnicornOutlineButton(
                         onPressed: () {
-                          postController.tabController.index.isEven
-                              ? Get.bottomSheet(
-                                  const PostNowTolet(),
-                                  elevation: 20.0,
-                                  enableDrag: true,
-                                  backgroundColor: Colors.white,
-                                  isScrollControlled: true,
-                                  ignoreSafeArea: true,
-                                  shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(20.0),
-                                      topRight: Radius.circular(20.0),
-                                    ),
-                                  ),
-                                  enterBottomSheetDuration:
-                                      const Duration(milliseconds: 170),
-                                )
-                              : Get.bottomSheet(
-                                  const PostNowProperty(),
-                                  elevation: 20.0,
-                                  enableDrag: true,
-                                  backgroundColor: Colors.white,
-                                  isScrollControlled: true,
-                                  ignoreSafeArea: true,
-                                  shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(20.0),
-                                      topRight: Radius.circular(20.0),
-                                    ),
-                                  ),
-                                  enterBottomSheetDuration:
-                                      const Duration(milliseconds: 170),
-                                );
+                          Get.bottomSheet(
+                            const PostNowTolet(),
+                            elevation: 20.0,
+                            enableDrag: true,
+                            backgroundColor: Colors.white,
+                            isScrollControlled: true,
+                            ignoreSafeArea: true,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20.0),
+                                topRight: Radius.circular(20.0),
+                              ),
+                            ),
+                            enterBottomSheetDuration:
+                                const Duration(milliseconds: 170),
+                          );
+
+                          // postController.tabController.index.isEven
+                          //     ? Get.bottomSheet(
+                          //         const PostNowTolet(),
+                          //         elevation: 20.0,
+                          //         enableDrag: true,
+                          //         backgroundColor: Colors.white,
+                          //         isScrollControlled: true,
+                          //         ignoreSafeArea: true,
+                          //         shape: const RoundedRectangleBorder(
+                          //           borderRadius: BorderRadius.only(
+                          //             topLeft: Radius.circular(20.0),
+                          //             topRight: Radius.circular(20.0),
+                          //           ),
+                          //         ),
+                          //         enterBottomSheetDuration:
+                          //             const Duration(milliseconds: 170),
+                          //       )
+                          //     : Get.bottomSheet(
+                          //         const PostNowProperty(),
+                          //         elevation: 20.0,
+                          //         enableDrag: true,
+                          //         backgroundColor: Colors.white,
+                          //         isScrollControlled: true,
+                          //         ignoreSafeArea: true,
+                          //         shape: const RoundedRectangleBorder(
+                          //           borderRadius: BorderRadius.only(
+                          //             topLeft: Radius.circular(20.0),
+                          //             topRight: Radius.circular(20.0),
+                          //           ),
+                          //         ),
+                          //         enterBottomSheetDuration:
+                          //             const Duration(milliseconds: 170),
+                          //       );
                         },
                         gradient: const LinearGradient(
                           colors: [
@@ -593,7 +610,8 @@ class _HomeViewState extends State<HomeView>
                       locationController.mapMode.value
                           ? const MultiMap()
                           : const ToletHome(),
-                      const PropertyHome(),
+                      // const PropertyHome(),
+                      const PropertyHomeTEMP(),
                     ],
                   ),
                 ),

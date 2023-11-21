@@ -307,7 +307,8 @@ class _PostsToletState extends State<PostsTolet> {
                     ),
                     image: DecorationImage(
                       image: MemoryImage(base64Decode(widget.postData.image1)),
-                      fit: BoxFit.fitWidth,
+                      fit: BoxFit.cover,
+                      // alignment: Alignment.topCenter,
                     ),
                   ),
                   // child: ClipRRect(
@@ -343,6 +344,7 @@ class _PostsToletState extends State<PostsTolet> {
                             color: Color(0xff083437),
                             fontWeight: FontWeight.bold,
                           ),
+                          overflow: TextOverflow.ellipsis,
                         ),
                         widget.postData.garagetype.isEmpty
                             ? Row(
@@ -350,102 +352,115 @@ class _PostsToletState extends State<PostsTolet> {
                                     MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
-                                  Row(
-                                    children: [
-                                      SizedBox(
-                                        height: 20,
-                                        width: 20,
-                                        child: SvgPicture.asset(
-                                          'assets/icons/bed.svg',
-                                          colorFilter: const ColorFilter.mode(
-                                            // Color(0xff083437),
-                                            Colors.black87,
-                                            // Colors.black87,
-                                            BlendMode.srcIn,
+                                  Expanded(
+                                    flex: 1,
+                                    child: Row(
+                                      children: [
+                                        SizedBox(
+                                          height: 20,
+                                          width: 20,
+                                          child: SvgPicture.asset(
+                                            'assets/icons/bed.svg',
+                                            colorFilter: const ColorFilter.mode(
+                                              // Color(0xff083437),
+                                              Colors.black87,
+                                              // Colors.black87,
+                                              BlendMode.srcIn,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      Text(
-                                        "  ${widget.postData.bed}",
-                                        style: const TextStyle(
-                                          color: Color(0xff083437),
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      SizedBox(
-                                        height: 18,
-                                        width: 18,
-                                        child: SvgPicture.asset(
-                                          'assets/icons/bath.svg',
-                                          colorFilter: const ColorFilter.mode(
-                                            // Color(0xff083437),
-                                            Colors.black87,
-                                            BlendMode.srcIn,
+                                        Text(
+                                          "  ${widget.postData.bed}",
+                                          style: const TextStyle(
+                                            color: Color(0xff083437),
+                                            fontSize: 14,
                                           ),
                                         ),
-                                      ),
-                                      Text(
-                                        "  ${widget.postData.bath}",
-                                        style: const TextStyle(
-                                          color: Color(0xff083437),
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                  widget.postData.roomsize == ''
-                                      ? Row(
-                                          children: [
-                                            SizedBox(
-                                              height: 16,
-                                              width: 16,
-                                              child: SvgPicture.asset(
-                                                'assets/icons/kitchen2.svg',
-                                                colorFilter:
-                                                    const ColorFilter.mode(
-                                                  // Color(0xff083437),
-                                                  Colors.black87,
-                                                  BlendMode.srcIn,
-                                                ),
-                                              ),
+                                  Expanded(
+                                    flex: 1,
+                                    child: Row(
+                                      children: [
+                                        SizedBox(
+                                          height: 18,
+                                          width: 18,
+                                          child: SvgPicture.asset(
+                                            'assets/icons/bath.svg',
+                                            colorFilter: const ColorFilter.mode(
+                                              // Color(0xff083437),
+                                              Colors.black87,
+                                              BlendMode.srcIn,
                                             ),
-                                            Text(
-                                              "  ${widget.postData.kitchen}",
-                                              style: const TextStyle(
-                                                color: Color(0xff083437),
-                                                fontSize: 14,
-                                              ),
-                                            ),
-                                          ],
-                                        )
-                                      : Row(
-                                          children: [
-                                            SizedBox(
-                                              height: 16,
-                                              width: 16,
-                                              child: SvgPicture.asset(
-                                                'assets/icons/size.svg',
-                                                colorFilter:
-                                                    const ColorFilter.mode(
-                                                  // Color(0xff083437),
-                                                  Colors.black87,
-                                                  BlendMode.srcIn,
-                                                ),
-                                              ),
-                                            ),
-                                            Text(
-                                              "  ${NumberFormat.decimalPattern().format(int.parse(widget.postData.roomsize))} ft\u00b2",
-                                              style: const TextStyle(
-                                                color: Color(0xff083437),
-                                                fontSize: 14,
-                                              ),
-                                            ),
-                                          ],
+                                          ),
                                         ),
+                                        Text(
+                                          "  ${widget.postData.bath}",
+                                          style: const TextStyle(
+                                            color: Color(0xff083437),
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 1,
+                                    child: widget.postData.roomsize == ''
+                                        ? Row(
+                                            children: [
+                                              SizedBox(
+                                                height: 16,
+                                                width: 16,
+                                                child: SvgPicture.asset(
+                                                  'assets/icons/kitchen2.svg',
+                                                  colorFilter:
+                                                      const ColorFilter.mode(
+                                                    // Color(0xff083437),
+                                                    Colors.black87,
+                                                    BlendMode.srcIn,
+                                                  ),
+                                                ),
+                                              ),
+                                              Text(
+                                                "  ${widget.postData.kitchen}",
+                                                style: const TextStyle(
+                                                  color: Color(0xff083437),
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        : Row(
+                                            children: [
+                                              SizedBox(
+                                                height: 16,
+                                                width: 16,
+                                                child: SvgPicture.asset(
+                                                  'assets/icons/size.svg',
+                                                  colorFilter:
+                                                      const ColorFilter.mode(
+                                                    // Color(0xff083437),
+                                                    Colors.black87,
+                                                    BlendMode.srcIn,
+                                                  ),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child: Text(
+                                                  "  ${widget.postData.roomsize} ", //ft\u00b2
+                                                  style: const TextStyle(
+                                                    color: Color(0xff083437),
+                                                    fontSize: 14,
+                                                  ),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                  ),
                                 ],
                               )
                             : widget.postData.garagetype == "Car"

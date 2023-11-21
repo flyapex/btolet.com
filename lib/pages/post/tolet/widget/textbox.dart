@@ -1,7 +1,7 @@
 import 'package:btolet/controller/post_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:pattern_formatter/numeric_formatter.dart';
 
 class TextInputBoxOnly extends StatefulWidget {
   final String title;
@@ -150,7 +150,7 @@ class TextInputBox extends StatefulWidget {
   final TextInputType textType;
   final double topPadding;
   final TextEditingController controller;
-
+  final TextInputFormatter? numberFormatter;
   final double iconh;
   final double iconw;
   final double widthh;
@@ -167,6 +167,7 @@ class TextInputBox extends StatefulWidget {
     required this.iconw,
     Key? key,
     required this.widthh,
+    this.numberFormatter,
   }) : super(key: key);
 
   @override
@@ -240,7 +241,12 @@ class _TextInputBoxState extends State<TextInputBox> {
                     // inputFormatters: [
                     //   LengthLimitingTextInputFormatter(widget.titlelenth),
                     // ],
-                    inputFormatters: [ThousandsFormatter()],
+
+                    // inputFormatters: [ThousandsFormatter()],
+                    inputFormatters: [
+                      if (widget.numberFormatter != null)
+                        widget.numberFormatter!,
+                    ],
                     // maxLength: widget.titlelenth,
                     cursorHeight: 24,
                     cursorWidth: 1.8,

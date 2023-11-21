@@ -4,6 +4,10 @@ import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 
+class FacebookSignIn {
+  void fblogin() async {}
+}
+
 class GoogleSignInApi {
   static final _googleSignIn = GoogleSignIn();
   static Future<GoogleSignInAccount?> login() => _googleSignIn.signIn();

@@ -37,6 +37,9 @@
             <data android:scheme="tel" />
         </intent>
     </queries>
+    <queries>
+        <provider android:authorities="com.facebook.katana.provider.PlatformProvider" />
+    </queries>
     <application
         android:label="btolet"
         android:name="${applicationName}"
@@ -73,5 +76,7 @@
         <meta-data
            android:name="com.google.android.gms.ads.APPLICATION_ID"
            android:value="ca-app-pub-9627029252216440~4465221595"/>
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/>
     </application>
 </manifest>

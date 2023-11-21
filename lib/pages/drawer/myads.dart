@@ -1,4 +1,5 @@
 import 'package:btolet/controller/user_controller.dart';
+import 'package:btolet/features/buypagetemp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
@@ -65,8 +66,9 @@ class _MyadsState extends State<Myads>
             child: TabBarView(
               controller: userController.tabControllerDrawer,
               children: const [
-                MyAdsPage(),
-                History(),
+                // MyAdsPage(),
+                // History(),
+                PropertyHomeTEMP(), PropertyHomeTEMP(),
               ],
             ),
           )

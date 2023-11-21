@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:ui';
 import 'package:btolet/controller/ads_controller.dart';
 import 'package:btolet/controller/post_controller.dart';
@@ -15,6 +16,7 @@ import 'package:like_button/like_button.dart';
 import 'package:maps_launcher/maps_launcher.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:url_launcher/url_launcher.dart';
 
 class ToletPage extends StatefulWidget {
   final int postid;
@@ -107,16 +109,16 @@ class _ToletPageState extends State<ToletPage> {
                           flex: 1,
                           child: InkWell(
                             onTap: () async {
-                              adsController.showRewardedAd(
-                                  postController.singlepostTolet.phone);
+                              // adsController.showRewardedAd(
+                              //     postController.singlepostTolet.phone);
 
-                              // final call = Uri.parse(
-                              //     'tel:${postController.singlepostTolet.phone}');
-                              // if (await canLaunchUrl(call)) {
-                              //   launchUrl(call);
-                              // } else {
-                              //   throw 'Could not launch $call';
-                              // }
+                              final call = Uri.parse(
+                                  'tel:${postController.singlepostTolet.phone}');
+                              if (await canLaunchUrl(call)) {
+                                launchUrl(call);
+                              } else {
+                                throw 'Could not launch $call';
+                              }
                             },
                             child: Container(
                               padding: const EdgeInsets.only(
@@ -156,26 +158,26 @@ class _ToletPageState extends State<ToletPage> {
                           flex: 1,
                           child: InkWell(
                             onTap: () async {
-                              adsController.showRewardedInterstitialAd();
+                              // adsController.showRewardedInterstitialAd();
 
-                              // var uri =
-                              //     'sms:${postController.singlepostTolet.phone}?body=hello%20there';
-                              // // ignore: deprecated_member_use
-                              // if (await canLaunch(uri)) {
-                              //   // ignore: deprecated_member_use
-                              //   await launch(uri);
-                              // } else {
-                              //   // iOS
-                              //   var uri =
-                              //       'sms:${postController.singlepostTolet.phone}?body=hello%20there';
-                              //   // ignore: deprecated_member_use
-                              //   if (await canLaunch(uri)) {
-                              //     // ignore: deprecated_member_use
-                              //     await launch(uri);
-                              //   } else {
-                              //     throw 'Could not launch $uri';
-                              //   }
-                              // }
+                              var uri =
+                                  'sms:${postController.singlepostTolet.phone}?body=hello%20there';
+                              // ignore: deprecated_member_use
+                              if (await canLaunch(uri)) {
+                                // ignore: deprecated_member_use
+                                await launch(uri);
+                              } else {
+                                // iOS
+                                var uri =
+                                    'sms:${postController.singlepostTolet.phone}?body=hello%20there';
+                                // ignore: deprecated_member_use
+                                if (await canLaunch(uri)) {
+                                  // ignore: deprecated_member_use
+                                  await launch(uri);
+                                } else {
+                                  throw 'Could not launch $uri';
+                                }
+                              }
                             },
                             child: Container(
                               padding: const EdgeInsets.only(
@@ -214,24 +216,24 @@ class _ToletPageState extends State<ToletPage> {
                           flex: 2,
                           child: InkWell(
                             onTap: () async {
-                              adsController.showInterstitialAd();
-                              // String appUrl;
-                              // String phone =
-                              //     postController.singlepostTolet.wapp;
-                              // String message = 'Surprice Bitch! ';
-                              // if (Platform.isAndroid) {
-                              //   appUrl =
-                              //       "whatsapp://send?phone=$phone&text=${Uri.parse(message)}";
-                              // } else {
-                              //   appUrl =
-                              //       "https://api.whatsapp.com/send?phone=$phone=${Uri.parse(message)}"; // URL for non-Android devices
-                              // }
+                              // adsController.showInterstitialAd();
+                              String appUrl;
+                              String phone =
+                                  postController.singlepostTolet.wapp;
+                              String message = 'Surprice Bitch! ';
+                              if (Platform.isAndroid) {
+                                appUrl =
+                                    "whatsapp://send?phone=$phone&text=${Uri.parse(message)}";
+                              } else {
+                                appUrl =
+                                    "https://api.whatsapp.com/send?phone=$phone=${Uri.parse(message)}"; // URL for non-Android devices
+                              }
 
-                              // if (await canLaunchUrl(Uri.parse(appUrl))) {
-                              //   await launchUrl(Uri.parse(appUrl));
-                              // } else {
-                              //   throw 'Could not launch $appUrl';
-                              // }
+                              if (await canLaunchUrl(Uri.parse(appUrl))) {
+                                await launchUrl(Uri.parse(appUrl));
+                              } else {
+                                throw 'Could not launch $appUrl';
+                              }
                             },
                             child: Container(
                               padding: const EdgeInsets.only(
@@ -367,125 +369,140 @@ class _ToletPageState extends State<ToletPage> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.end,
                                       children: [
-                                        Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          children: [
-                                            SizedBox(
-                                              height: 30,
-                                              width: 30,
-                                              child: SvgPicture.asset(
-                                                'assets/icons/bed.svg',
-                                                colorFilter:
-                                                    const ColorFilter.mode(
-                                                  Color(0xff083437),
-                                                  BlendMode.srcIn,
+                                        Expanded(
+                                          flex: 1,
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            children: [
+                                              SizedBox(
+                                                height: 30,
+                                                width: 30,
+                                                child: SvgPicture.asset(
+                                                  'assets/icons/bed.svg',
+                                                  colorFilter:
+                                                      const ColorFilter.mode(
+                                                    Color(0xff083437),
+                                                    BlendMode.srcIn,
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                            const SizedBox(width: 10),
-                                            Text(
-                                              '${postController.singlepostTolet.bed} Beds',
-                                              style: const TextStyle(
-                                                color: Color(0xff083437),
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 16,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(width: 20),
-                                        Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          children: [
-                                            SizedBox(
-                                              height: 28,
-                                              width: 28,
-                                              child: SvgPicture.asset(
-                                                'assets/icons/bath.svg',
-                                                colorFilter:
-                                                    const ColorFilter.mode(
-                                                  Color(0xff083437),
-                                                  BlendMode.srcIn,
+                                              const SizedBox(width: 10),
+                                              Text(
+                                                '${postController.singlepostTolet.bed} Beds',
+                                                style: const TextStyle(
+                                                  color: Color(0xff083437),
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16,
                                                 ),
                                               ),
-                                            ),
-                                            const SizedBox(width: 10),
-                                            Text(
-                                              '${postController.singlepostTolet.bath} Baths',
-                                              style: const TextStyle(
-                                                color: Color(0xff083437),
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 16,
-                                              ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
-                                        const SizedBox(width: 20),
-                                        postController
-                                                    .singlepostTolet.roomsize ==
-                                                ''
-                                            ? Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.end,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.end,
-                                                children: [
-                                                  SizedBox(
-                                                    height: 24,
-                                                    width: 24,
-                                                    child: SvgPicture.asset(
-                                                      'assets/icons/kitchen2.svg',
-                                                      colorFilter:
-                                                          const ColorFilter
-                                                              .mode(
-                                                        Color(0xff083437),
-                                                        BlendMode.srcIn,
-                                                      ),
-                                                    ),
+                                        // const SizedBox(width: 20),
+                                        Expanded(
+                                          flex: 1,
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            children: [
+                                              SizedBox(
+                                                height: 28,
+                                                width: 28,
+                                                child: SvgPicture.asset(
+                                                  'assets/icons/bath.svg',
+                                                  colorFilter:
+                                                      const ColorFilter.mode(
+                                                    Color(0xff083437),
+                                                    BlendMode.srcIn,
                                                   ),
-                                                  const SizedBox(width: 10),
-                                                  Text(
-                                                    "  ${postController.singlepostTolet.kitchen} Kitchen",
-                                                    style: const TextStyle(
-                                                      color: Color(0xff083437),
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 16,
-                                                    ),
-                                                  ),
-                                                ],
-                                              )
-                                            : Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.end,
-                                                children: [
-                                                  SizedBox(
-                                                    height: 20,
-                                                    width: 20,
-                                                    child: SvgPicture.asset(
-                                                      'assets/icons/size.svg',
-                                                      colorFilter:
-                                                          const ColorFilter
-                                                              .mode(
-                                                        Color(0xff083437),
-                                                        BlendMode.srcIn,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  const SizedBox(width: 10),
-                                                  Text(
-                                                    "  ${NumberFormat.decimalPattern().format(int.parse(postController.singlepostTolet.roomsize))} ft\u00b2",
-                                                    style: const TextStyle(
-                                                      color: Color(0xff083437),
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 16,
-                                                    ),
-                                                  ),
-                                                ],
+                                                ),
                                               ),
+                                              const SizedBox(width: 10),
+                                              Text(
+                                                '${postController.singlepostTolet.bath} Baths',
+                                                style: const TextStyle(
+                                                  color: Color(0xff083437),
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        // const SizedBox(width: 20),
+                                        Expanded(
+                                          flex: 1,
+                                          child: postController.singlepostTolet
+                                                      .roomsize ==
+                                                  ''
+                                              ? Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.end,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  children: [
+                                                    SizedBox(
+                                                      height: 24,
+                                                      width: 24,
+                                                      child: SvgPicture.asset(
+                                                        'assets/icons/kitchen2.svg',
+                                                        colorFilter:
+                                                            const ColorFilter
+                                                                .mode(
+                                                          Color(0xff083437),
+                                                          BlendMode.srcIn,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    const SizedBox(width: 10),
+                                                    Text(
+                                                      "  ${postController.singlepostTolet.kitchen} Kitchen",
+                                                      style: const TextStyle(
+                                                        color:
+                                                            Color(0xff083437),
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 16,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )
+                                              : Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.end,
+                                                  children: [
+                                                    SizedBox(
+                                                      height: 20,
+                                                      width: 20,
+                                                      child: SvgPicture.asset(
+                                                        'assets/icons/size.svg',
+                                                        colorFilter:
+                                                            const ColorFilter
+                                                                .mode(
+                                                          Color(0xff083437),
+                                                          BlendMode.srcIn,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    const SizedBox(width: 10),
+                                                    Expanded(
+                                                      child: Text(
+                                                        "  ${postController.singlepostTolet.roomsize}", //ft\u00b2
+                                                        style: const TextStyle(
+                                                          color:
+                                                              Color(0xff083437),
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 16,
+                                                        ),
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                        ),
                                       ],
                                     )
                                   : postController.singlepostTolet.garagetype ==
@@ -828,7 +845,7 @@ class _ToletPageState extends State<ToletPage> {
                                             .singlepostTolet.mentenance ==
                                         0
                                     ? ""
-                                    : "${postController.singlepostTolet.mentenance} ৳/mon",
+                                    : "${NumberFormat.decimalPattern().format(postController.singlepostTolet.mentenance)} ৳/mon",
                                 icon: Icons.monetization_on_outlined,
                               ),
 
@@ -1131,22 +1148,22 @@ class _ImageSlidePageState extends State<ImageSlidePage> {
                           ),
                         ),
                       ),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(3),
-                        child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
-                          child: Container(
-                            alignment: Alignment.center,
-                            color: Colors.grey.withOpacity(0.1),
-                            child: Image.memory(
-                              base64Decode(
-                                widget.imageList[index],
-                              ),
-                              fit: BoxFit.fitHeight,
-                            ),
-                          ),
-                        ),
-                      ),
+                      // ClipRRect(
+                      //   borderRadius: BorderRadius.circular(3),
+                      //   child: BackdropFilter(
+                      //     filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+                      //     child: Container(
+                      //       alignment: Alignment.center,
+                      //       color: Colors.grey.withOpacity(0.1),
+                      //       child: Image.memory(
+                      //         base64Decode(
+                      //           widget.imageList[index],
+                      //         ),
+                      //         fit: BoxFit.fitHeight,
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   );
                 },

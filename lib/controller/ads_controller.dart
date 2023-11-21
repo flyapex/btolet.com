@@ -80,7 +80,7 @@ class AdsController extends GetxController {
             _numRewardedLoadAttempts += 1;
             if (_numRewardedLoadAttempts < maxFailedLoadAttempts) {
               createRewardedAd();
-            }
+            } else {}
           },
         ));
   }
@@ -215,5 +215,5 @@ class AdsController extends GetxController {
     rewardedInterstitialAd = null;
   }
 
-//----------------------GOogle ads
+//----------------------Google ads
 }

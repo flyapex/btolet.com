@@ -71,9 +71,9 @@ class PostController extends GetxController {
     'WIFI': FasalitisTolet(state: false.obs, icon: Icons.wifi_rounded),
     'Power Backup': FasalitisTolet(
         state: false.obs, icon: Icons.power_settings_new_rounded),
+    'Gaser': FasalitisTolet(state: false.obs, icon: Icons.gas_meter_outlined),
     'Fire Alarm':
         FasalitisTolet(state: false.obs, icon: Icons.fire_extinguisher),
-    'Gaser': FasalitisTolet(state: false.obs, icon: Icons.gas_meter_outlined),
   };
 
   String getFasalitiesNameTolet() {
@@ -283,8 +283,9 @@ class PostController extends GetxController {
             facing: facing.value == "select" ? "" : facing.value,
             roomsize: roomSizeTolet.text == "200" ? "" : roomSizeTolet.text,
             rentfrom: rentFrom,
-            mentenance: int.parse(
-                maintenanceTolet.text == "" ? "0" : maintenanceTolet.text),
+            mentenance: int.parse(maintenanceTolet.text == ""
+                ? "0"
+                : maintenanceTolet.text.replaceAll(",", "")),
             rent: int.parse(rentTolet.text.replaceAll(",", "")),
             garagetype: "",
             fasalitis: getFasalitiesNameTolet(),
@@ -388,6 +389,11 @@ class PostController extends GetxController {
 
       if (garage.value != "select") {
         garageFlag.value = true;
+      } else {
+        animateToPage(0);
+      }
+      if (rentTolet.text.isNotEmpty) {
+        priceFlag.value = true;
       } else {
         animateToPage(0);
       }
