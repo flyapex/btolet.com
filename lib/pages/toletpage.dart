@@ -1118,10 +1118,9 @@ class _ImageSlidePageState extends State<ImageSlidePage> {
             ),
           );
         },
-        child: Container(
+        child: SizedBox(
           height: widget.hight,
           width: double.infinity,
-          margin: const EdgeInsets.only(top: 20),
           child: Stack(
             children: [
               PageView.builder(
@@ -1194,10 +1193,12 @@ class _ImageSlidePageState extends State<ImageSlidePage> {
                 child: Align(
                   alignment: Alignment.bottomRight,
                   child: SvgPicture.asset(
-                    'assets/icons/maphome.svg',
-                    // ignore: deprecated_member_use
-                    color: Colors.white,
-                    height: 20,
+                    'assets/logo/logo.svg',
+                    colorFilter: const ColorFilter.mode(
+                      Colors.white,
+                      BlendMode.srcIn,
+                    ),
+                    height: 16,
                   ),
                 ),
               ),
@@ -1307,10 +1308,12 @@ class ImageFullView extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.bottomRight,
                     child: SvgPicture.asset(
-                      'assets/icons/maphome.svg',
-                      // ignore: deprecated_member_use
-                      color: Colors.white,
-                      height: 21,
+                      'assets/logo/logo.svg',
+                      colorFilter: const ColorFilter.mode(
+                        Colors.white,
+                        BlendMode.srcIn,
+                      ),
+                      height: 16,
                     ),
                   ),
                 ),

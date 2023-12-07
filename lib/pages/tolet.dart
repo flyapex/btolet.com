@@ -71,6 +71,7 @@ class _ToletHomeState extends State<ToletHome> {
             },
           ),
           onRefresh: () async {
+            locationController.getCurrnetlanlongLocation();
             postController.allToletPost.clear();
             postController.allToletPost.refresh();
             postController.toletpage.value = 1;

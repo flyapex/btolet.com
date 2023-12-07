@@ -43,7 +43,7 @@ class _PostNowPropertyState extends State<PostNowProperty> {
             ),
           ),
           SmoothPageIndicator(
-            controller: postController.pageController,
+            controller: postController.pageControllerProperty,
             count: 2,
             effect: const ExpandingDotsEffect(
               dotWidth: 12,
@@ -57,8 +57,10 @@ class _PostNowPropertyState extends State<PostNowProperty> {
           const SizedBox(height: 20),
           Expanded(
             child: PageView(
-              controller: postController.pageController,
-              onPageChanged: (int i) {},
+              controller: postController.pageControllerProperty,
+              onPageChanged: (int i) {
+                print(i);
+              },
               children: const [
                 PostProperty1(),
                 PostProperty2(),

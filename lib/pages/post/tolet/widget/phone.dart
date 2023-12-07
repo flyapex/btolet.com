@@ -113,7 +113,7 @@ class _NumberBoxToletState extends State<NumberBoxTolet> {
                               AutofillHints.telephoneNumber,
                             ],
                             onChanged: (val) {
-                              // postController.allToletFlagCheck();
+                              postController.allToletFlagCheckProperty();
                             },
                             cursorHeight: 22,
                             cursorWidth: 1.8,

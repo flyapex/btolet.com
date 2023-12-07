@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:btolet/pages/sorting/sortingproperty.dart';
+import 'package:btolet/widget/imageslidetolet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
@@ -25,17 +26,9 @@ class PropertyHome extends StatelessWidget {
           children: [
             const Note(),
             const SizedBox(height: 20),
-            Container(
-              height: 160,
-              decoration: BoxDecoration(
-                color: Colors.pink,
-                borderRadius: BorderRadius.circular(10),
-                image: const DecorationImage(
-                  image: NetworkImage(
-                      'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1916&q=80'),
-                  fit: BoxFit.cover,
-                ),
-              ),
+            const ImageSlideTolet(
+              topPadding: 10.0,
+              hight: 160, //180
             ),
             const SizedBox(height: 20),
             Row(

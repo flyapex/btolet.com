@@ -36,6 +36,28 @@ List<String> prooms = [
   "6",
   "7+",
 ];
+List<String> facingProperty = [
+  "East",
+  "North",
+  "North-East",
+  "North-West",
+  "South",
+  "South-East",
+  "South-West",
+  "West",
+];
+List<String> kitchenProperty = [
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  "10+",
+];
 
 //*---------------------------------------------------
 List<String> rooms = [

@@ -541,6 +541,7 @@ class PostController extends GetxController {
   var toletpage = 1.obs;
   var toletlodingPosts = true.obs;
   var allToletPost = [].obs;
+
   void getAllPost() async {
     toletlodingPosts(true);
     try {
@@ -549,10 +550,10 @@ class PostController extends GetxController {
         locationController.currentlatitude,
         locationController.currentlongitude,
       );
+
       if (response != null) {
         allToletPost.addAll(response);
-        print(allToletPost.length);
-        if (response.isEmpty) {
+        if (response.isEmpty || response.length < 4) {
           toletlodingPosts(false);
         }
         toletpage = toletpage + 1;
@@ -779,45 +780,153 @@ class PostController extends GetxController {
   var firealarm = false.obs;
   var gaser = false.obs;
 
-  //-----------------------------
+  //*-----------------------------
   var area = 'শতাংশ'.obs;
-  var prooms = 'select'.obs;
-  var pbath = 'select'.obs;
-  var pfloors = 'select'.obs;
-  var pfacing = 'select'.obs;
-  var pkitchen = 'select'.obs;
-
-  TextEditingController maintenance = TextEditingController();
-  TextEditingController sizeOfHome = TextEditingController();
-  TextEditingController propertyName = TextEditingController();
-  TextEditingController shortAddress = TextEditingController();
-  TextEditingController description = TextEditingController();
-  TextEditingController squireft = TextEditingController();
-
-  TextEditingController price = TextEditingController();
-  TextEditingController number = TextEditingController();
-  TextEditingController wapp = TextEditingController();
-  TextEditingController name = TextEditingController();
-
-  // List<HLPickerItem> selectedImages = [];
-
-  //*-------------------------------------------------
-  var postpage = false.obs;
-
-  var categoryIndex = true.obs;
-
-  var house = false.obs;
-  var appartmetn = false.obs;
-  var flat = false.obs;
-  var plot = false.obs;
-  var land = false.obs;
-  var others = false.obs;
 
   var diningProperty = 'select'.obs;
   var kitchenProperty = 'select'.obs;
-  var balconyProperty = 'select'.obs;
-  var totalUnitProperty = 'select'.obs;
-  var totalFloorProperty = 'select'.obs;
+  var facingProperty = 'select'.obs;
+
+  TextEditingController propertyNameProperty = TextEditingController();
+  TextEditingController sizeOfHomeProperty = TextEditingController();
+  TextEditingController totalFloorProperty = TextEditingController();
+  TextEditingController floorNumberProperty = TextEditingController();
+  TextEditingController totalUnitProperty = TextEditingController();
+  TextEditingController priceProperty = TextEditingController();
+  TextEditingController ytVideoProperty = TextEditingController();
+
+  TextEditingController mesurementProperty = TextEditingController();
+  TextEditingController rodeSizeProperty = TextEditingController();
+
+  TextEditingController shortaddressProperty = TextEditingController();
+  TextEditingController discriptionProperty = TextEditingController();
+
+  TextEditingController nameProperty = TextEditingController();
+  TextEditingController phonenumberProperty = TextEditingController();
+  TextEditingController wappnumberProperty = TextEditingController();
+
+  var iscategory = true.obs;
+
+  RxInt typeSelected = 0.obs;
+  RxInt postedBySelected = 0.obs;
+  RxInt propertyRoomsSelected = 0.obs;
+  RxInt propertyBathSelected = 0.obs;
+  RxList<int> selectedLandTypes = <int>[0].obs;
+
+  RxList<String> category = [
+    'House',
+    'Flat/Appartment',
+    'Land',
+    'Plot',
+  ].obs;
+  RxList<String> type = [
+    "New",
+    "Used",
+    "Under Development",
+  ].obs;
+  RxList<String> postedBy = [
+    "Owner",
+    "Agent",
+    "Developer",
+  ].obs;
+
+  RxList<String> propertyRooms = [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7+",
+  ].obs;
+
+  RxList<String> propertyBath = [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7+",
+  ].obs;
+  RxList<String> landType = [
+    "Residential",
+    "Commercial",
+    "Agricultural",
+  ].obs;
+
+  RxString selectedCategory = 'House'.obs;
+  void selectCategory(String category) {
+    selectedCategory.value = category;
+  }
+
+  var fasalitisProperty = {
+    'Balcony': FasalitisTolet(state: false.obs, icon: Icons.balcony_rounded),
+    'Parking': FasalitisTolet(state: false.obs, icon: Icons.directions_bike),
+    'CCTV': FasalitisTolet(state: false.obs, icon: Icons.photo_camera),
+    'GAS': FasalitisTolet(
+        state: false.obs, icon: Icons.local_fire_department_outlined),
+    'Elevator': FasalitisTolet(state: false.obs, icon: Icons.elevator_outlined),
+    'Security Guard':
+        FasalitisTolet(state: false.obs, icon: Icons.security_rounded),
+    'Power Backup': FasalitisTolet(
+        state: false.obs, icon: Icons.power_settings_new_rounded),
+    'Fire Alarm':
+        FasalitisTolet(state: false.obs, icon: Icons.fire_extinguisher),
+    'Gaser': FasalitisTolet(state: false.obs, icon: Icons.gas_meter_outlined),
+    'Wasa Connection':
+        FasalitisTolet(state: false.obs, icon: Icons.gas_meter_outlined),
+    'Fire exit': FasalitisTolet(state: false.obs, icon: Icons.exit_to_app),
+    "West Disposal":
+        FasalitisTolet(state: false.obs, icon: Icons.fire_truck_sharp),
+    "Garden": FasalitisTolet(state: false.obs, icon: Icons.grass_rounded),
+  };
+  var fasalitisProperty2 = {
+    'Electricity':
+        FasalitisTolet(state: false.obs, icon: Icons.power_settings_new),
+    'Drain':
+        FasalitisTolet(state: false.obs, icon: Icons.turn_sharp_right_sharp),
+  };
+
+  String getFasalitiesNameProperty() {
+    final selectedCategories = fasalitisProperty.entries
+        .where((entry) => entry.value.state.value)
+        .map((entry) => entry.key)
+        .toList();
+
+    String jsonStringArray = jsonEncode(selectedCategories);
+    print('Selected jsonStringArray : $jsonStringArray');
+
+    return jsonStringArray;
+  }
+
+  String getFasalitiesNameProperty2() {
+    final selectedCategories = fasalitisProperty2.entries
+        .where((entry) => entry.value.state.value)
+        .map((entry) => entry.key)
+        .toList();
+
+    String jsonStringArray = jsonEncode(selectedCategories);
+    print('Selected jsonStringArray : $jsonStringArray');
+
+    return jsonStringArray;
+  }
+
+  String getLandTypeProperty() {
+    final selectedCategories = landType
+        .asMap()
+        .entries
+        .where((entry) => selectedLandTypes.contains(entry.key))
+        .map((entry) => entry.value)
+        .toList();
+
+    String jsonStringArray = jsonEncode(selectedCategories);
+    print('Selected jsonStringArray : $jsonStringArray');
+
+    return jsonStringArray;
+  }
+
+  late DateTime availableFrom;
 
   var pbalcony = false.obs;
   var pparking = false.obs;
@@ -833,9 +942,326 @@ class PostController extends GetxController {
   var fireexit = false.obs;
   var westdisposal = false.obs;
   var garden = false.obs;
-
   var drain = false.obs;
   var electricity = false.obs;
+
+  var pageControllerProperty = PageController();
+
+  List<HLPickerItem> selectedFloorplanImages = [];
+  List<HLPickerItem> selectedPropertyImages = [];
+
+  var flagActiveFlagProperty = false.obs;
+
+  var dingngFlagProperty = false.obs;
+  var kitchenFlagProperty = false.obs;
+  var sizeFlagProperty = false.obs;
+  var totalfloorFlagProperty = false.obs;
+  var floorNumberFlagProperty = false.obs;
+  var facingFlagProperty = false.obs;
+  var totalUnitFlagProperty = false.obs;
+  var priceFlagProperty = false.obs;
+  var shortAddressFlagProperty = false.obs;
+  var descriptionFlagProperty = false.obs;
+  var imageFlagProperty = false.obs;
+  var phoneFlagProperty = false.obs;
+
+  var areaFlagProperty = false.obs;
+  var mesurementFlagProperty = false.obs;
+  var roadSizeFlagProperty = false.obs;
+
+  var toletAllFlagProperty = false.obs;
+
+  void animateToPageProperty(val) {
+    pageControllerProperty.animateToPage(
+      val,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.bounceInOut,
+    );
+  }
+
+  errorCheck(val) {
+    print('--------------------$val-----------------------');
+  }
+
+  allToletFlagCheckProperty() {
+    if (selectedCategory.value == category[0] ||
+        selectedCategory.value == category[1]) {
+      areaFlagProperty = true.obs;
+      mesurementFlagProperty = true.obs;
+
+      if (diningProperty.value != "select") {
+        dingngFlagProperty.value = true;
+      } else {
+        errorCheck(1);
+        animateToPageProperty(0);
+      }
+      if (kitchenProperty.value != "select") {
+        kitchenFlagProperty.value = true;
+      } else {
+        errorCheck(2);
+        animateToPageProperty(0);
+      }
+      if (sizeOfHomeProperty.text.isNotEmpty) {
+        sizeFlagProperty.value = true;
+      } else {
+        errorCheck(3);
+        animateToPageProperty(0);
+      }
+      if (totalFloorProperty.text.isNotEmpty) {
+        totalfloorFlagProperty.value = true;
+      } else {
+        errorCheck(4);
+        animateToPageProperty(0);
+      }
+      if (floorNumberProperty.text.isNotEmpty) {
+        floorNumberFlagProperty.value = true;
+      } else {
+        errorCheck(5);
+        animateToPageProperty(0);
+      }
+      if (facingProperty.value != "select") {
+        facingFlagProperty.value = true;
+      } else {
+        errorCheck(6);
+        animateToPageProperty(0);
+      }
+      if (totalUnitProperty.text.isNotEmpty) {
+        totalUnitFlagProperty.value = true;
+      } else {
+        errorCheck(7);
+        animateToPageProperty(0);
+      }
+      if (selectedPropertyImages.isNotEmpty) {
+        imageFlagProperty.value = true;
+      } else {
+        errorCheck(8);
+        animateToPageProperty(0);
+      }
+      if (priceProperty.text.isNotEmpty) {
+        priceFlagProperty.value = true;
+      } else {
+        errorCheck(9);
+        animateToPageProperty(0);
+      }
+      if (phonenumberProperty.text != "" || wappnumberProperty.text != "") {
+        phoneFlagProperty.value = true;
+        // animateToPageProperty(1);
+      }
+      if (flagActiveFlagProperty.value &&
+          dingngFlagProperty.value &&
+          kitchenFlagProperty.value &&
+          sizeFlagProperty.value &&
+          totalfloorFlagProperty.value &&
+          floorNumberFlagProperty.value &&
+          facingFlagProperty.value &&
+          totalUnitFlagProperty.value &&
+          priceFlagProperty.value &&
+          imageFlagProperty.value &&
+          phoneFlagProperty.value) {
+        toletAllFlagProperty.value = true;
+      }
+    } else {
+      dingngFlagProperty.value = true;
+      kitchenFlagProperty.value = true;
+      sizeFlagProperty.value = true;
+      totalfloorFlagProperty.value = true;
+      floorNumberFlagProperty.value = true;
+      facingFlagProperty.value = true;
+      totalUnitFlagProperty.value = true;
+      if (priceProperty.text.isNotEmpty) {
+        priceFlagProperty.value = true;
+      } else {
+        animateToPageProperty(0);
+      }
+      if (area.value != "শতাংশ") {
+        areaFlagProperty.value = true;
+      } else {
+        animateToPageProperty(0);
+      }
+      if (mesurementProperty.text.isNotEmpty) {
+        mesurementFlagProperty.value = true;
+      } else {
+        animateToPageProperty(0);
+      }
+      if (rodeSizeProperty.text.isNotEmpty) {
+        roadSizeFlagProperty.value = true;
+      } else {
+        animateToPageProperty(0);
+      }
+      if (selectedPropertyImages.isNotEmpty) {
+        imageFlagProperty.value = true;
+      } else {
+        animateToPageProperty(0);
+      }
+      if (phonenumberProperty.text != "" || wappnumberProperty.text != "") {
+        phoneFlagProperty.value = true;
+      }
+      if (priceFlagProperty.value &&
+          areaFlagProperty.value &&
+          mesurementFlagProperty.value &&
+          roadSizeFlagProperty.value &&
+          imageFlagProperty.value &&
+          phoneFlagProperty.value) {
+        toletAllFlagProperty.value = true;
+      }
+    }
+  }
+
+  newPostProperty(propertyType) async {
+    List<String> imageBase64FloorplanImages = [];
+    List<String> imageBase64PropertyImages = [];
+
+    for (int i = 0; i < 12; i++) {
+      if (i < selectedFloorplanImages.length) {
+        Uint8List? compressedImage =
+            await FlutterImageCompress.compressWithFile(
+          selectedFloorplanImages[i].path,
+          minHeight: 1200,
+          minWidth: 800,
+          quality: 20,
+          rotate: 0,
+        );
+        String base64Image = base64Encode(compressedImage!);
+        imageBase64FloorplanImages.add(base64Image);
+      } else {
+        imageBase64FloorplanImages.add("");
+      }
+    }
+    for (int i = 0; i < 12; i++) {
+      if (i < selectedPropertyImages.length) {
+        Uint8List? compressedImage =
+            await FlutterImageCompress.compressWithFile(
+          selectedPropertyImages[i].path,
+          minHeight: 1200,
+          minWidth: 800,
+          quality: 20,
+          rotate: 0,
+        );
+        String base64Image = base64Encode(compressedImage!);
+        imageBase64PropertyImages.add(base64Image);
+      } else {
+        imageBase64PropertyImages.add("");
+      }
+    }
+
+    // ignore: prefer_typing_uninitialized_variables
+    var response;
+    try {
+      if (propertyType == 1) {
+        response = await ApiService.newPostProperty(
+          NewPostProperty(
+            uid: dbController.getUserID(),
+            propertyType: propertyType,
+            category: selectedCategory.value,
+            propertyname: propertyNameProperty.text == "select"
+                ? ""
+                : propertyNameProperty.text,
+            propertycondition: type[typeSelected.value],
+            bed: propertyRooms[propertyRoomsSelected.value],
+            bath: propertyBath[propertyBathSelected.value],
+            dining: diningProperty.value,
+            kitchen: kitchenProperty.value,
+            size: sizeOfHomeProperty.text == "select"
+                ? ""
+                : sizeOfHomeProperty.text,
+            sellfrom: availableFrom,
+            totalFloor: totalFloorProperty.text == "select"
+                ? ""
+                : totalFloorProperty.text,
+            floornumber: floorNumberProperty.text == "select"
+                ? ""
+                : floorNumberProperty.text,
+            facing: facingProperty.value,
+            totalUnit: totalUnitProperty.text == "select"
+                ? ""
+                : totalUnitProperty.text,
+            price: int.parse(priceProperty.text),
+            amenities: getFasalitiesNameProperty(),
+            floorPlan: imageBase64FloorplanImages[0],
+            ytVideo: ytVideoProperty.text,
+            image1: imageBase64PropertyImages[0],
+            image2: imageBase64PropertyImages[1],
+            image3: imageBase64PropertyImages[2],
+            image4: imageBase64PropertyImages[3],
+            image5: imageBase64PropertyImages[4],
+            image6: imageBase64PropertyImages[5],
+            image7: imageBase64PropertyImages[6],
+            image8: imageBase64PropertyImages[7],
+            image9: imageBase64PropertyImages[8],
+            image10: imageBase64PropertyImages[9],
+            image11: imageBase64PropertyImages[10],
+            image12: imageBase64PropertyImages[11],
+            location: locationController.locationAddressShort.value.toString(),
+            shortaddress: shortaddressProperty.text,
+            description: discriptionProperty.text,
+            ownertype: postedBy[postedBySelected.value],
+            geolon: locationController.currentlongitude.value.toString(),
+            geolat: locationController.currentlatitude.value.toString(),
+            phone: phonenumberProperty.text,
+            wapp: wappnumberProperty.text,
+            landType: '',
+            area: '',
+            measurementProperty: '',
+            roadSize: '',
+          ),
+        );
+      } else {
+        response = await ApiService.newPostProperty(
+          NewPostProperty(
+            uid: dbController.getUserID(),
+            propertyType: propertyType,
+            category: selectedCategory.value,
+            propertyname: "",
+            propertycondition: "",
+            bed: "",
+            bath: "",
+            dining: "",
+            kitchen: "",
+            size: "",
+            sellfrom: availableFrom,
+            totalFloor: "",
+            floornumber: "",
+            facing: "",
+            totalUnit: "",
+            price: int.parse(priceProperty.text),
+            amenities: getFasalitiesNameProperty2(),
+            floorPlan: "",
+            ytVideo: ytVideoProperty.text,
+            image1: imageBase64PropertyImages[0],
+            image2: imageBase64PropertyImages[1],
+            image3: imageBase64PropertyImages[2],
+            image4: imageBase64PropertyImages[3],
+            image5: imageBase64PropertyImages[4],
+            image6: imageBase64PropertyImages[5],
+            image7: imageBase64PropertyImages[6],
+            image8: imageBase64PropertyImages[7],
+            image9: imageBase64PropertyImages[8],
+            image10: imageBase64PropertyImages[9],
+            image11: imageBase64PropertyImages[10],
+            image12: imageBase64PropertyImages[11],
+            location: locationController.locationAddressShort.value.toString(),
+            shortaddress: shortaddressProperty.text,
+            description: discriptionProperty.text,
+            ownertype: postedBy[postedBySelected.value],
+            geolon: locationController.currentlongitude.value.toString(),
+            geolat: locationController.currentlatitude.value.toString(),
+            phone: phonenumberProperty.text,
+            wapp: wappnumberProperty.text,
+            landType: getLandTypeProperty(),
+            area: area.value,
+            measurementProperty: mesurementProperty.text,
+            roadSize: rodeSizeProperty.text,
+          ),
+        );
+      }
+      if (response != null) {
+        updateProfile();
+        return response;
+      } else {
+        return null;
+      }
+    } finally {}
+  }
 }
 
 class FasalitisTolet {

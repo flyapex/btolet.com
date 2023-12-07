@@ -867,3 +867,197 @@ class SortingPost {
         "bath": bath,
       };
 }
+// To parse this JSON data, do
+//
+//     final newPostProperty = newPostPropertyFromJson(jsonString);
+
+NewPostProperty newPostPropertyFromJson(String str) =>
+    NewPostProperty.fromJson(json.decode(str));
+
+String newPostPropertyToJson(NewPostProperty data) =>
+    json.encode(data.toJson());
+
+class NewPostProperty {
+  int uid;
+  int propertyType;
+  String category;
+  String propertyname;
+  String propertycondition;
+  String bed;
+  String bath;
+  String dining;
+  String kitchen;
+  String size;
+  DateTime sellfrom;
+  String totalFloor;
+  String floornumber;
+  String facing;
+  String totalUnit;
+  int price;
+  String amenities;
+  String floorPlan;
+  String ytVideo;
+  String image1;
+  String image2;
+  String image3;
+  String image4;
+  String image5;
+  String image6;
+  String image7;
+  String image8;
+  String image9;
+  String image10;
+  String image11;
+  String image12;
+  String location;
+  String shortaddress;
+  String description;
+  String ownertype;
+  String geolon;
+  String geolat;
+  String phone;
+  String wapp;
+  String landType;
+  String area;
+  String measurementProperty;
+  String roadSize;
+
+  NewPostProperty({
+    required this.uid,
+    required this.propertyType,
+    required this.category,
+    required this.propertyname,
+    required this.propertycondition,
+    required this.bed,
+    required this.bath,
+    required this.dining,
+    required this.kitchen,
+    required this.size,
+    required this.sellfrom,
+    required this.totalFloor,
+    required this.floornumber,
+    required this.facing,
+    required this.totalUnit,
+    required this.price,
+    required this.amenities,
+    required this.floorPlan,
+    required this.ytVideo,
+    required this.image1,
+    required this.image2,
+    required this.image3,
+    required this.image4,
+    required this.image5,
+    required this.image6,
+    required this.image7,
+    required this.image8,
+    required this.image9,
+    required this.image10,
+    required this.image11,
+    required this.image12,
+    required this.location,
+    required this.shortaddress,
+    required this.description,
+    required this.ownertype,
+    required this.geolon,
+    required this.geolat,
+    required this.phone,
+    required this.wapp,
+    required this.landType,
+    required this.area,
+    required this.measurementProperty,
+    required this.roadSize,
+  });
+
+  factory NewPostProperty.fromJson(Map<String, dynamic> json) =>
+      NewPostProperty(
+        uid: json["uid"],
+        propertyType: json["propertyType"],
+        category: json["category"],
+        propertyname: json["propertyname"],
+        propertycondition: json["propertycondition"],
+        bed: json["bed"],
+        bath: json["bath"],
+        dining: json["dining"],
+        kitchen: json["kitchen"],
+        size: json["size"],
+        sellfrom: DateTime.parse(json["sellfrom"]),
+        totalFloor: json["total_floor"],
+        floornumber: json["floornumber"],
+        facing: json["facing"],
+        totalUnit: json["total_unit"],
+        price: json["price"],
+        amenities: json["amenities"],
+        floorPlan: json["floor_plan"],
+        ytVideo: json["yt_video"],
+        image1: json["image1"],
+        image2: json["image2"],
+        image3: json["image3"],
+        image4: json["image4"],
+        image5: json["image5"],
+        image6: json["image6"],
+        image7: json["image7"],
+        image8: json["image8"],
+        image9: json["image9"],
+        image10: json["image10"],
+        image11: json["image11"],
+        image12: json["image12"],
+        location: json["location"],
+        shortaddress: json["shortaddress"],
+        description: json["description"],
+        ownertype: json["ownertype"],
+        geolon: json["geolon"],
+        geolat: json["geolat"],
+        phone: json["phone"],
+        wapp: json["wapp"],
+        landType: json["land_type"],
+        area: json["area"],
+        measurementProperty: json["measurement_property"],
+        roadSize: json["road_size"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "uid": uid,
+        "propertyType": propertyType,
+        "category": category,
+        "propertyname": propertyname,
+        "propertycondition": propertycondition,
+        "bed": bed,
+        "bath": bath,
+        "dining": dining,
+        "kitchen": kitchen,
+        "size": size,
+        "sellfrom": sellfrom.toIso8601String(),
+        "total_floor": totalFloor,
+        "floornumber": floornumber,
+        "facing": facing,
+        "total_unit": totalUnit,
+        "price": price,
+        "amenities": amenities,
+        "floor_plan": floorPlan,
+        "yt_video": ytVideo,
+        "image1": image1,
+        "image2": image2,
+        "image3": image3,
+        "image4": image4,
+        "image5": image5,
+        "image6": image6,
+        "image7": image7,
+        "image8": image8,
+        "image9": image9,
+        "image10": image10,
+        "image11": image11,
+        "image12": image12,
+        "location": location,
+        "shortaddress": shortaddress,
+        "description": description,
+        "ownertype": ownertype,
+        "geolon": geolon,
+        "geolat": geolat,
+        "phone": phone,
+        "wapp": wapp,
+        "land_type": landType,
+        "area": area,
+        "measurement_property": measurementProperty,
+        "road_size": roadSize,
+      };
+}

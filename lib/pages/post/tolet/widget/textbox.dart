@@ -406,7 +406,7 @@ class DescriptionTextBoxState extends State<DescriptionTextBox> {
                         minLines: 1,
                         maxLines: 100,
                         controller: widget.controller,
-                        textInputAction: TextInputAction.none,
+                        textInputAction: TextInputAction.done,
                         cursorColor: Colors.black,
                         style: textstyle,
                         decoration: InputDecoration(

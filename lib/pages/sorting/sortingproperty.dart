@@ -178,10 +178,10 @@ class _SortHereState extends State<SortHere> with TickerProviderStateMixin {
                     style: TextStyle(fontSize: 16, color: Colors.black),
                   ),
                   const SizedBox(height: 20),
-                  const PorpertyChips(),
+                  const PorpertyChipsSort(),
                   const SizedBox(height: 20),
                   const Text('I am Looking For'),
-                  SelectableChipsType(
+                  SelectableChipsTypeSort(
                     categorylist: type,
                   ),
 
@@ -634,16 +634,16 @@ class CustomScrollPhysics extends ScrollPhysics {
 }
 
 //*---------------------
-class PorpertyChips extends StatefulWidget {
-  const PorpertyChips({
+class PorpertyChipsSort extends StatefulWidget {
+  const PorpertyChipsSort({
     super.key,
   });
 
   @override
-  State<PorpertyChips> createState() => _PorpertyChipsState();
+  State<PorpertyChipsSort> createState() => _PorpertyChipsSortState();
 }
 
-class _PorpertyChipsState extends State<PorpertyChips> {
+class _PorpertyChipsSortState extends State<PorpertyChipsSort> {
   PostController postController = Get.find();
   int selectedChoiceIndex = 0;
 
@@ -665,9 +665,9 @@ class _PorpertyChipsState extends State<PorpertyChips> {
             selectedChoiceIndex = selected ? options.indexOf(option) : -1;
             // print('Selected Choice: ${options[selectedChoiceIndex]}');
             if (selectedChoiceIndex == 0 || selectedChoiceIndex == 1) {
-              postController.categoryIndex.value = true;
+              postController.iscategory.value = true;
             } else {
-              postController.categoryIndex.value = false;
+              postController.iscategory.value = false;
             }
 
             print('$selectedChoiceIndex');

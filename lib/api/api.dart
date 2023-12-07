@@ -2,9 +2,8 @@ import 'dart:convert';
 import 'package:btolet/model/apimodel.dart';
 import 'package:http/http.dart' as http;
 
-// var baseUrl = 'https://btolet.com/api';
-// var baseUrl = 'http://10.0.2.2:3000/api';
-var baseUrl = 'http://109.123.234.150/api';
+var baseUrl = 'http://10.0.2.2:3000/api';
+// var baseUrl = 'http://109.123.234.150/api';
 
 var headers = {
   "content-type": 'application/json;charset=UTF-8',
@@ -263,6 +262,20 @@ class ApiService {
     );
     if (response.statusCode == 200) {
       print(response.body);
+    } else {
+      return null;
+    }
+  }
+
+  static Future newPostProperty(NewPostProperty data) async {
+    var response = await http.post(
+      Uri.parse('$baseUrl/property/newpost'),
+      body: newPostPropertyToJson(data),
+      headers: headers,
+    );
+    print(response.body);
+    if (response.statusCode == 200) {
+      return response.body;
     } else {
       return null;
     }

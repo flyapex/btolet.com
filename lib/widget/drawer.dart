@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:btolet/controller/db_controller.dart';
 import 'package:btolet/controller/user_controller.dart';
 import 'package:btolet/pages/drawer/myads.dart';
@@ -8,6 +10,7 @@ import 'package:btolet/pages/drawer/termsandcondition.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CustomeDrawer extends StatefulWidget {
   const CustomeDrawer({super.key});
@@ -275,7 +278,24 @@ class _CustomeDrawerState extends State<CustomeDrawer>
                     ),
                   ],
                 ),
-                onTap: () {},
+                onTap: () async {
+                  String appUrl;
+                  String phone = '+8801799261773';
+                  String message = 'Hi.. I am from btolet.com';
+                  if (Platform.isAndroid) {
+                    appUrl =
+                        "whatsapp://send?phone=$phone&text=${Uri.parse(message)}";
+                  } else {
+                    appUrl =
+                        "https://api.whatsapp.com/send?phone=$phone=${Uri.parse(message)}"; // URL for non-Android devices
+                  }
+
+                  if (await canLaunchUrl(Uri.parse(appUrl))) {
+                    await launchUrl(Uri.parse(appUrl));
+                  } else {
+                    throw 'Could not launch $appUrl';
+                  }
+                },
               ),
             ),
             ListTile(

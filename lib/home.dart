@@ -1,5 +1,4 @@
 import 'package:btolet/controller/post_controller.dart';
-import 'package:btolet/features/buypagetemp.dart';
 import 'package:btolet/widget/post_btn.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -11,6 +10,8 @@ import 'controller/location_controller.dart';
 import 'controller/user_controller.dart';
 import 'pages/map/map_button_top.dart';
 import 'pages/map/multi_map.dart';
+import 'pages/post/property/propertypost.dart';
+import 'pages/property.dart';
 import 'pages/sorting/sortingproperty.dart';
 import 'pages/sorting/sortingtolet.dart';
 import 'pages/post/tolet/posttolet.dart';
@@ -333,56 +334,39 @@ class _HomeViewState extends State<HomeView>
                       width: wt / 3.5,
                       child: UnicornOutlineButton(
                         onPressed: () {
-                          Get.bottomSheet(
-                            const PostNowTolet(),
-                            elevation: 20.0,
-                            enableDrag: true,
-                            backgroundColor: Colors.white,
-                            isScrollControlled: true,
-                            ignoreSafeArea: true,
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(20.0),
-                                topRight: Radius.circular(20.0),
-                              ),
-                            ),
-                            enterBottomSheetDuration:
-                                const Duration(milliseconds: 170),
-                          );
-
-                          // postController.tabController.index.isEven
-                          //     ? Get.bottomSheet(
-                          //         const PostNowTolet(),
-                          //         elevation: 20.0,
-                          //         enableDrag: true,
-                          //         backgroundColor: Colors.white,
-                          //         isScrollControlled: true,
-                          //         ignoreSafeArea: true,
-                          //         shape: const RoundedRectangleBorder(
-                          //           borderRadius: BorderRadius.only(
-                          //             topLeft: Radius.circular(20.0),
-                          //             topRight: Radius.circular(20.0),
-                          //           ),
-                          //         ),
-                          //         enterBottomSheetDuration:
-                          //             const Duration(milliseconds: 170),
-                          //       )
-                          //     : Get.bottomSheet(
-                          //         const PostNowProperty(),
-                          //         elevation: 20.0,
-                          //         enableDrag: true,
-                          //         backgroundColor: Colors.white,
-                          //         isScrollControlled: true,
-                          //         ignoreSafeArea: true,
-                          //         shape: const RoundedRectangleBorder(
-                          //           borderRadius: BorderRadius.only(
-                          //             topLeft: Radius.circular(20.0),
-                          //             topRight: Radius.circular(20.0),
-                          //           ),
-                          //         ),
-                          //         enterBottomSheetDuration:
-                          //             const Duration(milliseconds: 170),
-                          //       );
+                          postController.tabController.index.isEven
+                              ? Get.bottomSheet(
+                                  const PostNowTolet(),
+                                  elevation: 20.0,
+                                  enableDrag: true,
+                                  backgroundColor: Colors.white,
+                                  isScrollControlled: true,
+                                  ignoreSafeArea: true,
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(20.0),
+                                      topRight: Radius.circular(20.0),
+                                    ),
+                                  ),
+                                  enterBottomSheetDuration:
+                                      const Duration(milliseconds: 170),
+                                )
+                              : Get.bottomSheet(
+                                  const PostNowProperty(),
+                                  elevation: 20.0,
+                                  enableDrag: true,
+                                  backgroundColor: Colors.white,
+                                  isScrollControlled: true,
+                                  ignoreSafeArea: true,
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(20.0),
+                                      topRight: Radius.circular(20.0),
+                                    ),
+                                  ),
+                                  enterBottomSheetDuration:
+                                      const Duration(milliseconds: 170),
+                                );
                         },
                         gradient: const LinearGradient(
                           colors: [
@@ -431,7 +415,7 @@ class _HomeViewState extends State<HomeView>
         ),
         body: SafeArea(
           child: NestedScrollView(
-            controller: scrollController,
+            // controller: scrollController,
             floatHeaderSlivers: true,
             key: globalKey,
             headerSliverBuilder:
@@ -610,8 +594,8 @@ class _HomeViewState extends State<HomeView>
                       locationController.mapMode.value
                           ? const MultiMap()
                           : const ToletHome(),
-                      // const PropertyHome(),
-                      const PropertyHomeTEMP(),
+                      const PropertyHome(),
+                      // const PropertyHomeTEMP(),
                     ],
                   ),
                 ),
