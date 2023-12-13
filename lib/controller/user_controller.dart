@@ -1,7 +1,7 @@
 import 'package:btolet/api/api.dart';
 import 'package:btolet/controller/db_controller.dart';
 import 'package:btolet/controller/post_controller.dart';
-import 'package:btolet/model/apimodel.dart';
+import 'package:btolet/model/api.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

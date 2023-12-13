@@ -4,7 +4,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AdsController extends GetxController {
-  //----------------------GOogle ads
+  //----------------------Google ads
   static const AdRequest request = AdRequest();
 
   int maxFailedLoadAttempts = 3;
@@ -215,5 +215,35 @@ class AdsController extends GetxController {
     rewardedInterstitialAd = null;
   }
 
-//----------------------Google ads
+//----------------------Facebook Ads
+
+  // bool _isRewardedAdLoaded = false;
+  // void _loadRewardedVideoAd() {
+  //   FacebookRewardedVideoAd.loadRewardedVideoAd(
+  //     placementId: "YOUR_PLACEMENT_ID",
+  //     listener: (result, value) {
+  //       print("Rewarded Ad: $result --> $value");
+  //       if (result == RewardedVideoAdResult.LOADED) {
+  //         _isRewardedAdLoaded = true;
+  //       }
+  //       if (result == RewardedVideoAdResult.VIDEO_COMPLETE) {
+  //         print("Show Number");
+  //       }
+
+  //       if (result == RewardedVideoAdResult.VIDEO_CLOSED &&
+  //           (value == true || value["invalidated"] == true)) {
+  //         _isRewardedAdLoaded = false;
+  //         _loadRewardedVideoAd();
+  //       }
+  //     },
+  //   );
+  // }
+
+  // _showRewardedAd() {
+  //   if (_isRewardedAdLoaded == true) {
+  //     FacebookRewardedVideoAd.showRewardedVideoAd();
+  //   } else {
+  //     print("Rewarded Ad not yet loaded!");
+  //   }
+  // }
 }

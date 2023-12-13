@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:btolet/api/api.dart';
 import 'package:btolet/controller/location_controller.dart';
-import 'package:btolet/model/apimodel.dart';
-import 'package:btolet/pages/post/tolet/widget/drapdown.dart';
+import 'package:btolet/model/api.dart';
+import 'package:btolet/view/post/tolet/widget/drapdown.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

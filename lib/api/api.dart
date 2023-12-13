@@ -1,7 +1,9 @@
 import 'dart:convert';
-import 'package:btolet/model/apimodel.dart';
+import 'package:btolet/model/api.dart';
+import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 
+final dio = Dio();
 var baseUrl = 'http://10.0.2.2:3000/api';
 // var baseUrl = 'http://109.123.234.150/api';
 
@@ -276,6 +278,23 @@ class ApiService {
     print(response.body);
     if (response.statusCode == 200) {
       return response.body;
+    } else {
+      return null;
+    }
+  }
+
+  static Future getAllPropertyPost(page, geolat, geolon) async {
+    Response response = await dio.get(
+      "$baseUrl/property/postlist",
+      queryParameters: {
+        "page": page,
+        "geolat": geolat.toString(),
+        "geolon": geolon.toString(),
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return toletPostListFromJson(jsonEncode(response.data));
     } else {
       return null;
     }
