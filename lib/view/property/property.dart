@@ -1,6 +1,9 @@
-import 'dart:io';
-import 'dart:ui';
+import 'dart:convert';
 import 'package:btolet/controller/location_controller.dart';
+import 'package:btolet/controller/post_controller.dart';
+import 'package:btolet/controller/user_controller.dart';
+import 'package:btolet/model/api.dart';
+import 'package:btolet/view/home/shimmer/shimmer.dart';
 import 'package:btolet/view/home/sorting/sortingproperty.dart';
 import 'package:btolet/view/home/widget/imageslidetolet.dart';
 import 'package:btolet/view/home/widget/post_btn.dart';
@@ -11,9 +14,10 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:like_button/like_button.dart';
+import 'package:map_launcher/map_launcher.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import 'propertypage.dart';
 
 class PropertyHome extends StatefulWidget {
@@ -27,6 +31,7 @@ class _PropertyHomeState extends State<PropertyHome>
     with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   LocationController locationController = Get.find();
   final scrollController = ScrollController();
+  PostController postController = Get.find();
 
   late final AnimationController _controller = AnimationController(
     duration: const Duration(milliseconds: 400),
@@ -48,12 +53,13 @@ class _PropertyHomeState extends State<PropertyHome>
 
   @override
   void initState() {
+    postController.getAllpropertyPost();
     scrollController.addListener(() {
       if (scrollController.position.atEdge) {
         if (scrollController.position.pixels == 0) {
           // print("You're at the top.");
         } else {
-          // postController.getAllPost();
+          postController.getAllpropertyPost();
         }
       }
       if (scrollController.position.pixels > 0) {
@@ -62,13 +68,13 @@ class _PropertyHomeState extends State<PropertyHome>
           if (_offsetAnimation.isCompleted) {
             _controller.reverse();
           }
-          print("---------reverse--------");
+          // print("---------reverse--------");
         }
         if (scrollController.position.userScrollDirection ==
             ScrollDirection.forward) {
           {
             _controller.forward();
-            print("---------forward--------");
+            // print("---------forward--------");
           }
         }
       }
@@ -176,17 +182,28 @@ class _PropertyHomeState extends State<PropertyHome>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                RichText(
-                  text: TextSpan(
-                    text: ' 11,983 ads in ',
-                    style: TextStyle(
-                        fontSize: 16, color: Colors.black.withOpacity(0.8)),
-                    children: const [
-                      TextSpan(
-                        text: 'Khulna',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ],
+                Obx(
+                  () => RichText(
+                    text: TextSpan(
+                      text:
+                          "${NumberFormat.decimalPattern().format(locationController.currentPostCountP.value)} ads in ",
+                      style: TextStyle(
+                          fontSize: 16, color: Colors.black.withOpacity(0.8)),
+                      children: [
+                        TextSpan(
+                          text: locationController.locationAddressShort.value
+                              .split(', ')[0],
+                          // text: locationController
+                          //             .locationAddressShort.value ==
+                          //         "Location"
+                          //     ? "Location"
+                          //     : locationController
+                          //         .locationAddressShort.value
+                          //         .split(', ')[1],
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 InkWell(
@@ -240,18 +257,59 @@ class _PropertyHomeState extends State<PropertyHome>
                 ),
               ],
             ),
-            const SizedBox(height: 20),
+            // const SizedBox(height: 20),
             Scrollbar(
               radius: const Radius.circular(20),
-              child: ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: 50,
-                itemBuilder: (context, i) {
-                  return const Padding(
-                    padding: EdgeInsets.only(bottom: 20),
-                    child: PostsProperty(),
-                  );
+              child: StreamBuilder(
+                stream: postController.allpropertyPost.stream,
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if (snapshot.data == null) {
+                    // return const Center(
+                    //   child: CircularProgressIndicator(
+                    //     color: Colors.red,
+                    //   ),
+                    // );
+                    return const PostListSimmer(
+                      topPadding: 20,
+                      count: 10,
+                    );
+                  } else {
+                    return ListView.builder(
+                      // key: UniqueKey(),
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: snapshot.data.length + 1,
+                      itemBuilder: (c, i) {
+                        if (i < snapshot.data.length) {
+                          return Padding(
+                            padding: const EdgeInsets.only(top: 20),
+                            child: PostsProperty(
+                              postData: snapshot.data[i],
+                            ),
+                          );
+                        } else {
+                          if (postController.propertylodingPosts.value) {
+                            // return const PostListSimmer(
+                            //   topPadding: 20,
+                            //   count: 4,
+                            // );
+                            return const Center(
+                              child: CircularProgressIndicator(
+                                color: Colors.red,
+                              ),
+                            );
+                          } else {
+                            return const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Center(
+                                child: Text('nothing more to load!'),
+                              ),
+                            );
+                          }
+                        }
+                      },
+                    );
+                  }
                 },
               ),
             ),
@@ -266,12 +324,60 @@ class _PropertyHomeState extends State<PropertyHome>
 }
 
 class PostsProperty extends StatelessWidget {
-  const PostsProperty({super.key});
+  final PropertyList postData;
+  final bool isLikedvalue;
+  const PostsProperty({
+    super.key,
+    required this.postData,
+    this.isLikedvalue = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     // var height = Get.height;
     // var width = Get.width;
+
+    UserController userController = Get.find();
+
+    // String currency(int amount, String symbol) {
+    //   convertToBengaliDigits(val) {
+    //     return userController.convertToBengaliDigits(val);
+    //   }
+
+    //   if (amount >= 10000000) {
+    //     final crorePart = (amount / 10000000).floor();
+    //     final lakhPart = (amount % 10000000) ~/ 100000;
+    //     final thousandPart = (amount % 100000) ~/ 1000;
+
+    //     String formattedAmount =
+    //         '$symbol ${convertToBengaliDigits(crorePart)} কোটি';
+
+    //     if (lakhPart > 0) {
+    //       formattedAmount += ' ${convertToBengaliDigits(lakhPart)} লাখ';
+    //     }
+
+    //     if (thousandPart > 0) {
+    //       formattedAmount += ' ${convertToBengaliDigits(thousandPart)} হাজার';
+    //     }
+
+    //     return formattedAmount;
+    //   } else if (amount >= 100000) {
+    //     final lakhPart = (amount / 100000).floor();
+    //     final thousandPart = (amount % 100000) ~/ 1000;
+
+    //     String formattedAmount =
+    //         '$symbol ${convertToBengaliDigits(lakhPart)} লাখ';
+
+    //     if (thousandPart > 0) {
+    //       formattedAmount += ' ${convertToBengaliDigits(thousandPart)} হাজার';
+    //     }
+
+    //     return formattedAmount;
+    //   } else {
+    //     return '$symbol ${convertToBengaliDigits(amount)}';
+    //   }
+    // }
+
     return Container(
       height: 400,
       width: double.infinity,
@@ -290,43 +396,23 @@ class PostsProperty extends StatelessWidget {
               GestureDetector(
                 onTap: () {
                   Get.to(
-                    () => const PropertyPage(),
+                    () => PropertyPage(pid: postData.pid),
                     transition: Transition.circularReveal,
                     duration: const Duration(milliseconds: 600),
                   );
                 },
                 child: Container(
                   height: 200,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10),
-                    ),
-                    image: DecorationImage(
-                      image: NetworkImage(
-                          'https://blog.constructionpoint.pk/wp-content/uploads/2022/05/Apartment-Building.jpg'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  child: ClipRRect(
                     borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(10),
                       topRight: Radius.circular(10),
                     ),
-                    child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
-                      child: Container(
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: Colors.grey.withOpacity(0.1),
-                          image: const DecorationImage(
-                            image: NetworkImage(
-                                'https://blog.constructionpoint.pk/wp-content/uploads/2022/05/Apartment-Building.jpg'),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
+                    image: DecorationImage(
+                      image: MemoryImage(base64Decode(postData.image1)),
+                      fit: BoxFit.cover,
+                      // alignment: Alignment.topCenter,
                     ),
                   ),
                 ),
@@ -338,6 +424,7 @@ class PostsProperty extends StatelessWidget {
                   children: [
                     LikeButton(
                       size: 30,
+                      isLiked: isLikedvalue,
                       likeBuilder: (bool isLiked) {
                         return Container(
                           decoration: BoxDecoration(
@@ -353,6 +440,14 @@ class PostsProperty extends StatelessWidget {
                         );
                       },
                       animationDuration: const Duration(milliseconds: 400),
+                      onTap: (isLiked) async {
+                        print(!isLiked);
+                        userController.savedFavPostProperty(
+                          postData.pid,
+                          !isLiked,
+                        );
+                        return !isLiked;
+                      },
                     ),
                     ClipRRect(
                       borderRadius: BorderRadius.circular(50),
@@ -381,94 +476,122 @@ class PostsProperty extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  "৳ 2000 ",
-                  style: TextStyle(
+                //৳
+                Text(
+                  "${NumberFormat.decimalPattern().format(postData.price)} BDT",
+                  style: const TextStyle(
                     fontSize: 24,
                     color: Color(0xff083437),
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
-                const Row(
+
+                Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Feather.map_pin,
                       size: 16,
                       color: Colors.black45,
                     ),
-                    SizedBox(width: 10),
+                    const SizedBox(width: 10),
                     Text(
-                      "Nirala 12, Khulna",
-                      style: TextStyle(
+                      postData.location,
+                      style: const TextStyle(
                         color: Color(0xff083437),
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 4),
-                Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 2),
-                      child: SizedBox(
-                        height: 28,
-                        width: 28,
-                        child: SvgPicture.asset(
-                          'assets/icons/property/bed.svg',
-                          colorFilter: ColorFilter.mode(
-                            Colors.black.withOpacity(0.5),
-                            BlendMode.srcIn,
+                const SizedBox(height: 10),
+                SizedBox(height: postData.bed == "" ? 10 : 4),
+                postData.bed == ""
+                    ? Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            userController.convertToBengaliDigits(
+                              int.parse(postData.measurementProperty),
+                            ),
+                            style: const TextStyle(
+                              color: Color(0xff083437),
+                              fontSize: 18,
+                              height: 1.2,
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 6),
-                    const Text(
-                      "3",
-                      style: TextStyle(
-                        color: Color(0xff083437),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    SizedBox(
-                      height: 20,
-                      width: 20,
-                      child: SvgPicture.asset(
-                        'assets/icons/property/bath.svg',
-                        colorFilter: ColorFilter.mode(
-                          Colors.black.withOpacity(0.5),
-                          BlendMode.srcIn,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 6),
-                    const Text(
-                      "2",
-                      style: TextStyle(
-                        color: Color(0xff083437),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    SizedBox(
-                      height: 21,
-                      width: 21,
-                      child: SvgPicture.asset(
-                        'assets/icons/property/size.svg',
-                        colorFilter: ColorFilter.mode(
-                          Colors.black.withOpacity(0.5),
-                          BlendMode.srcIn,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 6),
-                    const Text(
-                      "1250 (ft\u00b2)",
-                      style: TextStyle(
-                        color: Color(0xff083437),
-                      ),
-                    ),
-                  ],
-                )
+                          const SizedBox(width: 10),
+                          Text(
+                            postData.area,
+                            style: const TextStyle(
+                              color: Color(0xff083437),
+                              fontSize: 19,
+                              height: 1.2,
+                            ),
+                          )
+                        ],
+                      )
+                    : Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 2),
+                            child: SizedBox(
+                              height: 24,
+                              width: 24,
+                              child: SvgPicture.asset(
+                                'assets/icons/property/bed.svg',
+                                colorFilter: ColorFilter.mode(
+                                  Colors.black.withOpacity(0.5),
+                                  BlendMode.srcIn,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 6),
+                          Text(
+                            postData.bed,
+                            style: const TextStyle(
+                              color: Color(0xff083437),
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          SizedBox(
+                            height: 24,
+                            width: 24,
+                            child: SvgPicture.asset(
+                              'assets/icons/property/bath.svg',
+                              colorFilter: ColorFilter.mode(
+                                Colors.black.withOpacity(0.5),
+                                BlendMode.srcIn,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 6),
+                          Text(
+                            postData.bath,
+                            style: const TextStyle(
+                              color: Color(0xff083437),
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          SizedBox(
+                            height: 18,
+                            width: 18,
+                            child: SvgPicture.asset(
+                              'assets/icons/property/size.svg',
+                              colorFilter: ColorFilter.mode(
+                                Colors.black.withOpacity(0.5),
+                                BlendMode.srcIn,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 6),
+                          Text(
+                            postData.size,
+                            style: const TextStyle(
+                              color: Color(0xff083437),
+                            ),
+                          ),
+                        ],
+                      )
               ],
             ),
           ),
@@ -481,34 +604,40 @@ class PostsProperty extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    IconButton(
-                      padding: EdgeInsets.zero,
-                      onPressed: () {},
-                      icon: const CircleAvatar(
-                        backgroundImage: NetworkImage(
-                            "https://lh3.googleusercontent.com/a/AAcHTtdx1wQM-1NXgarrI1Ya4-6q0OtKawcqY55DHK3YBw"),
+                Expanded(
+                  flex: 1,
+                  child: Row(
+                    children: [
+                      IconButton(
+                        padding: EdgeInsets.zero,
+                        onPressed: () {},
+                        icon: CircleAvatar(
+                          backgroundImage: NetworkImage(postData.image),
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 6),
-                    Text(
-                      "Listed 2 week ago",
-                      style: TextStyle(
-                        color: const Color(0xff083437).withOpacity(0.4),
+                      const SizedBox(width: 6),
+                      // ' ${timeago.format(widget.postData.time, locale: 'en_short')} ago',
+                      //  "Listed 2 week ago",
+                      Text(
+                        // timeago.format(postData.time),
+                        '${userController.getDayfull(postData.time)}',
+                        style: const TextStyle(
+                          color: Color(0xff68676C),
+                        ),
+                        overflow: TextOverflow.fade,
                       ),
-                      overflow: TextOverflow.fade,
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
                 Expanded(
+                  flex: 1,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(10),
                         child: Material(
-                          color: Colors.deepOrange,
+                          color: const Color(0xffF36251),
                           child: InkWell(
                             child: const Padding(
                               padding: EdgeInsets.all(8),
@@ -519,7 +648,7 @@ class PostsProperty extends StatelessWidget {
                               ),
                             ),
                             onTap: () async {
-                              final call = Uri.parse('tel:01612217208');
+                              final call = Uri.parse('tel:${postData.phone}');
                               if (await canLaunchUrl(call)) {
                                 launchUrl(call);
                               } else {
@@ -532,18 +661,30 @@ class PostsProperty extends StatelessWidget {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(10),
                         child: Material(
-                          color: Colors.green[400],
+                          color: const Color(0xff27D468),
                           child: InkWell(
-                            child: const Padding(
-                              padding: EdgeInsets.all(8),
-                              child: Icon(
-                                Icons.message,
-                                size: 26,
-                                color: Colors.white,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: SizedBox(
+                                height: 26,
+                                width: 26,
+                                child: Center(
+                                  child: SizedBox(
+                                    height: 23,
+                                    width: 23,
+                                    child: Center(
+                                      child: SvgPicture.asset(
+                                        'assets/icons/message.svg',
+                                        // ignore: deprecated_member_use
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
                             onTap: () async {
-                              final sms = Uri.parse('sms:01612217208');
+                              final sms = Uri.parse('sms:${postData.phone}');
                               if (await canLaunchUrl(sms)) {
                                 launchUrl(sms);
                               } else {
@@ -556,32 +697,81 @@ class PostsProperty extends StatelessWidget {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(10),
                         child: Material(
-                          color: Colors.green[400],
+                          color: const Color(0xff27D468),
                           child: InkWell(
-                            child: const Padding(
-                              padding: EdgeInsets.all(9),
-                              child: Icon(
-                                Feather.map_pin,
-                                size: 24,
-                                color: Colors.white,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: SizedBox(
+                                height: 26,
+                                width: 26,
+                                child: Center(
+                                  child: SizedBox(
+                                    height: 40,
+                                    width: 40,
+                                    child: Center(
+                                      child: SvgPicture.asset(
+                                        'assets/icons/wapp.svg',
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
                             onTap: () async {
-                              String appUrl;
-                              String phone = '+8801612217208';
-                              String message = 'Surprice Bitch! ';
-                              if (Platform.isAndroid) {
-                                appUrl =
-                                    "whatsapp://send?phone=$phone&text=${Uri.parse(message)}";
-                              } else {
-                                appUrl =
-                                    "https://api.whatsapp.com/send?phone=$phone=${Uri.parse(message)}"; // URL for non-Android devices
-                              }
+                              // MapsLauncher.launchCoordinates(
+                              //   double.parse(postData.geolat),
+                              //   double.parse(postData.geolon),
+                              // );
+                              // final availableMaps =
+                              //     await MapLauncher.installedMaps;
+                              // print(availableMaps);
 
-                              if (await canLaunchUrl(Uri.parse(appUrl))) {
-                                await launchUrl(Uri.parse(appUrl));
+                              // await availableMaps.first.showMarker(
+                              //   coords: Coords(
+                              //     double.parse(postData.geolat),
+                              //     double.parse(postData.geolon),
+                              //   ),
+                              //   title: postData.price.toString(),
+                              // );
+                              final coords = Coords(
+                                double.parse(postData.geolat),
+                                double.parse(postData.geolon),
+                              );
+                              var title =
+                                  "Price ৳ ${NumberFormat.decimalPattern().format(postData.price)}";
+                              final availableMaps =
+                                  await MapLauncher.installedMaps;
+                              print(availableMaps.length);
+                              if (availableMaps.length == 1) {
+                                await availableMaps.first.showMarker(
+                                  coords: coords,
+                                  title: title,
+                                  description: "description",
+                                );
                               } else {
-                                throw 'Could not launch $appUrl';
+                                Get.bottomSheet(
+                                  SafeArea(
+                                    child: SingleChildScrollView(
+                                      child: Wrap(
+                                        children: <Widget>[
+                                          for (var map in availableMaps)
+                                            ListTile(
+                                              onTap: () => map.showMarker(
+                                                coords: coords,
+                                                title: title,
+                                              ),
+                                              title: Text(map.mapName),
+                                              leading: SvgPicture.asset(
+                                                map.icon,
+                                                height: 30.0,
+                                                width: 30.0,
+                                              ),
+                                            ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
                               }
                             },
                           ),

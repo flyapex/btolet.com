@@ -47,12 +47,9 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         fontFamily: 'Roboto',
       ),
-
       home: dbController.getUserID() == false
           ? const LoginPage()
           : const MapLodingPage(),
-      // home: const MapLodingPage(),
-      // home: const LoginPage(),
     );
   }
 }

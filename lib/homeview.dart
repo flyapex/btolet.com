@@ -7,6 +7,7 @@ import 'controller/db_controller.dart';
 import 'controller/location_controller.dart';
 import 'controller/user_controller.dart';
 import 'view/home/map/map_button_top.dart';
+import 'view/home/map/multi_map_property.dart';
 import 'view/home/map/multi_map_tolet.dart';
 import 'view/home/sorting/sortingproperty.dart';
 import 'view/home/sorting/sortingtolet.dart';
@@ -322,7 +323,7 @@ class _HomeViewState extends State<HomeView>
           child: NestedScrollView(
             // controller: scrollController,
             // physics: const AlwaysScrollableScrollPhysics(),
-            floatHeaderSlivers: true,
+            floatHeaderSlivers: false, //true
             // key: globalKey,
             headerSliverBuilder:
                 (BuildContext context, bool innerBoxIsScrolled) {
@@ -496,7 +497,10 @@ class _HomeViewState extends State<HomeView>
                 locationController.mapMode.value
                     ? const MultiMap()
                     : const ToletHome(),
-                const PropertyHome(),
+                locationController.mapMode.value
+                    ? const MultiMapProperty()
+                    : const PropertyHome(),
+                // const PropertyHome(),
                 // const PropertyHomeTEMP(),
               ],
             ),

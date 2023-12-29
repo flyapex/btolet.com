@@ -80,7 +80,7 @@ class SingupPage extends StatelessWidget {
               child: Column(
                 children: [
                   const Text(
-                    "Rent Like Pro",
+                    "Best Way to",
                     style: TextStyle(
                       fontFamily: 'h2',
                       fontSize: 32.0,
@@ -98,15 +98,15 @@ class SingupPage extends StatelessWidget {
                       repeatForever: true,
                       animatedTexts: [
                         TyperAnimatedText(
-                          'Fast 🚀',
+                          'find your stay 😊',
                           speed: const Duration(milliseconds: 150),
                         ),
                         TyperAnimatedText(
-                          'Cheap 💰',
+                          'save your time 🕒',
                           speed: const Duration(milliseconds: 150),
                         ),
                         TyperAnimatedText(
-                          'Quicksave 🤑',
+                          'save money 🤑',
                           speed: const Duration(milliseconds: 150),
                         ),
                       ],
@@ -260,32 +260,32 @@ class SingupPage extends StatelessWidget {
                     title: "Sign up with Facebook",
                   ),
                 ),
-                // const SizedBox(height: 10),
-                // InkWell(
-                //   onTap: () {
-                //     Get.snackbar(
-                //       '',
-                //       '',
-                //       snackPosition: SnackPosition.BOTTOM,
-                //       borderRadius: 6,
-                //       margin: const EdgeInsets.only(
-                //         top: 30,
-                //         right: 30,
-                //         left: 30,
-                //         bottom: 10,
-                //       ),
-                //       titleText: const Text('Under Deverlopment 👀👀 '),
-                //       messageText: const Text('Maybe Google? 👌'),
-                //       barBlur: 30,
-                //     );
-                //   },
-                //   child: const SocialIcons(
-                //     iconsize: 32,
-                //     icon: 'assets/icons/wapp.svg',
-                //     title: "Sign up with Whatsapp",
-                //   ),
-                // ),
-                const SizedBox(height: 50),
+                const SizedBox(height: 10),
+                InkWell(
+                  onTap: () {
+                    Get.snackbar(
+                      '',
+                      '',
+                      snackPosition: SnackPosition.BOTTOM,
+                      borderRadius: 6,
+                      margin: const EdgeInsets.only(
+                        top: 30,
+                        right: 30,
+                        left: 30,
+                        bottom: 10,
+                      ),
+                      titleText: const Text('Under Deverlopment 👀👀 '),
+                      messageText: const Text('Maybe Google? 👌'),
+                      barBlur: 30,
+                    );
+                  },
+                  child: const SocialIcons(
+                    iconsize: 32,
+                    icon: 'assets/icons/wapp.svg',
+                    title: "Sign up with Whatsapp",
+                  ),
+                ),
+                // const SizedBox(height: 50),
                 const SizedBox(height: 50),
                 const SizedBox(height: 50),
                 const SizedBox(height: 50),

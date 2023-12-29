@@ -43,8 +43,20 @@ class ApiService {
       headers: headers,
     );
     if (response.statusCode == 200) {
-      // print(response.body);
       return json.decode(response.body)['postCount'];
+    } else {
+      return null;
+    }
+  }
+
+  static Future postCountAreaP(location) async {
+    Response response = await dio.get(
+      '$baseUrl/property/postcount/area',
+      queryParameters: {"currentLocation": location},
+    );
+
+    if (response.statusCode == 200) {
+      return response.data['postCount'];
     } else {
       return null;
     }
@@ -58,6 +70,7 @@ class ApiService {
       headers: headers,
     );
     if (response.statusCode == 200) {
+      print(response);
       return userDetailsFromJson(response.body)[0];
     } else {
       return null;
@@ -149,6 +162,24 @@ class ApiService {
   }
 
   static Future codinateTopost(geolat, geolon) async {
+    final response = await http.post(
+      Uri.parse("$baseUrl/map/postid"),
+      headers: headers,
+      body: jsonEncode(
+        {
+          "geolat": geolat.toString(),
+          "geolon": geolon.toString(),
+        },
+      ),
+    );
+    if (response.statusCode == 200) {
+      return mapPostToletFromJson(response.body);
+    } else {
+      return null;
+    }
+  }
+
+  static Future codinateTopostp(geolat, geolon) async {
     final response = await http.post(
       Uri.parse("$baseUrl/map/postid"),
       headers: headers,
@@ -294,7 +325,39 @@ class ApiService {
     );
 
     if (response.statusCode == 200) {
-      return toletPostListFromJson(jsonEncode(response.data));
+      return propertyListFromJson(jsonEncode(response.data));
+    } else {
+      return null;
+    }
+  }
+
+  static Future savedPropertyPost(int uid, int pid, bool status) async {
+    final response = await http.post(
+      Uri.parse("$baseUrl/property/save"),
+      headers: headers,
+      body: jsonEncode(
+        {
+          "uid": uid,
+          "pid": pid,
+          "status": status,
+        },
+      ),
+    );
+    if (response.statusCode == 200) {
+      print(response.body);
+    } else {
+      return null;
+    }
+  }
+
+  static Future getSinglePostPropertyApi(pid) async {
+    Response response = await dio.get(
+      "$baseUrl/property/singlepost",
+      queryParameters: {"pid": pid},
+    );
+
+    if (response.statusCode == 200) {
+      return propertySinglePostFromJson(jsonEncode(response.data));
     } else {
       return null;
     }

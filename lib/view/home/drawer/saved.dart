@@ -4,7 +4,6 @@ import 'package:btolet/controller/user_controller.dart';
 import 'package:btolet/features/buypagetemp.dart';
 import 'package:btolet/model/api.dart';
 import 'package:btolet/view/home/shimmer/shimmer.dart';
-import 'package:btolet/view/property/property.dart';
 import 'package:btolet/view/tolet/toletpage.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
@@ -203,48 +202,48 @@ class _SavedToletPageState extends State<SavedToletPage> {
   }
 }
 
-class SavedProperty extends StatelessWidget {
-  const SavedProperty({super.key});
+// class SavedProperty extends StatelessWidget {
+//   const SavedProperty({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return Scrollbar(
-      radius: const Radius.circular(20),
-      child: Padding(
-        padding: const EdgeInsets.only(left: 20, right: 20),
-        child: Column(
-          children: [
-            // const SizedBox(height: 20),
-            // const Align(
-            //   alignment: Alignment.centerRight,
-            //   child: Text(
-            //     'Sort by',
-            //     style: TextStyle(
-            //       fontSize: 14,
-            //       color: Colors.black,
-            //     ),
-            //   ),
-            // ),
-            const SizedBox(height: 20),
-            Expanded(
-              child: ListView.builder(
-                // physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: 50,
-                itemBuilder: (context, i) {
-                  return const Padding(
-                    padding: EdgeInsets.only(bottom: 20),
-                    child: PostsProperty(),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scrollbar(
+//       radius: const Radius.circular(20),
+//       child: Padding(
+//         padding: const EdgeInsets.only(left: 20, right: 20),
+//         child: Column(
+//           children: [
+//             // const SizedBox(height: 20),
+//             // const Align(
+//             //   alignment: Alignment.centerRight,
+//             //   child: Text(
+//             //     'Sort by',
+//             //     style: TextStyle(
+//             //       fontSize: 14,
+//             //       color: Colors.black,
+//             //     ),
+//             //   ),
+//             // ),
+//             const SizedBox(height: 20),
+//             Expanded(
+//               child: ListView.builder(
+//                 // physics: const NeverScrollableScrollPhysics(),
+//                 shrinkWrap: true,
+//                 itemCount: 50,
+//                 itemBuilder: (context, i) {
+//                   return const Padding(
+//                     padding: EdgeInsets.only(bottom: 20),
+//                     child: PostsProperty(),
+//                   );
+//                 },
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 //*--------------------------------element
 

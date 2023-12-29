@@ -169,6 +169,9 @@ class _SortHereState extends State<SortHere> with TickerProviderStateMixin {
                         startval1 = lowerValue;
                         endval1 = upperValue;
                         sliderText(startval1, endval1);
+
+                        // postController.pmin.value = startval1.toInt();
+                        // postController.pmax.value = endval1.toInt();
                       });
                     },
                   ),
@@ -647,22 +650,16 @@ class _PorpertyChipsSortState extends State<PorpertyChipsSort> {
   PostController postController = Get.find();
   int selectedChoiceIndex = 0;
 
-  final List<String> options = [
-    'House',
-    "Flat/Appartment",
-    'Land',
-    'Plot',
-    'Others',
-  ];
-
   List<Widget> _buildChoiceChips() {
-    return options.map((String option) {
+    return postController.category.map((String option) {
       return ChoiceChip(
         label: Text(option),
-        selected: selectedChoiceIndex == options.indexOf(option),
+        selected:
+            selectedChoiceIndex == postController.category.indexOf(option),
         onSelected: (bool selected) {
           setState(() {
-            selectedChoiceIndex = selected ? options.indexOf(option) : -1;
+            selectedChoiceIndex =
+                selected ? postController.category.indexOf(option) : -1;
             // print('Selected Choice: ${options[selectedChoiceIndex]}');
             if (selectedChoiceIndex == 0 || selectedChoiceIndex == 1) {
               postController.iscategory.value = true;

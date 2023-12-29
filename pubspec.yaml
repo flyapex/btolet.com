@@ -56,7 +56,6 @@ dependencies:
   http: ^1.1.0
   lottie: ^2.6.0
   hl_image_picker_android: ^1.2.1
-  maps_launcher: ^2.2.0
   label_marker: ^1.0.1
   expandable: ^5.0.1
   youtube_player_iframe: ^4.0.4
@@ -73,6 +72,9 @@ dependencies:
   pattern_formatter: ^3.0.0
   flutter_facebook_auth: ^6.0.3
   device_preview: ^1.1.0
+  map_launcher: ^3.1.0
+  in_app_review: ^2.0.8
+
   # facebook_audience_network: ^1.0.1
 
 
@@ -128,8 +130,9 @@ flutter:
   fonts:
     - family: Roboto
       fonts:
-        - asset: assets/fonts/Roboto-Bold.ttf
         - asset: assets/fonts/Roboto-Regular.ttf
+        - asset: assets/fonts/Roboto-Bold.ttf
+          weight: 700
           # style: italic
   #   - family: Trajan Pro
   #     fonts:

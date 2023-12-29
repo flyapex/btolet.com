@@ -109,12 +109,22 @@ class LocationController extends GetxController {
 
 // Current locaiton Count
 
-  var currentPostCount = 123.obs;
+  var currentPostCount = 999.obs;
   Future getCurrentPostCount(location) async {
     try {
       var response = await ApiService.postCountArea(location);
       if (response != null) {
         currentPostCount.value = response;
+      }
+    } finally {}
+  }
+
+  var currentPostCountP = 999.obs;
+  Future getCurrentPostCountP(location) async {
+    try {
+      var response = await ApiService.postCountAreaP(location);
+      if (response != null) {
+        currentPostCountP.value = response;
       }
     } finally {}
   }
@@ -146,6 +156,21 @@ class LocationController extends GetxController {
       if (response != null) {
         mapPostToletList.addAll(response);
         mapPostLoding(false);
+        return response;
+      }
+    } finally {}
+  }
+
+  var mapPostProList = [].obs;
+  var mapPostProLoding = true.obs;
+  Future mapPostApiPro(geolat, geolon) async {
+    try {
+      mapPostProList.clear();
+      mapPostProLoding(true);
+      var response = await ApiService.codinateTopostp(geolat, geolon);
+      if (response != null) {
+        mapPostProList.addAll(response);
+        mapPostProLoding(false);
         return response;
       }
     } finally {}

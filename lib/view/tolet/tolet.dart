@@ -19,7 +19,6 @@ import 'package:intl/intl.dart';
 import 'package:like_button/like_button.dart';
 import 'package:lottie/lottie.dart';
 import 'package:marquee/marquee.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 class ToletHome extends StatefulWidget {
   const ToletHome({super.key});
@@ -691,8 +690,10 @@ class _PostsToletState extends State<PostsTolet> {
                   },
                 ),
                 const SizedBox(height: 20),
+
                 Text(
-                  ' ${timeago.format(widget.postData.time, locale: 'en_short')} ago',
+                  '${userController.getDay(widget.postData.time)}',
+                  // ' ${timea  '${userController.getDay(widget.postData)} ago',go.format(widget.postData.time, locale: 'en_short')} ago',
                   style: TextStyle(
                     color: const Color(0xff083437).withOpacity(0.3),
                     fontSize: 12,

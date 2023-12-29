@@ -6,6 +6,47 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class UserController extends GetxController {
+  getDay(date) {
+    final now = DateTime.now();
+    final difference = now.difference(date);
+    if (difference.inMinutes < 60) {
+      return "${difference.inMinutes} m ago";
+    } else if (difference.inHours < 24) {
+      return "${difference.inHours} h ago";
+    } else if (difference.inDays < 30) {
+      return "${difference.inDays} d ago";
+    } else {
+      final months = difference.inDays ~/ 30;
+      return "$months mon${months > 1 ? 's' : ''} ago";
+    }
+  }
+
+  getDayfull(date) {
+    final now = DateTime.now();
+    final difference = now.difference(date);
+    if (difference.inMinutes < 60) {
+      return "${difference.inMinutes} min ago";
+    } else if (difference.inHours < 24) {
+      return "${difference.inHours} hours ago";
+    } else if (difference.inDays < 30) {
+      return "${difference.inDays} days ago";
+    } else {
+      final months = difference.inDays ~/ 30;
+      return "$months month${months > 1 ? 's' : ''} ago";
+    }
+  }
+
+  String convertToBengaliDigits(int number) {
+    final arabicDigits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    final bengaliDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+
+    String result = number.toString();
+    for (int i = 0; i < arabicDigits.length; i++) {
+      result = result.replaceAll(arabicDigits[i], bengaliDigits[i]);
+    }
+    return result;
+  }
+
   PostController postController = Get.put(PostController());
   DBController dbController = Get.find();
 
@@ -161,6 +202,43 @@ class UserController extends GetxController {
           savedPostToletloding(false);
         }
         savedPostToletPage = savedPostToletPage + 1;
+      }
+    } finally {}
+  }
+
+  var savedPostPropertyPage = 1.obs;
+  var savedPostPropertyloding = true.obs;
+  var allPropertySavedPost = [].obs;
+  void getAllsavedPostTProperty() async {
+    savedPostPropertyloding(true);
+    try {
+      var response = await ApiService.getsavedPostTolet(
+        savedPostPropertyPage.value,
+        await dbController.getUserID(),
+      );
+      if (response != null) {
+        allPropertySavedPost.addAll(response);
+        print(allPropertySavedPost.length);
+        if (response.isEmpty) {
+          savedPostPropertyloding(false);
+        }
+        savedPostPropertyPage = savedPostPropertyPage + 1;
+      }
+    } finally {}
+  }
+
+  final GlobalKey<AnimatedListState> deleteKeySavedProperty = GlobalKey();
+  void savedFavPostProperty(int pid, bool status) async {
+    try {
+      var response = await ApiService.savedPropertyPost(
+          await dbController.getUserID(), pid, status);
+      if (response != null) {
+        allPropertySavedPost.addAll(response);
+        print(allPropertySavedPost.length);
+        if (response.isEmpty) {
+          savedPostToletloding(false);
+        }
+        savedPostPropertyPage = savedPostPropertyPage + 1;
       }
     } finally {}
   }

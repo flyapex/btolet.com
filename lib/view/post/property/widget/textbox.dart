@@ -250,7 +250,7 @@ class _RodeSizeBoxState extends State<RodeSizeBox> {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 18),
                   child: Text(
-                    "Rode Size *",
+                    "Front Rode Size *",
                     style: TextStyle(
                       letterSpacing: 0.7,
                       color: Colors.black.withOpacity(0.6),

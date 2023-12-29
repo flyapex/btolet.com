@@ -71,16 +71,16 @@ class _CustomeDrawerState extends State<CustomeDrawer>
                   ),
                   onPressed: () {},
                 ),
-                IconButton(
-                  onPressed: () async {
-                    Get.back();
-                  },
-                  icon: const Icon(
-                    Feather.toggle_right,
-                    color: Colors.white,
-                    size: 25,
-                  ),
-                )
+                // IconButton(
+                //   onPressed: () async {
+                //     Get.back();
+                //   },
+                //   icon: const Icon(
+                //     Feather.toggle_right,
+                //     color: Colors.white,
+                //     size: 25,
+                //   ),
+                // )
               ],
             ),
 
@@ -202,14 +202,14 @@ class _CustomeDrawerState extends State<CustomeDrawer>
               title: const Row(
                 children: [
                   Icon(
-                    Feather.radio,
+                    Feather.help_circle,
                     color: Colors.black38,
                   ),
                   SizedBox(
                     width: 30,
                   ),
                   Text(
-                    'Feedback',
+                    'FAQ',
                     style: TextStyle(color: Colors.black),
                   ),
                 ],
@@ -220,14 +220,14 @@ class _CustomeDrawerState extends State<CustomeDrawer>
               title: const Row(
                 children: [
                   Icon(
-                    Feather.help_circle,
+                    Feather.radio,
                     color: Colors.black38,
                   ),
                   SizedBox(
                     width: 30,
                   ),
                   Text(
-                    'FAQ',
+                    'Feedback',
                     style: TextStyle(color: Colors.black),
                   ),
                 ],

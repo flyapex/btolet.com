@@ -627,7 +627,7 @@ class PostController extends GetxController {
     return imageList;
   }
 
-//*----------------------------------------------Sorting
+//*----------------------------------------------Sorting tolet
   var rentmin = 0.obs;
   var rentmax = 100000.obs;
 
@@ -728,6 +728,20 @@ class PostController extends GetxController {
     } finally {}
   }
 
+//*----------------------------------------------Sorting tolet
+  var pmin = 0.obs;
+  var pmax = 100000.obs;
+  String getCategorySortP() {
+    final selectedCategories = categoriesSortTolet.entries
+        .where((entry) => entry.value.value)
+        .map((entry) => entry.key);
+
+    return selectedCategories.isEmpty
+        ? ''
+        : jsonEncode(selectedCategories.toList());
+  }
+
+//*----------------------------------------------------
   //* All Tolet POST
   var toletsortpage = 1.obs;
   var toletsortlodingPosts = true.obs;
@@ -1261,6 +1275,93 @@ class PostController extends GetxController {
         return null;
       }
     } finally {}
+  }
+
+//* Get All Property Post
+  var propertypage = 1.obs;
+  var propertylodingPosts = true.obs;
+  var allpropertyPost = [].obs;
+
+  void getAllpropertyPost() async {
+    propertylodingPosts(true);
+    try {
+      var response = await ApiService.getAllPropertyPost(
+        propertypage.value,
+        locationController.currentlatitude,
+        locationController.currentlongitude,
+      );
+
+      if (response != null) {
+        allpropertyPost.addAll(response);
+        if (response.isEmpty || response.length < 4) {
+          propertylodingPosts(false);
+        }
+        propertypage = propertypage + 1;
+      }
+    } finally {}
+  }
+
+  var imageListPro = [].obs;
+  getImageListPro() {
+    if (singlepostProperty.image1 != '') {
+      imageListPro.add(singlepostProperty.image1);
+    }
+    if (singlepostProperty.image2 != '') {
+      imageListPro.add(singlepostProperty.image2);
+    }
+    if (singlepostProperty.image3 != '') {
+      imageListPro.add(singlepostProperty.image3);
+    }
+    if (singlepostProperty.image4 != '') {
+      imageListPro.add(singlepostProperty.image4);
+    }
+    if (singlepostProperty.image5 != '') {
+      imageListPro.add(singlepostProperty.image5);
+    }
+    if (singlepostProperty.image6 != '') {
+      imageListPro.add(singlepostProperty.image6);
+    }
+    if (singlepostProperty.image7 != '') {
+      imageListPro.add(singlepostProperty.image7);
+    }
+    if (singlepostProperty.image8 != '') {
+      imageListPro.add(singlepostProperty.image8);
+    }
+    if (singlepostProperty.image9 != '') {
+      imageListPro.add(singlepostProperty.image9);
+    }
+    if (singlepostProperty.image10 != '') {
+      imageListPro.add(singlepostProperty.image10);
+    }
+    if (singlepostProperty.image11 != '') {
+      imageListPro.add(singlepostProperty.image11);
+    }
+    if (singlepostProperty.image12 != '') {
+      imageListPro.add(singlepostProperty.image12);
+    }
+
+    print('------------------------------');
+    print(imageListPro.length);
+    return imageListPro;
+  }
+
+  var singlepostPropertyloding = true.obs;
+  late PropertySinglePost singlepostProperty;
+  getSinglePostProperty(postid) async {
+    imageListPro.clear();
+    singlepostPropertyloding(true);
+    try {
+      var response = await ApiService.getSinglePostPropertyApi(postid);
+      if (response != null) {
+        singlepostProperty = response;
+        getImageListPro();
+        return true;
+      } else {
+        return false;
+      }
+    } finally {
+      singlepostPropertyloding(false);
+    }
   }
 }
 

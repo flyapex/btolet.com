@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:ui';
 import 'package:btolet/controller/ads_controller.dart';
 import 'package:btolet/controller/post_controller.dart';
+import 'package:btolet/controller/user_controller.dart';
 import 'package:btolet/view/home/shimmer/shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,9 +14,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:label_marker/label_marker.dart';
 import 'package:like_button/like_button.dart';
-import 'package:maps_launcher/maps_launcher.dart';
+import 'package:map_launcher/map_launcher.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:timeago/timeago.dart' as timeago;
 import 'package:url_launcher/url_launcher.dart';
 
 class ToletPage extends StatefulWidget {
@@ -29,6 +29,7 @@ class ToletPage extends StatefulWidget {
 class _ToletPageState extends State<ToletPage> {
   PostController postController = Get.find();
   AdsController adsController = Get.put(AdsController());
+  UserController userController = Get.find();
   // late ToletSinglePost data;   data = await postController.singlepostTolet;
 
   lodeData() async {
@@ -121,14 +122,10 @@ class _ToletPageState extends State<ToletPage> {
                               }
                             },
                             child: Container(
-                              padding: const EdgeInsets.only(
-                                // left: 11,
-                                // right: 11,
-                                bottom: 9,
-                                top: 9,
-                              ),
+                              height: 44,
                               decoration: BoxDecoration(
-                                color: Colors.deepOrange,
+                                // color: Colors.deepOrange,
+                                color: const Color(0xffF36251),
                                 borderRadius: BorderRadius.circular(6),
                               ),
                               // ignore: prefer_const_constructors
@@ -180,26 +177,40 @@ class _ToletPageState extends State<ToletPage> {
                               }
                             },
                             child: Container(
-                              padding: const EdgeInsets.only(
-                                // left: 11,
-                                // right: 11,
-                                bottom: 9,
-                                top: 9,
-                              ),
+                              height: 44,
+                              // padding: const EdgeInsets.only(
+                              //   // left: 11,
+                              //   // right: 11,
+                              //   bottom: 9,
+                              //   top: 9,
+                              // ),
                               decoration: BoxDecoration(
+                                // color: Colors.blueAccent,
                                 color: Colors.blue,
+                                // color: const Color(0xff27D468),
                                 borderRadius: BorderRadius.circular(6),
                               ),
-                              child: const Row(
+                              child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(
-                                    Icons.message,
-                                    color: Colors.white,
-                                    size: 26,
+                                  // Icon(
+                                  //   Icons.message,
+                                  //   color: Colors.white,
+                                  //   size: 26,
+                                  // ),
+                                  SizedBox(
+                                    height: 23,
+                                    width: 23,
+                                    child: Center(
+                                      child: SvgPicture.asset(
+                                        'assets/icons/message.svg',
+                                        // ignore: deprecated_member_use
+                                        color: Colors.white,
+                                      ),
+                                    ),
                                   ),
-                                  SizedBox(width: 10),
-                                  Text(
+                                  const SizedBox(width: 10),
+                                  const Text(
                                     'SMS',
                                     style: TextStyle(
                                       fontSize: 16,
@@ -236,22 +247,23 @@ class _ToletPageState extends State<ToletPage> {
                               }
                             },
                             child: Container(
-                              padding: const EdgeInsets.only(
-                                // left: 11,
-                                // right: 11,
-                                bottom: 9,
-                                top: 9,
-                              ),
+                              height: 44,
+                              // padding: const EdgeInsets.only(
+                              //   // left: 11,
+                              //   // right: 11,
+                              //   bottom: 9,
+                              //   top: 9,
+                              // ),
                               decoration: BoxDecoration(
-                                color: Colors.green,
+                                color: const Color(0xff27D468),
                                 borderRadius: BorderRadius.circular(6),
                               ),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   SizedBox(
-                                    height: 26,
-                                    width: 26,
+                                    height: 30,
+                                    width: 30,
                                     child: SvgPicture.asset(
                                       'assets/icons/wapp.svg',
                                       height: 10,
@@ -617,11 +629,40 @@ class _ToletPageState extends State<ToletPage> {
                             children: [
                               InkWell(
                                 onTap: () async {
-                                  MapsLauncher.launchCoordinates(
+                                  final coords = Coords(
                                     double.parse(
                                         postController.singlepostTolet.geolat),
                                     double.parse(
                                         postController.singlepostTolet.geolon),
+                                  );
+                                  var title = postController
+                                      .singlepostTolet.rent
+                                      .toString();
+                                  final availableMaps =
+                                      await MapLauncher.installedMaps;
+
+                                  Get.bottomSheet(
+                                    SafeArea(
+                                      child: SingleChildScrollView(
+                                        child: Wrap(
+                                          children: <Widget>[
+                                            for (var map in availableMaps)
+                                              ListTile(
+                                                onTap: () => map.showMarker(
+                                                  coords: coords,
+                                                  title: title,
+                                                ),
+                                                title: Text(map.mapName),
+                                                leading: SvgPicture.asset(
+                                                  map.icon,
+                                                  height: 30.0,
+                                                  width: 30.0,
+                                                ),
+                                              ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
                                   );
                                 },
                                 child: Row(
@@ -675,7 +716,8 @@ class _ToletPageState extends State<ToletPage> {
                                 ),
                               ),
                               Text(
-                                ' ${timeago.format(postController.singlepostTolet.time, locale: 'en_short')} ago',
+                                '${userController.getDay(postController.singlepostTolet.time)} ago',
+                                // ' ${timeago.format(postController.singlepostTolet.time, locale: 'en_short')} ago',
                                 style: const TextStyle(
                                   fontSize: 12,
                                   color: Color(0xff083437),
@@ -923,7 +965,7 @@ class _ToletPageState extends State<ToletPage> {
                                       onMapCreated: (controller) {
                                         controller.setMapStyle(_mapStyle);
                                       },
-                                      mapType: MapType.normal,
+                                      // mapType: MapType.normal,
                                       zoomControlsEnabled: false,
                                       myLocationButtonEnabled: false,
                                       initialCameraPosition: CameraPosition(
@@ -944,13 +986,60 @@ class _ToletPageState extends State<ToletPage> {
                                       child: Align(
                                         alignment: Alignment.bottomRight,
                                         child: InkWell(
-                                          onTap: () {
-                                            MapsLauncher.launchCoordinates(
+                                          onTap: () async {
+                                            // MapsLauncher.launchCoordinates(
+                                            //   double.parse(postController
+                                            //       .singlepostTolet.geolat),
+                                            //   double.parse(postController
+                                            //       .singlepostTolet.geolon),
+                                            // );
+                                            final coords = Coords(
                                               double.parse(postController
                                                   .singlepostTolet.geolat),
                                               double.parse(postController
                                                   .singlepostTolet.geolon),
                                             );
+                                            var title =
+                                                "Price ৳ ${NumberFormat.decimalPattern().format(postController.singlepostTolet.rent)}";
+                                            final availableMaps =
+                                                await MapLauncher.installedMaps;
+                                            print(availableMaps.length);
+                                            if (availableMaps.length == 1) {
+                                              await availableMaps.first
+                                                  .showMarker(
+                                                coords: coords,
+                                                title: title,
+                                                description: "description",
+                                              );
+                                            } else {
+                                              Get.bottomSheet(
+                                                SafeArea(
+                                                  child: SingleChildScrollView(
+                                                    child: Wrap(
+                                                      children: <Widget>[
+                                                        for (var map
+                                                            in availableMaps)
+                                                          ListTile(
+                                                            onTap: () =>
+                                                                map.showMarker(
+                                                              coords: coords,
+                                                              title: title,
+                                                            ),
+                                                            title: Text(
+                                                                map.mapName),
+                                                            leading: SvgPicture
+                                                                .asset(
+                                                              map.icon,
+                                                              height: 30.0,
+                                                              width: 30.0,
+                                                            ),
+                                                          ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            }
                                           },
                                           child: const CircleAvatar(
                                             radius: 20,
@@ -996,22 +1085,61 @@ class _ToletPageState extends State<ToletPage> {
                               //     ),
                               //   ),
                               // ),
-                              const SizedBox(height: 20),
-                              Container(
-                                height: 100,
-                                width: width,
-                                decoration: BoxDecoration(
-                                  color: Colors.yellow,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: const Center(
-                                  child: Text('Ads'),
-                                ),
-                              ),
-                              const SizedBox(height: 200),
+                              // const SizedBox(height: 20),
+                              // Container(
+                              //   height: 100,
+                              //   width: width,
+                              //   decoration: BoxDecoration(
+                              //     color: Colors.yellow,
+                              //     borderRadius: BorderRadius.circular(10),
+                              //   ),
+                              //   child: const Center(
+                              //     child: Text('Ads'),
+                              //   ),
+                              // ),
                             ],
                           ),
                         ),
+                        const SizedBox(height: 30),
+                        const Row(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(left: 20),
+                              child: Text(
+                                'more',
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: Colors.black38,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                        SizedBox(
+                          height: 120,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: 10,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.only(left: 20),
+                                child: Container(
+                                  width: Get.width / 1.4,
+                                  decoration: BoxDecoration(
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                      color: Colors.black12,
+                                      width: 1,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 140),
                       ],
                     ),
                   ],
@@ -1095,7 +1223,7 @@ class ImageSlidePage extends StatefulWidget {
 
 class _ImageSlidePageState extends State<ImageSlidePage> {
   final PageController pageController = PageController(initialPage: 0);
-  PostController postController = Get.find();
+  // PostController postController = Get.find();
   @override
   void initState() {
     super.initState();
@@ -1128,7 +1256,7 @@ class _ImageSlidePageState extends State<ImageSlidePage> {
                   parent: AlwaysScrollableScrollPhysics(),
                 ),
                 controller: pageController,
-                itemCount: postController.imageList.length,
+                itemCount: widget.imageList.length,
                 itemBuilder: (context, index) {
                   return Stack(
                     children: [
@@ -1168,7 +1296,7 @@ class _ImageSlidePageState extends State<ImageSlidePage> {
                 },
                 onPageChanged: (index) {},
               ),
-              postController.imageList.length == 1
+              widget.imageList.length == 1
                   ? Container()
                   : Align(
                       alignment: Alignment.bottomCenter,

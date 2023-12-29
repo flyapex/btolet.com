@@ -51,11 +51,11 @@ class _MyadsState extends State<Myads>
             labelColor: Colors.green,
             tabs: const [
               Tab(
-                text: 'Running',
+                text: 'New Ads',
                 // icon: Icon(Icons.account_circle_outlined),
               ),
               Tab(
-                text: 'History',
+                text: 'Posted Ads',
                 // icon: Icon(Icons.account_circle_outlined),
               ),
             ],

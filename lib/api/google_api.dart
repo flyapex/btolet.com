@@ -1,8 +1,9 @@
-import 'dart:convert';
 import 'package:btolet/controller/location_controller.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
+
+final dio = Dio();
 
 class FacebookSignIn {
   void fblogin() async {}
@@ -42,6 +43,63 @@ class GoogleMapApi {
   //   }
   // }
 
+  // static Future coordinateToLocationDetailsapi(
+  //     double latitude, double longitude) async {
+  //   // String singleString = latitude.toString() + ',' + longitude.toString();
+
+  //   // final Map<String, String> queryParams = {
+  //   //   'lat': latitude.toString(),
+  //   //   'lon': longitude.toString(),
+  //   //   'zoom': '18',
+  //   //   'accept-language': 'en-us',
+  //   //   'format': 'jsonv2',
+  //   // };
+  //   // final response = await http.get(
+  //   //   Uri.https('nominatim.openstreetmap.org', '/reverse.php?').replace(
+  //   //     queryParameters: queryParams,
+  //   //   ),
+  //   // );
+
+  //   final Map<String, String> queryParams = {
+  //     'lat': latitude.toString(),
+  //     'lon': longitude.toString(),
+  //   };
+
+  //   final response = await http.get(
+  //     Uri.https(
+  //       'geocode.maps.co',
+  //       '/reverse?',
+  //     ).replace(queryParameters: queryParams),
+  //   );
+
+  //   if (response.statusCode == 200) {
+  //     // print(response.body);
+  //     Map<String, dynamic> data = jsonDecode(response.body);
+
+  //     // String displayName = data['display_name'];
+  //     // String city = data['address']['city'];
+  //     // print('-----------------------------------------------------');
+  //     // print('Display Name: $displayName');
+  //     // print(data['address']['city']);
+  //     // print(data['address']['suburb']);
+  //     // print(data['address']['suburb']['city']);
+  //     // print(response.body);
+
+  //     var suburb = data["address"]["suburb"];
+  //     var city = data["address"]["city"];
+  //     locationController.locationAddressShort.value = suburb + ", " + city;
+  //     // print(city);
+  //     if (locationController.locationAddress.value.isNotEmpty) {
+  //       locationController.getCurrentPostCount(city);
+  //     }
+  //     // print(city);
+  //     return data['display_name'].toString();
+
+  //     // return mapSuggstionModelFromJson(response.body);
+  //   } else {
+  //     return null;
+  //   }
+  // }
   static Future coordinateToLocationDetailsapi(
       double latitude, double longitude) async {
     // String singleString = latitude.toString() + ',' + longitude.toString();
@@ -59,46 +117,41 @@ class GoogleMapApi {
     //   ),
     // );
 
-    final Map<String, String> queryParams = {
-      'lat': latitude.toString(),
-      'lon': longitude.toString(),
-    };
-
-    final response = await http.get(
-      Uri.https(
-        'geocode.maps.co',
-        '/reverse?',
-      ).replace(queryParameters: queryParams),
+    // var response = await dio.get(
+    //   "https://api.bigdatacloud.net/data/reverse-geocode-client",
+    //   queryParameters: {
+    //     'latitude': latitude.toString(),
+    //     'longitude': longitude.toString(),
+    //     'localityLanguage': 'en',
+    //   },
+    // );
+    var response = await dio.get(
+      "http://154.26.130.64/nominatim/reverse.php",
+      queryParameters: {
+        'lat': latitude.toString(),
+        'lon': longitude.toString(),
+        'format': 'jsonv2',
+        'accept-language': 'bn'
+      },
     );
 
     if (response.statusCode == 200) {
-      // print(response.body);
-      Map<String, dynamic> data = jsonDecode(response.body);
-
-      // String displayName = data['display_name'];
-      // String city = data['address']['city'];
-      // print('-----------------------------------------------------');
-      // print('Display Name: $displayName');
-      // print(data['address']['city']);
-      // print(data['address']['suburb']);
-      // print(data['address']['suburb']['city']);
-      // print(response.body);
+      var data = response.data;
 
       var suburb = data["address"]["suburb"];
       var city = data["address"]["city"];
       locationController.locationAddressShort.value = suburb + ", " + city;
-      // print(city);
+
       if (locationController.locationAddress.value.isNotEmpty) {
         locationController.getCurrentPostCount(city);
+        locationController.getCurrentPostCountP(city);
       }
-      // print(city);
       return data['display_name'].toString();
-
-      // return mapSuggstionModelFromJson(response.body);
     } else {
       return null;
     }
   }
+
   //  List<Placemark> placemarks = await placemarkFromCoordinates(
   //     latitude,
   //     longitude,

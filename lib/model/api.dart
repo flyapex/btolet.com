@@ -1065,3 +1065,318 @@ class NewPostProperty {
         "road_size": roadSize,
       };
 }
+// To parse this JSON data, do
+//
+//     final propertyList = propertyListFromJson(jsonString);
+
+List<PropertyList> propertyListFromJson(String str) => List<PropertyList>.from(
+    json.decode(str).map((x) => PropertyList.fromJson(x)));
+
+String propertyListToJson(List<PropertyList> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
+class PropertyList {
+  int pid;
+  int uid;
+  int propertyType;
+  String category;
+  int price;
+  String propertycondition;
+  String bed;
+  String bath;
+  String size;
+  String image1;
+  String location;
+  String geolon;
+  String geolat;
+  String phone;
+  String wapp;
+  DateTime time;
+  String area;
+  String measurementProperty;
+  String image;
+  int distance;
+
+  PropertyList({
+    required this.pid,
+    required this.uid,
+    required this.propertyType,
+    required this.category,
+    required this.price,
+    required this.propertycondition,
+    required this.bed,
+    required this.bath,
+    required this.size,
+    required this.image1,
+    required this.location,
+    required this.geolon,
+    required this.geolat,
+    required this.phone,
+    required this.wapp,
+    required this.time,
+    required this.area,
+    required this.measurementProperty,
+    required this.image,
+    required this.distance,
+  });
+
+  factory PropertyList.fromJson(Map<String, dynamic> json) => PropertyList(
+        pid: json["pid"],
+        uid: json["uid"],
+        propertyType: json["propertyType"],
+        category: json["category"],
+        price: json["price"],
+        propertycondition: json["propertycondition"],
+        bed: json["bed"],
+        bath: json["bath"],
+        size: json["size"],
+        image1: json["image1"],
+        location: json["location"],
+        geolon: json["geolon"],
+        geolat: json["geolat"],
+        phone: json["phone"],
+        wapp: json["wapp"],
+        time: DateTime.parse(json["time"]),
+        area: json["area"],
+        measurementProperty: json["measurement_property"],
+        image: json["image"],
+        distance: json["distance"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "pid": pid,
+        "uid": uid,
+        "propertyType": propertyType,
+        "category": category,
+        "price": price,
+        "propertycondition": propertycondition,
+        "bed": bed,
+        "bath": bath,
+        "size": size,
+        "image1": image1,
+        "location": location,
+        "geolon": geolon,
+        "geolat": geolat,
+        "phone": phone,
+        "wapp": wapp,
+        "time": time.toIso8601String(),
+        "area": area,
+        "measurement_property": measurementProperty,
+        "image": image,
+        "distance": distance,
+      };
+}
+// To parse this JSON data, do
+//
+//     final propertySinglePost = propertySinglePostFromJson(jsonString);
+
+PropertySinglePost propertySinglePostFromJson(String str) =>
+    PropertySinglePost.fromJson(json.decode(str));
+
+String propertySinglePostToJson(PropertySinglePost data) =>
+    json.encode(data.toJson());
+
+class PropertySinglePost {
+  int pid;
+  int uid;
+  int propertyType;
+  String category;
+  String propertyname;
+  String propertycondition;
+  String bed;
+  String bath;
+  String dining;
+  String kitchen;
+  String size;
+  DateTime sellfrom;
+  String totalFloor;
+  String floornumber;
+  String facing;
+  String totalUnit;
+  int price;
+  String amenities;
+  String floorPlan;
+  String ytVideo;
+  String image1;
+  String image2;
+  String image3;
+  String image4;
+  String image5;
+  String image6;
+  String image7;
+  String image8;
+  String image9;
+  String image10;
+  String image11;
+  String image12;
+  String location;
+  String shortaddress;
+  String description;
+  String ownertype;
+  String geolon;
+  String geolat;
+  String phone;
+  String wapp;
+  String landType;
+  String area;
+  String measurementProperty;
+  String roadSize;
+  int click;
+  int payment;
+  int topAds;
+  DateTime time;
+
+  PropertySinglePost({
+    required this.pid,
+    required this.uid,
+    required this.propertyType,
+    required this.category,
+    required this.propertyname,
+    required this.propertycondition,
+    required this.bed,
+    required this.bath,
+    required this.dining,
+    required this.kitchen,
+    required this.size,
+    required this.sellfrom,
+    required this.totalFloor,
+    required this.floornumber,
+    required this.facing,
+    required this.totalUnit,
+    required this.price,
+    required this.amenities,
+    required this.floorPlan,
+    required this.ytVideo,
+    required this.image1,
+    required this.image2,
+    required this.image3,
+    required this.image4,
+    required this.image5,
+    required this.image6,
+    required this.image7,
+    required this.image8,
+    required this.image9,
+    required this.image10,
+    required this.image11,
+    required this.image12,
+    required this.location,
+    required this.shortaddress,
+    required this.description,
+    required this.ownertype,
+    required this.geolon,
+    required this.geolat,
+    required this.phone,
+    required this.wapp,
+    required this.landType,
+    required this.area,
+    required this.measurementProperty,
+    required this.roadSize,
+    required this.click,
+    required this.payment,
+    required this.topAds,
+    required this.time,
+  });
+
+  factory PropertySinglePost.fromJson(Map<String, dynamic> json) =>
+      PropertySinglePost(
+        pid: json["pid"],
+        uid: json["uid"],
+        propertyType: json["propertyType"],
+        category: json["category"],
+        propertyname: json["propertyname"],
+        propertycondition: json["propertycondition"],
+        bed: json["bed"],
+        bath: json["bath"],
+        dining: json["dining"],
+        kitchen: json["kitchen"],
+        size: json["size"],
+        sellfrom: DateTime.parse(json["sellfrom"]),
+        totalFloor: json["total_floor"],
+        floornumber: json["floornumber"],
+        facing: json["facing"],
+        totalUnit: json["total_unit"],
+        price: json["price"],
+        amenities: json["amenities"],
+        floorPlan: json["floor_plan"],
+        ytVideo: json["yt_video"],
+        image1: json["image1"],
+        image2: json["image2"],
+        image3: json["image3"],
+        image4: json["image4"],
+        image5: json["image5"],
+        image6: json["image6"],
+        image7: json["image7"],
+        image8: json["image8"],
+        image9: json["image9"],
+        image10: json["image10"],
+        image11: json["image11"],
+        image12: json["image12"],
+        location: json["location"],
+        shortaddress: json["shortaddress"],
+        description: json["description"],
+        ownertype: json["ownertype"],
+        geolon: json["geolon"],
+        geolat: json["geolat"],
+        phone: json["phone"],
+        wapp: json["wapp"],
+        landType: json["land_type"],
+        area: json["area"],
+        measurementProperty: json["measurement_property"],
+        roadSize: json["road_size"],
+        click: json["click"],
+        payment: json["payment"],
+        topAds: json["top_ads"],
+        time: DateTime.parse(json["time"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "pid": pid,
+        "uid": uid,
+        "propertyType": propertyType,
+        "category": category,
+        "propertyname": propertyname,
+        "propertycondition": propertycondition,
+        "bed": bed,
+        "bath": bath,
+        "dining": dining,
+        "kitchen": kitchen,
+        "size": size,
+        "sellfrom": sellfrom.toIso8601String(),
+        "total_floor": totalFloor,
+        "floornumber": floornumber,
+        "facing": facing,
+        "total_unit": totalUnit,
+        "price": price,
+        "amenities": amenities,
+        "floor_plan": floorPlan,
+        "yt_video": ytVideo,
+        "image1": image1,
+        "image2": image2,
+        "image3": image3,
+        "image4": image4,
+        "image5": image5,
+        "image6": image6,
+        "image7": image7,
+        "image8": image8,
+        "image9": image9,
+        "image10": image10,
+        "image11": image11,
+        "image12": image12,
+        "location": location,
+        "shortaddress": shortaddress,
+        "description": description,
+        "ownertype": ownertype,
+        "geolon": geolon,
+        "geolat": geolat,
+        "phone": phone,
+        "wapp": wapp,
+        "land_type": landType,
+        "area": area,
+        "measurement_property": measurementProperty,
+        "road_size": roadSize,
+        "click": click,
+        "payment": payment,
+        "top_ads": topAds,
+        "time": time.toIso8601String(),
+      };
+}

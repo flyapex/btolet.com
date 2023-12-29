@@ -14,7 +14,6 @@ import 'package:intl/intl.dart';
 import 'package:label_marker/label_marker.dart';
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 class MultiMap extends StatefulWidget {
   const MultiMap({super.key});
@@ -176,17 +175,6 @@ class MapBoxTolet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    getDay() {
-      String myString = timeago.format(data.time, locale: 'en_short');
-
-      if (myString.contains("~")) {
-        myString = myString.replaceAll("~", "");
-        return myString;
-      } else {
-        return myString;
-      }
-    }
-
     UserController userController = Get.find();
     return Padding(
       padding: const EdgeInsets.only(bottom: 30),
@@ -383,7 +371,7 @@ class MapBoxTolet extends StatelessWidget {
                                           ),
                                         ),
                                         Text(
-                                          "  ${NumberFormat.decimalPattern().format(int.parse(data.roomsize))} ft\u00b2",
+                                          "  ${data.roomsize}",
                                           style: const TextStyle(
                                             color: Color(0xff083437),
                                             fontSize: 14,
@@ -406,7 +394,7 @@ class MapBoxTolet extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                '${getDay()} ago',
+                                '${userController.getDay(data)} ago',
                                 style: TextStyle(
                                   color:
                                       const Color(0xff083437).withOpacity(0.3),
