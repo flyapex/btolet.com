@@ -197,76 +197,36 @@ class Notes {
         "active": active,
       };
 }
-// To parse this JSON data, do
-//
-//     final toletPostList = toletPostListFromJson(jsonString);
 
-List<ToletPostList> toletPostListFromJson(String str) =>
-    List<ToletPostList>.from(
-        json.decode(str).map((x) => ToletPostList.fromJson(x)));
+class UserUpdate {
+  final int uid;
+  final String name;
+  final String phone;
 
-String toletPostListToJson(List<ToletPostList> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
-
-class ToletPostList {
-  int postId;
-  int uid;
-  String bed;
-  String bath;
-  String roomsize;
-  String kitchen;
-  int rent;
-  String garagetype;
-  String image1;
-  String location;
-  DateTime time;
-  double distance;
-
-  ToletPostList({
-    required this.postId,
+  UserUpdate({
     required this.uid,
-    required this.bed,
-    required this.bath,
-    required this.roomsize,
-    required this.kitchen,
-    required this.rent,
-    required this.garagetype,
-    required this.image1,
-    required this.location,
-    required this.time,
-    required this.distance,
+    required this.name,
+    required this.phone,
   });
 
-  factory ToletPostList.fromJson(Map<String, dynamic> json) => ToletPostList(
-        postId: json["post_id"],
+  factory UserUpdate.fromRawJson(String str) =>
+      UserUpdate.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory UserUpdate.fromJson(Map<String, dynamic> json) => UserUpdate(
         uid: json["uid"],
-        bed: json["bed"],
-        bath: json["bath"],
-        roomsize: json["roomsize"],
-        kitchen: json["kitchen"],
-        rent: json["rent"],
-        garagetype: json["garagetype"],
-        image1: json["image1"],
-        location: json["location"],
-        time: DateTime.parse(json["time"]),
-        distance: json["distance"].toDouble(),
+        name: json["name"],
+        phone: json["phone"],
       );
 
   Map<String, dynamic> toJson() => {
-        "post_id": postId,
         "uid": uid,
-        "bed": bed,
-        "bath": bath,
-        "roomsize": roomsize,
-        "kitchen": kitchen,
-        "rent": rent,
-        "garagetype": garagetype,
-        "image1": image1,
-        "location": location,
-        "time": time.toIso8601String(),
-        "distance": distance,
+        "name": name,
+        "phone": phone,
       };
 }
+
 // To parse this JSON data, do
 //
 //     final myPostListTolet = myPostListToletFromJson(jsonString);
@@ -534,180 +494,6 @@ class ProfileUpdate {
 //
 //     final toletSinglePost = toletSinglePostFromJson(jsonString);
 
-ToletSinglePost toletSinglePostFromJson(String str) =>
-    ToletSinglePost.fromJson(json.decode(str));
-
-String toletSinglePostToJson(ToletSinglePost data) =>
-    json.encode(data.toJson());
-
-class ToletSinglePost {
-  int postId;
-  int uid;
-  String propertyname;
-  String category;
-  String bed;
-  String bath;
-  String dining;
-  String kitchen;
-  String floornumber;
-  String facing;
-  String roomsize;
-  DateTime rentfrom;
-  int mentenance;
-  int rent;
-  String garagetype;
-  String fasalitis;
-  String image1;
-  String image2;
-  String image3;
-  String image4;
-  String image5;
-  String image6;
-  String image7;
-  String image8;
-  String image9;
-  String image10;
-  String image11;
-  String image12;
-  String description;
-  String geolon;
-  String geolat;
-  String location;
-  String shortaddress;
-  String phone;
-  String wapp;
-  int click;
-  int payment;
-  int topAds;
-  DateTime time;
-
-  ToletSinglePost({
-    required this.postId,
-    required this.uid,
-    required this.propertyname,
-    required this.category,
-    required this.bed,
-    required this.bath,
-    required this.dining,
-    required this.kitchen,
-    required this.floornumber,
-    required this.facing,
-    required this.roomsize,
-    required this.rentfrom,
-    required this.mentenance,
-    required this.rent,
-    required this.garagetype,
-    required this.fasalitis,
-    required this.image1,
-    required this.image2,
-    required this.image3,
-    required this.image4,
-    required this.image5,
-    required this.image6,
-    required this.image7,
-    required this.image8,
-    required this.image9,
-    required this.image10,
-    required this.image11,
-    required this.image12,
-    required this.description,
-    required this.geolon,
-    required this.geolat,
-    required this.location,
-    required this.shortaddress,
-    required this.phone,
-    required this.wapp,
-    required this.click,
-    required this.payment,
-    required this.topAds,
-    required this.time,
-  });
-
-  factory ToletSinglePost.fromJson(Map<String, dynamic> json) =>
-      ToletSinglePost(
-        postId: json["post_id"],
-        uid: json["uid"],
-        propertyname: json["propertyname"],
-        category: json["category"],
-        bed: json["bed"],
-        bath: json["bath"],
-        dining: json["dining"],
-        kitchen: json["kitchen"],
-        floornumber: json["floornumber"],
-        facing: json["facing"],
-        roomsize: json["roomsize"],
-        rentfrom: DateTime.parse(json["rentfrom"]),
-        mentenance: json["mentenance"],
-        rent: json["rent"],
-        garagetype: json["garagetype"],
-        fasalitis: json["fasalitis"],
-        image1: json["image1"],
-        image2: json["image2"],
-        image3: json["image3"],
-        image4: json["image4"],
-        image5: json["image5"],
-        image6: json["image6"],
-        image7: json["image7"],
-        image8: json["image8"],
-        image9: json["image9"],
-        image10: json["image10"],
-        image11: json["image11"],
-        image12: json["image12"],
-        description: json["description"],
-        geolon: json["geolon"],
-        geolat: json["geolat"],
-        location: json["location"],
-        shortaddress: json["shortaddress"],
-        phone: json["phone"],
-        wapp: json["wapp"],
-        click: json["click"],
-        payment: json["payment"],
-        topAds: json["top_ads"],
-        time: DateTime.parse(json["time"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "post_id": postId,
-        "uid": uid,
-        "propertyname": propertyname,
-        "category": category,
-        "bed": bed,
-        "bath": bath,
-        "dining": dining,
-        "kitchen": kitchen,
-        "floornumber": floornumber,
-        "facing": facing,
-        "roomsize": roomsize,
-        "rentfrom": rentfrom.toIso8601String(),
-        "mentenance": mentenance,
-        "rent": rent,
-        "garagetype": garagetype,
-        "fasalitis": fasalitis,
-        "image1": image1,
-        "image2": image2,
-        "image3": image3,
-        "image4": image4,
-        "image5": image5,
-        "image6": image6,
-        "image7": image7,
-        "image8": image8,
-        "image9": image9,
-        "image10": image10,
-        "image11": image11,
-        "image12": image12,
-        "description": description,
-        "geolon": geolon,
-        "geolat": geolat,
-        "location": location,
-        "shortaddress": shortaddress,
-        "phone": phone,
-        "wapp": wapp,
-        "click": click,
-        "payment": payment,
-        "top_ads": topAds,
-        "time": time.toIso8601String(),
-      };
-}
 // To parse this JSON data, do
 //
 //     final mapTolet = mapToletFromJson(jsonString);
@@ -1378,5 +1164,25 @@ class PropertySinglePost {
         "payment": payment,
         "top_ads": topAds,
         "time": time.toIso8601String(),
+      };
+}
+
+PostCount postCountFromJson(String str) => PostCount.fromJson(json.decode(str));
+
+String postCountToJson(PostCount data) => json.encode(data.toJson());
+
+class PostCount {
+  final int postCount;
+
+  PostCount({
+    required this.postCount,
+  });
+
+  factory PostCount.fromJson(Map<String, dynamic> json) => PostCount(
+        postCount: json["postCount"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "postCount": postCount,
       };
 }

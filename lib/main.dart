@@ -1,16 +1,14 @@
+import 'package:btolet/view/home/widget/maploading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-
 import 'controller/db_controller.dart';
-import 'homeview.dart';
-import 'view/home/login.dart';
+import 'view/login/login.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // 0D8D49BE872F9CDB19FA9A709F0500DC
   MobileAds.instance.initialize();
   MobileAds.instance
     ..initialize()
@@ -48,8 +46,8 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Roboto',
       ),
       home: dbController.getUserID() == false
-          ? const LoginPage()
-          : const MapLodingPage(),
+          ? const Login()
+          : const MapLoading(),
     );
   }
 }

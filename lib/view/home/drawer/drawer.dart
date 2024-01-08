@@ -2,10 +2,7 @@ import 'dart:io';
 
 import 'package:btolet/controller/db_controller.dart';
 import 'package:btolet/controller/user_controller.dart';
-import 'package:btolet/view/home/drawer/myads.dart';
-import 'package:btolet/view/home/drawer/mypost.dart';
-import 'package:btolet/view/home/drawer/profile.dart';
-import 'package:btolet/view/home/drawer/saved.dart';
+
 import 'package:btolet/view/home/drawer/termsandcondition.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
@@ -101,11 +98,11 @@ class _CustomeDrawerState extends State<CustomeDrawer>
                 ],
               ),
               onTap: () {
-                Get.to(
-                  () => const Profile(),
-                  transition: Transition.circularReveal,
-                  duration: const Duration(milliseconds: 500),
-                );
+                // Get.to(
+                //   () => const Profile(),
+                //   transition: Transition.circularReveal,
+                //   duration: const Duration(milliseconds: 500),
+                // );
               },
             ),
             ListTile(
@@ -127,11 +124,11 @@ class _CustomeDrawerState extends State<CustomeDrawer>
                 //   enterBottomSheetDuration: const Duration(milliseconds: 170),
                 // );
 
-                Get.to(
-                  () => const Saved(),
-                  transition: Transition.circularReveal,
-                  duration: const Duration(milliseconds: 500),
-                );
+                // Get.to(
+                //   () => const Saved(),
+                //   transition: Transition.circularReveal,
+                //   duration: const Duration(milliseconds: 500),
+                // );
               },
               title: const Row(
                 children: [
@@ -166,11 +163,11 @@ class _CustomeDrawerState extends State<CustomeDrawer>
                 ],
               ),
               onTap: () {
-                Get.to(
-                  () => const MyPost(),
-                  transition: Transition.circularReveal,
-                  duration: const Duration(milliseconds: 500),
-                );
+                // Get.to(
+                //   () => const MyPost(),
+                //   transition: Transition.circularReveal,
+                //   duration: const Duration(milliseconds: 500),
+                // );
               },
             ),
             ListTile(
@@ -190,11 +187,11 @@ class _CustomeDrawerState extends State<CustomeDrawer>
                 ],
               ),
               onTap: () {
-                Get.to(
-                  () => const Myads(),
-                  transition: Transition.circularReveal,
-                  duration: const Duration(milliseconds: 500),
-                );
+                // Get.to(
+                //   () => const Myads(),
+                //   transition: Transition.circularReveal,
+                //   duration: const Duration(milliseconds: 500),
+                // );
               },
             ),
 

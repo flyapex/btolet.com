@@ -1,4 +1,3 @@
-import 'package:btolet/api/api.dart';
 import 'package:btolet/api/google_api.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -6,10 +5,14 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class LocationController extends GetxController {
-  late GoogleMapController mapController;
-
   RxBool mapMode = false.obs;
   RxBool showMapBoxTolet = false.obs;
+
+  late GoogleMapController mapController;
+
+  RxBool mapModetolet = false.obs;
+  RxBool mapModeProperty = false.obs;
+  // RxBool showMapBoxTolet = false.obs;
 
   RxDouble currentlatitude = 0.0.obs;
   RxDouble currentlongitude = 0.0.obs;
@@ -32,7 +35,9 @@ class LocationController extends GetxController {
     currentlongitude.value = position.longitude;
     isLoading.value = false;
     await coordinateToLocationDetails(
-        currentlatitude.value, currentlongitude.value);
+      currentlatitude.value,
+      currentlongitude.value,
+    );
   }
 
   void onMyLocationButtonPressed() {
@@ -40,6 +45,7 @@ class LocationController extends GetxController {
       currentlatitude.value,
       currentlongitude.value,
     );
+    print(location);
     mapController.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(
@@ -57,25 +63,6 @@ class LocationController extends GetxController {
   RxString locationAddress = ''.obs;
   RxString locationAddressShort = 'Location'.obs;
 
-  // RxBool isLoadingsuggstion = false.obs;
-  // var suggstions = [].obs;
-  // var searchText = ''.obs;
-  // searchSuggstion() async {
-  //   try {
-  //     isLoadingsuggstion.value = true;
-  //     var response = await GoogleMapApi.searchSuggstion(
-  //         searchText.value == '' ? locationAddress.value : searchText.value);
-  //     if (response != null) {
-  //       suggstions.clear();
-  //       suggstions.addAll(response);
-  //     } else {
-  //       print("Error");
-  //     }
-  //   } finally {
-  //     isLoadingsuggstion.value = false;
-  //   }
-  // }
-
   RxBool cordinateToLocationLoding = true.obs;
   coordinateToLocationDetails(double latitude, double longitude) async {
     try {
@@ -84,18 +71,6 @@ class LocationController extends GetxController {
         longitude,
       );
       if (response != null) {
-        // print('-------------------------------------------------');
-        // print(response.name);
-        // print(response.street);
-        // print(response.isoCountryCode);
-        // print(response.country);
-        // print(response.postalCode);
-        // print(response.administrativeArea);
-        // print(response.subAdministrativeArea);
-        // print(response.locality);
-        // print(response.subLocality);
-        // print(response.thoroughfare);
-        // print(response.subThoroughfare);
         currentlatitude.value = latitude;
         currentlongitude.value = longitude;
         locationAddress.value = response;
@@ -107,72 +82,58 @@ class LocationController extends GetxController {
     }
   }
 
-// Current locaiton Count
+  // var currentPostCountP = 999.obs;
+  // Future getCurrentPostCountP(location) async {
+  //   try {
+  //     var response = await ApiService.postCountAreaP(location);
+  //     if (response != null) {
+  //       currentPostCountP.value = response;
+  //     }
+  //   } finally {}
+  // }
 
-  var currentPostCount = 999.obs;
-  Future getCurrentPostCount(location) async {
-    try {
-      var response = await ApiService.postCountArea(location);
-      if (response != null) {
-        currentPostCount.value = response;
-      }
-    } finally {}
-  }
+  // var mapToletList = [].obs;
+  // var mapLoding = true.obs;
+  // Future mapApi() async {
+  //   try {
+  //     mapToletList.clear();
+  //     mapLoding(true);
+  //     var response = await ApiService.mapTolet();
+  //     if (response != null) {
+  //       mapToletList.addAll(response);
 
-  var currentPostCountP = 999.obs;
-  Future getCurrentPostCountP(location) async {
-    try {
-      var response = await ApiService.postCountAreaP(location);
-      if (response != null) {
-        currentPostCountP.value = response;
-      }
-    } finally {}
-  }
+  //       return response;
+  //     }
+  //   } finally {}
+  // }
 
-  //---------------Multi map
+  // var mapPostToletList = [].obs;
+  // var mapPostLoding = true.obs;
+  // Future mapPostApi(geolat, geolon) async {
+  //   try {
+  //     mapPostToletList.clear();
+  //     mapPostLoding(true);
+  //     var response = await ApiService.codinateTopost(geolat, geolon);
+  //     if (response != null) {
+  //       mapPostToletList.addAll(response);
+  //       mapPostLoding(false);
+  //       return response;
+  //     }
+  //   } finally {}
+  // }
 
-  var mapToletList = [].obs;
-  var mapLoding = true.obs;
-  Future mapApi() async {
-    try {
-      mapToletList.clear();
-      mapLoding(true);
-      var response = await ApiService.mapTolet();
-      if (response != null) {
-        mapToletList.addAll(response);
-        // mapLoding(false);
-        return response;
-      }
-    } finally {}
-  }
-
-  var mapPostToletList = [].obs;
-  var mapPostLoding = true.obs;
-  Future mapPostApi(geolat, geolon) async {
-    try {
-      mapPostToletList.clear();
-      mapPostLoding(true);
-      var response = await ApiService.codinateTopost(geolat, geolon);
-      if (response != null) {
-        mapPostToletList.addAll(response);
-        mapPostLoding(false);
-        return response;
-      }
-    } finally {}
-  }
-
-  var mapPostProList = [].obs;
-  var mapPostProLoding = true.obs;
-  Future mapPostApiPro(geolat, geolon) async {
-    try {
-      mapPostProList.clear();
-      mapPostProLoding(true);
-      var response = await ApiService.codinateTopostp(geolat, geolon);
-      if (response != null) {
-        mapPostProList.addAll(response);
-        mapPostProLoding(false);
-        return response;
-      }
-    } finally {}
-  }
+  // var mapPostProList = [].obs;
+  // var mapPostProLoding = true.obs;
+  // Future mapPostApiPro(geolat, geolon) async {
+  //   try {
+  //     mapPostProList.clear();
+  //     mapPostProLoding(true);
+  //     var response = await ApiService.codinateTopostp(geolat, geolon);
+  //     if (response != null) {
+  //       mapPostProList.addAll(response);
+  //       mapPostProLoding(false);
+  //       return response;
+  //     }
+  //   } finally {}
+  // }
 }

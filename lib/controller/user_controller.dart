@@ -1,11 +1,27 @@
+import 'dart:convert';
+
 import 'package:btolet/api/api.dart';
-import 'package:btolet/controller/db_controller.dart';
-import 'package:btolet/controller/post_controller.dart';
 import 'package:btolet/model/api.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class UserController extends GetxController {
+  TextEditingController shortAddress = TextEditingController();
+  TextEditingController description = TextEditingController();
+
+  TextEditingController nameController = TextEditingController();
+  TextEditingController phonenumber = TextEditingController();
+  TextEditingController wappnumber = TextEditingController();
+
+  var phoneFlag = false.obs;
+
+  final FocusNode shortaddressfocusNode = FocusNode();
+  final FocusNode descriptionfocusNode = FocusNode();
+  final FocusNode namefocusNode = FocusNode();
+  final FocusNode phonefocusNode = FocusNode();
+  final FocusNode wappfocusNode = FocusNode();
+
   getDay(date) {
     final now = DateTime.now();
     final difference = now.difference(date);
@@ -36,39 +52,10 @@ class UserController extends GetxController {
     }
   }
 
-  String convertToBengaliDigits(int number) {
-    final arabicDigits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-    final bengaliDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+  //*--------------------------------------Tolet & Property Tab
+  late TabController tabController;
 
-    String result = number.toString();
-    for (int i = 0; i < arabicDigits.length; i++) {
-      result = result.replaceAll(arabicDigits[i], bengaliDigits[i]);
-    }
-    return result;
-  }
-
-  PostController postController = Get.put(PostController());
-  DBController dbController = Get.find();
-
-  var banneradsList = [].obs;
-  var bannerLoding = true.obs;
-  var fatchOneTime = true.obs;
-  Future bannerApi() async {
-    try {
-      banneradsList.clear();
-      bannerLoding(true);
-      var response = await ApiService.banner();
-      if (response != null) {
-        banneradsList.addAll(response);
-        // banneradsList.add(response);
-        bannerLoding(false);
-      }
-    } finally {
-      fatchOneTime(false);
-    }
-  }
-
-  // RxInt uid = 0.obs;
+  //*--------------------------------------User Details
   RxString name = ''.obs;
   RxString email = ''.obs;
   RxString image =
@@ -96,40 +83,11 @@ class UserController extends GetxController {
         geolocation.value = userdetails.geolocation;
         signature.value = userdetails.signature;
         time = userdetails.time;
-        postController.nameTolet.text = userdetails.name;
-        postController.phonenumberTolet.text = userdetails.phone;
-        postController.wappnumberTolet.text = userdetails.wapp;
         return userdetails;
       }
     } finally {
       isLoading(false);
     }
-  }
-
-  // creatNewUser(Newuser data) async {
-  //   try {
-  //     isLoading(true);
-  //     var response = await ApiService.userLogin(data);
-  //     if (response != null) {
-  //       // print(response);
-  //       return response;
-  //     } else {
-  //       return null;
-  //     }
-  //   } finally {
-  //     isLoading(false);
-  //   }
-  // }
-
-  var note = 'Hello from Btolet.com )'.obs;
-  void getnote() async {
-    try {
-      var response = await ApiService.notes();
-      if (response != null) {
-        note.value = response.text;
-        fatchOneTime.value = false;
-      }
-    } finally {}
   }
 
   var isLoadingUserDetails = false.obs;
@@ -148,14 +106,14 @@ class UserController extends GetxController {
         geolocation.value = user.geolocation;
         signature.value = user.signature;
         time = user.time;
-        postController.nameTolet.text = user.name;
-        postController.phonenumberTolet.text = user.phone;
-        postController.wappnumberTolet.text = user.wapp;
+        nameController.text = user.name;
+        phonenumber.text = user.phone;
+        wappnumber.text = user.wapp;
 
-        userNameTxtController.text = user.name;
-        emailTxtController.text = user.email;
-        phoneTxtController.text = user.phone;
-        wappTxtController.text = user.wapp;
+        // userNameTxtController.text = user.name;
+        // emailTxtController.text = user.email;
+        // phoneTxtController.text = user.phone;
+        // wappTxtController.text = user.wapp;
         return user;
       }
     } finally {
@@ -163,120 +121,108 @@ class UserController extends GetxController {
     }
   }
 
+  //*--------------------------------------Drawer
   late TabController tabControllerDrawer;
-  TextEditingController userNameTxtController = TextEditingController();
-  TextEditingController emailTxtController = TextEditingController();
-  TextEditingController phoneTxtController = TextEditingController();
-  TextEditingController wappTxtController = TextEditingController();
+  //*--------------------------------------Home
 
-  var savedPostToletPage = 1.obs;
-  var savedPostToletloding = true.obs;
-  var allToletSavedPost = [].obs;
-  void getAllsavedPostTolet() async {
-    savedPostToletloding(true);
+  var fatchOneTime = true.obs;
+  var note = 'Hello from Btolet.com )'.obs;
+  void getnote() async {
     try {
-      var response = await ApiService.getsavedPostTolet(
-        savedPostToletPage.value,
-        await dbController.getUserID(),
+      var response = await ApiService.notes();
+      if (response != null) {
+        note.value = response.text;
+        fatchOneTime.value = false;
+      }
+    } finally {}
+  }
+
+  var banneradsList = [].obs;
+  var bannerLoding = true.obs;
+  var fatchOneTimeBanner = true.obs;
+  var bannerImage = [].obs;
+
+  decodeImage() async {
+    bannerImage.clear();
+    for (var banner in banneradsList) {
+      Uint8List decodedImage = base64Decode(banner.image);
+      Image decodedImageWidget = Image.memory(
+        decodedImage,
+        fit: BoxFit.cover,
       );
-      if (response != null) {
-        allToletSavedPost.addAll(response);
-        print(allToletSavedPost.length);
-        if (response.isEmpty) {
-          savedPostToletloding(false);
-        }
-        savedPostToletPage = savedPostToletPage + 1;
-      }
-    } finally {}
+      bannerImage.add(decodedImageWidget);
+    }
   }
 
-  final GlobalKey<AnimatedListState> deleteKeySaved = GlobalKey();
-  void savedFavPostTolet(int pid, bool status) async {
+  Future bannerApi() async {
     try {
-      var response = await ApiService.savedPostTolet(
-          await dbController.getUserID(), pid, status);
+      banneradsList.clear();
+      bannerLoding(true);
+      var response = await ApiService.banner();
       if (response != null) {
-        allToletSavedPost.addAll(response);
-        print(allToletSavedPost.length);
-        if (response.isEmpty) {
-          savedPostToletloding(false);
-        }
-        savedPostToletPage = savedPostToletPage + 1;
+        banneradsList.addAll(response);
+        await decodeImage();
+        bannerLoding(false);
       }
-    } finally {}
+    } finally {
+      fatchOneTimeBanner(false);
+    }
   }
 
-  var savedPostPropertyPage = 1.obs;
-  var savedPostPropertyloding = true.obs;
-  var allPropertySavedPost = [].obs;
-  void getAllsavedPostTProperty() async {
-    savedPostPropertyloding(true);
-    try {
-      var response = await ApiService.getsavedPostTolet(
-        savedPostPropertyPage.value,
-        await dbController.getUserID(),
-      );
-      if (response != null) {
-        allPropertySavedPost.addAll(response);
-        print(allPropertySavedPost.length);
-        if (response.isEmpty) {
-          savedPostPropertyloding(false);
-        }
-        savedPostPropertyPage = savedPostPropertyPage + 1;
-      }
-    } finally {}
-  }
+  //*--------------------------user details Update
+  // DBController dbController = Get.find();
+  // updateProfile() async {
+  //   try {
+  //     var res = await ApiService.profileUpdateapi(
+  //       ProfileUpdate(
+  //         uid: dbController.getUserID(),
+  //         name: nameController.text,
+  //         phone: phonenumber.text,
+  //         wapp: wappnumber.text,
+  //       ),
+  //     );
+  //     if (res == null) {
+  //       return false;
+  //     } else {
+  //       // await snakberSuccess(res);
+  //       return res;
+  //     }
+  //   } finally {}
+  // }
 
-  final GlobalKey<AnimatedListState> deleteKeySavedProperty = GlobalKey();
-  void savedFavPostProperty(int pid, bool status) async {
-    try {
-      var response = await ApiService.savedPropertyPost(
-          await dbController.getUserID(), pid, status);
-      if (response != null) {
-        allPropertySavedPost.addAll(response);
-        print(allPropertySavedPost.length);
-        if (response.isEmpty) {
-          savedPostToletloding(false);
-        }
-        savedPostPropertyPage = savedPostPropertyPage + 1;
-      }
-    } finally {}
+  snakberSuccess(text) {
+    return Get.snackbar(
+      'You are awarsome',
+      "",
+      snackPosition: SnackPosition.BOTTOM,
+      messageText: Text(
+        text,
+        style: const TextStyle(
+          fontSize: 14,
+          color: Colors.white,
+        ),
+        maxLines: 1,
+      ),
+      duration: const Duration(seconds: 3),
+      backgroundColor: Colors.black.withOpacity(0.1),
+      colorText: Colors.white,
+      borderRadius: 4,
+      margin: const EdgeInsets.only(left: 10, right: 10, bottom: 25),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
+      maxWidth: 400.0,
+      mainButton: TextButton(
+        onPressed: () {
+          // refreshkey.currentState!.refresh(
+          //   draggingDuration: const Duration(milliseconds: 350),
+          //   draggingCurve: Curves.easeOutBack,
+          // );
+          Get.back();
+        },
+        child: const Text(
+          'Okay',
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
+    );
   }
-
-  var mypostPageTolet = 1.obs;
-  var mypostPagelodingTolet = true.obs;
-  var mypostListTolet = [].obs;
-  void getmypostPageTolet() async {
-    mypostPagelodingTolet(true);
-    try {
-      var response = await ApiService.getMypostTolet(
-        mypostPageTolet.value,
-        await dbController.getUserID(),
-      );
-      if (response != null) {
-        mypostListTolet.addAll(response);
-        print(mypostListTolet.length);
-        if (response.isEmpty) {
-          mypostPagelodingTolet(false);
-        }
-        mypostPageTolet = mypostPageTolet + 1;
-        mypostPagelodingTolet(false);
-      }
-    } finally {}
-  }
-
-  final GlobalKey<AnimatedListState> deleteKeyMypost = GlobalKey();
-  void deleteMypostTolet(int postid) async {
-    try {
-      var response = await ApiService.getMypostDeleteTolet(
-        await dbController.getUserID(),
-        postid,
-      );
-      if (response != null) {}
-    } finally {}
-  }
-
-  //* ADS
-  TextEditingController adsUrlTxtController = TextEditingController();
-  RxString adsUrl = 'https://btolet.com/'.obs;
 }
