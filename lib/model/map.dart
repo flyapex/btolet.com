@@ -1,8 +1,78 @@
+import 'dart:convert';
+
+// To parse this JSON data, do
+//
+//     final searchModel = searchModelFromJson(jsonString);
+
+List<SearchModel> searchModelFromJson(String str) => List<SearchModel>.from(
+    json.decode(str).map((x) => SearchModel.fromJson(x)));
+
+String searchModelToJson(List<SearchModel> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
+class SearchModel {
+  final int placeId;
+  final String licence;
+  final String osmType;
+  final int osmId;
+  final List<String> boundingbox;
+  final String lat;
+  final String lon;
+  final String displayName;
+  final int placeRank;
+  final String category;
+  final String type;
+  final double importance;
+
+  SearchModel({
+    required this.placeId,
+    required this.licence,
+    required this.osmType,
+    required this.osmId,
+    required this.boundingbox,
+    required this.lat,
+    required this.lon,
+    required this.displayName,
+    required this.placeRank,
+    required this.category,
+    required this.type,
+    required this.importance,
+  });
+
+  factory SearchModel.fromJson(Map<String, dynamic> json) => SearchModel(
+        placeId: json["place_id"],
+        licence: json["licence"],
+        osmType: json["osm_type"],
+        osmId: json["osm_id"],
+        boundingbox: List<String>.from(json["boundingbox"].map((x) => x)),
+        lat: json["lat"],
+        lon: json["lon"],
+        displayName: json["display_name"],
+        placeRank: json["place_rank"],
+        category: json["category"],
+        type: json["type"],
+        importance: json["importance"].toDouble(),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "place_id": placeId,
+        "licence": licence,
+        "osm_type": osmType,
+        "osm_id": osmId,
+        "boundingbox": List<dynamic>.from(boundingbox.map((x) => x)),
+        "lat": lat,
+        "lon": lon,
+        "display_name": displayName,
+        "place_rank": placeRank,
+        "category": category,
+        "type": type,
+        "importance": importance,
+      };
+}
+
 // To parse this JSON data, do
 //
 //     final mapSuggstionModel = mapSuggstionModelFromJson(jsonString);
-
-import 'dart:convert';
 
 List<MapSuggstionModel> mapSuggstionModelFromJson(String str) =>
     List<MapSuggstionModel>.from(

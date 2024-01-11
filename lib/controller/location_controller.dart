@@ -5,6 +5,9 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class LocationController extends GetxController {
+  var singlePostTolemap = true.obs;
+  var singlePostPromap = true.obs;
+
   RxBool mapMode = false.obs;
   RxBool showMapBoxTolet = false.obs;
 
@@ -34,6 +37,8 @@ class LocationController extends GetxController {
     currentlatitude.value = position.latitude;
     currentlongitude.value = position.longitude;
     isLoading.value = false;
+    print(currentlatitude.value);
+    print(currentlongitude.value);
     await coordinateToLocationDetails(
       currentlatitude.value,
       currentlongitude.value,
@@ -136,4 +141,24 @@ class LocationController extends GetxController {
   //     }
   //   } finally {}
   // }
+
+  RxBool isLoadingsuggstion = false.obs;
+  var suggstions = [].obs;
+  var searchText = ''.obs;
+  searchSuggstion() async {
+    try {
+      isLoadingsuggstion.value = true;
+      var response = await GoogleMapApi.searchSuggstion(searchText.value == ''
+          ? locationAddressShort.value
+          : searchText.value);
+      if (response != null) {
+        suggstions.clear();
+        suggstions.addAll(response);
+      } else {
+        print("Error");
+      }
+    } finally {
+      isLoadingsuggstion.value = false;
+    }
+  }
 }

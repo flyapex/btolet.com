@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
+import 'db_controller.dart';
+
 class UserController extends GetxController {
   TextEditingController shortAddress = TextEditingController();
   TextEditingController description = TextEditingController();
@@ -170,25 +172,25 @@ class UserController extends GetxController {
   }
 
   //*--------------------------user details Update
-  // DBController dbController = Get.find();
-  // updateProfile() async {
-  //   try {
-  //     var res = await ApiService.profileUpdateapi(
-  //       ProfileUpdate(
-  //         uid: dbController.getUserID(),
-  //         name: nameController.text,
-  //         phone: phonenumber.text,
-  //         wapp: wappnumber.text,
-  //       ),
-  //     );
-  //     if (res == null) {
-  //       return false;
-  //     } else {
-  //       // await snakberSuccess(res);
-  //       return res;
-  //     }
-  //   } finally {}
-  // }
+  DBController dbController = Get.find();
+  updateProfile() async {
+    try {
+      var res = await ApiService.profileUpdateapi(
+        ProfileUpdate(
+          uid: dbController.getUserID(),
+          name: nameController.text,
+          phone: phonenumber.text,
+          wapp: wappnumber.text,
+        ),
+      );
+      if (res == null) {
+        return false;
+      } else {
+        // await snakberSuccess(res);
+        return res;
+      }
+    } finally {}
+  }
 
   snakberSuccess(text) {
     return Get.snackbar(

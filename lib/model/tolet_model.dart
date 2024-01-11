@@ -23,7 +23,7 @@ class PostListTolet {
   final String image1;
   final String location;
   final DateTime time;
-  final double distance;
+  final double? distance;
 
   PostListTolet({
     required this.postId,
@@ -449,5 +449,73 @@ class SortPostTolet {
         "rentmax": rentmax,
         "bed": bed,
         "bath": bath,
+      };
+}
+
+// To parse this JSON data, do
+//
+//     final myPostListTolet = myPostListToletFromJson(jsonString);
+
+List<MyPostListTolet> myPostListToletFromJson(String str) =>
+    List<MyPostListTolet>.from(
+        json.decode(str).map((x) => MyPostListTolet.fromJson(x)));
+
+String myPostListToletToJson(List<MyPostListTolet> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
+class MyPostListTolet {
+  int postId;
+  int uid;
+  String bed;
+  String bath;
+  String roomsize;
+  String kitchen;
+  int rent;
+  String garagetype;
+  String image1;
+  String location;
+  DateTime time;
+
+  MyPostListTolet({
+    required this.postId,
+    required this.uid,
+    required this.bed,
+    required this.bath,
+    required this.roomsize,
+    required this.kitchen,
+    required this.rent,
+    required this.garagetype,
+    required this.image1,
+    required this.location,
+    required this.time,
+  });
+
+  factory MyPostListTolet.fromJson(Map<String, dynamic> json) =>
+      MyPostListTolet(
+        postId: json["post_id"],
+        uid: json["uid"],
+        bed: json["bed"],
+        bath: json["bath"],
+        roomsize: json["roomsize"],
+        kitchen: json["kitchen"],
+        rent: json["rent"],
+        garagetype: json["garagetype"],
+        image1: json["image1"],
+        location: json["location"],
+        time: DateTime.parse(json["time"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "post_id": postId,
+        "uid": uid,
+        "bed": bed,
+        "bath": bath,
+        "roomsize": roomsize,
+        "kitchen": kitchen,
+        "rent": rent,
+        "garagetype": garagetype,
+        "image1": image1,
+        "location": location,
+        "time": time.toIso8601String(),
       };
 }

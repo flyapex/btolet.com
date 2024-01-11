@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
+import 'package:btolet/controller/location_controller.dart';
 import 'package:btolet/controller/tolet_controller.dart';
 import 'package:btolet/controller/user_controller.dart';
 import 'package:btolet/view/shimmer/shimmer.dart';
 import 'package:btolet/view/tolet/tolet.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
@@ -18,18 +19,22 @@ import 'package:map_launcher/map_launcher.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class SinglePost extends StatefulWidget {
+class SinglePostTolet extends StatefulWidget {
   final int postid;
-  const SinglePost({super.key, required this.postid});
+  const SinglePostTolet({
+    super.key,
+    required this.postid,
+  });
 
   @override
-  State<SinglePost> createState() => _SinglePostState();
+  State<SinglePostTolet> createState() => _SinglePostToletState();
 }
 
-class _SinglePostState extends State<SinglePost> {
+class _SinglePostToletState extends State<SinglePostTolet> {
   ToletController toletController = Get.find();
   // AdsController adsController = Get.put(AdsController());
   UserController userController = Get.find();
+  LocationController locationController = Get.find();
 
   lodeData() async {
     toletController.lodeOneTime(true);
@@ -45,9 +50,9 @@ class _SinglePostState extends State<SinglePost> {
   @override
   void initState() {
     lodeData();
-    rootBundle.loadString('assets/map/map_style.txt').then((string) {
-      _mapStyle = string;
-    });
+    // rootBundle.loadString('assets/map/map_style.txt').then((string) {
+    //   _mapStyle = string;
+    // });
 
     _controller.addListener(_scrollListener);
     _controllerMore.addListener(_scrollListenerMore);
@@ -72,6 +77,13 @@ class _SinglePostState extends State<SinglePost> {
           toletController.singlepost.geolat,
           toletController.singlepost.geolon,
         );
+      }
+    }
+    if (_controller.position.userScrollDirection == ScrollDirection.reverse) {
+      locationController.singlePostTolemap.value = true;
+    } else {
+      if (_controller.position.userScrollDirection == ScrollDirection.forward) {
+        locationController.singlePostTolemap.value = false;
       }
     }
   }
@@ -102,7 +114,7 @@ class _SinglePostState extends State<SinglePost> {
     // adsController.rewardedInterstitialAd?.dispose();
   }
 
-  late String _mapStyle;
+  // late String _mapStyle;
   Set<Marker> markers = {};
   void addMarker() async {
     await markers.addLabelMarker(
@@ -301,919 +313,951 @@ class _SinglePostState extends State<SinglePost> {
                   ],
                 ),
               ),
-              body: SingleChildScrollView(
-                controller: _controller,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Stack(
+              body: Stack(
+                children: [
+                  SingleChildScrollView(
+                    controller: _controller,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        ImageSlidePage(
-                          hight: height / 3.5,
-                          imageList: toletController.imageList,
-                        ),
-                        Column(
+                        Stack(
                           children: [
-                            const SizedBox(height: 30),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            ImageSlidePage(
+                              hight: height / 3.5,
+                              imageList: toletController.imageList,
+                            ),
+                            Column(
                               children: [
-                                InkWell(
-                                  child: const Padding(
-                                    padding: EdgeInsets.only(left: 10),
-                                    child: Icon(
-                                      Feather.arrow_left,
-                                      color: Colors.white,
-                                      size: 22,
-                                    ),
-                                  ),
-                                  onTap: () {
-                                    Get.back();
-                                  },
-                                ),
+                                const SizedBox(height: 30),
                                 Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     InkWell(
                                       child: const Padding(
-                                        padding: EdgeInsets.all(5),
+                                        padding: EdgeInsets.only(left: 10),
                                         child: Icon(
-                                          Feather.share_2,
+                                          Feather.arrow_left,
                                           color: Colors.white,
                                           size: 22,
                                         ),
                                       ),
-                                      onTap: () {},
-                                    ),
-                                    const SizedBox(width: 10),
-                                    LikeButton(
-                                      size: 32,
-                                      likeBuilder: (bool isLiked) {
-                                        return Icon(
-                                            isLiked
-                                                ? Icons.favorite
-                                                : Icons
-                                                    .favorite_border_outlined,
-                                            color: isLiked
-                                                ? Colors.lightBlue
-                                                : Colors.white);
+                                      onTap: () {
+                                        Get.back();
                                       },
-                                      animationDuration:
-                                          const Duration(milliseconds: 400),
                                     ),
-                                    const SizedBox(width: 15),
+                                    Row(
+                                      children: [
+                                        InkWell(
+                                          child: const Padding(
+                                            padding: EdgeInsets.all(5),
+                                            child: Icon(
+                                              Feather.share_2,
+                                              color: Colors.white,
+                                              size: 22,
+                                            ),
+                                          ),
+                                          onTap: () {},
+                                        ),
+                                        const SizedBox(width: 10),
+                                        LikeButton(
+                                          size: 32,
+                                          likeBuilder: (bool isLiked) {
+                                            return Icon(
+                                                isLiked
+                                                    ? Icons.favorite
+                                                    : Icons
+                                                        .favorite_border_outlined,
+                                                color: isLiked
+                                                    ? Colors.lightBlue
+                                                    : Colors.white);
+                                          },
+                                          animationDuration:
+                                              const Duration(milliseconds: 400),
+                                          onTap: (isLiked) async {
+                                            print(!isLiked);
+                                            toletController.save(
+                                              toletController.singlepost.postId,
+                                              !isLiked,
+                                            );
+                                            return !isLiked;
+                                          },
+                                        ),
+                                        const SizedBox(width: 15),
+                                      ],
+                                    ),
                                   ],
                                 ),
                               ],
-                            ),
+                            )
                           ],
-                        )
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        const SizedBox(height: 20),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              Text(
-                                "৳ ${NumberFormat.decimalPattern().format(toletController.singlepost.rent)}",
-                                style: const TextStyle(
-                                  fontSize: 30,
-                                  color: Color(0xff083437),
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              toletController.singlepost.garagetype == ""
-                                  ? Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        Expanded(
-                                          flex: 1,
-                                          child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.end,
-                                            children: [
-                                              SizedBox(
-                                                height: 30,
-                                                width: 30,
-                                                child: SvgPicture.asset(
-                                                  'assets/icons/tolet/bed.svg',
-                                                  colorFilter:
-                                                      const ColorFilter.mode(
-                                                    Color(0xff083437),
-                                                    BlendMode.srcIn,
-                                                  ),
-                                                ),
-                                              ),
-                                              const SizedBox(width: 10),
-                                              Text(
-                                                '${toletController.singlepost.bed} Beds',
-                                                style: const TextStyle(
-                                                  color: Color(0xff083437),
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 16,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        // const SizedBox(width: 20),
-                                        Expanded(
-                                          flex: 1,
-                                          child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.end,
-                                            children: [
-                                              SizedBox(
-                                                height: 28,
-                                                width: 28,
-                                                child: SvgPicture.asset(
-                                                  'assets/icons/tolet/bath.svg',
-                                                  colorFilter:
-                                                      const ColorFilter.mode(
-                                                    Color(0xff083437),
-                                                    BlendMode.srcIn,
-                                                  ),
-                                                ),
-                                              ),
-                                              const SizedBox(width: 10),
-                                              Text(
-                                                '${toletController.singlepost.bath} Baths',
-                                                style: const TextStyle(
-                                                  color: Color(0xff083437),
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 16,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        // const SizedBox(width: 20),
-                                        Expanded(
-                                          flex: 1,
-                                          child: toletController
-                                                      .singlepost.roomsize ==
-                                                  ''
-                                              ? Row(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.end,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.end,
-                                                  children: [
-                                                    SizedBox(
-                                                      height: 24,
-                                                      width: 24,
-                                                      child: SvgPicture.asset(
-                                                        'assets/icons/tolet/kitchen.svg',
-                                                        colorFilter:
-                                                            const ColorFilter
-                                                                .mode(
-                                                          Color(0xff083437),
-                                                          BlendMode.srcIn,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    const SizedBox(width: 10),
-                                                    Text(
-                                                      "  ${toletController.singlepost.kitchen} Kitchen",
-                                                      style: const TextStyle(
-                                                        color:
-                                                            Color(0xff083437),
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 16,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                )
-                                              : Row(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.end,
-                                                  children: [
-                                                    SizedBox(
-                                                      height: 20,
-                                                      width: 20,
-                                                      child: SvgPicture.asset(
-                                                        'assets/icons/tolet/size.svg',
-                                                        colorFilter:
-                                                            const ColorFilter
-                                                                .mode(
-                                                          Color(0xff083437),
-                                                          BlendMode.srcIn,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    const SizedBox(width: 10),
-                                                    Expanded(
-                                                      child: Text(
-                                                        "  ${toletController.singlepost.roomsize}", //ft\u00b2
-                                                        style: const TextStyle(
-                                                          color:
-                                                              Color(0xff083437),
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 16,
-                                                        ),
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                        ),
-                                      ],
-                                    )
-                                  : toletController.singlepost.garagetype ==
-                                          "Car"
+                        ),
+                        Column(
+                          children: [
+                            const SizedBox(height: 20),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 20, right: 20),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Text(
+                                    "৳ ${NumberFormat.decimalPattern().format(toletController.singlepost.rent)}",
+                                    style: const TextStyle(
+                                      fontSize: 30,
+                                      color: Color(0xff083437),
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  toletController.singlepost.garagetype == ""
                                       ? Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.center,
+                                              CrossAxisAlignment.end,
                                           children: [
-                                            SizedBox(
-                                              height: 25,
-                                              width: 25,
-                                              child: SvgPicture.asset(
-                                                'assets/icons/tolet/car.svg',
-                                                colorFilter:
-                                                    const ColorFilter.mode(
-                                                  // Color(0xff083437),
-                                                  Colors.black87,
-                                                  BlendMode.srcIn,
-                                                ),
+                                            Expanded(
+                                              flex: 1,
+                                              child: Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
+                                                children: [
+                                                  SizedBox(
+                                                    height: 30,
+                                                    width: 30,
+                                                    child: SvgPicture.asset(
+                                                      'assets/icons/tolet/bed.svg',
+                                                      colorFilter:
+                                                          const ColorFilter
+                                                              .mode(
+                                                        Color(0xff083437),
+                                                        BlendMode.srcIn,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  const SizedBox(width: 10),
+                                                  Text(
+                                                    '${toletController.singlepost.bed} Beds',
+                                                    style: const TextStyle(
+                                                      color: Color(0xff083437),
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 16,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
-                                            const SizedBox(width: 10),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.only(top: 4),
-                                              child: Text(
-                                                "${toletController.singlepost.garagetype} Garage",
-                                                style: const TextStyle(
-                                                  color: Color(0xff083437),
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 16,
-                                                ),
+                                            // const SizedBox(width: 20),
+                                            Expanded(
+                                              flex: 1,
+                                              child: Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
+                                                children: [
+                                                  SizedBox(
+                                                    height: 28,
+                                                    width: 28,
+                                                    child: SvgPicture.asset(
+                                                      'assets/icons/tolet/bath.svg',
+                                                      colorFilter:
+                                                          const ColorFilter
+                                                              .mode(
+                                                        Color(0xff083437),
+                                                        BlendMode.srcIn,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  const SizedBox(width: 10),
+                                                  Text(
+                                                    '${toletController.singlepost.bath} Baths',
+                                                    style: const TextStyle(
+                                                      color: Color(0xff083437),
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 16,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
-                                            const SizedBox(width: 3),
-                                            SizedBox(
-                                              height: 10,
-                                              width: 10,
-                                              child: SvgPicture.asset(
-                                                'assets/icons/tolet/security.svg',
-                                                colorFilter:
-                                                    const ColorFilter.mode(
-                                                  // Color(0xff083437),
-                                                  Colors.green,
-                                                  BlendMode.srcIn,
-                                                ),
-                                              ),
+                                            // const SizedBox(width: 20),
+                                            Expanded(
+                                              flex: 1,
+                                              child: toletController.singlepost
+                                                          .roomsize ==
+                                                      ''
+                                                  ? Row(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .end,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment.end,
+                                                      children: [
+                                                        SizedBox(
+                                                          height: 24,
+                                                          width: 24,
+                                                          child:
+                                                              SvgPicture.asset(
+                                                            'assets/icons/tolet/kitchen.svg',
+                                                            colorFilter:
+                                                                const ColorFilter
+                                                                    .mode(
+                                                              Color(0xff083437),
+                                                              BlendMode.srcIn,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        const SizedBox(
+                                                            width: 10),
+                                                        Text(
+                                                          "  ${toletController.singlepost.kitchen} Kitchen",
+                                                          style:
+                                                              const TextStyle(
+                                                            color: Color(
+                                                                0xff083437),
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 16,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    )
+                                                  : Row(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .end,
+                                                      children: [
+                                                        SizedBox(
+                                                          height: 20,
+                                                          width: 20,
+                                                          child:
+                                                              SvgPicture.asset(
+                                                            'assets/icons/tolet/size.svg',
+                                                            colorFilter:
+                                                                const ColorFilter
+                                                                    .mode(
+                                                              Color(0xff083437),
+                                                              BlendMode.srcIn,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        const SizedBox(
+                                                            width: 10),
+                                                        Expanded(
+                                                          child: Text(
+                                                            "  ${toletController.singlepost.roomsize}", //ft\u00b2
+                                                            style:
+                                                                const TextStyle(
+                                                              color: Color(
+                                                                  0xff083437),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontSize: 16,
+                                                            ),
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
                                             ),
                                           ],
                                         )
-                                      : Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            SizedBox(
-                                              height: 30,
-                                              width: 30,
-                                              child: SvgPicture.asset(
-                                                'assets/icons/tolet/bike.svg',
-                                                colorFilter:
-                                                    const ColorFilter.mode(
-                                                  // Color(0xff083437),
-                                                  Colors.black87,
-                                                  BlendMode.srcIn,
-                                                ),
-                                              ),
-                                            ),
-                                            const SizedBox(width: 10),
-                                            Text(
-                                              "${toletController.singlepost.garagetype} Garage",
-                                              style: const TextStyle(
-                                                color: Color(0xff083437),
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 16,
-                                              ),
-                                            ),
-                                            const SizedBox(width: 3),
-                                            SizedBox(
-                                              height: 10,
-                                              width: 10,
-                                              child: SvgPicture.asset(
-                                                'assets/icons/tolet/security.svg',
-                                                colorFilter:
-                                                    const ColorFilter.mode(
-                                                  // Color(0xff083437),
-                                                  Colors.green,
-                                                  BlendMode.srcIn,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
-                          child: Container(
-                            height: 1,
-                            decoration: BoxDecoration(
-                              color: Colors.black12,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10, right: 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              InkWell(
-                                onTap: () async {
-                                  final coords = Coords(
-                                    double.parse(
-                                        toletController.singlepost.geolat),
-                                    double.parse(
-                                        toletController.singlepost.geolon),
-                                  );
-                                  var title =
-                                      "Price ৳ ${NumberFormat.decimalPattern().format(toletController.singlepost.rent)}";
-                                  final availableMaps =
-                                      await MapLauncher.installedMaps;
-                                  // await availableMaps.first
-                                  //     .showMarker(
-                                  //   coords: coords,
-                                  //   title: title,
-                                  //   description: "description",
-                                  // );
-                                  // print(availableMaps.length);
-                                  if (availableMaps.length == 1) {
-                                    await availableMaps.first.showMarker(
-                                      coords: coords,
-                                      title: title,
-                                      description: "description",
-                                    );
-                                  } else {
-                                    Get.bottomSheet(
-                                      SafeArea(
-                                        child: SingleChildScrollView(
-                                          child: Container(
-                                            padding: const EdgeInsets.only(
-                                              bottom: 10,
-                                            ),
-                                            decoration: const BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(6),
-                                                topRight: Radius.circular(6),
-                                              ),
-                                            ),
-                                            child: Wrap(
-                                              children: <Widget>[
-                                                for (var map in availableMaps)
-                                                  ListTile(
-                                                    onTap: () => map.showMarker(
-                                                      coords: coords,
-                                                      title: title,
-                                                    ),
-                                                    title: Text(map.mapName),
-                                                    leading: SvgPicture.asset(
-                                                      map.icon,
-                                                      height: 30.0,
-                                                      width: 30.0,
-                                                    ),
-                                                    trailing: Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              right: 10),
-                                                      child: SvgPicture.asset(
-                                                        'assets/icons/home/arrow.svg',
-                                                        height: 12,
-                                                        width: 12,
-                                                        // ignore: deprecated_member_use
-                                                        color: const Color(
-                                                            0xffAFAFAF),
-                                                      ),
+                                      : toletController.singlepost.garagetype ==
+                                              "Car"
+                                          ? Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                SizedBox(
+                                                  height: 25,
+                                                  width: 25,
+                                                  child: SvgPicture.asset(
+                                                    'assets/icons/tolet/car.svg',
+                                                    colorFilter:
+                                                        const ColorFilter.mode(
+                                                      // Color(0xff083437),
+                                                      Colors.black87,
+                                                      BlendMode.srcIn,
                                                     ),
                                                   ),
+                                                ),
+                                                const SizedBox(width: 10),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 4),
+                                                  child: Text(
+                                                    "${toletController.singlepost.garagetype} Garage",
+                                                    style: const TextStyle(
+                                                      color: Color(0xff083437),
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 16,
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 3),
+                                                SizedBox(
+                                                  height: 10,
+                                                  width: 10,
+                                                  child: SvgPicture.asset(
+                                                    'assets/icons/tolet/security.svg',
+                                                    colorFilter:
+                                                        const ColorFilter.mode(
+                                                      // Color(0xff083437),
+                                                      Colors.green,
+                                                      BlendMode.srcIn,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          : Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                SizedBox(
+                                                  height: 30,
+                                                  width: 30,
+                                                  child: SvgPicture.asset(
+                                                    'assets/icons/tolet/bike.svg',
+                                                    colorFilter:
+                                                        const ColorFilter.mode(
+                                                      // Color(0xff083437),
+                                                      Colors.black87,
+                                                      BlendMode.srcIn,
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 10),
+                                                Text(
+                                                  "${toletController.singlepost.garagetype} Garage",
+                                                  style: const TextStyle(
+                                                    color: Color(0xff083437),
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 16,
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 3),
+                                                SizedBox(
+                                                  height: 10,
+                                                  width: 10,
+                                                  child: SvgPicture.asset(
+                                                    'assets/icons/tolet/security.svg',
+                                                    colorFilter:
+                                                        const ColorFilter.mode(
+                                                      // Color(0xff083437),
+                                                      Colors.green,
+                                                      BlendMode.srcIn,
+                                                    ),
+                                                  ),
+                                                ),
                                               ],
                                             ),
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  }
-                                },
-                                child: Row(
-                                  children: [
-                                    Material(
-                                      type: MaterialType.transparency,
-                                      child: Ink(
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: Colors.blue,
-                                            width: 2,
-                                          ),
-                                          color: Colors.white,
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: InkWell(
-                                          borderRadius:
-                                              BorderRadius.circular(100),
-                                          onTap: () {},
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(10.0),
-                                            child: SizedBox(
-                                              height: 22,
-                                              width: 22,
-                                              child: SvgPicture.asset(
-                                                'assets/icons/home/map.svg',
-                                                height: 10,
-                                                width: 22,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 10),
-                                    SizedBox(
-                                      width: width / 1.7,
-                                      child: Text(
-                                        // locationController.locationAddress.value,
-                                        toletController.singlepost.location,
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                          color: Color(0xff083437),
-                                          fontWeight: FontWeight.bold,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                        maxLines: 2,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Text(
-                                '${userController.getDay(toletController.singlepost.time)}',
-                                // ' ${timeago.format(toletController.singlepost.time, locale: 'en_short')} ago',
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                  color: Color(0xff083437),
-                                  fontWeight: FontWeight.normal,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          height: 20,
-                          margin: const EdgeInsets.only(top: 10),
-                          decoration: const BoxDecoration(
-                            color: Colors.black12,
-                          ),
-                          // child: const Row(
-                          //   children: [
-                          //     Text(
-                          //       "tolet In Khulna, Nirala 14 Nirala",
-                          //       style: TextStyle(
-                          //         fontSize: 16,
-                          //         color: Color(0xff083437),
-                          //         fontWeight: FontWeight.normal,
-                          //         overflow: TextOverflow.clip,
-                          //       ),
-                          //     ),
-                          //   ],
-                          // ),
-                        ),
-                        // const SizedBox(height: 20),
-                        // Padding(
-                        //   padding: const EdgeInsets.only(left: 20, right: 20),
-                        //   child: Container(
-                        //     height: 100,
-                        //     width: width,
-                        //     decoration: BoxDecoration(
-                        //       color: Colors.yellow,
-                        //       borderRadius: BorderRadius.circular(10),
-                        //     ),
-                        //     child: const Center(
-                        //       child: Text('Ads'),
-                        //     ),
-                        //   ),
-                        // ),
-                        // const SizedBox(height: 20),
-                        Container(
-                          height: 1,
-                          decoration: BoxDecoration(
-                            color: Colors.black12,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const SizedBox(height: 10),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text(
-                                    "Details",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: Color(0xff083437),
-                                      fontWeight: FontWeight.normal,
-                                    ),
-                                  ),
-                                  Text(
-                                    "id:${toletController.singlepost.postId}",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: const Color(0xff083437)
-                                          .withOpacity(0.7),
-                                    ),
-                                  ),
                                 ],
                               ),
-
-                              Details(
-                                type: "Property Name",
-                                detailstext:
-                                    toletController.singlepost.propertyname,
-                                icon: Icons.home_rounded,
-                              ),
-
-                              Details(
-                                type: "Property Type",
-                                detailstext: json
-                                    .decode(toletController.singlepost.category)
-                                    .join(", "),
-                                icon: Icons.business_outlined,
-                              ),
-
-                              // const Details(
-                              //   type: "Bedrooms",
-                              //   detailstext: "5",
-                              //   icon: Icons.bedroom_parent_outlined,
-                              // ),
-                              // const SizedBox(height: 15),
-                              // const Details(
-                              //   type: "Bathrooms",
-                              //   detailstext: "2",
-                              //   icon: Icons.bathtub_outlined,
-                              // ),
-                              // const SizedBox(height: 15),
-                              Details(
-                                type: "Dining",
-                                detailstext: toletController.singlepost.dining,
-                                icon: Icons.dining_outlined,
-                              ),
-
-                              Details(
-                                type: "Kitchen",
-                                detailstext: toletController.singlepost.kitchen,
-                                icon: Icons.kitchen_rounded,
-                              ),
-                              // const SizedBox(height: 15),
-                              // const Details(
-                              //   type: "Room Size",
-                              //   detailstext: "450 m\u00b2(4,849 ft\u00b2)",
-                              //   icon: Icons.all_inclusive_rounded,
-                              // ),
-
-                              Details(
-                                type: "Floor",
-                                detailstext:
-                                    toletController.singlepost.floornumber,
-                                icon: Icons.person_pin_circle_rounded,
-                              ),
-
-                              Details(
-                                type: "Facing",
-                                detailstext: toletController.singlepost.facing,
-                                icon: Icons.window_outlined,
-                              ),
-                              Details(
-                                type: "Rent From",
-                                detailstext: DateFormat('d MMM')
-                                    .format(toletController.singlepost.time),
-                                icon: Icons.access_time,
-                              ),
-
-                              Details(
-                                type: "Facilities",
-                                detailstext:
-                                    toletController.singlepost.fasalitis.isEmpty
-                                        ? ""
-                                        : json
-                                            .decode(toletController
-                                                .singlepost.fasalitis)
-                                            .join(", "),
-                                icon: Icons.search_sharp,
-                                textColor: Colors.green,
-                              ),
-
-                              Details(
-                                type: "Maintenance",
-                                detailstext: toletController
-                                            .singlepost.mentenance ==
-                                        0
-                                    ? ""
-                                    : "${NumberFormat.decimalPattern().format(toletController.singlepost.mentenance)} ৳/mon",
-                                icon: Icons.monetization_on_outlined,
-                              ),
-
-                              Details(
-                                type: "Short Address",
-                                detailstext:
-                                    toletController.singlepost.shortaddress,
-                                icon: Icons.share_location_rounded,
-                              ),
-
-                              const SizedBox(height: 20),
-                              Container(
+                            ),
+                            const SizedBox(height: 20),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 20, right: 20),
+                              child: Container(
                                 height: 1,
                                 decoration: BoxDecoration(
                                   color: Colors.black12,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
-                              const SizedBox(height: 10),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
+                            ),
+                            const SizedBox(height: 10),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 10, right: 20),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Icon(
-                                    Feather.menu,
-                                    color: const Color(0xff8595A9)
-                                        .withOpacity(0.5),
-                                    size: 18,
-                                  ),
-                                  const SizedBox(width: 10),
-                                  const Text("Discription"),
-                                ],
-                              ),
-                              const SizedBox(height: 20),
-                              Container(
-                                height: 100,
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  color: const Color(0xffE3E8FF),
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                    top: 20,
-                                    left: 20,
-                                    right: 15,
-                                    bottom: 20,
-                                  ),
-                                  child: Text(
-                                    toletController.singlepost.description,
-                                    textAlign: TextAlign.justify,
-                                    overflow: TextOverflow.clip,
-                                    // maxLines: 5,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 20),
-                              const Text(
-                                "Posted In", //area
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Color(0xff083437),
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              const SizedBox(height: 20),
-                              Container(
-                                height: 130,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                child: Stack(
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(8),
-                                      child: GoogleMap(
-                                        padding: const EdgeInsets.only(
-                                          bottom: 500,
-                                          top: 0,
-                                          right: 0,
-                                          left: 0,
-                                        ),
-                                        onMapCreated: (controller) {
-                                          controller.setMapStyle(_mapStyle);
-                                        },
-                                        zoomControlsEnabled: false,
-                                        myLocationButtonEnabled: false,
-                                        initialCameraPosition: CameraPosition(
-                                          target: LatLng(
-                                            double.parse(toletController
-                                                .singlepost.geolat),
-                                            double.parse(toletController
-                                                .singlepost.geolon),
-                                          ),
-                                          zoom: 16.0,
-                                        ),
-                                        mapToolbarEnabled: false,
-                                        markers: markers,
-                                        compassEnabled: true,
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(10.0),
-                                      child: Align(
-                                        alignment: Alignment.bottomRight,
-                                        child: InkWell(
-                                          onTap: () async {
-                                            final coords = Coords(
-                                              double.parse(toletController
-                                                  .singlepost.geolat),
-                                              double.parse(toletController
-                                                  .singlepost.geolon),
-                                            );
-                                            var title =
-                                                "Price ৳ ${NumberFormat.decimalPattern().format(toletController.singlepost.rent)}";
-                                            final availableMaps =
-                                                await MapLauncher.installedMaps;
-                                            // await availableMaps.first
-                                            //     .showMarker(
-                                            //   coords: coords,
-                                            //   title: title,
-                                            //   description: "description",
-                                            // );
-                                            // print(availableMaps.length);
-                                            if (availableMaps.length == 1) {
-                                              await availableMaps.first
-                                                  .showMarker(
-                                                coords: coords,
-                                                title: title,
-                                                description: "description",
-                                              );
-                                            } else {
-                                              Get.bottomSheet(
-                                                SafeArea(
-                                                  child: SingleChildScrollView(
-                                                    child: Container(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                        bottom: 10,
-                                                      ),
-                                                      decoration:
-                                                          const BoxDecoration(
-                                                        color: Colors.white,
-                                                        borderRadius:
-                                                            BorderRadius.only(
-                                                          topLeft:
-                                                              Radius.circular(
-                                                                  6),
-                                                          topRight:
-                                                              Radius.circular(
-                                                                  6),
-                                                        ),
-                                                      ),
-                                                      child: Wrap(
-                                                        children: <Widget>[
-                                                          for (var map
-                                                              in availableMaps)
-                                                            ListTile(
-                                                              onTap: () => map
-                                                                  .showMarker(
-                                                                coords: coords,
-                                                                title: title,
-                                                              ),
-                                                              title: Text(
-                                                                  map.mapName),
-                                                              leading:
-                                                                  SvgPicture
-                                                                      .asset(
-                                                                map.icon,
-                                                                height: 30.0,
-                                                                width: 30.0,
-                                                              ),
-                                                              trailing: Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                        .only(
-                                                                        right:
-                                                                            10),
-                                                                child:
-                                                                    SvgPicture
-                                                                        .asset(
-                                                                  'assets/icons/home/arrow.svg',
-                                                                  height: 12,
-                                                                  width: 12,
-                                                                  // ignore: deprecated_member_use
-                                                                  color: const Color(
-                                                                      0xffAFAFAF),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                        ],
-                                                      ),
-                                                    ),
+                                  InkWell(
+                                    onTap: () async {
+                                      final coords = Coords(
+                                        double.parse(
+                                            toletController.singlepost.geolat),
+                                        double.parse(
+                                            toletController.singlepost.geolon),
+                                      );
+                                      var title =
+                                          "Price ৳ ${NumberFormat.decimalPattern().format(toletController.singlepost.rent)}";
+                                      final availableMaps =
+                                          await MapLauncher.installedMaps;
+                                      // await availableMaps.first
+                                      //     .showMarker(
+                                      //   coords: coords,
+                                      //   title: title,
+                                      //   description: "description",
+                                      // );
+                                      // print(availableMaps.length);
+                                      if (availableMaps.length == 1) {
+                                        await availableMaps.first.showMarker(
+                                          coords: coords,
+                                          title: title,
+                                          description: "description",
+                                        );
+                                      } else {
+                                        Get.bottomSheet(
+                                          SafeArea(
+                                            child: SingleChildScrollView(
+                                              child: Container(
+                                                padding: const EdgeInsets.only(
+                                                  bottom: 10,
+                                                ),
+                                                decoration: const BoxDecoration(
+                                                  color: Colors.white,
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                    topLeft: Radius.circular(6),
+                                                    topRight:
+                                                        Radius.circular(6),
                                                   ),
                                                 ),
-                                              );
-                                            }
-                                          },
-                                          child: const CircleAvatar(
-                                            radius: 20,
-                                            backgroundColor: Colors.blue,
-                                            child: Icon(
-                                              // Icons.turn_right,
-                                              Feather.navigation,
+                                                child: Wrap(
+                                                  children: <Widget>[
+                                                    for (var map
+                                                        in availableMaps)
+                                                      ListTile(
+                                                        onTap: () =>
+                                                            map.showMarker(
+                                                          coords: coords,
+                                                          title: title,
+                                                        ),
+                                                        title:
+                                                            Text(map.mapName),
+                                                        leading:
+                                                            SvgPicture.asset(
+                                                          map.icon,
+                                                          height: 30.0,
+                                                          width: 30.0,
+                                                        ),
+                                                        trailing: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  right: 10),
+                                                          child:
+                                                              SvgPicture.asset(
+                                                            'assets/icons/home/arrow.svg',
+                                                            height: 12,
+                                                            width: 12,
+                                                            // ignore: deprecated_member_use
+                                                            color: const Color(
+                                                                0xffAFAFAF),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Material(
+                                          type: MaterialType.transparency,
+                                          child: Ink(
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                color: Colors.blue,
+                                                width: 2,
+                                              ),
                                               color: Colors.white,
+                                              shape: BoxShape.circle,
+                                            ),
+                                            child: InkWell(
+                                              borderRadius:
+                                                  BorderRadius.circular(100),
+                                              onTap: () {},
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(10.0),
+                                                child: SizedBox(
+                                                  height: 22,
+                                                  width: 22,
+                                                  child: SvgPicture.asset(
+                                                    'assets/icons/home/map.svg',
+                                                    height: 10,
+                                                    width: 22,
+                                                  ),
+                                                ),
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 30),
-                        const Row(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(left: 20),
-                              child: Text(
-                                'more x',
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  color: Colors.black38,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 20),
-
-                        SizedBox(
-                          height: height / 7,
-                          child: StreamBuilder(
-                            stream: toletController.morePost.stream,
-                            builder:
-                                (BuildContext context, AsyncSnapshot snapshot) {
-                              if (snapshot.data == null) {
-                                return const PostListSuggstionSimmer(
-                                  topPadding: 0,
-                                  count: 4,
-                                );
-                              } else {
-                                return ListView.builder(
-                                  controller: _controllerMore,
-                                  scrollDirection: Axis.horizontal,
-                                  shrinkWrap: true,
-                                  itemCount: snapshot.data.length + 1,
-                                  itemBuilder: (c, i) {
-                                    if (i < snapshot.data.length) {
-                                      return Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 20),
-                                        child: PostsTolet(
-                                          postData: snapshot.data[i],
-                                        ),
-                                      );
-                                    } else {
-                                      return const Center(
-                                        child: Padding(
-                                          padding: EdgeInsets.all(20),
-                                          child: CircularProgressIndicator(
-                                            color: Colors.red,
+                                        const SizedBox(width: 10),
+                                        SizedBox(
+                                          width: width / 1.7,
+                                          child: Text(
+                                            // locationController.locationAddress.value,
+                                            toletController.singlepost.location,
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                              color: Color(0xff083437),
+                                              fontWeight: FontWeight.bold,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                            maxLines: 2,
                                           ),
                                         ),
-                                      );
-                                    }
-                                  },
-                                );
-                              }
-                            },
-                          ),
+                                      ],
+                                    ),
+                                  ),
+                                  Text(
+                                    '${userController.getDay(toletController.singlepost.time)}',
+                                    // ' ${timeago.format(toletController.singlepost.time, locale: 'en_short')} ago',
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xff083437),
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              height: 20,
+                              margin: const EdgeInsets.only(top: 10),
+                              decoration: const BoxDecoration(
+                                color: Colors.black12,
+                              ),
+                              // child: const Row(
+                              //   children: [
+                              //     Text(
+                              //       "tolet In Khulna, Nirala 14 Nirala",
+                              //       style: TextStyle(
+                              //         fontSize: 16,
+                              //         color: Color(0xff083437),
+                              //         fontWeight: FontWeight.normal,
+                              //         overflow: TextOverflow.clip,
+                              //       ),
+                              //     ),
+                              //   ],
+                              // ),
+                            ),
+                            // const SizedBox(height: 20),
+                            // Padding(
+                            //   padding: const EdgeInsets.only(left: 20, right: 20),
+                            //   child: Container(
+                            //     height: 100,
+                            //     width: width,
+                            //     decoration: BoxDecoration(
+                            //       color: Colors.yellow,
+                            //       borderRadius: BorderRadius.circular(10),
+                            //     ),
+                            //     child: const Center(
+                            //       child: Text('Ads'),
+                            //     ),
+                            //   ),
+                            // ),
+                            // const SizedBox(height: 20),
+                            Container(
+                              height: 1,
+                              decoration: BoxDecoration(
+                                color: Colors.black12,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 20, right: 20),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(height: 10),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Text(
+                                        "Details",
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: Color(0xff083437),
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                      ),
+                                      Text(
+                                        "id:${toletController.singlepost.postId}",
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: const Color(0xff083437)
+                                              .withOpacity(0.7),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+
+                                  Details(
+                                    type: "Property Name",
+                                    detailstext:
+                                        toletController.singlepost.propertyname,
+                                    icon: Icons.home_rounded,
+                                  ),
+
+                                  Details(
+                                    type: "Property Type",
+                                    detailstext: json
+                                        .decode(
+                                            toletController.singlepost.category)
+                                        .join(", "),
+                                    icon: Icons.business_outlined,
+                                  ),
+
+                                  // const Details(
+                                  //   type: "Bedrooms",
+                                  //   detailstext: "5",
+                                  //   icon: Icons.bedroom_parent_outlined,
+                                  // ),
+                                  // const SizedBox(height: 15),
+                                  // const Details(
+                                  //   type: "Bathrooms",
+                                  //   detailstext: "2",
+                                  //   icon: Icons.bathtub_outlined,
+                                  // ),
+                                  // const SizedBox(height: 15),
+                                  Details(
+                                    type: "Dining",
+                                    detailstext:
+                                        toletController.singlepost.dining,
+                                    icon: Icons.dining_outlined,
+                                  ),
+
+                                  Details(
+                                    type: "Kitchen",
+                                    detailstext:
+                                        toletController.singlepost.kitchen,
+                                    icon: Icons.kitchen_rounded,
+                                  ),
+                                  // const SizedBox(height: 15),
+                                  // const Details(
+                                  //   type: "Room Size",
+                                  //   detailstext: "450 m\u00b2(4,849 ft\u00b2)",
+                                  //   icon: Icons.all_inclusive_rounded,
+                                  // ),
+
+                                  Details(
+                                    type: "Floor",
+                                    detailstext:
+                                        toletController.singlepost.floornumber,
+                                    icon: Icons.person_pin_circle_rounded,
+                                  ),
+
+                                  Details(
+                                    type: "Facing",
+                                    detailstext:
+                                        toletController.singlepost.facing,
+                                    icon: Icons.window_outlined,
+                                  ),
+                                  Details(
+                                    type: "Rent From",
+                                    detailstext: DateFormat('d MMM').format(
+                                        toletController.singlepost.time),
+                                    icon: Icons.access_time,
+                                  ),
+
+                                  Details(
+                                    type: "Facilities",
+                                    detailstext: toletController
+                                            .singlepost.fasalitis.isEmpty
+                                        ? ""
+                                        : json
+                                            .decode(toletController
+                                                .singlepost.fasalitis)
+                                            .join(", "),
+                                    icon: Icons.search_sharp,
+                                    textColor: Colors.green,
+                                  ),
+
+                                  Details(
+                                    type: "Maintenance",
+                                    detailstext: toletController
+                                                .singlepost.mentenance ==
+                                            0
+                                        ? ""
+                                        : "${NumberFormat.decimalPattern().format(toletController.singlepost.mentenance)} ৳/mon",
+                                    icon: Icons.monetization_on_outlined,
+                                  ),
+
+                                  Details(
+                                    type: "Short Address",
+                                    detailstext:
+                                        toletController.singlepost.shortaddress,
+                                    icon: Icons.share_location_rounded,
+                                  ),
+
+                                  const SizedBox(height: 20),
+                                  Container(
+                                    height: 1,
+                                    decoration: BoxDecoration(
+                                      color: Colors.black12,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Feather.menu,
+                                        color: const Color(0xff8595A9)
+                                            .withOpacity(0.5),
+                                        size: 18,
+                                      ),
+                                      const SizedBox(width: 10),
+                                      const Text("Discription"),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 20),
+                                  Container(
+                                    height: 100,
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xffE3E8FF),
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                        top: 20,
+                                        left: 20,
+                                        right: 15,
+                                        bottom: 20,
+                                      ),
+                                      child: Text(
+                                        toletController.singlepost.description,
+                                        textAlign: TextAlign.justify,
+                                        overflow: TextOverflow.clip,
+                                        // maxLines: 5,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  const Text(
+                                    "Location", //area
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Color(0xff083437),
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  Container(
+                                    height: 150,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(6),
+                                      border: Border.all(
+                                        color: Colors.black.withOpacity(0.2),
+                                      ),
+                                    ),
+                                    child: Stack(
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          child: GoogleMap(
+                                            padding: const EdgeInsets.only(
+                                              bottom: 500,
+                                              top: 0,
+                                              right: 0,
+                                              left: 0,
+                                            ),
+                                            onMapCreated: (controller) {
+                                              // controller.setMapStyle(_mapStyle);
+                                            },
+                                            zoomControlsEnabled: false,
+                                            myLocationButtonEnabled: false,
+                                            initialCameraPosition:
+                                                CameraPosition(
+                                              target: LatLng(
+                                                double.parse(toletController
+                                                    .singlepost.geolat),
+                                                double.parse(toletController
+                                                    .singlepost.geolon),
+                                              ),
+                                              zoom: 16.0,
+                                            ),
+                                            mapToolbarEnabled: false,
+                                            markers: markers,
+                                            compassEnabled: true,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: Align(
+                                            alignment: Alignment.bottomRight,
+                                            child: SizedBox(
+                                              height: 40,
+                                              child:
+                                                  FloatingActionButton.extended(
+                                                backgroundColor: Colors.blue,
+                                                onPressed: () {},
+                                                shape: RoundedRectangleBorder(
+                                                  // side: const BorderSide(
+                                                  //     width: 3,
+                                                  //     color: Colors.brown),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                    100,
+                                                  ),
+                                                ),
+                                                label: const Row(
+                                                  children: [
+                                                    Text(
+                                                      'Map',
+                                                      style: TextStyle(
+                                                        fontSize: 14,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                    SizedBox(width: 10),
+                                                    Icon(
+                                                      Feather.navigation,
+                                                      color: Colors.white,
+                                                      size: 18,
+                                                    ),
+                                                  ],
+                                                ),
+                                                elevation: 0,
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 30),
+                            const Row(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(left: 20),
+                                  child: Text(
+                                    'more',
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      color: Colors.black38,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 20),
+
+                            SizedBox(
+                              height: height / 7,
+                              child: StreamBuilder(
+                                stream: toletController.morePost.stream,
+                                builder: (BuildContext context,
+                                    AsyncSnapshot snapshot) {
+                                  if (snapshot.data == null) {
+                                    return const PostListSuggstionSimmer(
+                                      topPadding: 0,
+                                      count: 4,
+                                    );
+                                  } else {
+                                    return ListView.builder(
+                                      controller: _controllerMore,
+                                      scrollDirection: Axis.horizontal,
+                                      shrinkWrap: true,
+                                      itemCount: snapshot.data.length + 1,
+                                      itemBuilder: (c, i) {
+                                        if (i < snapshot.data.length) {
+                                          return Padding(
+                                            padding:
+                                                const EdgeInsets.only(left: 20),
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                border: Border.all(
+                                                  color: Colors.black
+                                                      .withOpacity(0.1),
+                                                  width: 0.4,
+                                                ),
+                                              ),
+                                              child: PostsTolet(
+                                                postData: snapshot.data[i],
+                                              ),
+                                            ),
+                                          );
+                                        } else {
+                                          return const Center(
+                                            child: Padding(
+                                              padding: EdgeInsets.all(20),
+                                              child: CircularProgressIndicator(
+                                                color: Colors.red,
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                      },
+                                    );
+                                  }
+                                },
+                              ),
+                            ),
+                            const SizedBox(height: 140),
+                          ],
                         ),
-                        const SizedBox(height: 140),
                       ],
                     ),
-                  ],
-                ),
+                  ),
+                  // AnimatedSlide(
+                  //   duration: const Duration(milliseconds: 800),
+                  //   offset: locationController.singlePostTolemap.value
+                  //       ? Offset.zero
+                  //       : const Offset(0, 2),
+                  //   child: AnimatedOpacity(
+                  //     duration: const Duration(milliseconds: 800),
+                  //     opacity:
+                  //         locationController.singlePostTolemap.value ? 1 : 0,
+                  //     child: Align(
+                  //       alignment: Alignment.bottomCenter,
+                  //       child: Padding(
+                  //         padding: const EdgeInsets.only(bottom: 80),
+                  //         child: SizedBox(
+                  //           height: 40,
+                  //           child: FloatingActionButton.extended(
+                  //             onPressed: () {},
+                  //             label: const Row(
+                  //               children: [
+                  //                 Icon(Icons.map_rounded),
+                  //                 Text(
+                  //                   'Map',
+                  //                   style: TextStyle(
+                  //                     fontSize: 14,
+                  //                     color: Colors.black,
+                  //                   ),
+                  //                 ),
+                  //               ],
+                  //             ),
+                  //             elevation: 0,
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                ],
               ),
             ),
     );

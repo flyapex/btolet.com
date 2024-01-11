@@ -9,6 +9,10 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'mypost.dart';
+import 'profile/profile.dart';
+import 'saved.dart';
+
 class CustomeDrawer extends StatefulWidget {
   const CustomeDrawer({super.key});
 
@@ -98,37 +102,22 @@ class _CustomeDrawerState extends State<CustomeDrawer>
                 ],
               ),
               onTap: () {
-                // Get.to(
-                //   () => const Profile(),
-                //   transition: Transition.circularReveal,
-                //   duration: const Duration(milliseconds: 500),
-                // );
+                Get.to(
+                  () => const Profile(),
+                  transition: Transition.circularReveal,
+                  duration: const Duration(milliseconds: 500),
+                );
               },
             ),
             ListTile(
               onTap: () {
-                // Navigator.pop(context);
-                // Get.bottomSheet(
-                //   const Verify(),
-                //   elevation: 20.0,
-                //   enableDrag: true,
-                //   backgroundColor: Colors.white,
-                //   isScrollControlled: true,
-                //   ignoreSafeArea: true,
-                //   shape: const RoundedRectangleBorder(
-                //     borderRadius: BorderRadius.only(
-                //       topLeft: Radius.circular(20.0),
-                //       topRight: Radius.circular(20.0),
-                //     ),
-                //   ),
-                //   enterBottomSheetDuration: const Duration(milliseconds: 170),
-                // );
+                Get.back();
 
-                // Get.to(
-                //   () => const Saved(),
-                //   transition: Transition.circularReveal,
-                //   duration: const Duration(milliseconds: 500),
-                // );
+                Get.to(
+                  () => const Saved(),
+                  transition: Transition.circularReveal,
+                  duration: const Duration(milliseconds: 500),
+                );
               },
               title: const Row(
                 children: [
@@ -163,11 +152,11 @@ class _CustomeDrawerState extends State<CustomeDrawer>
                 ],
               ),
               onTap: () {
-                // Get.to(
-                //   () => const MyPost(),
-                //   transition: Transition.circularReveal,
-                //   duration: const Duration(milliseconds: 500),
-                // );
+                Get.to(
+                  () => const MyPost(),
+                  transition: Transition.circularReveal,
+                  duration: const Duration(milliseconds: 500),
+                );
               },
             ),
             ListTile(

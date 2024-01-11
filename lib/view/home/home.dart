@@ -227,44 +227,48 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                         ),
                       ),
                       const SizedBox(width: 6),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(50),
-                        child: Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                            onTap: () {
-                              Get.to(
-                                () => const LocationSheet(),
-                                duration: const Duration(milliseconds: 170),
-                                transition: Transition.circularReveal,
-                                fullscreenDialog: true,
-                              );
-                            },
-                            splashColor: Colors.black12,
-                            child: Row(
-                              children: [
-                                Obx(
-                                  () => Text(
-                                    locationController
-                                        .locationAddressShort.value
-                                        .split(',')[0],
-                                    style: TextStyle(
-                                      color: const Color(0xff1A3259)
-                                          .withOpacity(0.8),
-                                      decoration: TextDecoration.underline,
-                                      decorationStyle:
-                                          TextDecorationStyle.dotted,
-                                      fontSize: 14,
+                      SizedBox(
+                        width: Get.width / 3,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(50),
+                          child: Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () {
+                                Get.to(
+                                  () => const LocationSheet(),
+                                  duration: const Duration(milliseconds: 170),
+                                  transition: Transition.circularReveal,
+                                  fullscreenDialog: true,
+                                );
+                              },
+                              splashColor: Colors.black12,
+                              child: Row(
+                                children: [
+                                  Obx(
+                                    () => Text(
+                                      locationController
+                                          .locationAddressShort.value
+                                          .split(',')[0],
+                                      style: TextStyle(
+                                        color: const Color(0xff1A3259)
+                                            .withOpacity(0.8),
+                                        decoration: TextDecoration.underline,
+                                        decorationStyle:
+                                            TextDecorationStyle.dotted,
+                                        fontSize: 14,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
-                                ),
-                                const SizedBox(width: 2),
-                                const Icon(
-                                  Icons.place_outlined,
-                                  color: Colors.blueAccent,
-                                  size: 13,
-                                ),
-                              ],
+                                  const SizedBox(width: 2),
+                                  const Icon(
+                                    Icons.place_outlined,
+                                    color: Colors.blueAccent,
+                                    size: 13,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -287,7 +291,14 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                 size: 28,
                               ),
                             ),
-                            onTap: () {},
+                            onTap: () async {
+                              Get.to(
+                                () => const LocationSheet(),
+                                duration: const Duration(milliseconds: 170),
+                                transition: Transition.circularReveal,
+                                fullscreenDialog: true,
+                              );
+                            },
                           ),
                         ),
                       ),

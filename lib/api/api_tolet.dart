@@ -98,4 +98,73 @@ class ApiServiceTolet {
       return null;
     }
   }
+
+  static Future savedPost(int uid, int pid, bool status) async {
+    final response = await dio.post(
+      '$baseUrl/post/save',
+      data: jsonEncode(
+        {
+          "uid": uid,
+          "pid": pid,
+          "status": status,
+        },
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      print(response.data);
+    } else {
+      return null;
+    }
+  }
+
+  static Future getSaved(int uid, int page) async {
+    final response = await dio.post(
+      '$baseUrl/post/getsave',
+      data: jsonEncode(
+        {
+          "uid": uid,
+          "page": page,
+        },
+      ),
+    );
+    // print(response);
+    if (response.statusCode == 200) {
+      return postListToletFromJson(jsonEncode(response.data));
+    } else {
+      return null;
+    }
+  }
+
+  static Future myPostList(int uid, int page) async {
+    final response = await dio.get(
+      '$baseUrl/user/mypost',
+      queryParameters: {
+        "uid": uid,
+        "page": page,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return myPostListToletFromJson(jsonEncode(response.data));
+    } else {
+      return null;
+    }
+  }
+
+  static Future deletePost(int uid, int postId) async {
+    final response = await dio.delete(
+      '$baseUrl/user/mypost/delete',
+      queryParameters: {
+        "uid": uid,
+        "post_id": postId,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      print(response.data);
+    } else {
+      return null;
+    }
+  }
 }

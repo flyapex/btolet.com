@@ -29,7 +29,7 @@ class PostListPro {
   String area;
   String measurement;
   String image;
-  double distance;
+  int? distance;
 
   PostListPro({
     required this.pid,
@@ -72,7 +72,7 @@ class PostListPro {
         area: json["area"],
         measurement: json["measurement"],
         image: json["image"],
-        distance: json["distance"].toDouble(),
+        distance: json["distance"],
       );
 
   Map<String, dynamic> toJson() => {

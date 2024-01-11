@@ -113,6 +113,34 @@ class ProController extends GetxController {
     }
     return imageList;
   }
+//*---------------------- More Post
+
+  var lodingmorePosts = true.obs;
+  var morePost = [].obs;
+  var lodeOneTime = true.obs;
+
+  void getMorePost(page, latitude, longitude) async {
+    lodeOneTime(false);
+    // morePost.clear();
+    lodingmorePosts(true);
+    try {
+      var response = await ApiServicePro.getPost(
+        page,
+        latitude,
+        longitude,
+      );
+
+      if (response != null) {
+        morePost.addAll(response);
+        print(morePost.length);
+        if (response.isEmpty) {
+          lodingmorePosts(false);
+        }
+      }
+    } finally {
+      lodingmorePosts(false);
+    }
+  }
 
 //*----------------------Post
   var pageController = PageController();
@@ -134,19 +162,19 @@ class ProController extends GetxController {
         state: false.obs, icon: Icons.power_settings_new_rounded),
     'Fire Alarm':
         FasalitisModel(state: false.obs, icon: Icons.fire_extinguisher),
-    'Drain':
-        FasalitisModel(state: false.obs, icon: Icons.turn_sharp_right_sharp),
     'Giser': FasalitisModel(state: false.obs, icon: Icons.gas_meter_outlined),
     'Wasa Connection':
         FasalitisModel(state: false.obs, icon: Icons.gas_meter_outlined),
+    "Garden": FasalitisModel(state: false.obs, icon: Icons.grass_rounded),
     'Fire exit': FasalitisModel(state: false.obs, icon: Icons.exit_to_app),
     "West Disposal":
         FasalitisModel(state: false.obs, icon: Icons.fire_truck_sharp),
-    "Garden": FasalitisModel(state: false.obs, icon: Icons.grass_rounded),
   };
   var fasalitis2 = {
     'Electricity':
         FasalitisModel(state: false.obs, icon: Icons.power_settings_new),
+    'Drain':
+        FasalitisModel(state: false.obs, icon: Icons.turn_sharp_right_sharp),
   };
 
   String getFasalities() {
@@ -575,7 +603,7 @@ class ProController extends GetxController {
         );
       }
       if (response != null) {
-        // updateProfile();
+        userController.updateProfile();
         return response;
       } else {
         return null;
@@ -676,6 +704,106 @@ class ProController extends GetxController {
         totalResult.value = response;
         totalResultloding(false);
       }
+    } finally {}
+  }
+
+  var sortpage = 1.obs;
+  var sortloding = true.obs;
+  var allSortedPost = [].obs;
+  void sortedPostList() async {
+    print("object");
+    sortloding(true);
+    try {
+      var response = await ApiServicePro.sortingPost(
+        SortPostPro(
+          geolon: locationController.currentlongitude.value.toString(),
+          geolat: locationController.currentlatitude.value.toString(),
+          page: sortpage.value,
+          category: getCategorySort(),
+          fasalitis: getFasalitiesSort(),
+          rentmin: rentmin.value,
+          rentmax: rentmax.value,
+          bed: getSort(bedSort),
+          bath: getSort(bathSort),
+        ),
+      );
+
+      if (response != null) {
+        allSortedPost.addAll(response);
+        if (response.isEmpty) {
+          sortloding(false);
+        }
+        sortpage = sortpage + 1;
+      }
+    } finally {}
+  }
+
+  //*--------------------------------------Saved
+  late TabController tabControllerDrawer;
+  final GlobalKey<AnimatedListState> deleteKeySaved = GlobalKey();
+
+  void savePost(int pid, bool status) async {
+    try {
+      var response = await ApiServicePro.savedPost(
+          await dbController.getUserID(), pid, status);
+      if (response != null) {
+        print(response);
+      }
+    } finally {}
+  }
+
+  var savedPage = 1.obs;
+  var savedPostloding = true.obs;
+  var allSavedPost = [].obs;
+  void getSave() async {
+    savedPostloding(true);
+    try {
+      var response = await ApiServicePro.getSaved(
+        await dbController.getUserID(),
+        savedPage.value,
+      );
+      if (response != null) {
+        allSavedPost.addAll(response);
+
+        if (response.isEmpty) {
+          savedPostloding(false);
+        }
+        savedPage = savedPage + 1;
+      }
+    } finally {}
+  }
+
+  var mypostPage = 1.obs;
+  var mypostPageloding = true.obs;
+  var mypostList = [].obs;
+  void myPost() async {
+    mypostPageloding(true);
+    try {
+      var response = await ApiServicePro.myPostList(
+        await dbController.getUserID(),
+        mypostPage.value,
+      );
+      if (response != null) {
+        mypostList.addAll(response);
+        if (response.isEmpty) {
+          mypostPageloding(false);
+        }
+        mypostPage = mypostPage + 1;
+      }
+    } finally {
+      mypostPageloding(false);
+    }
+  }
+
+  final GlobalKey<AnimatedListState> deleteKeyMypost = GlobalKey();
+
+  void deleteMypost(int postid) async {
+    try {
+      var response = await ApiServicePro.deletePost(
+        await dbController.getUserID(),
+        postid,
+      );
+      if (response != null) {}
     } finally {}
   }
 }

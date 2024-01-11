@@ -598,7 +598,7 @@ class ToletController extends GetxController {
         );
       }
       if (response != null) {
-        // updateProfile();
+        userController.updateProfile();
         return response;
       } else {
         return null;
@@ -620,7 +620,7 @@ class ToletController extends GetxController {
   };
 
   String getCategorySort() {
-    final selectedCategories = categories.entries
+    final selectedCategories = categoriesSort.entries
         .where((entry) => entry.value.value)
         .map((entry) => entry.key)
         .toList();
@@ -646,7 +646,7 @@ class ToletController extends GetxController {
         FasalitisModel(state: false.obs, icon: Icons.fire_extinguisher),
   };
   String getFasalitiesSort() {
-    final selectedCategories = fasalitis.entries
+    final selectedCategories = fasalitisSort.entries
         .where((entry) => entry.value.state.value)
         .map((entry) => entry.key)
         .toList();
@@ -725,25 +725,74 @@ class ToletController extends GetxController {
       }
     } finally {}
   }
-  //*----------------- Saved Work
-  // var savedToletPage = 1.obs;
-  // var savedToletloding = true.obs;
-  // var allSavedToletPost = [].obs;
-  // void getAllsavedPostTolet() async {
-  //   savedToletloding(true);
-  //   try {
-  //     var response = await ApiService.getsavedPostTolet(
-  //       savedToletPage.value,
-  //       await dbController.getUserID(),
-  //     );
-  //     if (response != null) {
-  //       allSavedToletPost.addAll(response);
 
-  //       if (response.isEmpty) {
-  //         savedToletloding(false);
-  //       }
-  //       savedToletPage = savedToletPage + 1;
-  //     }
-  //   } finally {}
-  // }
+  //*----------------- Saved Work
+
+  late TabController tabControllerDrawer;
+  final GlobalKey<AnimatedListState> deleteKeySaved = GlobalKey();
+
+  void save(int pid, bool status) async {
+    try {
+      var response = await ApiServiceTolet.savedPost(
+          await dbController.getUserID(), pid, status);
+      if (response != null) {
+        print(response);
+      }
+    } finally {}
+  }
+
+  var savedPage = 1.obs;
+  var savedPostloding = true.obs;
+  var allSavedPost = [].obs;
+  void getSave() async {
+    savedPostloding(true);
+    try {
+      var response = await ApiServiceTolet.getSaved(
+        await dbController.getUserID(),
+        savedPage.value,
+      );
+      if (response != null) {
+        allSavedPost.addAll(response);
+
+        if (response.isEmpty) {
+          savedPostloding(false);
+        }
+        savedPage = savedPage + 1;
+      }
+    } finally {}
+  }
+
+  var mypostPage = 1.obs;
+  var mypostPageloding = true.obs;
+  var mypostList = [].obs;
+  void myPost() async {
+    mypostPageloding(true);
+    try {
+      var response = await ApiServiceTolet.myPostList(
+        await dbController.getUserID(),
+        mypostPage.value,
+      );
+      if (response != null) {
+        mypostList.addAll(response);
+        if (response.isEmpty) {
+          mypostPageloding(false);
+        }
+        mypostPage = mypostPage + 1;
+      }
+    } finally {
+      mypostPageloding(false);
+    }
+  }
+
+  final GlobalKey<AnimatedListState> deleteKeyMypost = GlobalKey();
+
+  void deleteMypost(int postid) async {
+    try {
+      var response = await ApiServiceTolet.deletePost(
+        await dbController.getUserID(),
+        postid,
+      );
+      if (response != null) {}
+    } finally {}
+  }
 }

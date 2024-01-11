@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:btolet/controller/location_controller.dart';
 import 'package:btolet/controller/property_controller.dart';
 import 'package:btolet/controller/tolet_controller.dart';
+import 'package:btolet/model/map.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:dio/dio.dart';
@@ -36,16 +39,57 @@ class GoogleMapApi {
 
     if (response.statusCode == 200) {
       var data = response.data;
-
+      print(data);
+      print('------------------------------------------------');
       var suburb = data["address"]["suburb"];
+      var name = data["name"];
       var city = data["address"]["city"];
-      locationController.locationAddressShort.value = suburb + ", " + city;
+      var stateDistrict = data["address"]["state_district"];
+
+      print(suburb);
+      print(name);
+      print(city);
+      print(stateDistrict);
+      if (suburb != null && city != null) {
+        locationController.locationAddressShort.value = suburb + ", " + city;
+      } else if (name != null && city != null) {
+        locationController.locationAddressShort.value = name + ", " + city;
+      } else if (stateDistrict != null && name != null) {
+        locationController.locationAddressShort.value =
+            name + ", " + stateDistrict;
+      } else {
+        locationController.locationAddressShort.value =
+            data['display_name'].split(',')[0] +
+                ", " +
+                data['display_name'].split(',')[1];
+      }
 
       if (locationController.locationAddress.value.isNotEmpty) {
         await toletController.getCurrentPostCount(city);
         await proController.getCurrentPostCount(city);
       }
       return data['display_name'].toString();
+    } else {
+      return null;
+    }
+  }
+
+  static Future searchSuggstion(searchText) async {
+    print('---------------------------------------------------------');
+
+    final response = await dio.get(
+      'http://154.26.130.64/nominatim/search.php',
+      queryParameters: {
+        'q': searchText,
+        'format': 'jsonv2',
+        'accept-language': 'bn',
+      },
+    );
+
+    print(searchText);
+    print(response);
+    if (response.statusCode == 200) {
+      return searchModelFromJson(jsonEncode(response.data));
     } else {
       return null;
     }

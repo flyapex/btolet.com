@@ -198,100 +198,69 @@ class Notes {
       };
 }
 
-class UserUpdate {
+// class UserUpdate {
+//   final int uid;
+//   final String name;
+//   final String phone;
+
+//   UserUpdate({
+//     required this.uid,
+//     required this.name,
+//     required this.phone,
+//   });
+
+//   factory UserUpdate.fromRawJson(String str) =>
+//       UserUpdate.fromJson(json.decode(str));
+
+//   String toRawJson() => json.encode(toJson());
+
+//   factory UserUpdate.fromJson(Map<String, dynamic> json) => UserUpdate(
+//         uid: json["uid"],
+//         name: json["name"],
+//         phone: json["phone"],
+//       );
+
+//   Map<String, dynamic> toJson() => {
+//         "uid": uid,
+//         "name": name,
+//         "phone": phone,
+//       };
+// }
+
+// To parse this JSON data, do
+//
+//     final profileUpdate = profileUpdateFromJson(jsonString);
+
+ProfileUpdate profileUpdateFromJson(String str) =>
+    ProfileUpdate.fromJson(json.decode(str));
+
+String profileUpdateToJson(ProfileUpdate data) => json.encode(data.toJson());
+
+class ProfileUpdate {
   final int uid;
   final String name;
   final String phone;
+  final String wapp;
 
-  UserUpdate({
+  ProfileUpdate({
     required this.uid,
     required this.name,
     required this.phone,
+    required this.wapp,
   });
 
-  factory UserUpdate.fromRawJson(String str) =>
-      UserUpdate.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
-  factory UserUpdate.fromJson(Map<String, dynamic> json) => UserUpdate(
+  factory ProfileUpdate.fromJson(Map<String, dynamic> json) => ProfileUpdate(
         uid: json["uid"],
         name: json["name"],
         phone: json["phone"],
+        wapp: json["wapp"],
       );
 
   Map<String, dynamic> toJson() => {
         "uid": uid,
         "name": name,
         "phone": phone,
-      };
-}
-
-// To parse this JSON data, do
-//
-//     final myPostListTolet = myPostListToletFromJson(jsonString);
-
-List<MyPostListTolet> myPostListToletFromJson(String str) =>
-    List<MyPostListTolet>.from(
-        json.decode(str).map((x) => MyPostListTolet.fromJson(x)));
-
-String myPostListToletToJson(List<MyPostListTolet> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
-
-class MyPostListTolet {
-  int postId;
-  int uid;
-  String bed;
-  String bath;
-  String roomsize;
-  String kitchen;
-  int rent;
-  String garagetype;
-  String image1;
-  String location;
-  DateTime time;
-
-  MyPostListTolet({
-    required this.postId,
-    required this.uid,
-    required this.bed,
-    required this.bath,
-    required this.roomsize,
-    required this.kitchen,
-    required this.rent,
-    required this.garagetype,
-    required this.image1,
-    required this.location,
-    required this.time,
-  });
-
-  factory MyPostListTolet.fromJson(Map<String, dynamic> json) =>
-      MyPostListTolet(
-        postId: json["post_id"],
-        uid: json["uid"],
-        bed: json["bed"],
-        bath: json["bath"],
-        roomsize: json["roomsize"],
-        kitchen: json["kitchen"],
-        rent: json["rent"],
-        garagetype: json["garagetype"],
-        image1: json["image1"],
-        location: json["location"],
-        time: DateTime.parse(json["time"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "post_id": postId,
-        "uid": uid,
-        "bed": bed,
-        "bath": bath,
-        "roomsize": roomsize,
-        "kitchen": kitchen,
-        "rent": rent,
-        "garagetype": garagetype,
-        "image1": image1,
-        "location": location,
-        "time": time.toIso8601String(),
+        "wapp": wapp,
       };
 }
 
@@ -449,42 +418,6 @@ class PostToServerTolet {
         "geolat": geolat,
         "location": location,
         "shortaddress": shortaddress,
-        "phone": phone,
-        "wapp": wapp,
-      };
-}
-// To parse this JSON data, do
-//
-//     final profileUpdate = profileUpdateFromJson(jsonString);
-
-ProfileUpdate profileUpdateFromJson(String str) =>
-    ProfileUpdate.fromJson(json.decode(str));
-
-String profileUpdateToJson(ProfileUpdate data) => json.encode(data.toJson());
-
-class ProfileUpdate {
-  final int uid;
-  final String name;
-  final String phone;
-  final String wapp;
-
-  ProfileUpdate({
-    required this.uid,
-    required this.name,
-    required this.phone,
-    required this.wapp,
-  });
-
-  factory ProfileUpdate.fromJson(Map<String, dynamic> json) => ProfileUpdate(
-        uid: json["uid"],
-        name: json["name"],
-        phone: json["phone"],
-        wapp: json["wapp"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "uid": uid,
-        "name": name,
         "phone": phone,
         "wapp": wapp,
       };

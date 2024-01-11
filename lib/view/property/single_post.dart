@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:btolet/controller/location_controller.dart';
 import 'package:btolet/controller/property_controller.dart';
 import 'package:btolet/controller/user_controller.dart';
 import 'package:btolet/model/category.dart';
@@ -7,6 +8,7 @@ import 'package:btolet/view/shimmer/shimmer.dart';
 import 'package:btolet/view/tolet/single_post.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
@@ -19,17 +21,21 @@ import 'package:map_launcher/map_launcher.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
-class SinglePost extends StatefulWidget {
+import 'morepost.dart';
+
+class SinglePostPro extends StatefulWidget {
   final int pid;
-  const SinglePost({super.key, required this.pid});
+  const SinglePostPro({super.key, required this.pid});
 
   @override
-  State<SinglePost> createState() => _SinglePostState();
+  State<SinglePostPro> createState() => _SinglePostProState();
 }
 
-class _SinglePostState extends State<SinglePost> {
+class _SinglePostProState extends State<SinglePostPro> {
   ProController proController = Get.find();
+  LocationController locationController = Get.find();
   lodeData() async {
+    proController.lodeOneTime(true);
     var data = await proController.getSinglePost(widget.pid);
     if (data) {
       addMarker();
@@ -37,6 +43,8 @@ class _SinglePostState extends State<SinglePost> {
   }
 
   final ScrollController _controller = ScrollController();
+  final ScrollController _controllerMore = ScrollController();
+
   @override
   void initState() {
     lodeData();
@@ -44,6 +52,7 @@ class _SinglePostState extends State<SinglePost> {
       _mapStyle = string;
     });
     _controller.addListener(_scrollListener);
+    _controllerMore.addListener(_scrollListenerMore);
     super.initState();
   }
 
@@ -52,9 +61,40 @@ class _SinglePostState extends State<SinglePost> {
       var scrollPercentage =
           (_controller.position.pixels / _controller.position.maxScrollExtent)
               .clamp(0.0, 1.0);
-      if (scrollPercentage > 0.5 && scrollPercentage < 0.51) {
-        print('Get Recent Post');
+
+      if (scrollPercentage > 0.5 &&
+          scrollPercentage < 0.6 &&
+          proController.lodeOneTime.value) {
+        print("Lode More Data");
+        proController.getMorePost(
+          1,
+          proController.singlepost.geolat,
+          proController.singlepost.geolon,
+        );
       }
+    }
+    if (_controller.position.userScrollDirection == ScrollDirection.reverse) {
+      locationController.singlePostPromap.value = true;
+    } else {
+      if (_controller.position.userScrollDirection == ScrollDirection.forward) {
+        locationController.singlePostPromap.value = false;
+      }
+    }
+  }
+
+  var lodingPage = 2;
+  void _scrollListenerMore() {
+    if (_controllerMore.position.pixels ==
+            _controllerMore.position.maxScrollExtent &&
+        proController.lodingmorePosts.value == false) {
+      print("Lode More Page");
+      proController.getMorePost(
+        lodingPage,
+        proController.singlepost.geolat,
+        proController.singlepost.geolon,
+      );
+      print(lodingPage);
+      lodingPage++;
     }
   }
 
@@ -267,6 +307,7 @@ class _SinglePostState extends State<SinglePost> {
                 ),
               ),
               body: SingleChildScrollView(
+                controller: _controller,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -313,6 +354,14 @@ class _SinglePostState extends State<SinglePost> {
                                       },
                                       animationDuration:
                                           const Duration(milliseconds: 400),
+                                      onTap: (isLiked) async {
+                                        print(!isLiked);
+                                        proController.savePost(
+                                          proController.singlepost.pid,
+                                          !isLiked,
+                                        );
+                                        return !isLiked;
+                                      },
                                     ),
                                     const SizedBox(width: 15),
                                   ],
@@ -1103,31 +1152,81 @@ class _SinglePostState extends State<SinglePost> {
                     ),
                     SizedBox(height: space),
                     SizedBox(
-                      height: 120,
-                      child: SizedBox(
-                        height: 120,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: 10,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.only(left: 20),
-                              child: Container(
-                                width: Get.width / 1.4,
-                                decoration: BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(
-                                    color: Colors.black12,
-                                    width: 1,
-                                  ),
-                                ),
-                              ),
+                      height: height / 7,
+                      child: StreamBuilder(
+                        stream: proController.morePost.stream,
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
+                          if (snapshot.data == null) {
+                            return const PostListSuggstionSimmer(
+                              topPadding: 0,
+                              count: 4,
                             );
-                          },
-                        ),
+                          } else {
+                            return ListView.builder(
+                              controller: _controllerMore,
+                              scrollDirection: Axis.horizontal,
+                              shrinkWrap: true,
+                              itemCount: snapshot.data.length + 1,
+                              itemBuilder: (c, i) {
+                                if (i < snapshot.data.length) {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(left: 20),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(
+                                          color: Colors.black.withOpacity(0.1),
+                                          width: 0.4,
+                                        ),
+                                      ),
+                                      child: MorePostsPro(
+                                        postData: snapshot.data[i],
+                                      ),
+                                    ),
+                                  );
+                                } else {
+                                  return const Center(
+                                    child: Padding(
+                                      padding: EdgeInsets.all(20),
+                                      child: CircularProgressIndicator(
+                                        color: Colors.red,
+                                      ),
+                                    ),
+                                  );
+                                }
+                              },
+                            );
+                          }
+                        },
                       ),
                     ),
+                    // SizedBox(
+                    //   height: 120,
+                    //   child: SizedBox(
+                    //     height: 120,
+                    //     child: ListView.builder(
+                    //       scrollDirection: Axis.horizontal,
+                    //       itemCount: 10,
+                    //       itemBuilder: (context, index) {
+                    //         return Padding(
+                    //           padding: const EdgeInsets.only(left: 20),
+                    //           child: Container(
+                    //             width: Get.width / 1.4,
+                    //             decoration: BoxDecoration(
+                    //               color: Colors.red,
+                    //               borderRadius: BorderRadius.circular(10),
+                    //               border: Border.all(
+                    //                 color: Colors.black12,
+                    //                 width: 1,
+                    //               ),
+                    //             ),
+                    //           ),
+                    //         );
+                    //       },
+                    //     ),
+                    //   ),
+                    // ),
                     const SizedBox(height: 140),
                   ],
                 ),

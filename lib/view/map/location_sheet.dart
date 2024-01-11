@@ -30,23 +30,23 @@ class _LocationSheetState extends State<LocationSheet> {
     locationController.mapController = controller;
   }
 
-  // openSearchSheet() async {
-  //   await Get.bottomSheet(
-  //     const LocationSheetMap(),
-  //     elevation: 20.0,
-  //     enableDrag: true,
-  //     backgroundColor: Colors.white,
-  //     isScrollControlled: true,
-  //     ignoreSafeArea: true,
-  //     shape: const RoundedRectangleBorder(
-  //       borderRadius: BorderRadius.only(
-  //         topLeft: Radius.circular(20.0),
-  //         topRight: Radius.circular(20.0),
-  //       ),
-  //     ),
-  //     enterBottomSheetDuration: const Duration(milliseconds: 170),
-  //   );
-  // }
+  openSearchSheet() async {
+    await Get.bottomSheet(
+      const LocationSheetMap(),
+      elevation: 20.0,
+      enableDrag: true,
+      backgroundColor: Colors.white,
+      isScrollControlled: true,
+      ignoreSafeArea: false,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20.0),
+          topRight: Radius.circular(20.0),
+        ),
+      ),
+      enterBottomSheetDuration: const Duration(milliseconds: 170),
+    );
+  }
 
   @override
   void initState() {
@@ -64,6 +64,7 @@ class _LocationSheetState extends State<LocationSheet> {
 
     return Obx(
       () => Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: Colors.white,
         floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
         floatingActionButton: Padding(
@@ -153,7 +154,7 @@ class _LocationSheetState extends State<LocationSheet> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      // openSearchSheet();
+                      openSearchSheet();
                     },
                     child: Align(
                       alignment: Alignment.bottomCenter,
@@ -168,21 +169,21 @@ class _LocationSheetState extends State<LocationSheet> {
                         decoration: const BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(6),
-                            topRight: Radius.circular(6),
+                            topLeft: Radius.circular(8),
+                            topRight: Radius.circular(8),
                           ),
                         ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            // Container(
-                            //   height: 4,
-                            //   width: 40,
-                            //   decoration: BoxDecoration(
-                            //     color: Colors.black.withOpacity(0.4),
-                            //     borderRadius: BorderRadius.circular(10),
-                            //   ),
-                            // ),
+                            Container(
+                              height: 4,
+                              width: 40,
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.4),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
                             const SizedBox(height: 8),
                             Material(
                               elevation: 0.0,
@@ -324,171 +325,205 @@ class _LocationSheetMapState extends State<LocationSheetMap> {
   LocationController locationController = Get.put(LocationController());
   bool focus = false;
   FocusNode focusNode = FocusNode();
-  bool iconColor = false;
 
   ScrollController scrollController = ScrollController();
   @override
   void initState() {
-    // locationController.searchSuggstion();
+    locationController.searchSuggstion();
     focusNode.requestFocus();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    var htt = Get.height;
+    var height = Get.height;
     return Obx(
-      () => GestureDetector(
-        onTap: () {
-          // focusNode.unfocus();
-        },
-        child: SingleChildScrollView(
-          // controller: scrollController,
-          child: Container(
-            height: focus
-                ? (htt / 1.3) - MediaQuery.of(context).viewInsets.bottom
-                : (htt / 1.3),
-            width: Get.width,
-            padding: const EdgeInsets.only(left: 20, right: 20),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20.0),
-                topRight: Radius.circular(20.0),
-              ),
+      () => SingleChildScrollView(
+        // controller: scrollController,
+        // physics: const NeverScrollableScrollPhysics(),
+        child: Container(
+          height: (height / 1.3) - MediaQuery.of(context).viewInsets.bottom,
+          width: Get.width,
+          padding: const EdgeInsets.only(left: 20, right: 20),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20.0),
+              topRight: Radius.circular(20.0),
             ),
-            child: Column(
-              children: [
-                Container(
-                  height: 4,
-                  width: 40,
-                  margin: const EdgeInsets.only(top: 10, bottom: 5),
-                  decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.5),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
+          ),
+          child: Column(
+            children: [
+              Container(
+                height: 4,
+                width: 40,
+                margin: const EdgeInsets.only(top: 10, bottom: 5),
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.5),
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                const SizedBox(height: 15),
-                Container(
-                  height: 100,
-                  width: 100,
-                  decoration: BoxDecoration(
-                    color: Colors.red,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: SizedBox(
-                        height: htt / 17,
-                        child: Form(
-                          child: Material(
-                            color: const Color(0xffECECEC),
-                            borderRadius: BorderRadius.circular(6),
-                            // elevation: 1.0,
-                            // shadowColor: const Color(0xffECECEC),
-                            child: Focus(
-                              onFocusChange: (value) {
-                                setState(() {
-                                  focus = value;
-                                });
-                                if (focus) {
-                                  // locationController.searchSuggstion();
-                                }
-                              },
-                              child: Theme(
-                                data: Theme.of(context).copyWith(
-                                  textSelectionTheme: TextSelectionThemeData(
-                                    selectionColor:
-                                        Colors.black.withOpacity(0.2),
-                                    selectionHandleColor: Colors.red,
-                                  ),
-                                ),
-                                child: TextFormField(
-                                  controller:
-                                      locationController.searchController,
-                                  onChanged: (value) async {
-                                    // locationController.suggstions.clear();
-
-                                    // locationController.searchText.value = value;
-                                    // locationController.searchSuggstion();
-                                  },
-                                  onEditingComplete: () {
-                                    //  locationController.suggstions.clear();
-                                  },
-                                  onFieldSubmitted: (value) {
-                                    // locationController.searchSuggstion();
-                                  },
-                                  decoration: InputDecoration(
-                                    hintText: 'Nirala, Khulna, Bangladesh',
-                                    border: const OutlineInputBorder(
-                                        borderSide: BorderSide.none),
-                                    hintStyle: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.black.withOpacity(0.5),
-                                    ),
-                                    isDense: true,
-                                    prefixIcon: const Icon(
-                                      Feather.search,
-                                      // color: Colors.black.withOpacity(0.6),
-                                      // prefixIconColor: Color(0xff374957),
-                                      size: 25,
-                                    ),
-
-                                    // suffixIcon: Icon(
-                                    //   Icons.search,
-                                    //   color: Colors.black.withOpacity(0.2),
-                                    //   size: 24,
-                                    // ),
-                                  ),
-                                  focusNode: focusNode,
-                                  cursorHeight: 22,
-                                  cursorWidth: 1.8,
-                                  cursorRadius: const Radius.circular(10),
-                                  textInputAction: TextInputAction.search,
-                                  keyboardType: TextInputType.streetAddress,
-                                  maxLines: 1,
-                                  cursorColor: Colors.black,
-                                ),
+              ),
+              const SizedBox(height: 15),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Form(
+                      child: Material(
+                        color: const Color(0xffECECEC),
+                        borderRadius: BorderRadius.circular(6),
+                        // elevation: 1.0,
+                        // shadowColor: const Color(0xffECECEC),
+                        child: Focus(
+                          onFocusChange: (value) {
+                            setState(() {
+                              focus = value;
+                            });
+                            if (focus) {
+                              locationController.searchSuggstion();
+                            }
+                          },
+                          child: Theme(
+                            data: Theme.of(context).copyWith(
+                              textSelectionTheme: TextSelectionThemeData(
+                                selectionColor: Colors.black.withOpacity(0.2),
+                                selectionHandleColor: Colors.red,
                               ),
                             ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 15),
-                Row(
-                  children: [
-                    Expanded(
-                      child: ElevatedButton.icon(
-                        onPressed: () {
-                          locationController.onMyLocationButtonPressed();
-                        },
-                        icon: const Icon(Icons.near_me),
-                        label: const Text('Use My Current Location'),
-                        style: ElevatedButton.styleFrom(
-                          fixedSize: Size(
-                            double.infinity,
-                            htt / 17,
-                          ),
-                          backgroundColor: Colors.red,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(6),
+                            child: TextFormField(
+                              controller: locationController.searchController,
+                              onChanged: (value) async {
+                                locationController.suggstions.clear();
+                                locationController.searchText.value = value;
+                                locationController.searchSuggstion();
+                              },
+                              onEditingComplete: () {
+                                locationController.suggstions.clear();
+                              },
+                              onFieldSubmitted: (value) {
+                                locationController.searchSuggstion();
+                              },
+                              decoration: InputDecoration(
+                                hintText: locationController
+                                    .locationAddressShort.value,
+                                border: const OutlineInputBorder(
+                                    borderSide: BorderSide.none),
+                                hintStyle: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.black.withOpacity(0.5),
+                                ),
+                                isDense: true,
+                                prefixIcon: Icon(
+                                  Feather.search,
+                                  color: focus
+                                      ? Colors.black.withOpacity(0.6)
+                                      : Colors.orange,
+                                  // prefixIconColor: Color(0xff374957),
+                                  size: 25,
+                                ),
+
+                                // suffixIcon: Icon(
+                                //   Icons.search,
+                                //   color: Colors.black.withOpacity(0.2),
+                                //   size: 24,
+                                // ),
+                              ),
+                              focusNode: focusNode,
+                              cursorHeight: 22,
+                              cursorWidth: 1.8,
+                              cursorRadius: const Radius.circular(10),
+                              textInputAction: TextInputAction.search,
+                              keyboardType: TextInputType.streetAddress,
+                              maxLines: 1,
+                              cursorColor: Colors.black,
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 15),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        Get.back();
+                        locationController.onMyLocationButtonPressed();
+                      },
+                      icon: const Icon(
+                        Icons.near_me,
+                        color: Colors.white,
+                      ),
+                      label: const Text(
+                        'Use My Current Location',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        fixedSize: Size(
+                          double.infinity,
+                          height / 17,
+                        ),
+                        backgroundColor: Colors.red,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(6),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              Expanded(
+                child: ListView.builder(
+                  // controller: scrollController,
+                  // primary: false,
+                  shrinkWrap: true,
+                  // physics: const NeverScrollableScrollPhysics(),
+                  physics: const BouncingScrollPhysics(
+                      parent: AlwaysScrollableScrollPhysics()),
+                  itemCount: locationController.suggstions.length,
+                  itemBuilder: (context, index) {
+                    return locationController.isLoadingsuggstion.value
+                        ? const Center(child: CircularProgressIndicator())
+                        : LocationListTail(
+                            location: locationController
+                                .suggstions[index].displayName
+                                .toString(),
+                            press: () async {
+                              Get.back();
+                              locationController.mapController.animateCamera(
+                                CameraUpdate.newCameraPosition(
+                                  CameraPosition(
+                                    target: LatLng(
+                                      double.parse(locationController
+                                          .suggstions[index].lat),
+                                      double.parse(locationController
+                                          .suggstions[index].lon),
+                                    ),
+                                    zoom: 16.0,
+                                  ),
+                                ),
+                              );
+
+                              locationController.coordinateToLocationDetails(
+                                locationController.currentlatitude.value,
+                                locationController.currentlongitude.value,
+                              );
+                              // List<SearchInfo> suggestions =
+                              //     await addressSuggestion("nirala", limitInformation: 10);
+                            },
+                          );
+                  },
                 ),
-                const SizedBox(height: 10),
-              ],
-            ),
+              )
+            ],
           ),
         ),
       ),

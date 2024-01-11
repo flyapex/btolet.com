@@ -32,6 +32,18 @@ class ApiService {
     }
   }
 
+  static Future profileUpdateapi(ProfileUpdate data) async {
+    Response response = await dio.post(
+      '$baseUrl/user/profile/update',
+      data: profileUpdateToJson(data),
+    );
+
+    if (response.statusCode == 200) {
+      return response.data['message'];
+    } else {
+      return null;
+    }
+  }
   // static Future profileUpdateapi(UserUpdate data) async {
   //   final response = await dio.get(
   //     "$baseUrl/profileUpdate",

@@ -1,14 +1,10 @@
 import 'dart:convert';
-import 'package:btolet/api/google_api.dart';
-import 'package:btolet/controller/location_controller.dart';
+
 import 'package:btolet/controller/property_controller.dart';
 import 'package:btolet/controller/user_controller.dart';
 import 'package:btolet/model/pro_model.dart';
-import 'package:btolet/view/home/widget/imageslider.dart';
-import 'package:btolet/view/home/widget/note.dart';
 import 'package:btolet/view/property/single_post.dart';
 import 'package:btolet/view/shimmer/shimmer.dart';
-import 'package:btolet/view/sort/pro/sorting_pro.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -19,239 +15,149 @@ import 'package:like_button/like_button.dart';
 import 'package:lottie/lottie.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class Property extends StatefulWidget {
-  const Property({super.key});
+class SavedProPage extends StatefulWidget {
+  const SavedProPage({super.key});
 
   @override
-  State<Property> createState() => _PropertyState();
+  State<SavedProPage> createState() => _SavedProPageState();
 }
 
-class _PropertyState extends State<Property> {
-  ProController proController = Get.put(ProController());
-  LocationController locationController = Get.find();
-  bool _atEnd = false;
+class _SavedProPageState extends State<SavedProPage> {
+  ProController proController = Get.find();
+  final scrollController = ScrollController();
+
   @override
   void initState() {
-    proController.getAllPost();
+    proController.getSave();
+    scrollController.addListener(() {
+      if (scrollController.position.atEdge) {
+        if (scrollController.position.pixels == 0) {
+          print("You're at the top.");
+        } else {
+          print("You're at the Bottom.");
+
+          proController.getSave();
+        }
+      }
+    });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    proController.savedPage.value = 1;
+    proController.allSavedPost.clear();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: NotificationListener(
-      onNotification: (scrollNotification) {
-        if (_atEnd &&
-            scrollNotification is ScrollUpdateNotification &&
-            scrollNotification.metrics.atEdge &&
-            scrollNotification.metrics.pixels ==
-                scrollNotification.metrics.maxScrollExtent) {
-          setState(() {
-            _atEnd = false;
-          });
-        } else if (!_atEnd &&
-            scrollNotification is ScrollEndNotification &&
-            scrollNotification.metrics.pixels ==
-                scrollNotification.metrics.maxScrollExtent) {
-          setState(() {
-            _atEnd = true;
-          });
-          // Perform any action when scroll reaches the end
-          proController.getAllPost();
-          print('Reached the end of the list!');
-        }
-        return false;
-      },
-      child: Scrollbar(
-        child: CustomRefreshIndicator(
-          key: proController.refreshkey,
-          completeStateDuration: const Duration(milliseconds: 450),
-          builder: MaterialIndicatorDelegate(
-            backgroundColor: Colors.blueAccent,
-            builder: (context, controller) {
-              return SizedBox(
-                child: LottieBuilder.asset(
-                  'assets/lottie/ref.json',
-                ),
-              );
-            },
-          ),
-          onRefresh: () async {
-            locationController.getCurrnetlanlongLocation();
-            // postController.allPropertyPost.clear();
-            // postController.allPropertyPost.refresh();
-            // postController.Propertypage.value = 1;
-            // postController.getAllPost();
-            // postController.allPropertyPost.sentToStream;
+      body: CustomRefreshIndicator(
+        completeStateDuration: const Duration(milliseconds: 450),
+        builder: MaterialIndicatorDelegate(
+          backgroundColor: Colors.blueAccent,
+          builder: (context, controller) {
+            return SizedBox(
+              child: LottieBuilder.asset(
+                'assets/lottie/ref.json',
+              ),
+            );
           },
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Note(),
-                const SizedBox(height: 20),
-                const ImageSlide(
-                  topPadding: 10.0,
-                  height: 160, //180
-                ),
-                const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Obx(
-                      () => proController.currentPostCountLoding.value
-                          ? const ShimmerSortPostCount()
-                          : RichText(
-                              text: TextSpan(
-                                text:
-                                    "${NumberFormat.decimalPattern().format(proController.currentPostCount.value)} ads in ",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.black.withOpacity(0.8)),
-                                children: [
-                                  TextSpan(
-                                    text: locationController
-                                        .locationAddressShort.value
-                                        .split(', ')[0],
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Get.bottomSheet(
-                          const SortingPro(),
-                          elevation: 20.0,
-                          enableDrag: true,
-                          backgroundColor: Colors.white,
-                          isScrollControlled: true,
-                          ignoreSafeArea: true,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(20.0),
-                              topRight: Radius.circular(20.0),
-                            ),
+        ),
+        onRefresh: () async {
+          proController.allSavedPost.clear();
+          proController.allSavedPost.refresh();
+          proController.savedPage.value = 1;
+          proController.allSavedPost();
+          proController.allSavedPost.sentToStream;
+        },
+        child: Scrollbar(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20, right: 20),
+            child: StreamBuilder(
+              stream: proController.allSavedPost.stream,
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.data == null) {
+                  return const PostListSimmer(
+                    topPadding: 20,
+                    count: 10,
+                  );
+                } else {
+                  return AnimatedList(
+                    key: proController.deleteKeySaved,
+                    controller: scrollController,
+                    initialItemCount: proController.allSavedPost.length,
+                    padding: const EdgeInsets.only(bottom: 100),
+                    itemBuilder: (context, i, animation) {
+                      if (i < snapshot.data.length) {
+                        return Padding(
+                          padding: const EdgeInsets.only(top: 20),
+                          child: PostsProSaved(
+                            postData: snapshot.data[i],
+                            index: i,
+                            isLikedvalue: true,
                           ),
-                          enterBottomSheetDuration:
-                              const Duration(milliseconds: 170),
                         );
-                      },
-                      child: Container(
-                        height: 35,
-                        width: 100,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(4),
-                          border:
-                              Border.all(color: Colors.black.withOpacity(0.3)),
-                        ),
-                        child: const Padding(
-                          padding: EdgeInsets.only(left: 5, right: 5),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(
-                                    Feather.sliders,
-                                    color: Colors.black45,
-                                    size: 20,
-                                  ),
-                                  SizedBox(width: 6),
-                                  Text('Filter'),
-                                ],
-                              ),
-                              Icon(Feather.chevron_down),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                StreamBuilder(
-                  stream: proController.allPost.stream,
-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    if (snapshot.data == null) {
-                      return const PostListSimmer(
-                        topPadding: 20,
-                        count: 10,
-                      );
-                    } else {
-                      return ListView.builder(
-                        // key: UniqueKey(),
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: snapshot.data.length + 1,
-                        itemBuilder: (c, i) {
-                          if (i < snapshot.data.length) {
-                            return Padding(
-                              padding: const EdgeInsets.only(top: 20),
-                              child: PostsPro(
-                                postData: snapshot.data[i],
-                              ),
-                            );
-                          } else {
-                            if (proController.lodingPosts.value) {
-                              return const Center(
-                                child: Padding(
-                                  padding: EdgeInsets.all(20),
-                                  child: CircularProgressIndicator(
-                                    color: Colors.red,
-                                  ),
-                                ),
-                              );
-                            } else {
-                              return const Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Center(
-                                  child: Text('nothing more to load!'),
-                                ),
-                              );
-                            }
-                          }
-                        },
-                      );
-                    }
-                  },
-                ),
-              ],
+                      } else {
+                        if (proController.savedPostloding.value) {
+                          return const PostListSimmer(
+                            topPadding: 20,
+                            count: 3,
+                          );
+                        } else {
+                          return const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Center(
+                              child: Text('nothing more to load!'),
+                            ),
+                          );
+                        }
+                      }
+                    },
+                  );
+                }
+              },
             ),
           ),
         ),
       ),
-    ));
+    );
   }
 }
 
-class PostsPro extends StatelessWidget {
+class PostsProSaved extends StatefulWidget {
   final PostListPro postData;
   final bool isLikedvalue;
-  const PostsPro({
+  final int index;
+  const PostsProSaved({
     super.key,
     required this.postData,
     this.isLikedvalue = false,
+    required this.index,
   });
 
   @override
+  State<PostsProSaved> createState() => _PostsProSavedState();
+}
+
+class _PostsProSavedState extends State<PostsProSaved> {
+  @override
   Widget build(BuildContext context) {
     UserController userController = Get.find();
+    ProController proController = Get.find();
 
     return Container(
       height: 400,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: const [
-          BoxShadow(color: Colors.black12, spreadRadius: 1.1),
-        ],
-      ),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: Colors.black.withOpacity(0.1))
+          // boxShadow: const [
+          //   BoxShadow(color: Colors.black12, spreadRadius: 1.1),
+          // ],
+          ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -260,7 +166,7 @@ class PostsPro extends StatelessWidget {
               GestureDetector(
                 onTap: () {
                   Get.to(
-                    () => SinglePostPro(pid: postData.pid),
+                    () => SinglePostPro(pid: widget.postData.pid),
                     transition: Transition.circularReveal,
                     duration: const Duration(milliseconds: 600),
                   );
@@ -274,7 +180,7 @@ class PostsPro extends StatelessWidget {
                       topRight: Radius.circular(10),
                     ),
                     image: DecorationImage(
-                      image: MemoryImage(base64Decode(postData.image1)),
+                      image: MemoryImage(base64Decode(widget.postData.image1)),
                       fit: BoxFit.cover,
                       // alignment: Alignment.topCenter,
                     ),
@@ -288,7 +194,7 @@ class PostsPro extends StatelessWidget {
                   children: [
                     LikeButton(
                       size: 30,
-                      isLiked: isLikedvalue,
+                      isLiked: widget.isLikedvalue,
                       likeBuilder: (bool isLiked) {
                         return Container(
                           decoration: BoxDecoration(
@@ -305,9 +211,37 @@ class PostsPro extends StatelessWidget {
                       },
                       animationDuration: const Duration(milliseconds: 400),
                       onTap: (isLiked) async {
+                        PostListPro removedItem =
+                            proController.allSavedPost.removeAt(widget.index);
+
+                        proController.deleteKeySaved.currentState!.removeItem(
+                          widget.index,
+                          (context, animation) => SlideTransition(
+                            position: animation.drive(
+                              Tween<Offset>(
+                                begin: const Offset(2, 0.0),
+                                end: const Offset(0.0, 0.0),
+                              ).chain(
+                                CurveTween(curve: Curves.easeIn),
+                              ),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 20),
+                              child: PostsProSaved(
+                                postData: removedItem,
+                                index: widget.index,
+                                isLikedvalue: false,
+                              ),
+                            ),
+                          ),
+                          duration: const Duration(
+                            milliseconds: 600,
+                          ),
+                        );
+
                         print(!isLiked);
                         proController.savePost(
-                          postData.pid,
+                          widget.postData.pid,
                           !isLiked,
                         );
                         return !isLiked;
@@ -341,7 +275,7 @@ class PostsPro extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 //৳
-                postData.price == 0
+                widget.postData.price == 0
                     ? const Text(
                         'Call For Price',
                         style: TextStyle(
@@ -350,7 +284,7 @@ class PostsPro extends StatelessWidget {
                         ),
                       )
                     : Text(
-                        "${NumberFormat.decimalPattern().format(postData.price)} BDT",
+                        "${NumberFormat.decimalPattern().format(widget.postData.price)} BDT",
                         style: const TextStyle(
                           fontSize: 24,
                           color: Color(0xff083437),
@@ -367,7 +301,7 @@ class PostsPro extends StatelessWidget {
                     ),
                     const SizedBox(width: 10),
                     Text(
-                      postData.location,
+                      widget.postData.location,
                       style: const TextStyle(
                         color: Color(0xff083437),
                       ),
@@ -375,13 +309,13 @@ class PostsPro extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 10),
-                SizedBox(height: postData.bed == "" ? 10 : 4),
-                postData.bed == ""
+                SizedBox(height: widget.postData.bed == "" ? 10 : 4),
+                widget.postData.bed == ""
                     ? Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
-                            postData.measurement,
+                            widget.postData.measurement,
                             style: const TextStyle(
                               color: Color(0xff083437),
                               fontSize: 18,
@@ -390,7 +324,7 @@ class PostsPro extends StatelessWidget {
                           ),
                           const SizedBox(width: 10),
                           Text(
-                            postData.area,
+                            widget.postData.area,
                             style: const TextStyle(
                               color: Color(0xff083437),
                               fontSize: 19,
@@ -417,7 +351,7 @@ class PostsPro extends StatelessWidget {
                           ),
                           const SizedBox(width: 6),
                           Text(
-                            postData.bed,
+                            widget.postData.bed,
                             style: const TextStyle(
                               color: Color(0xff083437),
                             ),
@@ -436,7 +370,7 @@ class PostsPro extends StatelessWidget {
                           ),
                           const SizedBox(width: 6),
                           Text(
-                            postData.bath,
+                            widget.postData.bath,
                             style: const TextStyle(
                               color: Color(0xff083437),
                             ),
@@ -455,13 +389,13 @@ class PostsPro extends StatelessWidget {
                           ),
                           const SizedBox(width: 6),
                           Text(
-                            postData.size,
+                            widget.postData.size,
                             style: const TextStyle(
                               color: Color(0xff083437),
                             ),
                           ),
                         ],
-                      ),
+                      )
               ],
             ),
           ),
@@ -487,12 +421,12 @@ class PostsPro extends StatelessWidget {
                         padding: EdgeInsets.zero,
                         onPressed: () {},
                         icon: CircleAvatar(
-                          backgroundImage: NetworkImage(postData.image),
+                          backgroundImage: NetworkImage(widget.postData.image),
                         ),
                       ),
                       const SizedBox(width: 6),
                       Text(
-                        '${userController.getDayfull(postData.time)}',
+                        '${userController.getDayfull(widget.postData.time)}',
                         style: const TextStyle(
                           color: Color(0xff68676C),
                         ),
@@ -520,7 +454,8 @@ class PostsPro extends StatelessWidget {
                               ),
                             ),
                             onTap: () async {
-                              final call = Uri.parse('tel:${postData.phone}');
+                              final call =
+                                  Uri.parse('tel:${widget.postData.phone}');
                               if (await canLaunchUrl(call)) {
                                 launchUrl(call);
                               } else {
@@ -556,7 +491,8 @@ class PostsPro extends StatelessWidget {
                               ),
                             ),
                             onTap: () async {
-                              final sms = Uri.parse('sms:${postData.phone}');
+                              final sms =
+                                  Uri.parse('sms:${widget.postData.phone}');
                               if (await canLaunchUrl(sms)) {
                                 launchUrl(sms);
                               } else {

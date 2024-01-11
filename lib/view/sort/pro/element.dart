@@ -1,5 +1,8 @@
 import 'package:btolet/controller/property_controller.dart';
+import 'package:btolet/view/property/property.dart';
+import 'package:btolet/view/shimmer/shimmer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 
 class CategoryChipPro extends StatelessWidget {
@@ -185,6 +188,114 @@ class _SortButtonProState extends State<SortButtonPro> {
           separatorBuilder: (context, index) {
             return const SizedBox(width: 10);
           },
+        ),
+      ),
+    );
+  }
+}
+
+class SortPostListPro extends StatefulWidget {
+  const SortPostListPro({super.key});
+
+  @override
+  State<SortPostListPro> createState() => SortPostListProState();
+}
+
+class SortPostListProState extends State<SortPostListPro> {
+  ProController proController = Get.find();
+  final scrollController = ScrollController();
+  @override
+  void initState() {
+    proController.sortedPostList();
+    scrollController.addListener(() {
+      if (scrollController.position.atEdge) {
+        if (scrollController.position.pixels == 0) {
+          print("You're at the top.");
+        } else {
+          print("You're at the bottom.");
+          proController.sortedPostList();
+        }
+      }
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    proController.allSortedPost.clear();
+    proController.sortpage.value = 1;
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Sorted Post'),
+        centerTitle: false,
+        leadingWidth: 54,
+        leading: Align(
+          alignment: Alignment.centerRight,
+          child: IconButton(
+            onPressed: () {
+              Get.back();
+            },
+            icon: const Icon(Feather.chevron_left),
+          ),
+        ),
+      ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
+          child: SingleChildScrollView(
+            controller: scrollController,
+            child: Column(
+              children: [
+                StreamBuilder(
+                  stream: proController.allSortedPost.stream,
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if (snapshot.data == null) {
+                      return const PostListSimmer(
+                        topPadding: 20,
+                        count: 10,
+                      );
+                    } else {
+                      return ListView.builder(
+                        // key: UniqueKey(),
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: snapshot.data.length + 1,
+                        itemBuilder: (c, i) {
+                          if (i < snapshot.data.length) {
+                            return Padding(
+                              padding: const EdgeInsets.only(top: 20),
+                              child: PostsPro(
+                                postData: snapshot.data[i],
+                              ),
+                            );
+                          } else {
+                            if (proController.sortloding.value) {
+                              return const PostListSimmer(
+                                topPadding: 20,
+                                count: 3,
+                              );
+                            } else {
+                              return const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Center(
+                                  child: Text('nothing more to load!'),
+                                ),
+                              );
+                            }
+                          }
+                        },
+                      );
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );

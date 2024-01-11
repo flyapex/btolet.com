@@ -102,7 +102,7 @@ class _SortingProState extends State<SortingPro> {
                         onPressed: () async {
                           proController.sortingPostCount();
 
-                          // Get.to(() => const SortPostList());
+                          Get.to(() => const SortPostListPro());
                         },
                         child: Obx(
                           () => Text(

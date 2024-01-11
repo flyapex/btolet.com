@@ -121,7 +121,45 @@ class PostToletState1 extends State<PostPro1> {
                         )
                       ],
                     )
-                  : const SizedBox();
+                  : Column(
+                      children: [
+                        SizedBox(height: space),
+                        const Row(
+                          children: [
+                            Text(
+                              'Facilities(op)',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Wrap(
+                                spacing: 10,
+                                children: proController.fasalitis2.entries
+                                    .map((entry) {
+                                  final String text = entry.key;
+                                  final FasalitisModel fasalitis = entry.value;
+                                  final categoryState = fasalitis.state;
+
+                                  return FasalitisChipPro(
+                                    text: text,
+                                    icon: fasalitis.icon,
+                                    categoryState: categoryState,
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    );
             }),
             SizedBox(height: space),
             const Text(
