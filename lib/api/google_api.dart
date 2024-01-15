@@ -65,8 +65,10 @@ class GoogleMapApi {
       }
 
       if (locationController.locationAddress.value.isNotEmpty) {
-        await toletController.getCurrentPostCount(city);
-        await proController.getCurrentPostCount(city);
+        await toletController.getCurrentPostCount(
+            locationController.locationAddressShort.value.split(',')[0]);
+        await proController.getCurrentPostCount(
+            locationController.locationAddressShort.value.split(',')[0]);
       }
       return data['display_name'].toString();
     } else {

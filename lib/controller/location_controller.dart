@@ -1,4 +1,5 @@
 import 'package:btolet/api/google_api.dart';
+import 'package:btolet/controller/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -7,14 +8,43 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class LocationController extends GetxController {
   var singlePostTolemap = true.obs;
   var singlePostPromap = true.obs;
+  UserController userController = Get.put(UserController());
 
-  RxBool mapMode = false.obs;
-  RxBool showMapBoxTolet = false.obs;
+  RxBool mapModetolet = false.obs;
+  RxBool mapModePro = false.obs;
+
+  late AnimationController animationController;
+
+  resetAnimation(val) {
+    mapModetolet(val);
+    mapModePro(val);
+    if (val) {
+      animationController.forward();
+    } else {
+      animationController.reverse();
+    }
+  }
+
+  animation(val) {
+    if (val) {
+      animationController.forward();
+    } else {
+      animationController.reverse();
+    }
+  }
+
+  swapMap() {
+    if (userController.tabController.index == 0) {
+      mapModetolet.value = !mapModetolet.value;
+      animation(mapModetolet.value);
+    } else {
+      mapModePro.value = !mapModePro.value;
+      animation(mapModePro.value);
+    }
+  }
 
   late GoogleMapController mapController;
 
-  RxBool mapModetolet = false.obs;
-  RxBool mapModeProperty = false.obs;
   // RxBool showMapBoxTolet = false.obs;
 
   RxDouble currentlatitude = 0.0.obs;
@@ -37,8 +67,8 @@ class LocationController extends GetxController {
     currentlatitude.value = position.latitude;
     currentlongitude.value = position.longitude;
     isLoading.value = false;
-    print(currentlatitude.value);
-    print(currentlongitude.value);
+    // print(currentlatitude.value);
+    // print(currentlongitude.value);
     await coordinateToLocationDetails(
       currentlatitude.value,
       currentlongitude.value,
@@ -50,7 +80,7 @@ class LocationController extends GetxController {
       currentlatitude.value,
       currentlongitude.value,
     );
-    print(location);
+    // print(location);
     mapController.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(

@@ -8,10 +8,14 @@ var baseUrl = 'http://10.0.2.2:3000/api/pro';
 // var baseUrl = 'http://109.123.234.150/api';
 
 class ApiServicePro {
-  static Future postCountArea(location) async {
+  static Future postCountArea(location, location2) async {
+    print('------$location---- $location2');
     final response = await dio.get(
       '$baseUrl/postcount/area',
-      queryParameters: {"currentLocation": location},
+      queryParameters: {
+        "location1": location,
+        "location2": location2,
+      },
     );
 
     if (response.statusCode == 200) {
@@ -155,6 +159,34 @@ class ApiServicePro {
 
     if (response.statusCode == 200) {
       print(response.data);
+    } else {
+      return null;
+    }
+  }
+
+  static Future map() async {
+    final response = await dio.get(
+      '$baseUrl/map/posts',
+    );
+
+    if (response.statusCode == 200) {
+      return mapProModelFromJson(jsonEncode(response.data));
+    } else {
+      return null;
+    }
+  }
+
+  static Future codinateTopost(geolat, geolon) async {
+    final response = await dio.get(
+      '$baseUrl/map/postid',
+      queryParameters: {
+        "geolat": geolat.toString(),
+        "geolon": geolon.toString()
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return mapProPostListModelFromJson(jsonEncode(response.data));
     } else {
       return null;
     }

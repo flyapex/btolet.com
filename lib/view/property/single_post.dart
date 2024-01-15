@@ -21,8 +21,6 @@ import 'package:map_launcher/map_launcher.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
-import 'morepost.dart';
-
 class SinglePostPro extends StatefulWidget {
   final int pid;
   const SinglePostPro({super.key, required this.pid});
@@ -110,8 +108,9 @@ class _SinglePostProState extends State<SinglePostPro> {
   void addMarker() async {
     await markers.addLabelMarker(
       LabelMarker(
-        label:
-            "৳ ${NumberFormat.decimalPattern().format(proController.singlepost.price)}",
+        label: proController.singlepost.price == 0
+            ? "call for price"
+            : "৳ ${NumberFormat.decimalPattern().format(proController.singlepost.price)}",
         // label: data.rent.toString(),
         markerId: MarkerId(proController.singlepost.pid.toString()),
         position: LatLng(double.parse(proController.singlepost.geolat),
@@ -199,7 +198,6 @@ class _SinglePostProState extends State<SinglePostPro> {
                             onTap: () async {
                               var uri = Uri.parse(
                                   'sms:${proController.singlepost.phone}?body=hello%20there');
-
                               if (await canLaunchUrl(uri)) {
                                 await launchUrl(uri);
                               } else {
@@ -979,7 +977,7 @@ class _SinglePostProState extends State<SinglePostPro> {
                               ),
                               SizedBox(height: space),
                               const Text(
-                                "propertyed In",
+                                "In Map",
                                 style: TextStyle(
                                   fontSize: 16,
                                   color: Color(0xff083437),
@@ -1018,7 +1016,7 @@ class _SinglePostProState extends State<SinglePostPro> {
                                           left: 0,
                                         ),
                                         onMapCreated: (controller) {
-                                          controller.setMapStyle(_mapStyle);
+                                          // controller.setMapStyle(_mapStyle);
                                         },
                                         // mapType: MapType.normal,
                                         zoomControlsEnabled: false,
@@ -1041,64 +1039,89 @@ class _SinglePostProState extends State<SinglePostPro> {
                                       padding: const EdgeInsets.all(10.0),
                                       child: Align(
                                         alignment: Alignment.bottomRight,
-                                        child: InkWell(
-                                          onTap: () async {
-                                            final coords = Coords(
-                                              double.parse(proController
-                                                  .singlepost.geolat),
-                                              double.parse(proController
-                                                  .singlepost.geolon),
-                                            );
-                                            var title =
-                                                "Price ৳ ${NumberFormat.decimalPattern().format(proController.singlepost.price)}";
-                                            final availableMaps =
-                                                await MapLauncher.installedMaps;
-                                            print(availableMaps.length);
-                                            if (availableMaps.length == 1) {
-                                              await availableMaps.first
-                                                  .showMarker(
-                                                coords: coords,
-                                                title: title,
-                                                description: "description",
+                                        child: SizedBox(
+                                          height: 40,
+                                          child: FloatingActionButton.extended(
+                                            backgroundColor: Colors.blue,
+                                            onPressed: () async {
+                                              final coords = Coords(
+                                                double.parse(proController
+                                                    .singlepost.geolat),
+                                                double.parse(proController
+                                                    .singlepost.geolon),
                                               );
-                                            } else {
-                                              Get.bottomSheet(
-                                                SafeArea(
-                                                  child: SingleChildScrollView(
-                                                    child: Wrap(
-                                                      children: <Widget>[
-                                                        for (var map
-                                                            in availableMaps)
-                                                          ListTile(
-                                                            onTap: () =>
-                                                                map.showMarker(
-                                                              coords: coords,
-                                                              title: title,
+                                              var title =
+                                                  "Price ৳ ${NumberFormat.decimalPattern().format(proController.singlepost.price)}";
+                                              final availableMaps =
+                                                  await MapLauncher
+                                                      .installedMaps;
+                                              print(availableMaps.length);
+                                              if (availableMaps.length == 1) {
+                                                await availableMaps.first
+                                                    .showMarker(
+                                                  coords: coords,
+                                                  title: title,
+                                                  description: "description",
+                                                );
+                                              } else {
+                                                Get.bottomSheet(
+                                                  SafeArea(
+                                                    child:
+                                                        SingleChildScrollView(
+                                                      child: Wrap(
+                                                        children: <Widget>[
+                                                          for (var map
+                                                              in availableMaps)
+                                                            ListTile(
+                                                              onTap: () => map
+                                                                  .showMarker(
+                                                                coords: coords,
+                                                                title: title,
+                                                              ),
+                                                              title: Text(
+                                                                  map.mapName),
+                                                              leading:
+                                                                  SvgPicture
+                                                                      .asset(
+                                                                map.icon,
+                                                                height: 30.0,
+                                                                width: 30.0,
+                                                              ),
                                                             ),
-                                                            title: Text(
-                                                                map.mapName),
-                                                            leading: SvgPicture
-                                                                .asset(
-                                                              map.icon,
-                                                              height: 30.0,
-                                                              width: 30.0,
-                                                            ),
-                                                          ),
-                                                      ],
+                                                        ],
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
-                                              );
-                                            }
-                                          },
-                                          child: const CircleAvatar(
-                                            radius: 20,
-                                            backgroundColor: Colors.blue,
-                                            child: Icon(
-                                              // Icons.turn_right,
-                                              Feather.navigation,
-                                              color: Colors.white,
+                                                );
+                                              }
+                                            },
+                                            shape: RoundedRectangleBorder(
+                                              // side: const BorderSide(
+                                              //     width: 3,
+                                              //     color: Colors.brown),
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                100,
+                                              ),
                                             ),
+                                            label: const Row(
+                                              children: [
+                                                Text(
+                                                  'Map',
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                                SizedBox(width: 10),
+                                                Icon(
+                                                  Feather.navigation,
+                                                  color: Colors.white,
+                                                  size: 18,
+                                                ),
+                                              ],
+                                            ),
+                                            elevation: 0,
                                           ),
                                         ),
                                       ),
@@ -1135,72 +1158,72 @@ class _SinglePostProState extends State<SinglePostPro> {
                         ),
                       ],
                     ),
-                    SizedBox(height: space),
-                    const Row(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(left: 20),
-                          child: Text(
-                            'more',
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: Colors.black38,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: space),
-                    SizedBox(
-                      height: height / 7,
-                      child: StreamBuilder(
-                        stream: proController.morePost.stream,
-                        builder:
-                            (BuildContext context, AsyncSnapshot snapshot) {
-                          if (snapshot.data == null) {
-                            return const PostListSuggstionSimmer(
-                              topPadding: 0,
-                              count: 4,
-                            );
-                          } else {
-                            return ListView.builder(
-                              controller: _controllerMore,
-                              scrollDirection: Axis.horizontal,
-                              shrinkWrap: true,
-                              itemCount: snapshot.data.length + 1,
-                              itemBuilder: (c, i) {
-                                if (i < snapshot.data.length) {
-                                  return Padding(
-                                    padding: const EdgeInsets.only(left: 20),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        border: Border.all(
-                                          color: Colors.black.withOpacity(0.1),
-                                          width: 0.4,
-                                        ),
-                                      ),
-                                      child: MorePostsPro(
-                                        postData: snapshot.data[i],
-                                      ),
-                                    ),
-                                  );
-                                } else {
-                                  return const Center(
-                                    child: Padding(
-                                      padding: EdgeInsets.all(20),
-                                      child: CircularProgressIndicator(
-                                        color: Colors.red,
-                                      ),
-                                    ),
-                                  );
-                                }
-                              },
-                            );
-                          }
-                        },
-                      ),
-                    ),
+                    // SizedBox(height: space),
+                    // const Row(
+                    //   children: [
+                    //     Padding(
+                    //       padding: EdgeInsets.only(left: 20),
+                    //       child: Text(
+                    //         'more',
+                    //         style: TextStyle(
+                    //           fontSize: 13,
+                    //           color: Colors.black38,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
+                    // SizedBox(height: space),
+                    // SizedBox(
+                    //   height: height / 7,
+                    //   child: StreamBuilder(
+                    //     stream: proController.morePost.stream,
+                    //     builder:
+                    //         (BuildContext context, AsyncSnapshot snapshot) {
+                    //       if (snapshot.data == null) {
+                    //         return const PostListSuggstionSimmer(
+                    //           topPadding: 0,
+                    //           count: 4,
+                    //         );
+                    //       } else {
+                    //         return ListView.builder(
+                    //           controller: _controllerMore,
+                    //           scrollDirection: Axis.horizontal,
+                    //           shrinkWrap: true,
+                    //           itemCount: snapshot.data.length + 1,
+                    //           itemBuilder: (c, i) {
+                    //             if (i < snapshot.data.length) {
+                    //               return Padding(
+                    //                 padding: const EdgeInsets.only(left: 20),
+                    //                 child: Container(
+                    //                   decoration: BoxDecoration(
+                    //                     borderRadius: BorderRadius.circular(10),
+                    //                     border: Border.all(
+                    //                       color: Colors.black.withOpacity(0.1),
+                    //                       width: 0.4,
+                    //                     ),
+                    //                   ),
+                    //                   child: MorePostsPro(
+                    //                     postData: snapshot.data[i],
+                    //                   ),
+                    //                 ),
+                    //               );
+                    //             } else {
+                    //               return const Center(
+                    //                 child: Padding(
+                    //                   padding: EdgeInsets.all(20),
+                    //                   child: CircularProgressIndicator(
+                    //                     color: Colors.red,
+                    //                   ),
+                    //                 ),
+                    //               );
+                    //             }
+                    //           },
+                    //         );
+                    //       }
+                    //     },
+                    //   ),
+                    // ),
                     // SizedBox(
                     //   height: 120,
                     //   child: SizedBox(

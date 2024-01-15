@@ -29,7 +29,8 @@ class PostListPro {
   String area;
   String measurement;
   String image;
-  int? distance;
+  // ignore: prefer_typing_uninitialized_variables
+  var distance;
 
   PostListPro({
     required this.pid,
@@ -151,7 +152,7 @@ class SinglePostModel {
   final String area;
   final String measurement;
   final String roadSize;
-  final int click;
+  final int status;
   final int payment;
   final int topAds;
   final DateTime time;
@@ -200,7 +201,7 @@ class SinglePostModel {
     required this.area,
     required this.measurement,
     required this.roadSize,
-    required this.click,
+    required this.status,
     required this.payment,
     required this.topAds,
     required this.time,
@@ -251,7 +252,7 @@ class SinglePostModel {
         area: json["area"],
         measurement: json["measurement"],
         roadSize: json["road_size"],
-        click: json["click"],
+        status: json["status"],
         payment: json["payment"],
         topAds: json["top_ads"],
         time: DateTime.parse(json["time"]),
@@ -301,7 +302,7 @@ class SinglePostModel {
         "area": area,
         "measurement": measurement,
         "road_size": roadSize,
-        "click": click,
+        "status": status,
         "payment": payment,
         "top_ads": topAds,
         "time": time.toIso8601String(),
@@ -345,6 +346,7 @@ class NewPostPro {
   String image11;
   String image12;
   String location;
+  String locationfull;
   String shortaddress;
   String description;
   String ownertype;
@@ -389,6 +391,7 @@ class NewPostPro {
     required this.image11,
     required this.image12,
     required this.location,
+    required this.locationfull,
     required this.shortaddress,
     required this.description,
     required this.ownertype,
@@ -434,6 +437,7 @@ class NewPostPro {
         image11: json["image11"],
         image12: json["image12"],
         location: json["location"],
+        locationfull: json["locationfull"],
         shortaddress: json["shortaddress"],
         description: json["description"],
         ownertype: json["ownertype"],
@@ -479,6 +483,7 @@ class NewPostPro {
         "image11": image11,
         "image12": image12,
         "location": location,
+        "locationfull": locationfull,
         "shortaddress": shortaddress,
         "description": description,
         "ownertype": ownertype,
@@ -543,5 +548,117 @@ class SortPostPro {
         "rentmax": rentmax,
         "bed": bed,
         "bath": bath,
+      };
+}
+// To parse this JSON data, do
+//
+//     final mapProModel = mapProModelFromJson(jsonString);
+
+List<MapProModel> mapProModelFromJson(String str) => List<MapProModel>.from(
+    json.decode(str).map((x) => MapProModel.fromJson(x)));
+
+String mapProModelToJson(List<MapProModel> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
+class MapProModel {
+  final int pid;
+  final String geolat;
+  final String geolon;
+  final int price;
+
+  MapProModel({
+    required this.pid,
+    required this.geolat,
+    required this.geolon,
+    required this.price,
+  });
+
+  factory MapProModel.fromJson(Map<String, dynamic> json) => MapProModel(
+        pid: json["pid"],
+        geolat: json["geolat"],
+        geolon: json["geolon"],
+        price: json["price"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "pid": pid,
+        "geolat": geolat,
+        "geolon": geolon,
+        "price": price,
+      };
+}
+// To parse this JSON data, do
+//
+//     final mapProPostListModel = mapProPostListModelFromJson(jsonString);
+
+List<MapProPostListModel> mapProPostListModelFromJson(String str) =>
+    List<MapProPostListModel>.from(
+        json.decode(str).map((x) => MapProPostListModel.fromJson(x)));
+
+String mapProPostListModelToJson(List<MapProPostListModel> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
+class MapProPostListModel {
+  final int pid;
+  final int uid;
+  final String bed;
+  final String bath;
+  final String kitchen;
+  final String size;
+  final int price;
+  final String image1;
+  final String area;
+  final String measurement;
+  final String location;
+  final DateTime time;
+  final double? distance;
+
+  MapProPostListModel({
+    required this.pid,
+    required this.uid,
+    required this.bed,
+    required this.bath,
+    required this.kitchen,
+    required this.size,
+    required this.price,
+    required this.image1,
+    required this.area,
+    required this.measurement,
+    required this.location,
+    required this.time,
+    required this.distance,
+  });
+
+  factory MapProPostListModel.fromJson(Map<String, dynamic> json) =>
+      MapProPostListModel(
+        pid: json["pid"],
+        uid: json["uid"],
+        bed: json["bed"],
+        bath: json["bath"],
+        kitchen: json["kitchen"],
+        size: json["size"],
+        price: json["price"],
+        image1: json["image1"],
+        area: json["area"],
+        measurement: json["measurement"],
+        location: json["location"],
+        time: DateTime.parse(json["time"]),
+        distance: json["distance"]?.toDouble(),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "pid": pid,
+        "uid": uid,
+        "bed": bed,
+        "bath": bath,
+        "kitchen": kitchen,
+        "size": size,
+        "price": price,
+        "image1": image1,
+        "area": area,
+        "measurement": measurement,
+        "location": location,
+        "time": time.toIso8601String(),
+        "distance": distance,
       };
 }

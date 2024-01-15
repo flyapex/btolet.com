@@ -22,7 +22,8 @@ class ToletController extends GetxController {
   Future getCurrentPostCount(location) async {
     try {
       currentPostCountLoding(true);
-      var data = await ApiServiceTolet.postCountArea(location);
+      var data = await ApiServiceTolet.postCountArea(
+          location, locationController.locationAddressShort.split(',')[1]);
       if (data != null) {
         currentPostCount.value = data;
         currentPostCountLoding(false); //false
@@ -282,6 +283,37 @@ class ToletController extends GetxController {
 
   var allFlag = false.obs;
 
+  resetAllflag() {
+    activeFlag(false);
+    categoryFlag(false);
+    bedFlag(false);
+    bathFlag(false);
+    kitchenFlag(false);
+    priceFlag(false);
+    imageFlag(false);
+    floorFlag(false);
+    userController.phoneFlag(false);
+    categories.forEach((key, value) {
+      value.value = false;
+    });
+    bedrooms.value = 'select';
+    bathrooms.value = 'select';
+    dining.value = 'select';
+    kitchen.value = 'select';
+    floorno.value = 'select';
+    facing.value = 'select';
+    garage.value = 'select';
+    nameController.clear();
+    roomSize.clear();
+    maintenance.clear();
+    rent.clear();
+    userController.description.clear();
+    userController.shortAddress.clear();
+    selectedImages.clear();
+    rent.clear();
+    allFlag(false);
+  }
+
   void animateToPage(val) {
     pageController.animateToPage(
       val,
@@ -308,12 +340,12 @@ class ToletController extends GetxController {
 
   flagCheck() {
     if (categories['Only Garage']!.value) {
-      print("object");
-      categoryFlag.value = true;
-      bedFlag.value = true;
-      bathFlag.value = true;
-      kitchenFlag.value = true;
-      floorFlag.value = true;
+      // print("object");
+      // categoryFlag.value = true;
+      // bedFlag.value = true;
+      // bathFlag.value = true;
+      // kitchenFlag.value = true;
+      // floorFlag.value = true;
 
       if (garage.value != "select") {
         garageFlag.value = true;
@@ -345,10 +377,10 @@ class ToletController extends GetxController {
         allFlag.value = true;
       }
     } else if (categories['Office']!.value && categories['Family']!.value) {
-      bedFlag(true);
-      bathFlag(true);
-      kitchenFlag(true);
-      floorFlag(true);
+      // bedFlag(true);
+      // bathFlag(true);
+      // kitchenFlag(true);
+      // floorFlag(true);
       if (rent.text.isNotEmpty) {
         priceFlag.value = true;
       } else {
@@ -371,10 +403,10 @@ class ToletController extends GetxController {
         allFlag.value = true;
       }
     } else if (categories['Office']!.value) {
-      bedFlag(true);
-      bathFlag(true);
-      kitchenFlag(true);
-      floorFlag(true);
+      // bedFlag(true);
+      // bathFlag(true);
+      // kitchenFlag(true);
+      // floorFlag(true);
       if (rent.text.isNotEmpty) {
         priceFlag.value = true;
       } else {
@@ -397,10 +429,10 @@ class ToletController extends GetxController {
         allFlag.value = true;
       }
     } else if (categories['Shop']!.value) {
-      categoryFlag.value = true;
-      bedFlag.value = true;
-      bathFlag.value = true;
-      kitchenFlag.value = true;
+      // categoryFlag.value = true;
+      // bedFlag.value = true;
+      // bathFlag.value = true;
+      // kitchenFlag.value = true;
       if (floorno.value != "select") {
         floorFlag.value = true;
       } else {
@@ -428,7 +460,7 @@ class ToletController extends GetxController {
         allFlag.value = true;
       }
     } else {
-      floorFlag(true);
+      // floorFlag(true);
       if (categoryFlag.value == false || getCategory().isEmpty) {
         animateToPage(0);
         categoryFlag.value = false;
@@ -546,6 +578,7 @@ class ToletController extends GetxController {
             geolon: locationController.currentlongitude.value.toString(),
             geolat: locationController.currentlatitude.value.toString(),
             location: locationController.locationAddressShort.value.toString(),
+            locationfull: locationController.locationAddress.value.toString(),
             shortaddress: userController.shortAddress.text,
             phone: userController.phonenumber.text,
             wapp: userController.wappnumber.text.isEmpty
@@ -589,6 +622,7 @@ class ToletController extends GetxController {
             geolat: locationController.currentlatitude.value.toString(),
             geolon: locationController.currentlongitude.value.toString(),
             location: locationController.locationAddressShort.value.toString(),
+            locationfull: locationController.locationAddress.value.toString(),
             shortaddress: userController.shortAddress.text,
             phone: userController.phonenumber.text,
             wapp: userController.wappnumber.text.isEmpty
@@ -793,6 +827,40 @@ class ToletController extends GetxController {
         postid,
       );
       if (response != null) {}
+    } finally {}
+  }
+
+  //*--------------- MAP
+
+  var mapToletList = [].obs;
+  var mapLoding = true.obs;
+  Future mapAllPost() async {
+    try {
+      mapToletList.clear();
+      mapLoding(true);
+      var response = await ApiServiceTolet.map();
+      if (response != null) {
+        mapToletList.addAll(response);
+        mapLoding(false);
+        return response;
+      }
+    } finally {}
+  }
+
+  RxBool showMapBoxTolet = false.obs;
+
+  var mapPostToletList = [].obs;
+  var mapPostLoding = true.obs;
+  Future mapPostList(geolat, geolon) async {
+    try {
+      mapPostToletList.clear();
+      mapPostLoding(true);
+      var response = await ApiServiceTolet.codinateTopost(geolat, geolon);
+      if (response != null) {
+        mapPostToletList.addAll(response);
+        mapPostLoding(false);
+        return response;
+      }
     } finally {}
   }
 }

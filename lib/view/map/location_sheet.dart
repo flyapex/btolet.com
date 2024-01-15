@@ -1,4 +1,6 @@
+import 'package:btolet/api/google_api.dart';
 import 'package:btolet/controller/location_controller.dart';
+import 'package:btolet/controller/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
@@ -20,6 +22,7 @@ class _LocationSheetState extends State<LocationSheet> {
   double latitude = 0;
   double longitude = 0;
   LocationController locationController = Get.put(LocationController());
+  UserController userController = Get.find();
   // PostController postController = Get.find();
 
   bool rippleAnimation = true;
@@ -268,6 +271,22 @@ class _LocationSheetState extends State<LocationSheet> {
                                     onPressed: () {
                                       // locationController
                                       //       .locationAddress.value=
+                                      if (userController.tabController.index ==
+                                          0) {
+                                        toletController.refreshkey.currentState!
+                                            .refresh(
+                                          draggingDuration:
+                                              const Duration(milliseconds: 450),
+                                          draggingCurve: Curves.easeOutBack,
+                                        );
+                                      } else {
+                                        proController.refreshkey.currentState!
+                                            .refresh(
+                                          draggingDuration:
+                                              const Duration(milliseconds: 450),
+                                          draggingCurve: Curves.easeOutBack,
+                                        );
+                                      }
 
                                       Get.back();
                                     },
@@ -285,26 +304,26 @@ class _LocationSheetState extends State<LocationSheet> {
                       ),
                     ),
                   ),
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: Padding(
-                      padding: EdgeInsets.only(bottom: htt / 5, right: 12),
-                      child: SizedBox(
-                        width: 53,
-                        height: 53,
-                        child: FittedBox(
-                          child: FloatingActionButton(
-                            backgroundColor: const Color(0xff0166EE),
-                            onPressed: () {},
-                            child: const Icon(
-                              Feather.search,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                  // Align(
+                  //   alignment: Alignment.bottomRight,
+                  //   child: Padding(
+                  //     padding: EdgeInsets.only(bottom: htt / 5, right: 12),
+                  //     child: SizedBox(
+                  //       width: 53,
+                  //       height: 53,
+                  //       child: FittedBox(
+                  //         child: FloatingActionButton(
+                  //           backgroundColor: const Color(0xff0166EE),
+                  //           onPressed: () {},
+                  //           child: const Icon(
+                  //             Feather.search,
+                  //             color: Colors.white,
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
       ),

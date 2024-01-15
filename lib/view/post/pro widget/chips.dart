@@ -1,5 +1,4 @@
 import 'package:btolet/api/google_api.dart';
-import 'package:btolet/controller/property_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -86,15 +85,7 @@ class PorChipsNotext extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     getBorderColor() {
-      if (proController.selectedPostedBy.isEmpty) {
-        return proController.activeFlag.value
-            ? proController.postedByFlag.value
-                ? Colors.black12
-                : Colors.red
-            : Colors.black12;
-      } else {
-        return Colors.black12;
-      }
+      return Colors.black12;
     }
 
     return Obx(
@@ -151,17 +142,9 @@ class PorChipsNotextMulti extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ProController proController = Get.find();
+    // ProController proController = Get.find();
     getBorderColor() {
-      if (proController.selectedLandTypes.isEmpty) {
-        return proController.activeFlag.value
-            ? proController.protypeFlag.value
-                ? Colors.black12
-                : Colors.red
-            : Colors.black12;
-      } else {
-        return Colors.black12;
-      }
+      return Colors.black12;
     }
 
     return Obx(

@@ -77,7 +77,7 @@ class _ToletState extends State<Tolet> {
             },
           ),
           onRefresh: () async {
-            // locationController.getCurrnetlanlongLocation();
+            // await locationController.getCurrnetlanlongLocation();
             toletController.allPost.clear();
             toletController.allPost.refresh();
             toletController.page.value = 1;
@@ -275,6 +275,7 @@ class _PostsToletState extends State<PostsTolet> {
                 () => SinglePostTolet(postid: widget.postData.postId),
                 transition: Transition.circularReveal,
                 duration: const Duration(milliseconds: 600),
+                preventDuplicates: false,
               );
             },
             child: Row(
@@ -356,7 +357,7 @@ class _PostsToletState extends State<PostsTolet> {
                                             'assets/icons/tolet/bath.svg',
                                             colorFilter: const ColorFilter.mode(
                                               // Color(0xff083437),
-                                              Colors.black87,
+                                              Colors.black54,
                                               BlendMode.srcIn,
                                             ),
                                           ),

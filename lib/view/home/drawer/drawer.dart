@@ -63,26 +63,26 @@ class _CustomeDrawerState extends State<CustomeDrawer>
                 userController.email.value,
                 style: const TextStyle(color: Colors.white),
               ),
-              otherAccountsPictures: [
-                IconButton(
-                  icon: Icon(
-                    Get.isDarkMode ? Icons.brightness_2 : Icons.wb_sunny,
-                    color: Colors.white,
-                    size: 25,
-                  ),
-                  onPressed: () {},
-                ),
-                // IconButton(
-                //   onPressed: () async {
-                //     Get.back();
-                //   },
-                //   icon: const Icon(
-                //     Feather.toggle_right,
-                //     color: Colors.white,
-                //     size: 25,
-                //   ),
-                // )
-              ],
+              // otherAccountsPictures: [
+              //   IconButton(
+              //     icon: Icon(
+              //       Get.isDarkMode ? Icons.brightness_2 : Icons.wb_sunny,
+              //       color: Colors.white,
+              //       size: 25,
+              //     ),
+              //     onPressed: () {},
+              //   ),
+              //   IconButton(
+              //     onPressed: () async {
+              //       Get.back();
+              //     },
+              //     icon: const Icon(
+              //       Feather.toggle_right,
+              //       color: Colors.white,
+              //       size: 25,
+              //     ),
+              //   )
+              // ],
             ),
 
             ListTile(
@@ -159,49 +159,50 @@ class _CustomeDrawerState extends State<CustomeDrawer>
                 );
               },
             ),
-            ListTile(
-              title: const Row(
-                children: [
-                  Icon(
-                    Icons.auto_fix_high_outlined,
-                    color: Colors.black38,
-                  ),
-                  SizedBox(
-                    width: 30,
-                  ),
-                  Text(
-                    'My Ads',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                ],
-              ),
-              onTap: () {
-                // Get.to(
-                //   () => const Myads(),
-                //   transition: Transition.circularReveal,
-                //   duration: const Duration(milliseconds: 500),
-                // );
-              },
-            ),
+            // ListTile(
+            //   title: const Row(
+            //     children: [
+            //       Icon(
+            //         Icons.auto_fix_high_outlined,
+            //         color: Colors.black38,
+            //       ),
+            //       SizedBox(
+            //         width: 30,
+            //       ),
+            //       Text(
+            //         'My Ads',
+            //         style: TextStyle(color: Colors.black),
+            //       ),
+            //     ],
+            //   ),
+            //   onTap: () {
+            //     // Get.to(
+            //     //   () => const Myads(),
+            //     //   transition: Transition.circularReveal,
+            //     //   duration: const Duration(milliseconds: 500),
+            //     // );
+            //   },
+            // ),
 
-            ListTile(
-              title: const Row(
-                children: [
-                  Icon(
-                    Feather.help_circle,
-                    color: Colors.black38,
-                  ),
-                  SizedBox(
-                    width: 30,
-                  ),
-                  Text(
-                    'FAQ',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                ],
-              ),
-              onTap: () {},
-            ),
+            // ListTile(
+            //   title: const Row(
+            //     children: [
+            //       Icon(
+            //         Feather.help_circle,
+            //         color: Colors.black38,
+            //       ),
+            //       SizedBox(
+            //         width: 30,
+            //       ),
+            //       Text(
+            //         'FAQ',
+            //         style: TextStyle(color: Colors.black),
+            //       ),
+            //     ],
+            //   ),
+            //   onTap: () {},
+            // ),
+
             ListTile(
               title: const Row(
                 children: [
@@ -220,6 +221,7 @@ class _CustomeDrawerState extends State<CustomeDrawer>
               ),
               onTap: () {},
             ),
+            const SizedBox(height: 50),
             Container(
               height: 0.3,
               color: Colors.black45,

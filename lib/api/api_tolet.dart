@@ -14,10 +14,13 @@ var headers = {
 };
 
 class ApiServiceTolet {
-  static Future postCountArea(location) async {
+  static Future postCountArea(location1, location2) async {
     final response = await dio.get(
       '$baseUrl/postcount/area',
-      queryParameters: {"currentLocation": location},
+      queryParameters: {
+        "location1": location1,
+        "location2": location2,
+      },
     );
 
     if (response.statusCode == 200) {
@@ -163,6 +166,34 @@ class ApiServiceTolet {
 
     if (response.statusCode == 200) {
       print(response.data);
+    } else {
+      return null;
+    }
+  }
+
+  static Future map() async {
+    final response = await dio.get(
+      '$baseUrl/map/posts',
+    );
+
+    if (response.statusCode == 200) {
+      return mapToletModelFromJson(jsonEncode(response.data));
+    } else {
+      return null;
+    }
+  }
+
+  static Future codinateTopost(geolat, geolon) async {
+    final response = await dio.get(
+      '$baseUrl/map/postid',
+      queryParameters: {
+        "geolat": geolat.toString(),
+        "geolon": geolon.toString()
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return postListToletFromJson(jsonEncode(response.data));
     } else {
       return null;
     }

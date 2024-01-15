@@ -1,10 +1,12 @@
+import 'package:btolet/controller/location_controller.dart';
+import 'package:btolet/controller/user_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class MapButton extends StatefulWidget {
-  final bool value;
   final double width;
   final double height;
-  final Function(bool) onChanged;
+
   final String textOff;
   final double fontSize;
   final String textOn;
@@ -15,15 +17,12 @@ class MapButton extends StatefulWidget {
   final Duration animationDuration;
   final IconData iconOn;
   final IconData iconOff;
-  final Function onTap;
-  final Function onDoubleTap;
-  final Function onSwipe;
+
   const MapButton({
     Key? key,
-    this.value = false,
     this.width = 130,
     this.height = 100,
-    this.textOff = "LISS",
+    this.textOff = "LIST",
     this.textOn = "MAP",
     this.textSize = 14.0,
     this.colorOn = Colors.green,
@@ -32,10 +31,6 @@ class MapButton extends StatefulWidget {
     this.iconOn = Icons.check,
     this.animationDuration = const Duration(milliseconds: 600),
     this.textOnColor = Colors.black,
-    required this.onTap,
-    required this.onDoubleTap,
-    required this.onSwipe,
-    required this.onChanged,
     this.fontSize = 30,
   }) : super(key: key);
 
@@ -45,55 +40,43 @@ class MapButton extends StatefulWidget {
 
 class _MapButtonState extends State<MapButton>
     with SingleTickerProviderStateMixin {
-  late AnimationController animationController;
+  LocationController locationController = Get.find();
+  UserController userController = Get.find();
+
   late Animation<double> animation;
   late bool turnState;
   double value = 0.0;
 
   @override
   void dispose() {
-    animationController.dispose();
+    locationController.animationController.dispose();
     super.dispose();
   }
 
   @override
   void initState() {
     super.initState();
-    animationController = AnimationController(
+    locationController.animationController = AnimationController(
         vsync: this,
         lowerBound: 0.0,
         upperBound: 1.0,
         duration: widget.animationDuration);
-    animation =
-        CurvedAnimation(parent: animationController, curve: Curves.easeInOut);
-    animationController.addListener(() {
+    animation = CurvedAnimation(
+        parent: locationController.animationController,
+        curve: Curves.easeInOut);
+    locationController.animationController.addListener(() {
       setState(() {
         value = animation.value;
       });
     });
-    turnState = widget.value;
+    turnState = false;
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
         if (turnState) {
-          animationController.forward();
+          locationController.animationController.forward();
         }
       });
-    });
-  }
-
-  _action() {
-    _determine(changeState: true);
-  }
-
-  _determine({bool changeState = false}) {
-    setState(() {
-      if (changeState) turnState = !turnState;
-      (turnState)
-          ? animationController.forward()
-          : animationController.reverse();
-
-      widget.onChanged(turnState);
     });
   }
 
@@ -101,17 +84,8 @@ class _MapButtonState extends State<MapButton>
   Widget build(BuildContext context) {
     Color? transitionColor = Color.lerp(widget.colorOff, widget.colorOn, value);
     return GestureDetector(
-      onDoubleTap: () {
-        _action();
-        widget.onDoubleTap();
-      },
       onTap: () {
-        _action();
-        widget.onTap();
-      },
-      onPanEnd: (details) {
-        _action();
-        widget.onSwipe();
+        locationController.swapMap();
       },
       child: Container(
         padding: const EdgeInsets.all(5),

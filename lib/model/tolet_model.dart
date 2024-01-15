@@ -283,6 +283,7 @@ class NewPostTolet {
   final String geolon;
   final String geolat;
   final String location;
+  final String locationfull;
   final String shortaddress;
   final String phone;
   final String wapp;
@@ -319,6 +320,7 @@ class NewPostTolet {
     required this.geolon,
     required this.geolat,
     required this.location,
+    required this.locationfull,
     required this.shortaddress,
     required this.phone,
     required this.wapp,
@@ -356,6 +358,7 @@ class NewPostTolet {
         geolon: json["geolon"],
         geolat: json["geolat"],
         location: json["location"],
+        locationfull: json["locationfull"],
         shortaddress: json["shortaddress"],
         phone: json["phone"],
         wapp: json["wapp"],
@@ -393,6 +396,7 @@ class NewPostTolet {
         "geolon": geolon,
         "geolat": geolat,
         "location": location,
+        "locationfull": locationfull,
         "shortaddress": shortaddress,
         "phone": phone,
         "wapp": wapp,
@@ -517,5 +521,47 @@ class MyPostListTolet {
         "image1": image1,
         "location": location,
         "time": time.toIso8601String(),
+      };
+}
+// To parse this JSON data, do
+//
+//     final toletSinglePost = toletSinglePostFromJson(jsonString);
+
+// To parse this JSON data, do
+//
+//     final mapToletModel = mapToletModelFromJson(jsonString);
+
+List<MapToletModel> mapToletModelFromJson(String str) =>
+    List<MapToletModel>.from(
+        json.decode(str).map((x) => MapToletModel.fromJson(x)));
+
+String mapToletModelToJson(List<MapToletModel> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
+class MapToletModel {
+  int postId;
+  String geolon;
+  String geolat;
+  int rent;
+
+  MapToletModel({
+    required this.postId,
+    required this.geolon,
+    required this.geolat,
+    required this.rent,
+  });
+
+  factory MapToletModel.fromJson(Map<String, dynamic> json) => MapToletModel(
+        postId: json["post_id"],
+        geolon: json["geolon"],
+        geolat: json["geolat"],
+        rent: json["rent"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "post_id": postId,
+        "geolon": geolon,
+        "geolat": geolat,
+        "rent": rent,
       };
 }

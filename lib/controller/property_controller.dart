@@ -21,10 +21,13 @@ class ProController extends GetxController {
   Future getCurrentPostCount(location) async {
     try {
       currentPostCountLoding(true);
-      var data = await ApiServicePro.postCountArea(location);
+      print(location);
+      print(locationController.locationAddressShort.split(', ')[1]);
+      var data = await ApiServicePro.postCountArea(
+          location, locationController.locationAddressShort.split(',')[1]);
       if (data != null) {
         currentPostCount.value = data;
-        currentPostCountLoding(false); //false
+        currentPostCountLoding(false);
       }
     } finally {}
   }
@@ -207,6 +210,16 @@ class ProController extends GetxController {
   var selectedLandTypes = ['Residential'].obs;
   var selectedPostedBy = 'Owner'.obs;
 
+  String getlandType() {
+    final selectedCategories = fasalitis2.entries
+        .where((entry) => entry.value.state.value)
+        .map((entry) => entry.key)
+        .toList();
+
+    String jsonStringArray = jsonEncode(selectedCategories);
+    return jsonStringArray;
+  }
+
   TextEditingController name = TextEditingController();
   TextEditingController totalFloor = TextEditingController();
   TextEditingController floorNumber = TextEditingController();
@@ -228,7 +241,7 @@ class ProController extends GetxController {
   final FocusNode mesurementfocusNode = FocusNode();
   final FocusNode roadSizefocusNode = FocusNode();
 
-  final dining = 'select'.obs;
+  late final dining = 'select'.obs;
   final kitchen = 'select'.obs;
   final facing = 'select'.obs;
   final area = 'শতাংশ'.obs;
@@ -285,8 +298,43 @@ class ProController extends GetxController {
   var mesurementFlag = false.obs;
   var rodeSizeFlag = false.obs;
 
-  var postedByFlag = false.obs;
+  // var postedByFlag = false.obs;
   var allFlag = false.obs;
+
+  resetAllflag() {
+    activeFlag(false);
+    diningFlag(false);
+    kitchenFlag(false);
+    facingFlag(false);
+    totalUnitFlag(false);
+    totalsizeFlag(false);
+    totalfloorFlag(false);
+    floornumberFlag(false);
+    priceFlag(false);
+    imageFlag(false);
+    protypeFlag(false);
+    areaFlag(false);
+    mesurementFlag(false);
+    rodeSizeFlag(false);
+
+    dining.value = 'select';
+    kitchen.value = 'select';
+    facing.value = 'select';
+    area.value = 'শতাংশ';
+
+    name.clear();
+    totalFloor.clear();
+    floorNumber.clear();
+    totalUnit.clear();
+    price.clear();
+    totalSize.clear();
+    ytVideo.clear();
+
+    mesurement.clear();
+    roadSize.clear();
+
+    allFlag.value = false;
+  }
 
   void animateToPage(val) {
     pageController.animateToPage(
@@ -316,9 +364,9 @@ class ProController extends GetxController {
   flagCheck() {
     if (selectedCategory.value == category[0] ||
         selectedCategory.value == category[1]) {
-      protypeFlag(true);
-      areaFlag(true);
-      rodeSizeFlag(true);
+      // protypeFlag(true);
+      // areaFlag(true);
+      // rodeSizeFlag(true);
 
       if (selectedPriceType.value == priceType[1]) {
         priceFlag.value = true;
@@ -409,14 +457,14 @@ class ProController extends GetxController {
         allFlag.value = true;
       }
     } else {
-      diningFlag(true);
-      kitchenFlag(true);
-      facingFlag(true);
-      totalfloorFlag(true);
-      floornumberFlag(true);
-      totalsizeFlag(true);
-      totalUnitFlag(true);
-      floornumberFlag(true);
+      // diningFlag(true);
+      // kitchenFlag(true);
+      // facingFlag(true);
+      // totalfloorFlag(true);
+      // floornumberFlag(true);
+      // totalsizeFlag(true);
+      // totalUnitFlag(true);
+      // floornumberFlag(true);
 
       if (selectedPriceType.value == priceType[1]) {
         priceFlag.value = true;
@@ -444,8 +492,8 @@ class ProController extends GetxController {
       } else {
         animateToPage(0);
       }
-      if (userController.phonenumber.text != "" ||
-          userController.wappnumber.text != "") {
+      if (userController.phonenumber.text.isNotEmpty ||
+          userController.wappnumber.text.isNotEmpty) {
         userController.phoneFlag.value = true;
       } else {
         // animateToPage(1);
@@ -535,6 +583,7 @@ class ProController extends GetxController {
             image11: imageBase64List[10],
             image12: imageBase64List[11],
             location: locationController.locationAddressShort.value.toString(),
+            locationfull: locationController.locationAddress.value.toString(),
             shortaddress: userController.shortAddress.text,
             description: userController.description.text,
             ownertype: selectedPostedBy.value,
@@ -586,6 +635,7 @@ class ProController extends GetxController {
             image11: imageBase64List[10],
             image12: imageBase64List[11],
             location: locationController.locationAddressShort.value.toString(),
+            locationfull: locationController.locationAddress.value.toString(),
             shortaddress: userController.shortAddress.text,
             description: userController.description.text,
             ownertype: selectedPostedBy.value,
@@ -595,7 +645,7 @@ class ProController extends GetxController {
             wapp: userController.wappnumber.text.isEmpty
                 ? ""
                 : userController.phonenumber.text,
-            landType: "",
+            landType: jsonEncode(selectedLandTypes),
             area: area.value,
             measurement: mesurement.text,
             roadSize: roadSize.text,
@@ -804,6 +854,40 @@ class ProController extends GetxController {
         postid,
       );
       if (response != null) {}
+    } finally {}
+  }
+
+  //*--------------- MAP
+
+  var mapProList = [].obs;
+  var mapLoding = true.obs;
+  Future mapAllPost() async {
+    try {
+      mapProList.clear();
+      mapLoding(true);
+      var response = await ApiServicePro.map();
+      if (response != null) {
+        mapProList.addAll(response);
+        mapLoding(false);
+        return response;
+      }
+    } finally {}
+  }
+
+  RxBool showMapBoxPro = false.obs;
+
+  var mapAllPostPro = [].obs;
+  var mapAllPostLoding = true.obs;
+  Future mapPostList(geolat, geolon) async {
+    try {
+      mapAllPostPro.clear();
+      mapAllPostLoding(true);
+      var response = await ApiServicePro.codinateTopost(geolat, geolon);
+      if (response != null) {
+        mapAllPostPro.addAll(response);
+        mapAllPostLoding(false);
+        return response;
+      }
     } finally {}
   }
 }

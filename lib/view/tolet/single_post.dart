@@ -5,7 +5,6 @@ import 'package:btolet/controller/location_controller.dart';
 import 'package:btolet/controller/tolet_controller.dart';
 import 'package:btolet/controller/user_controller.dart';
 import 'package:btolet/view/shimmer/shimmer.dart';
-import 'package:btolet/view/tolet/tolet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -1049,7 +1048,7 @@ class _SinglePostToletState extends State<SinglePostTolet> {
                                   ),
                                   const SizedBox(height: 20),
                                   const Text(
-                                    "Location", //area
+                                    "In Map",
                                     style: TextStyle(
                                       fontSize: 16,
                                       color: Color(0xff083437),
@@ -1107,7 +1106,63 @@ class _SinglePostToletState extends State<SinglePostTolet> {
                                               child:
                                                   FloatingActionButton.extended(
                                                 backgroundColor: Colors.blue,
-                                                onPressed: () {},
+                                                onPressed: () async {
+                                                  final coords = Coords(
+                                                    double.parse(toletController
+                                                        .singlepost.geolat),
+                                                    double.parse(toletController
+                                                        .singlepost.geolon),
+                                                  );
+                                                  var title =
+                                                      "Price ৳ ${NumberFormat.decimalPattern().format(toletController.singlepost.rent)}";
+                                                  final availableMaps =
+                                                      await MapLauncher
+                                                          .installedMaps;
+                                                  print(availableMaps.length);
+                                                  if (availableMaps.length ==
+                                                      1) {
+                                                    await availableMaps.first
+                                                        .showMarker(
+                                                      coords: coords,
+                                                      title: title,
+                                                      description:
+                                                          "description",
+                                                    );
+                                                  } else {
+                                                    Get.bottomSheet(
+                                                      SafeArea(
+                                                        child:
+                                                            SingleChildScrollView(
+                                                          child: Wrap(
+                                                            children: <Widget>[
+                                                              for (var map
+                                                                  in availableMaps)
+                                                                ListTile(
+                                                                  onTap: () => map
+                                                                      .showMarker(
+                                                                    coords:
+                                                                        coords,
+                                                                    title:
+                                                                        title,
+                                                                  ),
+                                                                  title: Text(map
+                                                                      .mapName),
+                                                                  leading:
+                                                                      SvgPicture
+                                                                          .asset(
+                                                                    map.icon,
+                                                                    height:
+                                                                        30.0,
+                                                                    width: 30.0,
+                                                                  ),
+                                                                ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    );
+                                                  }
+                                                },
                                                 shape: RoundedRectangleBorder(
                                                   // side: const BorderSide(
                                                   //     width: 3,
@@ -1146,75 +1201,75 @@ class _SinglePostToletState extends State<SinglePostTolet> {
                               ),
                             ),
                             const SizedBox(height: 30),
-                            const Row(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(left: 20),
-                                  child: Text(
-                                    'more',
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      color: Colors.black38,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 20),
+                            // const Row(
+                            //   children: [
+                            //     Padding(
+                            //       padding: EdgeInsets.only(left: 20),
+                            //       child: Text(
+                            //         'more',
+                            //         style: TextStyle(
+                            //           fontSize: 13,
+                            //           color: Colors.black38,
+                            //         ),
+                            //       ),
+                            //     ),
+                            //   ],
+                            // ),
+                            // const SizedBox(height: 20),
 
-                            SizedBox(
-                              height: height / 7,
-                              child: StreamBuilder(
-                                stream: toletController.morePost.stream,
-                                builder: (BuildContext context,
-                                    AsyncSnapshot snapshot) {
-                                  if (snapshot.data == null) {
-                                    return const PostListSuggstionSimmer(
-                                      topPadding: 0,
-                                      count: 4,
-                                    );
-                                  } else {
-                                    return ListView.builder(
-                                      controller: _controllerMore,
-                                      scrollDirection: Axis.horizontal,
-                                      shrinkWrap: true,
-                                      itemCount: snapshot.data.length + 1,
-                                      itemBuilder: (c, i) {
-                                        if (i < snapshot.data.length) {
-                                          return Padding(
-                                            padding:
-                                                const EdgeInsets.only(left: 20),
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                border: Border.all(
-                                                  color: Colors.black
-                                                      .withOpacity(0.1),
-                                                  width: 0.4,
-                                                ),
-                                              ),
-                                              child: PostsTolet(
-                                                postData: snapshot.data[i],
-                                              ),
-                                            ),
-                                          );
-                                        } else {
-                                          return const Center(
-                                            child: Padding(
-                                              padding: EdgeInsets.all(20),
-                                              child: CircularProgressIndicator(
-                                                color: Colors.red,
-                                              ),
-                                            ),
-                                          );
-                                        }
-                                      },
-                                    );
-                                  }
-                                },
-                              ),
-                            ),
+                            // SizedBox(
+                            //   height: height / 7,
+                            //   child: StreamBuilder(
+                            //     stream: toletController.morePost.stream,
+                            //     builder: (BuildContext context,
+                            //         AsyncSnapshot snapshot) {
+                            //       if (snapshot.data == null) {
+                            //         return const PostListSuggstionSimmer(
+                            //           topPadding: 0,
+                            //           count: 4,
+                            //         );
+                            //       } else {
+                            //         return ListView.builder(
+                            //           controller: _controllerMore,
+                            //           scrollDirection: Axis.horizontal,
+                            //           shrinkWrap: true,
+                            //           itemCount: snapshot.data.length + 1,
+                            //           itemBuilder: (c, i) {
+                            //             if (i < snapshot.data.length) {
+                            //               return Padding(
+                            //                 padding:
+                            //                     const EdgeInsets.only(left: 20),
+                            //                 child: Container(
+                            //                   decoration: BoxDecoration(
+                            //                     borderRadius:
+                            //                         BorderRadius.circular(10),
+                            //                     border: Border.all(
+                            //                       color: Colors.black
+                            //                           .withOpacity(0.1),
+                            //                       width: 0.4,
+                            //                     ),
+                            //                   ),
+                            //                   child: MorePage(
+                            //                     postData: snapshot.data[i],
+                            //                   ),
+                            //                 ),
+                            //               );
+                            //             } else {
+                            //               return const Center(
+                            //                 child: Padding(
+                            //                   padding: EdgeInsets.all(20),
+                            //                   child: CircularProgressIndicator(
+                            //                     color: Colors.red,
+                            //                   ),
+                            //                 ),
+                            //               );
+                            //             }
+                            //           },
+                            //         );
+                            //       }
+                            //     },
+                            //   ),
+                            // ),
                             const SizedBox(height: 140),
                           ],
                         ),

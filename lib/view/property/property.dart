@@ -77,12 +77,12 @@ class _PropertyState extends State<Property> {
             },
           ),
           onRefresh: () async {
-            locationController.getCurrnetlanlongLocation();
-            // postController.allPropertyPost.clear();
-            // postController.allPropertyPost.refresh();
-            // postController.Propertypage.value = 1;
-            // postController.getAllPost();
-            // postController.allPropertyPost.sentToStream;
+            // await locationController.getCurrnetlanlongLocation();
+            proController.allPost.clear();
+            proController.allPost.refresh();
+            proController.page.value = 1;
+            proController.getAllPost();
+            proController.allPost.sentToStream;
           },
           child: SingleChildScrollView(
             padding: const EdgeInsets.only(top: 20, left: 20, right: 20),

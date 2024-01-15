@@ -40,8 +40,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   }
 
   void _handleTabSelection() {
-    // print("Current Tab Index: ${userController.tabController.index}");
-    // userController.updateTabindex();
+    locationController.resetAnimation(false);
     setState(() {
       print(userController.tabController.index);
       index = userController.tabController.index;
@@ -106,7 +105,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       () => Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: locationController.mapModetolet.value ||
-                locationController.mapModetolet.value
+                locationController.mapModePro.value
             ? const SizedBox()
             : SlideTransition(
                 position: _offsetAnimation,
@@ -303,16 +302,12 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 20),
+                    const Padding(
+                      padding: EdgeInsets.only(right: 20),
                       child: MapButton(
                         width: 96,
                         height: 40,
                         fontSize: 17,
-                        onTap: () {},
-                        onDoubleTap: () {},
-                        onSwipe: () {},
-                        value: locationController.mapMode.value,
                         textOn: 'LIST',
                         textOff: 'MAP',
                         colorOn: Colors.blue,
@@ -320,14 +315,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                         iconOn: Feather.map_pin,
                         iconOff: Feather.align_left,
                         textSize: 16.0,
-                        onChanged: (bool state) {
-                          // print('xxxxxxx');
-                          // print(userController.tabController.index);
-                          // print(state);
-                          locationController.mapMode.value =
-                              !locationController.mapMode.value;
-                        },
-                        animationDuration: const Duration(milliseconds: 250),
+                        animationDuration: Duration(milliseconds: 250),
                       ),
                     ),
                   ],
@@ -345,7 +333,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                 locationController.mapModetolet.value
                     ? const MapTolet()
                     : const Tolet(),
-                locationController.mapModeProperty.value
+                locationController.mapModePro.value
                     ? const MapProperty()
                     : const Property()
               ],
