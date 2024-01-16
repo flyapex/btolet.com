@@ -26,18 +26,24 @@ class Tolet extends StatefulWidget {
   State<Tolet> createState() => _ToletState();
 }
 
-class _ToletState extends State<Tolet> {
+class _ToletState extends State<Tolet> with AutomaticKeepAliveClientMixin {
   ToletController toletController = Get.put(ToletController());
   LocationController locationController = Get.find();
   bool _atEnd = false;
+  // getLocation() async {
+  //   await locationController.getCurrnetlanlongLocation();
+  // }
+
   @override
   void initState() {
+    // getLocation();
     toletController.getAllPost();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
         body: NotificationListener(
       onNotification: (scrollNotification) {
@@ -77,7 +83,9 @@ class _ToletState extends State<Tolet> {
             },
           ),
           onRefresh: () async {
-            // await locationController.getCurrnetlanlongLocation();
+            // await locationController.getCurrnetlanlongLocation(
+            //     false, 'Tolet Ref');
+            toletController.getCurrentPostCount();
             toletController.allPost.clear();
             toletController.allPost.refresh();
             toletController.page.value = 1;
@@ -227,6 +235,9 @@ class _ToletState extends State<Tolet> {
       ),
     ));
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class PostsTolet extends StatefulWidget {
@@ -271,6 +282,7 @@ class _PostsToletState extends State<PostsTolet> {
         children: [
           InkWell(
             onTap: () {
+              toletController.singlePostloding(true);
               Get.to(
                 () => SinglePostTolet(postid: widget.postData.postId),
                 transition: Transition.circularReveal,

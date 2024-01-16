@@ -24,6 +24,21 @@ class UserController extends GetxController {
   final FocusNode phonefocusNode = FocusNode();
   final FocusNode wappfocusNode = FocusNode();
 
+  currency(amount) {
+    String formattedAmount;
+    if (amount.abs() >= 10000000) {
+      formattedAmount = (amount / 10000000).toStringAsFixed(2) + ' Crore';
+    } else if (amount.abs() >= 100000) {
+      formattedAmount = (amount / 100000).toStringAsFixed(2) + ' Lakh';
+    } else if (amount.abs() >= 1000) {
+      formattedAmount = (amount / 1000).toStringAsFixed(2) + 'k';
+    } else {
+      formattedAmount = amount.toStringAsFixed(2);
+    }
+    formattedAmount = formattedAmount.replaceAll(RegExp(r'\.00'), '');
+    return formattedAmount;
+  }
+
   getDay(date) {
     final now = DateTime.now();
     final difference = now.difference(date);

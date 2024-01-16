@@ -45,13 +45,14 @@ class LocationController extends GetxController {
 
   late GoogleMapController mapController;
 
-  // RxBool showMapBoxTolet = false.obs;
-
   RxDouble currentlatitude = 0.0.obs;
   RxDouble currentlongitude = 0.0.obs;
+
   RxBool isLoading = true.obs;
 
-  getCurrnetlanlongLocation() async {
+  getCurrnetlanlongLocation(bool mapAnimation, v) async {
+    print(v);
+    print("Get Current Location");
     var permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
@@ -67,15 +68,17 @@ class LocationController extends GetxController {
     currentlatitude.value = position.latitude;
     currentlongitude.value = position.longitude;
     isLoading.value = false;
-    // print(currentlatitude.value);
-    // print(currentlongitude.value);
-    await coordinateToLocationDetails(
+    await coordinateToLocation(
       currentlatitude.value,
       currentlongitude.value,
     );
+    if (mapAnimation) {
+      onMyLocationButtonPressed();
+    }
   }
 
-  void onMyLocationButtonPressed() {
+  void onMyLocationButtonPressed() async {
+    // await getCurrnetlanlongLocation();
     LatLng location = LatLng(
       currentlatitude.value,
       currentlongitude.value,
@@ -99,9 +102,9 @@ class LocationController extends GetxController {
   RxString locationAddressShort = 'Location'.obs;
 
   RxBool cordinateToLocationLoding = true.obs;
-  coordinateToLocationDetails(double latitude, double longitude) async {
+  coordinateToLocation(double latitude, double longitude) async {
     try {
-      var response = await GoogleMapApi.coordinateToLocationDetailsapi(
+      var response = await GoogleMapApi.getCoordinateToLocation(
         latitude,
         longitude,
       );
@@ -116,61 +119,6 @@ class LocationController extends GetxController {
       cordinateToLocationLoding.value = false;
     }
   }
-
-  // var currentPostCountP = 999.obs;
-  // Future getCurrentPostCountP(location) async {
-  //   try {
-  //     var response = await ApiService.postCountAreaP(location);
-  //     if (response != null) {
-  //       currentPostCountP.value = response;
-  //     }
-  //   } finally {}
-  // }
-
-  // var mapToletList = [].obs;
-  // var mapLoding = true.obs;
-  // Future mapApi() async {
-  //   try {
-  //     mapToletList.clear();
-  //     mapLoding(true);
-  //     var response = await ApiService.mapTolet();
-  //     if (response != null) {
-  //       mapToletList.addAll(response);
-
-  //       return response;
-  //     }
-  //   } finally {}
-  // }
-
-  // var mapPostToletList = [].obs;
-  // var mapPostLoding = true.obs;
-  // Future mapPostApi(geolat, geolon) async {
-  //   try {
-  //     mapPostToletList.clear();
-  //     mapPostLoding(true);
-  //     var response = await ApiService.codinateTopost(geolat, geolon);
-  //     if (response != null) {
-  //       mapPostToletList.addAll(response);
-  //       mapPostLoding(false);
-  //       return response;
-  //     }
-  //   } finally {}
-  // }
-
-  // var mapPostProList = [].obs;
-  // var mapPostProLoding = true.obs;
-  // Future mapPostApiPro(geolat, geolon) async {
-  //   try {
-  //     mapPostProList.clear();
-  //     mapPostProLoding(true);
-  //     var response = await ApiService.codinateTopostp(geolat, geolon);
-  //     if (response != null) {
-  //       mapPostProList.addAll(response);
-  //       mapPostProLoding(false);
-  //       return response;
-  //     }
-  //   } finally {}
-  // }
 
   RxBool isLoadingsuggstion = false.obs;
   var suggstions = [].obs;

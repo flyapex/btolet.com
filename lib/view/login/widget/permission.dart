@@ -1,3 +1,4 @@
+import 'package:btolet/controller/location_controller.dart';
 import 'package:btolet/view/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -9,6 +10,7 @@ class Permission extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    LocationController locationController = Get.put(LocationController());
     checkPermission() async {
       LocationPermission permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied) {
@@ -20,6 +22,7 @@ class Permission extends StatelessWidget {
       }
       print(permission);
       if (permission == LocationPermission.whileInUse) {
+        locationController.getCurrnetlanlongLocation(false, 'home');
         Get.offAll(
           const Home(),
           transition: Transition.circularReveal,

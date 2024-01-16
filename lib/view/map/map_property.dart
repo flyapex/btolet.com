@@ -1,5 +1,6 @@
 import 'package:btolet/controller/location_controller.dart';
 import 'package:btolet/controller/property_controller.dart';
+import 'package:btolet/controller/user_controller.dart';
 import 'package:btolet/view/shimmer/shimmer.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
@@ -7,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:intl/intl.dart';
 import 'package:label_marker/label_marker.dart';
 
 import 'widget/post_pro.dart';
@@ -22,6 +22,7 @@ class MapProperty extends StatefulWidget {
 class _MapPropertyState extends State<MapProperty> {
   LocationController locationController = Get.find();
 
+  UserController userController = Get.find();
   ProController proController = Get.find();
   late String _mapStyle;
 
@@ -55,7 +56,7 @@ class _MapPropertyState extends State<MapProperty> {
         LabelMarker(
           label: data.price == 0
               ? "Call for price"
-              : "৳ ${NumberFormat.decimalPattern().format(data.price)}",
+              : "৳ ${userController.currency(data.price)}",
           // label: data.rent.toString(),
           markerId: MarkerId(data.pid.toString()),
           position:

@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 final dio = Dio();
 var baseUrl = 'http://10.0.2.2:3000/api';
-// var baseUrl = 'http://109.123.234.150/api';
+// var baseUrl = 'http://154.26.135.41:3800/api';
 
 var headers = {
   "content-type": 'application/json;charset=UTF-8',

@@ -25,7 +25,7 @@ ToletController toletController = Get.find();
 ProController proController = Get.put(ProController());
 
 class GoogleMapApi {
-  static Future coordinateToLocationDetailsapi(
+  static Future getCoordinateToLocation(
       double latitude, double longitude) async {
     var response = await dio.get(
       "http://154.26.130.64/nominatim/reverse.php",
@@ -39,17 +39,17 @@ class GoogleMapApi {
 
     if (response.statusCode == 200) {
       var data = response.data;
-      print(data);
-      print('------------------------------------------------');
+      // print(data);
+      // print('------------------------------------------------');
       var suburb = data["address"]["suburb"];
       var name = data["name"];
       var city = data["address"]["city"];
       var stateDistrict = data["address"]["state_district"];
 
-      print(suburb);
-      print(name);
-      print(city);
-      print(stateDistrict);
+      // print(suburb);
+      // print(name);
+      // print(city);
+      // print(stateDistrict);
       if (suburb != null && city != null) {
         locationController.locationAddressShort.value = suburb + ", " + city;
       } else if (name != null && city != null) {
@@ -64,11 +64,9 @@ class GoogleMapApi {
                 data['display_name'].split(',')[1];
       }
 
-      if (locationController.locationAddress.value.isNotEmpty) {
-        await toletController.getCurrentPostCount(
-            locationController.locationAddressShort.value.split(',')[0]);
-        await proController.getCurrentPostCount(
-            locationController.locationAddressShort.value.split(',')[0]);
+      if (locationController.locationAddressShort.value.isNotEmpty) {
+        await toletController.getCurrentPostCount();
+        await proController.getCurrentPostCount();
       }
       return data['display_name'].toString();
     } else {
@@ -77,7 +75,7 @@ class GoogleMapApi {
   }
 
   static Future searchSuggstion(searchText) async {
-    print('---------------------------------------------------------');
+    // print('---------------------------------------------------------');
 
     final response = await dio.get(
       'http://154.26.130.64/nominatim/search.php',
@@ -88,8 +86,8 @@ class GoogleMapApi {
       },
     );
 
-    print(searchText);
-    print(response);
+    // print(searchText);
+    // print(response);
     if (response.statusCode == 200) {
       return searchModelFromJson(jsonEncode(response.data));
     } else {

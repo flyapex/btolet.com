@@ -7,7 +7,6 @@ import 'package:btolet/view/property/single_post.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:like_button/like_button.dart';
 
 class PostsProMap extends StatefulWidget {
@@ -93,7 +92,7 @@ class _PostsProMapState extends State<PostsProMap> {
                                       ),
                                     )
                                   : Text(
-                                      "${NumberFormat.decimalPattern().format(widget.postData.price)} BDT",
+                                      "${userController.currency(widget.postData.price)}",
                                       style: const TextStyle(
                                         fontSize: 22,
                                         color: Color(0xff083437),

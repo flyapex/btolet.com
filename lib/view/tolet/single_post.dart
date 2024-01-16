@@ -1,12 +1,12 @@
 import 'dart:convert';
-import 'dart:io';
 import 'dart:ui';
+import 'package:btolet/controller/ads_controller.dart';
 import 'package:btolet/controller/location_controller.dart';
 import 'package:btolet/controller/tolet_controller.dart';
 import 'package:btolet/controller/user_controller.dart';
+import 'package:btolet/model/tolet_model.dart';
 import 'package:btolet/view/shimmer/shimmer.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
@@ -17,6 +17,8 @@ import 'package:like_button/like_button.dart';
 import 'package:map_launcher/map_launcher.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import 'tolet.dart';
 
 class SinglePostTolet extends StatefulWidget {
   final int postid;
@@ -29,16 +31,72 @@ class SinglePostTolet extends StatefulWidget {
   State<SinglePostTolet> createState() => _SinglePostToletState();
 }
 
-class _SinglePostToletState extends State<SinglePostTolet> {
+class _SinglePostToletState extends State<SinglePostTolet>
+    with AutomaticKeepAliveClientMixin {
   ToletController toletController = Get.find();
-  // AdsController adsController = Get.put(AdsController());
+  AdsController adsController = Get.put(AdsController());
   UserController userController = Get.find();
   LocationController locationController = Get.find();
+  late SingleToletPostModel postData;
+  getImage(
+    data1,
+    data2,
+    data3,
+    data4,
+    data5,
+    data6,
+    data7,
+    data8,
+    data9,
+    data10,
+    data11,
+    data12,
+  ) {
+    var imageList = [];
+    if (data1 != '') {
+      imageList.add(data1);
+    }
+    if (data2 != '') {
+      imageList.add(data2);
+    }
+    if (data3 != '') {
+      imageList.add(data3);
+    }
+    if (data4 != '') {
+      imageList.add(data4);
+    }
+    if (data5 != '') {
+      imageList.add(data5);
+    }
+    if (data6 != '') {
+      imageList.add(data6);
+    }
+    if (data7 != '') {
+      imageList.add(data7);
+    }
+    if (data8 != '') {
+      imageList.add(data8);
+    }
+    if (data9 != '') {
+      imageList.add(data9);
+    }
+    if (data10 != '') {
+      imageList.add(data10);
+    }
+    if (data11 != '') {
+      imageList.add(data11);
+    }
+    if (data12 != '') {
+      imageList.add(data12);
+    }
+    return imageList;
+  }
 
   lodeData() async {
     toletController.lodeOneTime(true);
     var data = await toletController.getSinglePost(widget.postid);
-    if (data) {
+    if (data != null) {
+      postData = data;
       addMarker();
     }
   }
@@ -46,8 +104,10 @@ class _SinglePostToletState extends State<SinglePostTolet> {
   final ScrollController _controller = ScrollController();
   final ScrollController _controllerMore = ScrollController();
 
+  late bool morePost;
   @override
   void initState() {
+    morePost = false;
     lodeData();
     // rootBundle.loadString('assets/map/map_style.txt').then((string) {
     //   _mapStyle = string;
@@ -57,34 +117,50 @@ class _SinglePostToletState extends State<SinglePostTolet> {
     _controllerMore.addListener(_scrollListenerMore);
     super.initState();
     // adsController.createInterstitialAd();
-    // adsController.createRewardedAd();
-    // adsController.createRewardedInterstitialAd();
+    adsController.createRewardedAd();
+    adsController.createRewardedInterstitialAd();
   }
 
   void _scrollListener() {
-    if (_controller.position.maxScrollExtent > 0) {
-      var scrollPercentage =
-          (_controller.position.pixels / _controller.position.maxScrollExtent)
-              .clamp(0.0, 1.0);
+    double scrollPosition = _controller.position.pixels;
 
-      if (scrollPercentage > 0.5 &&
-          scrollPercentage < 0.6 &&
-          toletController.lodeOneTime.value) {
-        print("Lode More Data");
-        toletController.getMorePost(
-          1,
-          toletController.singlepost.geolat,
-          toletController.singlepost.geolon,
-        );
-      }
+    double totalPageHeight = _controller.position.maxScrollExtent;
+    double seventyPercentOfPage = 0.7 * totalPageHeight;
+    if (scrollPosition >= seventyPercentOfPage && !morePost) {
+      print("Load More Post Now");
+      toletController.getMorePost(
+        1,
+        postData.geolat,
+        postData.geolon,
+      );
+      setState(() {
+        morePost = true;
+      });
     }
-    if (_controller.position.userScrollDirection == ScrollDirection.reverse) {
-      locationController.singlePostTolemap.value = true;
-    } else {
-      if (_controller.position.userScrollDirection == ScrollDirection.forward) {
-        locationController.singlePostTolemap.value = false;
-      }
-    }
+
+    // if (_controller.position.maxScrollExtent > 0) {
+    //   var scrollPercentage =
+    //       (_controller.position.pixels / _controller.position.maxScrollExtent)
+    //           .clamp(0.0, 1.0);
+
+    //   if (scrollPercentage > 0.5 &&
+    //       scrollPercentage < 0.6 &&
+    //       toletController.lodeOneTime.value) {
+    //     print("Lode More Data");
+    //     toletController.getMorePost(
+    //       1,
+    //       postData.geolat,
+    //       postData.geolon,
+    //     );
+    //   }
+    // }
+    // if (_controller.position.userScrollDirection == ScrollDirection.reverse) {
+    //   locationController.singlePostTolemap.value = true;
+    // } else {
+    //   if (_controller.position.userScrollDirection == ScrollDirection.forward) {
+    //     locationController.singlePostTolemap.value = false;
+    //   }
+    // }
   }
 
   var lodingPage = 2;
@@ -95,8 +171,8 @@ class _SinglePostToletState extends State<SinglePostTolet> {
       print("Lode More Page");
       toletController.getMorePost(
         lodingPage,
-        toletController.singlepost.geolat,
-        toletController.singlepost.geolon,
+        postData.geolat,
+        postData.geolon,
       );
       print(lodingPage);
       lodingPage++;
@@ -109,8 +185,8 @@ class _SinglePostToletState extends State<SinglePostTolet> {
     super.dispose();
 
     // adsController.interstitialAd?.dispose();
-    // adsController.rewardedAd?.dispose();
-    // adsController.rewardedInterstitialAd?.dispose();
+    adsController.rewardedAd?.dispose();
+    adsController.rewardedInterstitialAd?.dispose();
   }
 
   // late String _mapStyle;
@@ -118,16 +194,15 @@ class _SinglePostToletState extends State<SinglePostTolet> {
   void addMarker() async {
     await markers.addLabelMarker(
       LabelMarker(
-        label:
-            "৳ ${NumberFormat.decimalPattern().format(toletController.singlepost.rent)}",
+        label: "৳ ${NumberFormat.decimalPattern().format(postData.rent)}",
         // label: data.rent.toString(),
-        markerId: MarkerId(toletController.singlepost.postId.toString()),
-        position: LatLng(double.parse(toletController.singlepost.geolat),
-            double.parse(toletController.singlepost.geolon)),
+        markerId: MarkerId(postData.postId.toString()),
+        position: LatLng(
+            double.parse(postData.geolat), double.parse(postData.geolon)),
         backgroundColor: Colors.orange,
         infoWindow: InfoWindow(
           title:
-              '${toletController.singlepost.bed}bed,${toletController.singlepost.bath}bath,${toletController.singlepost.kitchen}kitchen',
+              '${postData.bed}bed,${postData.bath}bath,${postData.kitchen}kitchen',
         ),
         onTap: () async {},
       ),
@@ -138,6 +213,7 @@ class _SinglePostToletState extends State<SinglePostTolet> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     var height = Get.height;
     var width = Get.width;
 
@@ -161,13 +237,7 @@ class _SinglePostToletState extends State<SinglePostTolet> {
                           flex: 1,
                           child: InkWell(
                             onTap: () async {
-                              final call = Uri.parse(
-                                  'tel:${toletController.singlepost.phone}');
-                              if (await canLaunchUrl(call)) {
-                                launchUrl(call);
-                              } else {
-                                throw 'Could not launch $call';
-                              }
+                              adsController.showRewardedAd(postData.phone);
                             },
                             child: Container(
                               height: 44,
@@ -204,7 +274,7 @@ class _SinglePostToletState extends State<SinglePostTolet> {
                           child: InkWell(
                             onTap: () async {
                               var uri = Uri.parse(
-                                  'sms:${toletController.singlepost.phone}?body=hello%20there');
+                                  'sms:${postData.phone}?body=hello%20there');
 
                               if (await canLaunchUrl(uri)) {
                                 await launchUrl(uri);
@@ -258,22 +328,26 @@ class _SinglePostToletState extends State<SinglePostTolet> {
                           flex: 2,
                           child: InkWell(
                             onTap: () async {
-                              String appUrl;
-                              String phone = toletController.singlepost.wapp;
-                              String message = 'Surprice Bitch! ';
-                              if (Platform.isAndroid) {
-                                appUrl =
-                                    "whatsapp://send?phone=$phone&text=${Uri.parse(message)}";
-                              } else {
-                                appUrl =
-                                    "https://api.whatsapp.com/send?phone=$phone=${Uri.parse(message)}"; // URL for non-Android devices
-                              }
+                              // String appUrl;
+                              // String phone = postData.wapp;
+                              // String message = 'Surprice Bitch! ';
+                              // if (Platform.isAndroid) {
+                              //   appUrl =
+                              //       "whatsapp://send?phone=$phone&text=${Uri.parse(message)}";
+                              // } else {
+                              //   appUrl =
+                              //       "https://api.whatsapp.com/send?phone=$phone=${Uri.parse(message)}"; // URL for non-Android devices
+                              // }
 
-                              if (await canLaunchUrl(Uri.parse(appUrl))) {
-                                await launchUrl(Uri.parse(appUrl));
-                              } else {
-                                throw 'Could not launch $appUrl';
-                              }
+                              // if (await canLaunchUrl(Uri.parse(appUrl))) {
+                              //   await launchUrl(Uri.parse(appUrl));
+                              // } else {
+                              //   throw 'Could not launch $appUrl';
+                              // }
+
+                              adsController.showRewardedInterstitialAd(
+                                  postData.phone,
+                                  "Hi I just Saw a post on Btolet.com app that you");
                             },
                             child: Container(
                               height: 44,
@@ -323,7 +397,20 @@ class _SinglePostToletState extends State<SinglePostTolet> {
                           children: [
                             ImageSlidePage(
                               hight: height / 3.5,
-                              imageList: toletController.imageList,
+                              imageList: getImage(
+                                postData.image1,
+                                postData.image2,
+                                postData.image3,
+                                postData.image4,
+                                postData.image5,
+                                postData.image6,
+                                postData.image7,
+                                postData.image8,
+                                postData.image9,
+                                postData.image10,
+                                postData.image11,
+                                postData.image12,
+                              ),
                             ),
                             Column(
                               children: [
@@ -376,7 +463,7 @@ class _SinglePostToletState extends State<SinglePostTolet> {
                                           onTap: (isLiked) async {
                                             print(!isLiked);
                                             toletController.save(
-                                              toletController.singlepost.postId,
+                                              postData.postId,
                                               !isLiked,
                                             );
                                             return !isLiked;
@@ -401,7 +488,7 @@ class _SinglePostToletState extends State<SinglePostTolet> {
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
                                   Text(
-                                    "৳ ${NumberFormat.decimalPattern().format(toletController.singlepost.rent)}",
+                                    "৳ ${NumberFormat.decimalPattern().format(postData.rent)}",
                                     style: const TextStyle(
                                       fontSize: 30,
                                       color: Color(0xff083437),
@@ -409,7 +496,7 @@ class _SinglePostToletState extends State<SinglePostTolet> {
                                     ),
                                   ),
                                   const SizedBox(height: 10),
-                                  toletController.singlepost.garagetype == ""
+                                  postData.garagetype == ""
                                       ? Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
@@ -437,7 +524,7 @@ class _SinglePostToletState extends State<SinglePostTolet> {
                                                   ),
                                                   const SizedBox(width: 10),
                                                   Text(
-                                                    '${toletController.singlepost.bed} Beds',
+                                                    '${postData.bed} Beds',
                                                     style: const TextStyle(
                                                       color: Color(0xff083437),
                                                       fontWeight:
@@ -470,7 +557,7 @@ class _SinglePostToletState extends State<SinglePostTolet> {
                                                   ),
                                                   const SizedBox(width: 10),
                                                   Text(
-                                                    '${toletController.singlepost.bath} Baths',
+                                                    '${postData.bath} Baths',
                                                     style: const TextStyle(
                                                       color: Color(0xff083437),
                                                       fontWeight:
@@ -484,9 +571,7 @@ class _SinglePostToletState extends State<SinglePostTolet> {
                                             // const SizedBox(width: 20),
                                             Expanded(
                                               flex: 1,
-                                              child: toletController.singlepost
-                                                          .roomsize ==
-                                                      ''
+                                              child: postData.roomsize == ''
                                                   ? Row(
                                                       crossAxisAlignment:
                                                           CrossAxisAlignment
@@ -511,7 +596,7 @@ class _SinglePostToletState extends State<SinglePostTolet> {
                                                         const SizedBox(
                                                             width: 10),
                                                         Text(
-                                                          "  ${toletController.singlepost.kitchen} Kitchen",
+                                                          "  ${postData.kitchen} Kitchen",
                                                           style:
                                                               const TextStyle(
                                                             color: Color(
@@ -546,7 +631,7 @@ class _SinglePostToletState extends State<SinglePostTolet> {
                                                             width: 10),
                                                         Expanded(
                                                           child: Text(
-                                                            "  ${toletController.singlepost.roomsize}", //ft\u00b2
+                                                            "  ${postData.roomsize}", //ft\u00b2
                                                             style:
                                                                 const TextStyle(
                                                               color: Color(
@@ -566,8 +651,7 @@ class _SinglePostToletState extends State<SinglePostTolet> {
                                             ),
                                           ],
                                         )
-                                      : toletController.singlepost.garagetype ==
-                                              "Car"
+                                      : postData.garagetype == "Car"
                                           ? Row(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.center,
@@ -591,7 +675,7 @@ class _SinglePostToletState extends State<SinglePostTolet> {
                                                       const EdgeInsets.only(
                                                           top: 4),
                                                   child: Text(
-                                                    "${toletController.singlepost.garagetype} Garage",
+                                                    "${postData.garagetype} Garage",
                                                     style: const TextStyle(
                                                       color: Color(0xff083437),
                                                       fontWeight:
@@ -635,7 +719,7 @@ class _SinglePostToletState extends State<SinglePostTolet> {
                                                 ),
                                                 const SizedBox(width: 10),
                                                 Text(
-                                                  "${toletController.singlepost.garagetype} Garage",
+                                                  "${postData.garagetype} Garage",
                                                   style: const TextStyle(
                                                     color: Color(0xff083437),
                                                     fontWeight: FontWeight.bold,
@@ -684,13 +768,11 @@ class _SinglePostToletState extends State<SinglePostTolet> {
                                   InkWell(
                                     onTap: () async {
                                       final coords = Coords(
-                                        double.parse(
-                                            toletController.singlepost.geolat),
-                                        double.parse(
-                                            toletController.singlepost.geolon),
+                                        double.parse(postData.geolat),
+                                        double.parse(postData.geolon),
                                       );
                                       var title =
-                                          "Price ৳ ${NumberFormat.decimalPattern().format(toletController.singlepost.rent)}";
+                                          "Price ৳ ${NumberFormat.decimalPattern().format(postData.rent)}";
                                       final availableMaps =
                                           await MapLauncher.installedMaps;
                                       // await availableMaps.first
@@ -803,7 +885,7 @@ class _SinglePostToletState extends State<SinglePostTolet> {
                                           width: width / 1.7,
                                           child: Text(
                                             // locationController.locationAddress.value,
-                                            toletController.singlepost.location,
+                                            postData.location,
                                             style: const TextStyle(
                                               fontSize: 14,
                                               color: Color(0xff083437),
@@ -817,8 +899,8 @@ class _SinglePostToletState extends State<SinglePostTolet> {
                                     ),
                                   ),
                                   Text(
-                                    '${userController.getDay(toletController.singlepost.time)}',
-                                    // ' ${timeago.format(toletController.singlepost.time, locale: 'en_short')} ago',
+                                    '${userController.getDay(postData.time)}',
+                                    // ' ${timeago.format(postData.time, locale: 'en_short')} ago',
                                     style: const TextStyle(
                                       fontSize: 12,
                                       color: Color(0xff083437),
@@ -892,7 +974,7 @@ class _SinglePostToletState extends State<SinglePostTolet> {
                                         ),
                                       ),
                                       Text(
-                                        "id:${toletController.singlepost.postId}",
+                                        "id:${postData.postId}",
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: const Color(0xff083437)
@@ -904,16 +986,14 @@ class _SinglePostToletState extends State<SinglePostTolet> {
 
                                   Details(
                                     type: "Property Name",
-                                    detailstext:
-                                        toletController.singlepost.propertyname,
+                                    detailstext: postData.propertyname,
                                     icon: Icons.home_rounded,
                                   ),
 
                                   Details(
                                     type: "Property Type",
                                     detailstext: json
-                                        .decode(
-                                            toletController.singlepost.category)
+                                        .decode(postData.category)
                                         .join(", "),
                                     icon: Icons.business_outlined,
                                   ),
@@ -932,15 +1012,13 @@ class _SinglePostToletState extends State<SinglePostTolet> {
                                   // const SizedBox(height: 15),
                                   Details(
                                     type: "Dining",
-                                    detailstext:
-                                        toletController.singlepost.dining,
+                                    detailstext: postData.dining,
                                     icon: Icons.dining_outlined,
                                   ),
 
                                   Details(
                                     type: "Kitchen",
-                                    detailstext:
-                                        toletController.singlepost.kitchen,
+                                    detailstext: postData.kitchen,
                                     icon: Icons.kitchen_rounded,
                                   ),
                                   // const SizedBox(height: 15),
@@ -952,32 +1030,28 @@ class _SinglePostToletState extends State<SinglePostTolet> {
 
                                   Details(
                                     type: "Floor",
-                                    detailstext:
-                                        toletController.singlepost.floornumber,
+                                    detailstext: postData.floornumber,
                                     icon: Icons.person_pin_circle_rounded,
                                   ),
 
                                   Details(
                                     type: "Facing",
-                                    detailstext:
-                                        toletController.singlepost.facing,
+                                    detailstext: postData.facing,
                                     icon: Icons.window_outlined,
                                   ),
                                   Details(
                                     type: "Rent From",
-                                    detailstext: DateFormat('d MMM').format(
-                                        toletController.singlepost.time),
+                                    detailstext: DateFormat('d MMM')
+                                        .format(postData.time),
                                     icon: Icons.access_time,
                                   ),
 
                                   Details(
                                     type: "Facilities",
-                                    detailstext: toletController
-                                            .singlepost.fasalitis.isEmpty
+                                    detailstext: postData.fasalitis.isEmpty
                                         ? ""
                                         : json
-                                            .decode(toletController
-                                                .singlepost.fasalitis)
+                                            .decode(postData.fasalitis)
                                             .join(", "),
                                     icon: Icons.search_sharp,
                                     textColor: Colors.green,
@@ -985,18 +1059,15 @@ class _SinglePostToletState extends State<SinglePostTolet> {
 
                                   Details(
                                     type: "Maintenance",
-                                    detailstext: toletController
-                                                .singlepost.mentenance ==
-                                            0
+                                    detailstext: postData.mentenance == 0
                                         ? ""
-                                        : "${NumberFormat.decimalPattern().format(toletController.singlepost.mentenance)} ৳/mon",
+                                        : "${NumberFormat.decimalPattern().format(postData.mentenance)} ৳/mon",
                                     icon: Icons.monetization_on_outlined,
                                   ),
 
                                   Details(
                                     type: "Short Address",
-                                    detailstext:
-                                        toletController.singlepost.shortaddress,
+                                    detailstext: postData.shortaddress,
                                     icon: Icons.share_location_rounded,
                                   ),
 
@@ -1039,7 +1110,7 @@ class _SinglePostToletState extends State<SinglePostTolet> {
                                         bottom: 20,
                                       ),
                                       child: Text(
-                                        toletController.singlepost.description,
+                                        postData.description,
                                         textAlign: TextAlign.justify,
                                         overflow: TextOverflow.clip,
                                         // maxLines: 5,
@@ -1085,10 +1156,8 @@ class _SinglePostToletState extends State<SinglePostTolet> {
                                             initialCameraPosition:
                                                 CameraPosition(
                                               target: LatLng(
-                                                double.parse(toletController
-                                                    .singlepost.geolat),
-                                                double.parse(toletController
-                                                    .singlepost.geolon),
+                                                double.parse(postData.geolat),
+                                                double.parse(postData.geolon),
                                               ),
                                               zoom: 16.0,
                                             ),
@@ -1108,13 +1177,13 @@ class _SinglePostToletState extends State<SinglePostTolet> {
                                                 backgroundColor: Colors.blue,
                                                 onPressed: () async {
                                                   final coords = Coords(
-                                                    double.parse(toletController
-                                                        .singlepost.geolat),
-                                                    double.parse(toletController
-                                                        .singlepost.geolon),
+                                                    double.parse(
+                                                        postData.geolat),
+                                                    double.parse(
+                                                        postData.geolon),
                                                   );
                                                   var title =
-                                                      "Price ৳ ${NumberFormat.decimalPattern().format(toletController.singlepost.rent)}";
+                                                      "Price ৳ ${NumberFormat.decimalPattern().format(postData.rent)}";
                                                   final availableMaps =
                                                       await MapLauncher
                                                           .installedMaps;
@@ -1201,75 +1270,75 @@ class _SinglePostToletState extends State<SinglePostTolet> {
                               ),
                             ),
                             const SizedBox(height: 30),
-                            // const Row(
-                            //   children: [
-                            //     Padding(
-                            //       padding: EdgeInsets.only(left: 20),
-                            //       child: Text(
-                            //         'more',
-                            //         style: TextStyle(
-                            //           fontSize: 13,
-                            //           color: Colors.black38,
-                            //         ),
-                            //       ),
-                            //     ),
-                            //   ],
-                            // ),
-                            // const SizedBox(height: 20),
+                            const Row(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(left: 20),
+                                  child: Text(
+                                    'more',
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      color: Colors.black38,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 20),
 
-                            // SizedBox(
-                            //   height: height / 7,
-                            //   child: StreamBuilder(
-                            //     stream: toletController.morePost.stream,
-                            //     builder: (BuildContext context,
-                            //         AsyncSnapshot snapshot) {
-                            //       if (snapshot.data == null) {
-                            //         return const PostListSuggstionSimmer(
-                            //           topPadding: 0,
-                            //           count: 4,
-                            //         );
-                            //       } else {
-                            //         return ListView.builder(
-                            //           controller: _controllerMore,
-                            //           scrollDirection: Axis.horizontal,
-                            //           shrinkWrap: true,
-                            //           itemCount: snapshot.data.length + 1,
-                            //           itemBuilder: (c, i) {
-                            //             if (i < snapshot.data.length) {
-                            //               return Padding(
-                            //                 padding:
-                            //                     const EdgeInsets.only(left: 20),
-                            //                 child: Container(
-                            //                   decoration: BoxDecoration(
-                            //                     borderRadius:
-                            //                         BorderRadius.circular(10),
-                            //                     border: Border.all(
-                            //                       color: Colors.black
-                            //                           .withOpacity(0.1),
-                            //                       width: 0.4,
-                            //                     ),
-                            //                   ),
-                            //                   child: MorePage(
-                            //                     postData: snapshot.data[i],
-                            //                   ),
-                            //                 ),
-                            //               );
-                            //             } else {
-                            //               return const Center(
-                            //                 child: Padding(
-                            //                   padding: EdgeInsets.all(20),
-                            //                   child: CircularProgressIndicator(
-                            //                     color: Colors.red,
-                            //                   ),
-                            //                 ),
-                            //               );
-                            //             }
-                            //           },
-                            //         );
-                            //       }
-                            //     },
-                            //   ),
-                            // ),
+                            SizedBox(
+                              height: height / 7,
+                              child: StreamBuilder(
+                                stream: toletController.morePost.stream,
+                                builder: (BuildContext context,
+                                    AsyncSnapshot snapshot) {
+                                  if (snapshot.data == null) {
+                                    return const PostListSuggstionSimmer(
+                                      topPadding: 0,
+                                      count: 4,
+                                    );
+                                  } else {
+                                    return ListView.builder(
+                                      controller: _controllerMore,
+                                      scrollDirection: Axis.horizontal,
+                                      shrinkWrap: true,
+                                      itemCount: snapshot.data.length + 1,
+                                      itemBuilder: (c, i) {
+                                        if (i < snapshot.data.length) {
+                                          return Padding(
+                                            padding:
+                                                const EdgeInsets.only(left: 20),
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                border: Border.all(
+                                                  color: Colors.black
+                                                      .withOpacity(0.1),
+                                                  width: 0.4,
+                                                ),
+                                              ),
+                                              child: PostsTolet(
+                                                postData: snapshot.data[i],
+                                              ),
+                                            ),
+                                          );
+                                        } else {
+                                          return const Center(
+                                            child: Padding(
+                                              padding: EdgeInsets.all(20),
+                                              child: CircularProgressIndicator(
+                                                color: Colors.red,
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                      },
+                                    );
+                                  }
+                                },
+                              ),
+                            ),
                             const SizedBox(height: 140),
                           ],
                         ),
@@ -1317,6 +1386,9 @@ class _SinglePostToletState extends State<SinglePostTolet> {
             ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class Details extends StatelessWidget {
@@ -1392,9 +1464,10 @@ class ImageSlidePage extends StatefulWidget {
 
 class _ImageSlidePageState extends State<ImageSlidePage> {
   final PageController pageController = PageController(initialPage: 0);
-  // toletController toletController = Get.find();
+
   @override
   void initState() {
+    print(widget.imageList.length);
     super.initState();
   }
 
@@ -1405,86 +1478,84 @@ class _ImageSlidePageState extends State<ImageSlidePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => InkWell(
-        onTap: () {
-          Get.to(
-            ImageFullView(
-              currentPage: (pageController.page ?? 0).toInt(),
-              imagelist: widget.imageList,
-            ),
-          );
-        },
-        child: SizedBox(
-          height: widget.hight,
-          width: double.infinity,
-          child: Stack(
-            children: [
-              PageView.builder(
-                physics: const BouncingScrollPhysics(
-                  parent: AlwaysScrollableScrollPhysics(),
-                ),
-                controller: pageController,
-                itemCount: widget.imageList.length,
-                itemBuilder: (context, index) {
-                  return Stack(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(3),
-                          image: DecorationImage(
-                            image: MemoryImage(
-                              base64Decode(
-                                widget.imageList[index],
-                              ),
-                            ),
-                            // fit: BoxFit.fitWidth,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                    ],
-                  );
-                },
-                onPageChanged: (index) {},
-              ),
-              widget.imageList.length == 1
-                  ? Container()
-                  : Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 20),
-                        child: SmoothPageIndicator(
-                          controller: pageController,
-                          count: widget.imageList.length,
-                          effect: const ExpandingDotsEffect(
-                            dotWidth: 7.5,
-                            dotHeight: 7.5,
-                            spacing: 10,
-                            dotColor: Colors.white,
-                            activeDotColor: Colors.white,
-                          ),
-                          onDotClicked: (index) {},
-                        ),
-                      ),
-                    ),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Align(
-                  alignment: Alignment.bottomRight,
-                  child: SvgPicture.asset(
-                    'assets/logo/logo.svg',
-                    colorFilter: const ColorFilter.mode(
-                      Colors.white,
-                      BlendMode.srcIn,
-                    ),
-                    height: 16,
-                  ),
-                ),
-              ),
-            ],
+    return InkWell(
+      onTap: () {
+        Get.to(
+          ImageFullView(
+            currentPage: (pageController.page ?? 0).toInt(),
+            imagelist: widget.imageList,
           ),
+        );
+      },
+      child: SizedBox(
+        height: widget.hight,
+        width: double.infinity,
+        child: Stack(
+          children: [
+            PageView.builder(
+              physics: const BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics(),
+              ),
+              controller: pageController,
+              itemCount: widget.imageList.length,
+              itemBuilder: (context, index) {
+                return Stack(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(3),
+                        image: DecorationImage(
+                          image: MemoryImage(
+                            base64Decode(
+                              widget.imageList[index],
+                            ),
+                          ),
+                          // fit: BoxFit.fitWidth,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
+              onPageChanged: (index) {},
+            ),
+            widget.imageList.length == 1
+                ? Container()
+                : Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 20),
+                      child: SmoothPageIndicator(
+                        controller: pageController,
+                        count: widget.imageList.length,
+                        effect: const ExpandingDotsEffect(
+                          dotWidth: 7.5,
+                          dotHeight: 7.5,
+                          spacing: 10,
+                          dotColor: Colors.white,
+                          activeDotColor: Colors.white,
+                        ),
+                        onDotClicked: (index) {},
+                      ),
+                    ),
+                  ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Align(
+                alignment: Alignment.bottomRight,
+                child: SvgPicture.asset(
+                  'assets/logo/logo.svg',
+                  colorFilter: const ColorFilter.mode(
+                    Colors.white,
+                    BlendMode.srcIn,
+                  ),
+                  height: 16,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

@@ -27,7 +27,7 @@ class _PostToletState extends State<PostTolet> {
     toletController.kitchenFlag(false);
     toletController.priceFlag(false);
     toletController.imageFlag(false);
-    toletController.floorFlag(false);
+    toletController.floornoFlag(false);
     userController.phoneFlag(false);
     super.dispose();
   }

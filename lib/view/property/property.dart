@@ -26,10 +26,15 @@ class Property extends StatefulWidget {
   State<Property> createState() => _PropertyState();
 }
 
-class _PropertyState extends State<Property> {
+class _PropertyState extends State<Property>
+    with AutomaticKeepAliveClientMixin {
   ProController proController = Get.put(ProController());
   LocationController locationController = Get.find();
   bool _atEnd = false;
+  // getLocation() async {
+  //   await locationController.getCurrnetlanlongLocation();
+  // }
+
   @override
   void initState() {
     proController.getAllPost();
@@ -38,6 +43,7 @@ class _PropertyState extends State<Property> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
         body: NotificationListener(
       onNotification: (scrollNotification) {
@@ -77,7 +83,10 @@ class _PropertyState extends State<Property> {
             },
           ),
           onRefresh: () async {
-            // await locationController.getCurrnetlanlongLocation();
+            // await locationController.getCurrnetlanlongLocation(
+            //     false, 'Property Ref'); //!think about it
+            proController.getCurrentPostCount();
+
             proController.allPost.clear();
             proController.allPost.refresh();
             proController.page.value = 1;
@@ -227,6 +236,9 @@ class _PropertyState extends State<Property> {
       ),
     ));
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class PostsPro extends StatelessWidget {
@@ -350,7 +362,9 @@ class PostsPro extends StatelessWidget {
                         ),
                       )
                     : Text(
-                        "${NumberFormat.decimalPattern().format(postData.price)} BDT",
+                        "BDT ${userController.currency(postData.price)} ",
+
+                        // "${NumberFormat.decimalPattern().format(postData.price)} BDT",
                         style: const TextStyle(
                           fontSize: 24,
                           color: Color(0xff083437),

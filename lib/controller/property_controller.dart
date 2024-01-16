@@ -18,13 +18,13 @@ class ProController extends GetxController {
   var currentPostCount = 999.obs;
   var currentPostCountLoding = true.obs;
 
-  Future getCurrentPostCount(location) async {
+  Future getCurrentPostCount() async {
     try {
       currentPostCountLoding(true);
-      print(location);
-      print(locationController.locationAddressShort.split(', ')[1]);
+
       var data = await ApiServicePro.postCountArea(
-          location, locationController.locationAddressShort.split(',')[1]);
+          locationController.locationAddressShort.split(',')[0],
+          locationController.locationAddressShort.split(',')[1]);
       if (data != null) {
         currentPostCount.value = data;
         currentPostCountLoding(false);
@@ -58,64 +58,61 @@ class ProController extends GetxController {
   }
 
   var singlePostloding = true.obs;
-  late SinglePostModel singlepost;
   getSinglePost(postid) async {
-    imageList.clear();
+    print("get Data");
     singlePostloding(true);
     try {
       var response = await ApiServicePro.getSinglePost(postid);
       if (response != null) {
-        singlepost = response;
-        getImageList();
-        return true;
+        return response;
       } else {
-        return false;
+        return null;
       }
     } finally {
       singlePostloding(false);
     }
   }
 
-  var imageList = [].obs;
-  getImageList() {
-    if (singlepost.image1 != '') {
-      imageList.add(singlepost.image1);
-    }
-    if (singlepost.image2 != '') {
-      imageList.add(singlepost.image2);
-    }
-    if (singlepost.image3 != '') {
-      imageList.add(singlepost.image3);
-    }
-    if (singlepost.image4 != '') {
-      imageList.add(singlepost.image4);
-    }
-    if (singlepost.image5 != '') {
-      imageList.add(singlepost.image5);
-    }
-    if (singlepost.image6 != '') {
-      imageList.add(singlepost.image6);
-    }
-    if (singlepost.image7 != '') {
-      imageList.add(singlepost.image7);
-    }
-    if (singlepost.image8 != '') {
-      imageList.add(singlepost.image8);
-    }
-    if (singlepost.image9 != '') {
-      imageList.add(singlepost.image9);
-    }
-    if (singlepost.image10 != '') {
-      imageList.add(singlepost.image10);
-    }
-    if (singlepost.image11 != '') {
-      imageList.add(singlepost.image11);
-    }
-    if (singlepost.image12 != '') {
-      imageList.add(singlepost.image12);
-    }
-    return imageList;
-  }
+  // var imageList = [].obs;
+  // getImageList() {
+  //   if (singlepost.image1 != '') {
+  //     imageList.add(singlepost.image1);
+  //   }
+  //   if (singlepost.image2 != '') {
+  //     imageList.add(singlepost.image2);
+  //   }
+  //   if (singlepost.image3 != '') {
+  //     imageList.add(singlepost.image3);
+  //   }
+  //   if (singlepost.image4 != '') {
+  //     imageList.add(singlepost.image4);
+  //   }
+  //   if (singlepost.image5 != '') {
+  //     imageList.add(singlepost.image5);
+  //   }
+  //   if (singlepost.image6 != '') {
+  //     imageList.add(singlepost.image6);
+  //   }
+  //   if (singlepost.image7 != '') {
+  //     imageList.add(singlepost.image7);
+  //   }
+  //   if (singlepost.image8 != '') {
+  //     imageList.add(singlepost.image8);
+  //   }
+  //   if (singlepost.image9 != '') {
+  //     imageList.add(singlepost.image9);
+  //   }
+  //   if (singlepost.image10 != '') {
+  //     imageList.add(singlepost.image10);
+  //   }
+  //   if (singlepost.image11 != '') {
+  //     imageList.add(singlepost.image11);
+  //   }
+  //   if (singlepost.image12 != '') {
+  //     imageList.add(singlepost.image12);
+  //   }
+  //   return imageList;
+  // }
 //*---------------------- More Post
 
   var lodingmorePosts = true.obs;

@@ -28,7 +28,6 @@ class CategoryChip extends StatelessWidget {
           selected: categoryState.value,
           onSelected: (value) {
             categoryState.value = !categoryState.value;
-
             if (toletController.categories.values
                 .where((value) => value.value)
                 .isNotEmpty) {
@@ -37,15 +36,34 @@ class CategoryChip extends StatelessWidget {
               toletController.categoryFlag.value = false;
             }
 
-            // toletController.activeFlag(false);
-            // toletController.categoryFlag.value = false;
-            // toletController.bedFlag(false);
-            // toletController.bathFlag(false);
-            // toletController.kitchenFlag(false);
-            // toletController.priceFlag(false);
-            // toletController.imageFlag(false);
-            // toletController.floorFlag(false);
-            // toletController.phoneFlag(false);
+            var c = toletController.categories;
+            var t = toletController;
+            if (t.categoryFlag.value) {
+              if (c['Only Garage']!.value) {
+                t.bedFlag(true);
+                t.bathFlag(true);
+                t.kitchenFlag(true);
+                t.floornoFlag(true);
+              } else if (c['Office']!.value && c['Family']!.value) {
+                t.floornoFlag(true);
+                t.kitchenFlag(true);
+                t.garageFlag(true);
+              } else if (c['Office']!.value) {
+                t.kitchenFlag(true);
+                t.floornoFlag(true);
+                t.garageFlag(true);
+              } else if (c['Shop']!.value) {
+                t.bedFlag(true);
+                t.bathFlag(true);
+                t.kitchenFlag(true);
+                t.garageFlag(true);
+              } else {
+                t.floornoFlag(true);
+                t.garageFlag(true);
+              }
+            } else {
+              t.checkAllCatagory();
+            }
           },
           avatar: Icon(
             categoryState.value ? Icons.check_circle_rounded : Icons.add,

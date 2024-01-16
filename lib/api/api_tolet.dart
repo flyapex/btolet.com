@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 
 final dio = Dio();
 var baseUrl = 'http://10.0.2.2:3000/api/tolet';
-// var baseUrl = 'http://109.123.234.150/api';
+// var baseUrl = 'http://154.26.135.41:3800/api/tolet';
 
 var headers = {
   "content-type": 'application/json;charset=UTF-8',
@@ -66,7 +66,6 @@ class ApiServiceTolet {
       data: newPostToletToJson(data),
     );
 
-    print(response.data);
     if (response.statusCode == 200) {
       return response.data.toString();
     } else {
@@ -75,8 +74,6 @@ class ApiServiceTolet {
   }
 
   static Future sortingPostCount(SortPostTolet data) async {
-    print(sortPostToletToJson(data));
-
     final response = await dio.post(
       '$baseUrl/sort/postcount',
       data: sortPostToletToJson(data),

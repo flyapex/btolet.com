@@ -19,14 +19,15 @@ class ToletController extends GetxController {
   final refreshkey = GlobalKey<CustomRefreshIndicatorState>();
   var currentPostCount = 999.obs;
   var currentPostCountLoding = true.obs;
-  Future getCurrentPostCount(location) async {
+  Future getCurrentPostCount() async {
     try {
       currentPostCountLoding(true);
       var data = await ApiServiceTolet.postCountArea(
-          location, locationController.locationAddressShort.split(',')[1]);
+          locationController.locationAddressShort.split(',')[0],
+          locationController.locationAddressShort.split(',')[1]);
       if (data != null) {
         currentPostCount.value = data;
-        currentPostCountLoding(false); //false
+        currentPostCountLoding(false);
       }
     } finally {}
   }
@@ -56,64 +57,18 @@ class ToletController extends GetxController {
   }
 
   var singlePostloding = true.obs;
-  late SingleToletPostModel singlepost;
   getSinglePost(postid) async {
-    imageList.clear();
     singlePostloding(true);
     try {
       var response = await ApiServiceTolet.getSinglePost(postid);
       if (response != null) {
-        singlepost = response;
-        getImageList();
-        return true;
+        return response;
       } else {
-        return false;
+        return null;
       }
     } finally {
       singlePostloding(false);
     }
-  }
-
-  var imageList = [].obs;
-  getImageList() {
-    if (singlepost.image1 != '') {
-      imageList.add(singlepost.image1);
-    }
-    if (singlepost.image2 != '') {
-      imageList.add(singlepost.image2);
-    }
-    if (singlepost.image3 != '') {
-      imageList.add(singlepost.image3);
-    }
-    if (singlepost.image4 != '') {
-      imageList.add(singlepost.image4);
-    }
-    if (singlepost.image5 != '') {
-      imageList.add(singlepost.image5);
-    }
-    if (singlepost.image6 != '') {
-      imageList.add(singlepost.image6);
-    }
-    if (singlepost.image7 != '') {
-      imageList.add(singlepost.image7);
-    }
-    if (singlepost.image8 != '') {
-      imageList.add(singlepost.image8);
-    }
-    if (singlepost.image9 != '') {
-      imageList.add(singlepost.image9);
-    }
-    if (singlepost.image10 != '') {
-      imageList.add(singlepost.image10);
-    }
-    if (singlepost.image11 != '') {
-      imageList.add(singlepost.image11);
-    }
-    if (singlepost.image12 != '') {
-      imageList.add(singlepost.image12);
-    }
-
-    return imageList;
   }
 
 //*---------------------- More Post
@@ -278,7 +233,7 @@ class ToletController extends GetxController {
   var kitchenFlag = false.obs;
   var priceFlag = false.obs;
   var imageFlag = false.obs;
-  var floorFlag = false.obs;
+  var floornoFlag = false.obs;
   var garageFlag = false.obs;
 
   var allFlag = false.obs;
@@ -291,10 +246,14 @@ class ToletController extends GetxController {
     kitchenFlag(false);
     priceFlag(false);
     imageFlag(false);
-    floorFlag(false);
+    floornoFlag(false);
+    garageFlag(false);
     userController.phoneFlag(false);
     categories.forEach((key, value) {
       value.value = false;
+    });
+    fasalitis.forEach((key, value) {
+      value.state.value = false;
     });
     bedrooms.value = 'select';
     bathrooms.value = 'select';
@@ -310,7 +269,7 @@ class ToletController extends GetxController {
     userController.description.clear();
     userController.shortAddress.clear();
     selectedImages.clear();
-    rent.clear();
+
     allFlag(false);
   }
 
@@ -338,15 +297,45 @@ class ToletController extends GetxController {
     });
   }
 
+  checkAllCatagory() {
+    bedFlag.value = bedrooms.value != "select";
+    bathFlag.value = bathrooms.value != "select";
+    kitchenFlag.value = kitchen.value != "select";
+    floornoFlag.value = floorno.value != "select";
+    garageFlag.value = garage.value != "select";
+    priceFlag.value = rent.text.isNotEmpty;
+    imageFlag.value = selectedImages.isNotEmpty;
+
+    userController.phoneFlag.value =
+        userController.phonenumber.text.isNotEmpty ||
+            userController.wappnumber.text.isNotEmpty;
+    var c = categories;
+    if (c['Only Garage']!.value) {
+      bedFlag(true);
+      bathFlag(true);
+      kitchenFlag(true);
+      floornoFlag(true);
+    } else if (c['Office']!.value && c['Family']!.value) {
+      floornoFlag(true);
+      kitchenFlag(true);
+      garageFlag(true);
+    } else if (c['Office']!.value) {
+      kitchenFlag(true);
+      floornoFlag(true);
+      garageFlag(true);
+    } else if (c['Shop']!.value) {
+      bedFlag(true);
+      bathFlag(true);
+      kitchenFlag(true);
+      garageFlag(true);
+    } else {
+      floornoFlag(true);
+      garageFlag(true);
+    }
+  }
+
   flagCheck() {
     if (categories['Only Garage']!.value) {
-      // print("object");
-      // categoryFlag.value = true;
-      // bedFlag.value = true;
-      // bathFlag.value = true;
-      // kitchenFlag.value = true;
-      // floorFlag.value = true;
-
       if (garage.value != "select") {
         garageFlag.value = true;
       } else {
@@ -360,53 +349,59 @@ class ToletController extends GetxController {
       if (selectedImages.isNotEmpty) {
         imageFlag.value = true;
       } else {
-        // animateToPage(0);
-        if (garageFlag.value == true && rent.text.isEmpty) {
+        if (garageFlag.value == true && rent.text.isNotEmpty) {
           animateToEnd();
         }
       }
-      if (userController.phonenumber.text != "" ||
-          userController.wappnumber.text != "") {
-        userController.phoneFlag.value = true; //xxx
-      }
 
-      if (garageFlag.value &&
+      userController.phoneFlag.value =
+          userController.phonenumber.text.isNotEmpty ||
+              userController.wappnumber.text.isNotEmpty;
+
+      allFlag.value = garageFlag.value &&
           imageFlag.value &&
           priceFlag.value &&
-          userController.phoneFlag.value) {
-        allFlag.value = true;
-      }
+          userController.phoneFlag.value;
     } else if (categories['Office']!.value && categories['Family']!.value) {
-      // bedFlag(true);
-      // bathFlag(true);
-      // kitchenFlag(true);
-      // floorFlag(true);
+      if (bedrooms.value != "select") {
+        bedFlag.value = true;
+      } else {
+        animateToPage(0);
+      }
+      if (bathrooms.value != "select") {
+        bathFlag.value = true;
+      } else {
+        animateToPage(0);
+      }
+
       if (rent.text.isNotEmpty) {
         priceFlag.value = true;
       } else {
         animateToPage(0);
       }
       if (selectedImages.isNotEmpty) {
-        // animateToPage(0);
         imageFlag.value = true;
       } else {
-        // animateToPage(0);
-        animateToEnd();
+        animateToPage(0);
       }
-      if (userController.phonenumber.text != "" ||
-          userController.wappnumber.text != "") {
-        userController.phoneFlag.value = true; //xxx
-      }
-      if (priceFlag.value &&
-          imageFlag.value &&
-          userController.phoneFlag.value) {
-        allFlag.value = true;
-      }
+
+      userController.phoneFlag.value =
+          userController.phonenumber.text.isNotEmpty ||
+              userController.wappnumber.text.isNotEmpty;
+      allFlag.value =
+          priceFlag.value && imageFlag.value && userController.phoneFlag.value;
     } else if (categories['Office']!.value) {
-      // bedFlag(true);
-      // bathFlag(true);
-      // kitchenFlag(true);
-      // floorFlag(true);
+      if (bedrooms.value != "select") {
+        bedFlag.value = true;
+      } else {
+        animateToPage(0);
+      }
+      if (bathrooms.value != "select") {
+        bathFlag.value = true;
+      } else {
+        animateToPage(0);
+      }
+
       if (rent.text.isNotEmpty) {
         priceFlag.value = true;
       } else {
@@ -415,26 +410,19 @@ class ToletController extends GetxController {
       if (selectedImages.isNotEmpty) {
         imageFlag.value = true;
       } else {
-        if (!rent.text.isNotEmpty) {
+        if (bedFlag.value && bathFlag.value && rent.text.isNotEmpty) {
           animateToEnd();
         }
       }
-      if (userController.phonenumber.text != "" ||
-          userController.wappnumber.text != "") {
-        userController.phoneFlag.value = true; //xxx
-      }
-      if (priceFlag.value &&
-          imageFlag.value &&
-          userController.phoneFlag.value) {
-        allFlag.value = true;
-      }
+      userController.phoneFlag.value =
+          userController.phonenumber.text.isNotEmpty ||
+              userController.wappnumber.text.isNotEmpty;
+
+      allFlag.value =
+          priceFlag.value && imageFlag.value && userController.phoneFlag.value;
     } else if (categories['Shop']!.value) {
-      // categoryFlag.value = true;
-      // bedFlag.value = true;
-      // bathFlag.value = true;
-      // kitchenFlag.value = true;
       if (floorno.value != "select") {
-        floorFlag.value = true;
+        floornoFlag.value = true;
       } else {
         animateToPage(0);
       }
@@ -444,29 +432,20 @@ class ToletController extends GetxController {
         animateToPage(0);
       }
 
-      if (selectedImages.isNotEmpty) {
+      if (floornoFlag.value && selectedImages.isNotEmpty) {
         imageFlag.value = true;
       } else {
         animateToEnd();
       }
-      if (userController.phonenumber.text != "" ||
-          userController.wappnumber.text != "") {
-        userController.phoneFlag.value = true; //xxx
-      }
-      if (imageFlag.value &&
+      userController.phoneFlag.value =
+          userController.phonenumber.text.isNotEmpty ||
+              userController.wappnumber.text.isNotEmpty;
+
+      allFlag.value = imageFlag.value &&
           priceFlag.value &&
           userController.phoneFlag.value &&
-          floorFlag.value) {
-        allFlag.value = true;
-      }
+          floornoFlag.value;
     } else {
-      // floorFlag(true);
-      if (categoryFlag.value == false || getCategory().isEmpty) {
-        animateToPage(0);
-        categoryFlag.value = false;
-      } else {
-        categoryFlag.value = true;
-      }
       if (bedrooms.value != "select") {
         bedFlag.value = true;
       } else {
@@ -490,31 +469,24 @@ class ToletController extends GetxController {
       if (selectedImages.isNotEmpty) {
         imageFlag.value = true;
       } else {
-        if ((categoryFlag.value &&
-                bedFlag.value &&
-                bathFlag.value &&
-                kitchenFlag.value) &&
-            !priceFlag.value) {
+        if (bedFlag.value &&
+            bathFlag.value &&
+            kitchenFlag.value &&
+            priceFlag.value &&
+            !imageFlag.value) {
           animateToEnd();
-        } else {}
+        }
       }
-      if (userController.phonenumber.text != "" ||
-          userController.wappnumber.text != "") {
-        userController.phoneFlag.value = true; //xxx
-      } else {
-        // animateToPage(1);
-      }
-      if ([
-        categoryFlag,
-        bedFlag,
-        bathFlag,
-        kitchenFlag,
-        priceFlag,
-        imageFlag,
-        userController.phoneFlag
-      ].every((flag) => flag.value)) {
-        allFlag.value = true;
-      }
+      userController.phoneFlag.value =
+          userController.phonenumber.text.isNotEmpty ||
+              userController.wappnumber.text.isNotEmpty;
+
+      allFlag.value = bedFlag.value &&
+          bathFlag.value &&
+          kitchenFlag.value &&
+          priceFlag.value &&
+          imageFlag.value &&
+          userController.phoneFlag.value;
     }
   }
 

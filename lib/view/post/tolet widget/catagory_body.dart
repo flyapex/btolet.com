@@ -152,13 +152,13 @@ class _CategoryBodyState extends State<CategoryBody> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   DropDown(
-                    title: "Bedroom *",
+                    title: "Bed room *",
                     category: Category.bedrooms,
                     widthh: 2.35,
                     topPadding: 0,
                   ),
                   DropDown(
-                    title: "Bathroom",
+                    title: "Bath room*",
                     category: Category.bathrooms,
                     widthh: 2.35,
                     topPadding: 0,
@@ -354,13 +354,13 @@ class _CategoryBodyState extends State<CategoryBody> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   DropDown(
-                    title: "Room",
+                    title: "Room *",
                     category: Category.bedrooms,
                     widthh: 2.35,
                     topPadding: 0,
                   ),
                   DropDown(
-                    title: "Bathroom",
+                    title: "Bathroom *",
                     category: Category.bathrooms,
                     widthh: 2.35,
                     topPadding: 0,

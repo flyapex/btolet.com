@@ -23,7 +23,8 @@ class Home extends StatefulWidget {
   State<Home> createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> with TickerProviderStateMixin {
+class _HomeState extends State<Home>
+    with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   late ScrollController scrollController;
   UserController userController = Get.put(UserController());
   LocationController locationController = Get.put(LocationController());
@@ -32,7 +33,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   void initState() {
     userController.tabController = TabController(vsync: this, length: 2);
     userController.tabController.addListener(_handleTabSelection);
-    locationController.getCurrnetlanlongLocation();
     scrollController = ScrollController();
     scrollController.addListener(_scrollListener);
     userController.getnote();
@@ -100,6 +100,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     double wt = Get.width;
     return Obx(
       () => Scaffold(
@@ -343,6 +344,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class CustomTab extends SliverPersistentHeaderDelegate {

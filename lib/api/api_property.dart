@@ -5,11 +5,10 @@ import 'package:dio/dio.dart';
 
 final dio = Dio();
 var baseUrl = 'http://10.0.2.2:3000/api/pro';
-// var baseUrl = 'http://109.123.234.150/api';
+// var baseUrl = 'http://154.26.135.41:3800/api/pro';
 
 class ApiServicePro {
   static Future postCountArea(location, location2) async {
-    print('------$location---- $location2');
     final response = await dio.get(
       '$baseUrl/postcount/area',
       queryParameters: {
@@ -61,7 +60,6 @@ class ApiServicePro {
       data: newPostProToJson(data),
     );
 
-    print(response.data);
     if (response.statusCode == 200) {
       return response.data.toString();
     } else {
@@ -74,7 +72,7 @@ class ApiServicePro {
       '$baseUrl/sort/postcount',
       data: sortPostProToJson(data),
     );
-    print(response.data);
+
     if (response.statusCode == 200) {
       return response.data['total_count'];
     } else {

@@ -45,142 +45,17 @@ class PostToletState1 extends State<PostTolet2> {
                 onPressed: () async {
                   toletController.activeFlag.value = true;
                   Vibration.vibrate(pattern: [10, 20, 10]);
-
-                  if (toletController.categories['Only Garage']!.value) {
-                    print("Only Garage");
-                    toletController.categoryFlag(true);
-                    toletController.bedFlag(true);
-                    toletController.bathFlag(true);
-                    toletController.kitchenFlag(true);
-                    toletController.floorFlag(true);
-                    toletController.flagCheck();
-                    if (toletController.allFlag.value) {
-                      print('--------------Posting Now------------------');
-                      Get.back();
-                      var res = await toletController.newpost();
-                      await userController.snakberSuccess(res);
-                      toletController.resetAllflag();
-                    } else {
-                      toletController.categoryFlag(false);
-                      toletController.bedFlag(false);
-                      toletController.bathFlag(false);
-                      toletController.kitchenFlag(false);
-                      toletController.floorFlag(false);
-                      toletController.flagCheck();
-                    }
-                  } else if (toletController.categories['Office']!.value &&
-                      toletController.categories['Family']!.value) {
-                    toletController.bedFlag(true);
-                    toletController.bathFlag(true);
-                    toletController.kitchenFlag(true);
-                    toletController.floorFlag(true);
-                    toletController.flagCheck();
-                    if (toletController.allFlag.value) {
-                      print('--------------Posting Now------------------');
-                      Get.back();
-                      var res = await toletController.newpost();
-                      await userController.snakberSuccess(res);
-                      toletController.resetAllflag();
-                    } else {
-                      toletController.bedFlag(false);
-                      toletController.bathFlag(false);
-                      toletController.kitchenFlag(false);
-                      toletController.floorFlag(false);
-                      toletController.flagCheck();
-                    }
-                  } else if (toletController.categories['Office']!.value) {
-                    toletController.bedFlag(true);
-                    toletController.bathFlag(true);
-                    toletController.kitchenFlag(true);
-                    toletController.floorFlag(true);
-                    toletController.flagCheck();
-                    if (toletController.allFlag.value) {
-                      print('--------------Posting Now------------------');
-                      Get.back();
-                      var res = await toletController.newpost();
-                      await userController.snakberSuccess(res);
-                      toletController.resetAllflag();
-                    } else {
-                      toletController.bedFlag(false);
-                      toletController.bathFlag(false);
-                      toletController.kitchenFlag(false);
-                      toletController.floorFlag(false);
-                    }
-                  } else if (toletController.categories['Shop']!.value) {
-                    toletController.categoryFlag(true);
-                    toletController.bedFlag(true);
-                    toletController.bathFlag(true);
-                    toletController.kitchenFlag(true);
-                    toletController.flagCheck();
-                    if (toletController.allFlag.value) {
-                      print('--------------Posting Now------------------');
-                      Get.back();
-                      var res = await toletController.newpost();
-                      await userController.snakberSuccess(res);
-                      toletController.resetAllflag();
-                    } else {
-                      toletController.categoryFlag(false);
-                      toletController.bedFlag(false);
-                      toletController.bathFlag(false);
-                      toletController.kitchenFlag(false);
-                      toletController.flagCheck();
-                    }
+                  toletController.flagCheck();
+                  if (toletController.allFlag.value) {
+                    Get.back();
+                    print('--------------Posting Now------------------');
+                    var res = await toletController.newpost();
+                    await userController.snakberSuccess(res);
+                    toletController.resetAllflag();
                   } else {
-                    toletController.floorFlag(true);
-                    toletController.flagCheck();
-                    if (toletController.allFlag.value) {
-                      print('--------------Posting Now------------------');
-                      Get.back();
-                      var res = await toletController.newpost();
-                      await userController.snakberSuccess(res);
-                      toletController.resetAllflag();
-                    } else {
-                      toletController.floorFlag(false);
-                      toletController.flagCheck();
-                    }
+                    toletController.checkAllCatagory();
+                    // await userController.snakberSuccess('Missing Someting ✨!');
                   }
-                  // if (toletController.allFlag.value) {
-                  //   Get.back();
-                  //   print('--------------Posting Now------------------');
-                  //   var res = await toletController.newpost();
-                  //   print(res);
-                  //   await userController.snakberSuccess(res);
-
-                  //   toletController.activeFlag.value = true;
-                  //   toletController.flagCheck();
-                  //   print('Post Now');
-                  //   toletController.activeFlag(false);
-                  //   toletController.categoryFlag(false);
-                  //   toletController.bedFlag(false);
-                  //   toletController.bathFlag(false);
-                  //   toletController.kitchenFlag(false);
-                  //   toletController.priceFlag(false);
-                  //   toletController.imageFlag(false);
-                  //   toletController.floorFlag(false);
-                  //   userController.phoneFlag(false);
-                  //   toletController.categories.forEach((key, value) {
-                  //     value.value = false;
-                  //   });
-                  //   toletController.bedrooms.value = 'select';
-                  //   toletController.bathrooms.value = 'select';
-                  //   toletController.dining.value = 'select';
-                  //   toletController.kitchen.value = 'select';
-                  //   toletController.floorno.value = 'select';
-                  //   toletController.facing.value = 'select';
-                  //   toletController.garage.value = 'select';
-                  //   toletController.nameController.clear();
-                  //   toletController.roomSize.clear();
-                  //   toletController.maintenance.clear();
-                  //   toletController.rent.clear();
-                  //   userController.description.clear();
-                  //   userController.shortAddress.clear();
-
-                  //   toletController.selectedImages.clear();
-                  //   toletController.rent.clear();
-                  //   toletController.allFlag.value = false;
-                  // } else {
-                  //   // await userController.snakberSuccess('Error');
-                  // }
                 },
                 icon: const Icon(
                   Icons.check_circle_outline_rounded,

@@ -74,7 +74,7 @@ class _DropDownState extends State<DropDown> {
             : Colors.white;
       } else if (widget.category == Category.floorno) {
         return toletController.activeFlag.value
-            ? toletController.floorFlag.value
+            ? toletController.floornoFlag.value
                 ? Colors.white
                 : Colors.red
             : Colors.white;

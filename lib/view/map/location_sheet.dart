@@ -18,7 +18,8 @@ class LocationSheet extends StatefulWidget {
   State<LocationSheet> createState() => _LocationSheetState();
 }
 
-class _LocationSheetState extends State<LocationSheet> {
+class _LocationSheetState extends State<LocationSheet>
+    with AutomaticKeepAliveClientMixin {
   double latitude = 0;
   double longitude = 0;
   LocationController locationController = Get.put(LocationController());
@@ -58,11 +59,13 @@ class _LocationSheetState extends State<LocationSheet> {
     });
 
     super.initState();
-    locationController.getCurrnetlanlongLocation();
+    // print("object");
+    locationController.getCurrnetlanlongLocation(false, "MAP");
   }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     var htt = Get.height;
 
     return Obx(
@@ -110,7 +113,7 @@ class _LocationSheetState extends State<LocationSheet> {
                     onCameraIdle: () {
                       if (latitude != 0) {
                         Vibration.vibrate(pattern: [10, 30, 10]);
-                        locationController.coordinateToLocationDetails(
+                        locationController.coordinateToLocation(
                           latitude,
                           longitude,
                         );
@@ -229,7 +232,8 @@ class _LocationSheetState extends State<LocationSheet> {
                                   child: ElevatedButton.icon(
                                     onPressed: () {
                                       locationController
-                                          .onMyLocationButtonPressed();
+                                          .getCurrnetlanlongLocation(
+                                              true, 'My Current Location');
                                     },
                                     icon: const Icon(
                                       Icons.share_location_outlined,
@@ -268,9 +272,12 @@ class _LocationSheetState extends State<LocationSheet> {
                                     borderRadius: BorderRadius.circular(6),
                                   ),
                                   child: IconButton(
-                                    onPressed: () {
+                                    onPressed: () async {
                                       // locationController
-                                      //       .locationAddress.value=
+                                      //     .onMyLocationButtonPressed();
+                                      // await toletController
+                                      //     .getCurrentPostCount();
+                                      // await proController.getCurrentPostCount();
                                       if (userController.tabController.index ==
                                           0) {
                                         toletController.refreshkey.currentState!
@@ -287,7 +294,6 @@ class _LocationSheetState extends State<LocationSheet> {
                                           draggingCurve: Curves.easeOutBack,
                                         );
                                       }
-
                                       Get.back();
                                     },
                                     icon: Icon(
@@ -329,6 +335,9 @@ class _LocationSheetState extends State<LocationSheet> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class LocationSheetMap extends StatefulWidget {
@@ -470,7 +479,9 @@ class _LocationSheetMapState extends State<LocationSheetMap> {
                     child: ElevatedButton.icon(
                       onPressed: () {
                         Get.back();
-                        locationController.onMyLocationButtonPressed();
+                        locationController.getCurrnetlanlongLocation(
+                            true, 'My Current Location');
+                        // locationController.onMyLocationButtonPressed();
                       },
                       icon: const Icon(
                         Icons.near_me,
@@ -531,7 +542,7 @@ class _LocationSheetMapState extends State<LocationSheetMap> {
                                 ),
                               );
 
-                              locationController.coordinateToLocationDetails(
+                              locationController.coordinateToLocation(
                                 locationController.currentlatitude.value,
                                 locationController.currentlongitude.value,
                               );

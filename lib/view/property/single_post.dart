@@ -4,6 +4,7 @@ import 'package:btolet/controller/location_controller.dart';
 import 'package:btolet/controller/property_controller.dart';
 import 'package:btolet/controller/user_controller.dart';
 import 'package:btolet/model/category.dart';
+import 'package:btolet/model/pro_model.dart';
 import 'package:btolet/view/shimmer/shimmer.dart';
 import 'package:btolet/view/tolet/single_post.dart';
 import 'package:expandable/expandable.dart';
@@ -14,12 +15,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:intl/intl.dart';
 import 'package:label_marker/label_marker.dart';
 import 'package:like_button/like_button.dart';
 import 'package:map_launcher/map_launcher.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+
+import 'morepost.dart';
 
 class SinglePostPro extends StatefulWidget {
   final int pid;
@@ -29,13 +31,70 @@ class SinglePostPro extends StatefulWidget {
   State<SinglePostPro> createState() => _SinglePostProState();
 }
 
-class _SinglePostProState extends State<SinglePostPro> {
+class _SinglePostProState extends State<SinglePostPro>
+    with AutomaticKeepAliveClientMixin {
   ProController proController = Get.find();
   LocationController locationController = Get.find();
+  late SinglePostModel postData;
+  getImage(
+    data1,
+    data2,
+    data3,
+    data4,
+    data5,
+    data6,
+    data7,
+    data8,
+    data9,
+    data10,
+    data11,
+    data12,
+  ) {
+    var imageList = [];
+    if (data1 != '') {
+      imageList.add(data1);
+    }
+    if (data2 != '') {
+      imageList.add(data2);
+    }
+    if (data3 != '') {
+      imageList.add(data3);
+    }
+    if (data4 != '') {
+      imageList.add(data4);
+    }
+    if (data5 != '') {
+      imageList.add(data5);
+    }
+    if (data6 != '') {
+      imageList.add(data6);
+    }
+    if (data7 != '') {
+      imageList.add(data7);
+    }
+    if (data8 != '') {
+      imageList.add(data8);
+    }
+    if (data9 != '') {
+      imageList.add(data9);
+    }
+    if (data10 != '') {
+      imageList.add(data10);
+    }
+    if (data11 != '') {
+      imageList.add(data11);
+    }
+    if (data12 != '') {
+      imageList.add(data12);
+    }
+    return imageList;
+  }
+
   lodeData() async {
     proController.lodeOneTime(true);
     var data = await proController.getSinglePost(widget.pid);
-    if (data) {
+    if (data != null) {
+      postData = data;
       addMarker();
     }
   }
@@ -66,8 +125,8 @@ class _SinglePostProState extends State<SinglePostPro> {
         print("Lode More Data");
         proController.getMorePost(
           1,
-          proController.singlepost.geolat,
-          proController.singlepost.geolon,
+          postData.geolat,
+          postData.geolon,
         );
       }
     }
@@ -88,8 +147,8 @@ class _SinglePostProState extends State<SinglePostPro> {
       print("Lode More Page");
       proController.getMorePost(
         lodingPage,
-        proController.singlepost.geolat,
-        proController.singlepost.geolon,
+        postData.geolat,
+        postData.geolon,
       );
       print(lodingPage);
       lodingPage++;
@@ -108,17 +167,17 @@ class _SinglePostProState extends State<SinglePostPro> {
   void addMarker() async {
     await markers.addLabelMarker(
       LabelMarker(
-        label: proController.singlepost.price == 0
+        label: postData.price == 0
             ? "call for price"
-            : "৳ ${NumberFormat.decimalPattern().format(proController.singlepost.price)}",
+            : "৳ ${userController.currency(postData.price)}",
         // label: data.rent.toString(),
-        markerId: MarkerId(proController.singlepost.pid.toString()),
-        position: LatLng(double.parse(proController.singlepost.geolat),
-            double.parse(proController.singlepost.geolon)),
+        markerId: MarkerId(postData.pid.toString()),
+        position: LatLng(
+            double.parse(postData.geolat), double.parse(postData.geolon)),
         backgroundColor: Colors.orange,
         infoWindow: InfoWindow(
           title:
-              '${proController.singlepost.bed}bed,${proController.singlepost.bath}bath,${proController.singlepost.kitchen}kitchen',
+              '${postData.bed}bed,${postData.bath}bath,${postData.kitchen}kitchen',
         ),
         onTap: () async {},
       ),
@@ -133,6 +192,7 @@ class _SinglePostProState extends State<SinglePostPro> {
   var width = Get.width;
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     double space = 20.0;
     return Obx(
       () => proController.singlePostloding.value
@@ -154,8 +214,7 @@ class _SinglePostProState extends State<SinglePostPro> {
                           flex: 1,
                           child: InkWell(
                             onTap: () async {
-                              final call = Uri.parse(
-                                  'tel:${proController.singlepost.phone}');
+                              final call = Uri.parse('tel:${postData.phone}');
                               if (await canLaunchUrl(call)) {
                                 launchUrl(call);
                               } else {
@@ -197,7 +256,7 @@ class _SinglePostProState extends State<SinglePostPro> {
                           child: InkWell(
                             onTap: () async {
                               var uri = Uri.parse(
-                                  'sms:${proController.singlepost.phone}?body=hello%20there');
+                                  'sms:${postData.phone}?body=hello%20there');
                               if (await canLaunchUrl(uri)) {
                                 await launchUrl(uri);
                               } else {
@@ -251,7 +310,7 @@ class _SinglePostProState extends State<SinglePostPro> {
                           child: InkWell(
                             onTap: () async {
                               String appUrl;
-                              String phone = proController.singlepost.wapp;
+                              String phone = postData.wapp;
                               String message = 'Surprice Bitch! ';
                               if (Platform.isAndroid) {
                                 appUrl =
@@ -314,7 +373,20 @@ class _SinglePostProState extends State<SinglePostPro> {
                       children: [
                         ImageSlidePage(
                           hight: height / 3.5,
-                          imageList: proController.imageList,
+                          imageList: getImage(
+                            postData.image1,
+                            postData.image2,
+                            postData.image3,
+                            postData.image4,
+                            postData.image5,
+                            postData.image6,
+                            postData.image7,
+                            postData.image8,
+                            postData.image9,
+                            postData.image10,
+                            postData.image11,
+                            postData.image12,
+                          ),
                         ),
                         Column(
                           children: [
@@ -355,7 +427,7 @@ class _SinglePostProState extends State<SinglePostPro> {
                                       onTap: (isLiked) async {
                                         print(!isLiked);
                                         proController.savePost(
-                                          proController.singlepost.pid,
+                                          postData.pid,
                                           !isLiked,
                                         );
                                         return !isLiked;
@@ -387,7 +459,7 @@ class _SinglePostProState extends State<SinglePostPro> {
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.only(left: 20),
-                                child: proController.singlepost.price == 0
+                                child: postData.price == 0
                                     ? const Text(
                                         'Call For Price',
                                         style: TextStyle(
@@ -397,10 +469,11 @@ class _SinglePostProState extends State<SinglePostPro> {
                                       )
                                     : Text(
                                         // currency(
-                                        //   proController.singlepost.price,
+                                        //   singlepost.price,
                                         //   '৳',
                                         // ),
-                                        "${NumberFormat.decimalPattern().format(proController.singlepost.price)} BDT",
+                                        "BDT ${userController.currency(postData.price)} ",
+                                        // "${NumberFormat.decimalPattern().format(singlepost.price)} BDT",
                                         style: const TextStyle(
                                           fontSize: 28,
                                           color: Color(0xff083437),
@@ -479,7 +552,7 @@ class _SinglePostProState extends State<SinglePostPro> {
                                     SizedBox(
                                       width: width / 1.7,
                                       child: Text(
-                                        proController.singlepost.location,
+                                        postData.location,
                                         style: const TextStyle(
                                           fontSize: 14,
                                           color: Color(0xff083437),
@@ -493,7 +566,7 @@ class _SinglePostProState extends State<SinglePostPro> {
                                 ),
                               ),
                               Text(
-                                '${userController.getDay(proController.singlepost.time)}',
+                                '${userController.getDay(postData.time)}',
                                 style: const TextStyle(
                                   fontSize: 12,
                                   color: Color(0xff083437),
@@ -510,10 +583,8 @@ class _SinglePostProState extends State<SinglePostPro> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               SizedBox(height: space),
-                              proController.singlepost.category ==
-                                          category[2] ||
-                                      proController.singlepost.category ==
-                                          category[3]
+                              postData.category == category[2] ||
+                                      postData.category == category[3]
                                   ? Container(
                                       padding: const EdgeInsets.all(10),
                                       decoration: BoxDecoration(
@@ -535,10 +606,8 @@ class _SinglePostProState extends State<SinglePostPro> {
                                               DetailsCircle(
                                                 icon:
                                                     'assets/icons/property/bed.svg',
-                                                title: proController
-                                                    .singlepost.area,
-                                                subtitle: proController
-                                                    .singlepost.measurement,
+                                                title: postData.area,
+                                                subtitle: postData.measurement,
                                                 iconheight: 32,
                                                 iconwidth: 32,
                                               ),
@@ -546,8 +615,7 @@ class _SinglePostProState extends State<SinglePostPro> {
                                                 icon:
                                                     'assets/icons/property/size.svg',
                                                 title: "Rode Size",
-                                                subtitle: proController
-                                                    .singlepost.roadSize,
+                                                subtitle: postData.roadSize,
                                                 iconheight: 32,
                                                 iconwidth: 32,
                                               ),
@@ -579,8 +647,7 @@ class _SinglePostProState extends State<SinglePostPro> {
                                                 icon:
                                                     'assets/icons/property/bed.svg',
                                                 title: 'Beds',
-                                                subtitle: proController
-                                                    .singlepost.bed,
+                                                subtitle: postData.bed,
                                                 iconheight: 32,
                                                 iconwidth: 32,
                                               ),
@@ -588,8 +655,7 @@ class _SinglePostProState extends State<SinglePostPro> {
                                                 icon:
                                                     'assets/icons/property/bath.svg',
                                                 title: 'Baths',
-                                                subtitle: proController
-                                                    .singlepost.bath,
+                                                subtitle: postData.bath,
                                                 iconheight: 31,
                                                 iconwidth: 31,
                                               ),
@@ -597,8 +663,7 @@ class _SinglePostProState extends State<SinglePostPro> {
                                                 icon:
                                                     'assets/icons/property/kitchen.svg',
                                                 title: 'Kitchen',
-                                                subtitle: proController
-                                                    .singlepost.kitchen,
+                                                subtitle: postData.kitchen,
                                                 iconheight: 30,
                                                 iconwidth: 30,
                                               ),
@@ -606,8 +671,7 @@ class _SinglePostProState extends State<SinglePostPro> {
                                                 icon:
                                                     'assets/icons/property/dining.svg',
                                                 title: 'Dining',
-                                                subtitle: proController
-                                                    .singlepost.dining,
+                                                subtitle: postData.dining,
                                                 iconheight: 34,
                                                 iconwidth: 34,
                                               ),
@@ -622,8 +686,7 @@ class _SinglePostProState extends State<SinglePostPro> {
                                                 icon:
                                                     'assets/icons/property/size.svg',
                                                 title: 'Size',
-                                                subtitle: proController
-                                                    .singlepost.size,
+                                                subtitle: postData.size,
                                                 iconheight: 29,
                                                 iconwidth: 29,
                                               ),
@@ -631,8 +694,7 @@ class _SinglePostProState extends State<SinglePostPro> {
                                                 icon:
                                                     'assets/icons/property/window.svg',
                                                 title: 'Facing',
-                                                subtitle: proController
-                                                    .singlepost.facing,
+                                                subtitle: postData.facing,
                                                 iconheight: 30,
                                                 iconwidth: 30,
                                               ),
@@ -640,8 +702,7 @@ class _SinglePostProState extends State<SinglePostPro> {
                                                 icon:
                                                     'assets/icons/property/floor.svg',
                                                 title: 'Total Floor',
-                                                subtitle: proController
-                                                    .singlepost.totalFloor,
+                                                subtitle: postData.totalFloor,
                                                 iconheight: 28,
                                                 iconwidth: 28,
                                               ),
@@ -649,9 +710,8 @@ class _SinglePostProState extends State<SinglePostPro> {
                                                 icon:
                                                     'assets/icons/property/floorno.svg',
                                                 title: 'Floor No.',
-                                                subtitle: proController
-                                                    .singlepost
-                                                    .floornumber, //3rd
+                                                subtitle:
+                                                    postData.floornumber, //3rd
                                                 iconheight: 28,
                                                 iconwidth: 28,
                                               ),
@@ -666,8 +726,7 @@ class _SinglePostProState extends State<SinglePostPro> {
                                                 icon:
                                                     'assets/icons/property/floorplan.svg',
                                                 title: 'Total Unit',
-                                                subtitle: proController
-                                                    .singlepost.totalUnit,
+                                                subtitle: postData.totalUnit,
                                                 iconheight: 25,
                                                 iconwidth: 25,
                                               ),
@@ -683,8 +742,7 @@ class _SinglePostProState extends State<SinglePostPro> {
                                                 icon:
                                                     'assets/icons/property/new.svg',
                                                 title: 'Condition',
-                                                subtitle: proController
-                                                    .singlepost.procondition,
+                                                subtitle: postData.procondition,
                                                 iconheight: 30,
                                                 iconwidth: 30,
                                               ),
@@ -692,8 +750,7 @@ class _SinglePostProState extends State<SinglePostPro> {
                                                 icon:
                                                     'assets/icons/property/users.svg',
                                                 title: 'Posted by',
-                                                subtitle: proController
-                                                    .singlepost.ownertype,
+                                                subtitle: postData.ownertype,
                                                 iconheight: 28,
                                                 iconwidth: 28,
                                               ),
@@ -703,10 +760,8 @@ class _SinglePostProState extends State<SinglePostPro> {
                                         ],
                                       ),
                                     ),
-                              proController.singlepost.category ==
-                                          category[0] ||
-                                      proController.singlepost.category ==
-                                          category[1]
+                              postData.category == category[0] ||
+                                      postData.category == category[1]
                                   ? const SizedBox()
                                   : const SizedBox(height: 15),
 
@@ -750,8 +805,7 @@ class _SinglePostProState extends State<SinglePostPro> {
                                             List<String> amenitiesList =
                                                 List<String>.from(
                                               json.decode(
-                                                proController
-                                                    .singlepost.amenities,
+                                                postData.amenities,
                                               ),
                                             );
 
@@ -783,8 +837,7 @@ class _SinglePostProState extends State<SinglePostPro> {
                                             List<String> amenitiesList =
                                                 List<String>.from(
                                               json.decode(
-                                                proController
-                                                    .singlepost.amenities,
+                                                postData.amenities,
                                               ),
                                             );
 
@@ -858,10 +911,10 @@ class _SinglePostProState extends State<SinglePostPro> {
                               //   ),
                               // ),
 
-                              proController.singlepost.floorPlan == ""
+                              postData.floorPlan == ""
                                   ? const SizedBox()
                                   : SizedBox(height: space),
-                              proController.singlepost.floorPlan == ""
+                              postData.floorPlan == ""
                                   ? const SizedBox()
                                   : Container(
                                       decoration: BoxDecoration(
@@ -893,8 +946,7 @@ class _SinglePostProState extends State<SinglePostPro> {
                                             image: DecorationImage(
                                               image: MemoryImage(
                                                 base64Decode(
-                                                  proController
-                                                      .singlepost.floorPlan,
+                                                  postData.floorPlan,
                                                 ),
                                               ),
                                               fit: BoxFit.cover,
@@ -904,7 +956,7 @@ class _SinglePostProState extends State<SinglePostPro> {
                                       ),
                                     ),
                               SizedBox(height: space),
-                              proController.singlepost.ytVideo == ""
+                              postData.ytVideo == ""
                                   ? const SizedBox()
                                   : Column(
                                       crossAxisAlignment:
@@ -920,8 +972,7 @@ class _SinglePostProState extends State<SinglePostPro> {
                                         ),
                                         SizedBox(height: space),
                                         YoutubeVideo(
-                                          videoUrl:
-                                              proController.singlepost.ytVideo,
+                                          videoUrl: postData.ytVideo,
                                         ),
                                       ],
                                     ),
@@ -944,7 +995,7 @@ class _SinglePostProState extends State<SinglePostPro> {
                                     ],
                                   ),
                                   Text(
-                                    'id: ${proController.singlepost.pid}',
+                                    'id: ${postData.pid}',
                                     style: const TextStyle(
                                       fontSize: 14,
                                       color: Colors.black54,
@@ -968,7 +1019,7 @@ class _SinglePostProState extends State<SinglePostPro> {
                                     bottom: 20,
                                   ),
                                   child: Text(
-                                    proController.singlepost.description,
+                                    postData.description,
                                     textAlign: TextAlign.justify,
                                     overflow: TextOverflow.clip,
                                     // maxLines: 5,
@@ -1023,10 +1074,8 @@ class _SinglePostProState extends State<SinglePostPro> {
                                         myLocationButtonEnabled: false,
                                         initialCameraPosition: CameraPosition(
                                           target: LatLng(
-                                            double.parse(proController
-                                                .singlepost.geolat),
-                                            double.parse(proController
-                                                .singlepost.geolon),
+                                            double.parse(postData.geolat),
+                                            double.parse(postData.geolon),
                                           ),
                                           zoom: 16.0,
                                         ),
@@ -1045,13 +1094,11 @@ class _SinglePostProState extends State<SinglePostPro> {
                                             backgroundColor: Colors.blue,
                                             onPressed: () async {
                                               final coords = Coords(
-                                                double.parse(proController
-                                                    .singlepost.geolat),
-                                                double.parse(proController
-                                                    .singlepost.geolon),
+                                                double.parse(postData.geolat),
+                                                double.parse(postData.geolon),
                                               );
                                               var title =
-                                                  "Price ৳ ${NumberFormat.decimalPattern().format(proController.singlepost.price)}";
+                                                  "Price ৳ ${userController.currency(postData.price)}";
                                               final availableMaps =
                                                   await MapLauncher
                                                       .installedMaps;
@@ -1133,8 +1180,7 @@ class _SinglePostProState extends State<SinglePostPro> {
                               SizedBox(height: space),
                               Details(
                                 type: "Short Address",
-                                detailstext:
-                                    proController.singlepost.shortaddress,
+                                detailstext: postData.shortaddress,
                                 icon: Icons.share_location_rounded,
                               ),
                               // Container(
@@ -1173,57 +1219,57 @@ class _SinglePostProState extends State<SinglePostPro> {
                     //     ),
                     //   ],
                     // ),
-                    // SizedBox(height: space),
-                    // SizedBox(
-                    //   height: height / 7,
-                    //   child: StreamBuilder(
-                    //     stream: proController.morePost.stream,
-                    //     builder:
-                    //         (BuildContext context, AsyncSnapshot snapshot) {
-                    //       if (snapshot.data == null) {
-                    //         return const PostListSuggstionSimmer(
-                    //           topPadding: 0,
-                    //           count: 4,
-                    //         );
-                    //       } else {
-                    //         return ListView.builder(
-                    //           controller: _controllerMore,
-                    //           scrollDirection: Axis.horizontal,
-                    //           shrinkWrap: true,
-                    //           itemCount: snapshot.data.length + 1,
-                    //           itemBuilder: (c, i) {
-                    //             if (i < snapshot.data.length) {
-                    //               return Padding(
-                    //                 padding: const EdgeInsets.only(left: 20),
-                    //                 child: Container(
-                    //                   decoration: BoxDecoration(
-                    //                     borderRadius: BorderRadius.circular(10),
-                    //                     border: Border.all(
-                    //                       color: Colors.black.withOpacity(0.1),
-                    //                       width: 0.4,
-                    //                     ),
-                    //                   ),
-                    //                   child: MorePostsPro(
-                    //                     postData: snapshot.data[i],
-                    //                   ),
-                    //                 ),
-                    //               );
-                    //             } else {
-                    //               return const Center(
-                    //                 child: Padding(
-                    //                   padding: EdgeInsets.all(20),
-                    //                   child: CircularProgressIndicator(
-                    //                     color: Colors.red,
-                    //                   ),
-                    //                 ),
-                    //               );
-                    //             }
-                    //           },
-                    //         );
-                    //       }
-                    //     },
-                    //   ),
-                    // ),
+                    SizedBox(height: space),
+                    SizedBox(
+                      height: height / 7,
+                      child: StreamBuilder(
+                        stream: proController.morePost.stream,
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
+                          if (snapshot.data == null) {
+                            return const PostListSuggstionSimmer(
+                              topPadding: 0,
+                              count: 4,
+                            );
+                          } else {
+                            return ListView.builder(
+                              controller: _controllerMore,
+                              scrollDirection: Axis.horizontal,
+                              shrinkWrap: true,
+                              itemCount: snapshot.data.length + 1,
+                              itemBuilder: (c, i) {
+                                if (i < snapshot.data.length) {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(left: 20),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(
+                                          color: Colors.black.withOpacity(0.1),
+                                          width: 0.4,
+                                        ),
+                                      ),
+                                      child: MorePostsPro(
+                                        postData: snapshot.data[i],
+                                      ),
+                                    ),
+                                  );
+                                } else {
+                                  return const Center(
+                                    child: Padding(
+                                      padding: EdgeInsets.all(20),
+                                      child: CircularProgressIndicator(
+                                        color: Colors.red,
+                                      ),
+                                    ),
+                                  );
+                                }
+                              },
+                            );
+                          }
+                        },
+                      ),
+                    ),
                     // SizedBox(
                     //   height: 120,
                     //   child: SizedBox(
@@ -1257,6 +1303,9 @@ class _SinglePostProState extends State<SinglePostPro> {
             ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class Amenities extends StatelessWidget {
