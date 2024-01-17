@@ -29,9 +29,8 @@ class PostListPro {
   String area;
   String measurement;
   String image;
-  // ignore: prefer_typing_uninitialized_variables
-  var distance;
-
+  double? distance;
+  int totalImage;
   PostListPro({
     required this.pid,
     required this.uid,
@@ -52,6 +51,7 @@ class PostListPro {
     required this.measurement,
     required this.image,
     required this.distance,
+    required this.totalImage,
   });
 
   factory PostListPro.fromJson(Map<String, dynamic> json) => PostListPro(
@@ -73,7 +73,8 @@ class PostListPro {
         area: json["area"],
         measurement: json["measurement"],
         image: json["image"],
-        distance: json["distance"],
+        distance: json["distance"]?.toDouble(),
+        totalImage: json["total_image"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -96,6 +97,7 @@ class PostListPro {
         "measurement": measurement,
         "image": image,
         "distance": distance,
+        "total_image": totalImage,
       };
 }
 // To parse this JSON data, do
@@ -612,7 +614,7 @@ class MapProPostListModel {
   final String location;
   final DateTime time;
   final double? distance;
-
+  final int totalImage;
   MapProPostListModel({
     required this.pid,
     required this.uid,
@@ -627,6 +629,7 @@ class MapProPostListModel {
     required this.location,
     required this.time,
     required this.distance,
+    required this.totalImage,
   });
 
   factory MapProPostListModel.fromJson(Map<String, dynamic> json) =>
@@ -644,6 +647,7 @@ class MapProPostListModel {
         location: json["location"],
         time: DateTime.parse(json["time"]),
         distance: json["distance"]?.toDouble(),
+        totalImage: json["total_image"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -660,5 +664,6 @@ class MapProPostListModel {
         "location": location,
         "time": time.toIso8601String(),
         "distance": distance,
+        "total_image": totalImage,
       };
 }

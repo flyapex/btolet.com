@@ -6,6 +6,7 @@ import 'package:btolet/model/pro_model.dart';
 import 'package:btolet/view/property/single_post.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
 
@@ -58,20 +59,68 @@ class _PostsProMapState extends State<PostsProMap> {
                   children: [
                     Expanded(
                       flex: 2,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(10),
-                            bottomLeft: Radius.circular(10),
+                      child: Stack(
+                        alignment: Alignment.bottomRight,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                bottomLeft: Radius.circular(10),
+                              ),
+                              image: DecorationImage(
+                                image: MemoryImage(
+                                    base64Decode(widget.postData.image1)),
+                                fit: BoxFit.cover,
+                                // alignment: Alignment.topCenter,
+                              ),
+                            ),
                           ),
-                          image: DecorationImage(
-                            image: MemoryImage(
-                                base64Decode(widget.postData.image1)),
-                            fit: BoxFit.cover,
-                            // alignment: Alignment.topCenter,
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              left: 4,
+                              right: 4,
+                              bottom: 4,
+                            ),
+                            child: SizedBox(
+                              width: 44,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(6),
+                                child: Material(
+                                  color: Colors.black38,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                      left: 5,
+                                      right: 5,
+                                      bottom: 1,
+                                      top: 1,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          widget.postData.totalImage.toString(),
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 4),
+                                        const Icon(
+                                          Feather.layers,
+                                          color: Colors.white,
+                                          size: 10,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
+                        ],
                       ),
                     ),
                     Expanded(

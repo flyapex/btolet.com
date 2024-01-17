@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:btolet/api/google_api.dart';
+import 'package:btolet/controller/ads_controller.dart';
 import 'package:btolet/view/home/widget/imageslider.dart';
 import 'package:btolet/view/sort/tolet/sortingtolet.dart';
 import 'package:like_button/like_button.dart';
@@ -30,6 +30,7 @@ class _ToletState extends State<Tolet> with AutomaticKeepAliveClientMixin {
   ToletController toletController = Get.put(ToletController());
   LocationController locationController = Get.find();
   bool _atEnd = false;
+  AdsController adsController = Get.put(AdsController());
   // getLocation() async {
   //   await locationController.getCurrnetlanlongLocation();
   // }
@@ -38,8 +39,17 @@ class _ToletState extends State<Tolet> with AutomaticKeepAliveClientMixin {
   void initState() {
     // getLocation();
     toletController.getAllPost();
+    adsController.createRewardedAd();
+    adsController.createRewardedInterstitialAd();
     super.initState();
   }
+
+  // @override
+  // void dispose() {
+  //   adsController.rewardedAd?.dispose();
+  //   adsController.rewardedInterstitialAd?.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -110,23 +120,26 @@ class _ToletState extends State<Tolet> with AutomaticKeepAliveClientMixin {
                     Obx(
                       () => toletController.currentPostCountLoding.value
                           ? const ShimmerSortPostCount()
-                          : RichText(
-                              text: TextSpan(
-                                text:
-                                    "${NumberFormat.decimalPattern().format(toletController.currentPostCount.value)} ads in ",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.black.withOpacity(0.8)),
-                                children: [
-                                  TextSpan(
-                                    text: locationController
-                                        .locationAddressShort.value
-                                        .split(', ')[0],
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.w500,
+                          : Flexible(
+                              child: RichText(
+                                text: TextSpan(
+                                  text:
+                                      "${NumberFormat.decimalPattern().format(toletController.currentPostCount.value)} ads in ",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.black.withOpacity(0.8)),
+                                  children: [
+                                    TextSpan(
+                                      text: locationController
+                                          .locationAddressShort.value
+                                          .split(', ')[0],
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                     ),
@@ -254,11 +267,11 @@ class PostsTolet extends StatefulWidget {
 }
 
 class _PostsToletState extends State<PostsTolet> {
-  ToletController postController = Get.find();
+  ToletController toletController = Get.find();
   UserController userController = Get.find();
+  AdsController adsController = Get.find();
   @override
   void initState() {
-    // postController.singlepostTolet.clear();
     super.initState();
   }
 
@@ -271,20 +284,22 @@ class _PostsToletState extends State<PostsTolet> {
       height: height / 7,
       width: Get.width,
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        // border: Border.all(color: Colors.black12, width: 0.9)
-        boxShadow: const [
-          BoxShadow(color: Colors.black12, spreadRadius: 1),
-        ],
-      ),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: Colors.black12, width: 0.9)
+          // boxShadow: const [
+          //   BoxShadow(color: Colors.black12, spreadRadius: 1),
+          // ],
+          ),
       child: Stack(
         children: [
           InkWell(
             onTap: () {
               toletController.singlePostloding(true);
               Get.to(
-                () => SinglePostTolet(postid: widget.postData.postId),
+                () => SinglePostTolet(
+                  postid: widget.postData.postId,
+                ),
                 transition: Transition.circularReveal,
                 duration: const Duration(milliseconds: 600),
                 preventDuplicates: false,
@@ -293,23 +308,71 @@ class _PostsToletState extends State<PostsTolet> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Container(
-                  width: width / 2.8,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      bottomLeft: Radius.circular(10),
+                Stack(
+                  alignment: Alignment.bottomRight,
+                  children: [
+                    Container(
+                      width: width / 2.8,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          bottomLeft: Radius.circular(10),
+                        ),
+                        image: DecorationImage(
+                          image:
+                              MemoryImage(base64Decode(widget.postData.image1)),
+                          fit: BoxFit.cover,
+                          // alignment: Alignment.topCenter,
+                        ),
+                      ),
                     ),
-                    image: DecorationImage(
-                      image: MemoryImage(base64Decode(widget.postData.image1)),
-                      fit: BoxFit.cover,
-                      // alignment: Alignment.topCenter,
+                    // widget.postData.totalImage == 1
+                    //     ? const SizedBox()
+                    //     :
+
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 4,
+                        right: 4,
+                        bottom: 6,
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(6),
+                        child: Material(
+                          color: Colors.black38,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              left: 8,
+                              right: 8,
+                              bottom: 2,
+                              top: 2,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  widget.postData.totalImage.toString(),
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                const SizedBox(width: 4),
+                                const Icon(
+                                  Feather.layers,
+                                  color: Colors.white,
+                                  size: 10,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
+                  ],
                 ),
-                SizedBox(
-                  width: width - ((width / 2.8) + 40),
+                Expanded(
                   child: Padding(
                     padding: const EdgeInsets.only(left: 15, right: 15),
                     child: Column(

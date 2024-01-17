@@ -7,6 +7,7 @@ import 'package:btolet/controller/user_controller.dart';
 import 'package:btolet/model/tolet_model.dart';
 import 'package:btolet/view/shimmer/shimmer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
@@ -16,12 +17,12 @@ import 'package:label_marker/label_marker.dart';
 import 'package:like_button/like_button.dart';
 import 'package:map_launcher/map_launcher.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import 'tolet.dart';
 
 class SinglePostTolet extends StatefulWidget {
   final int postid;
+
   const SinglePostTolet({
     super.key,
     required this.postid,
@@ -34,7 +35,7 @@ class SinglePostTolet extends StatefulWidget {
 class _SinglePostToletState extends State<SinglePostTolet>
     with AutomaticKeepAliveClientMixin {
   ToletController toletController = Get.find();
-  AdsController adsController = Get.put(AdsController());
+  AdsController adsController = Get.find();
   UserController userController = Get.find();
   LocationController locationController = Get.find();
   late SingleToletPostModel postData;
@@ -108,17 +109,16 @@ class _SinglePostToletState extends State<SinglePostTolet>
   @override
   void initState() {
     morePost = false;
+    rootBundle.loadString('assets/map/map_style2.txt').then((string) {
+      _mapStyle = string;
+    });
     lodeData();
-    // rootBundle.loadString('assets/map/map_style.txt').then((string) {
-    //   _mapStyle = string;
-    // });
-
+    adsController.createRewardedAd();
+    adsController.createRewardedInterstitialAd();
     _controller.addListener(_scrollListener);
     _controllerMore.addListener(_scrollListenerMore);
     super.initState();
     // adsController.createInterstitialAd();
-    adsController.createRewardedAd();
-    adsController.createRewardedInterstitialAd();
   }
 
   void _scrollListener() {
@@ -189,7 +189,7 @@ class _SinglePostToletState extends State<SinglePostTolet>
     adsController.rewardedInterstitialAd?.dispose();
   }
 
-  // late String _mapStyle;
+  late String _mapStyle;
   Set<Marker> markers = {};
   void addMarker() async {
     await markers.addLabelMarker(
@@ -237,7 +237,10 @@ class _SinglePostToletState extends State<SinglePostTolet>
                           flex: 1,
                           child: InkWell(
                             onTap: () async {
-                              adsController.showRewardedAd(postData.phone);
+                              adsController.showRewardedAd(
+                                'call',
+                                postData.phone,
+                              );
                             },
                             child: Container(
                               height: 44,
@@ -273,18 +276,10 @@ class _SinglePostToletState extends State<SinglePostTolet>
                           flex: 1,
                           child: InkWell(
                             onTap: () async {
-                              var uri = Uri.parse(
-                                  'sms:${postData.phone}?body=hello%20there');
-
-                              if (await canLaunchUrl(uri)) {
-                                await launchUrl(uri);
-                              } else {
-                                if (await canLaunchUrl(uri)) {
-                                  await launchUrl(uri);
-                                } else {
-                                  throw 'Could not launch $uri';
-                                }
-                              }
+                              adsController.showRewardedInterstitialAd(
+                                'sms',
+                                postData.phone,
+                              );
                             },
                             child: Container(
                               height: 44,
@@ -328,26 +323,10 @@ class _SinglePostToletState extends State<SinglePostTolet>
                           flex: 2,
                           child: InkWell(
                             onTap: () async {
-                              // String appUrl;
-                              // String phone = postData.wapp;
-                              // String message = 'Surprice Bitch! ';
-                              // if (Platform.isAndroid) {
-                              //   appUrl =
-                              //       "whatsapp://send?phone=$phone&text=${Uri.parse(message)}";
-                              // } else {
-                              //   appUrl =
-                              //       "https://api.whatsapp.com/send?phone=$phone=${Uri.parse(message)}"; // URL for non-Android devices
-                              // }
-
-                              // if (await canLaunchUrl(Uri.parse(appUrl))) {
-                              //   await launchUrl(Uri.parse(appUrl));
-                              // } else {
-                              //   throw 'Could not launch $appUrl';
-                              // }
-
                               adsController.showRewardedInterstitialAd(
-                                  postData.phone,
-                                  "Hi I just Saw a post on Btolet.com app that you");
+                                'wapp',
+                                postData.phone,
+                              );
                             },
                             child: Container(
                               height: 44,
@@ -881,19 +860,16 @@ class _SinglePostToletState extends State<SinglePostTolet>
                                           ),
                                         ),
                                         const SizedBox(width: 10),
-                                        SizedBox(
-                                          width: width / 1.7,
-                                          child: Text(
-                                            // locationController.locationAddress.value,
-                                            postData.location,
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              color: Color(0xff083437),
-                                              fontWeight: FontWeight.bold,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                            maxLines: 2,
+                                        Text(
+                                          // locationController.locationAddress.value,
+                                          postData.location,
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                            color: Color(0xff083437),
+                                            fontWeight: FontWeight.bold,
+                                            overflow: TextOverflow.ellipsis,
                                           ),
+                                          maxLines: 1,
                                         ),
                                       ],
                                     ),
@@ -1149,7 +1125,7 @@ class _SinglePostToletState extends State<SinglePostTolet>
                                               left: 0,
                                             ),
                                             onMapCreated: (controller) {
-                                              // controller.setMapStyle(_mapStyle);
+                                              controller.setMapStyle(_mapStyle);
                                             },
                                             zoomControlsEnabled: false,
                                             myLocationButtonEnabled: false,

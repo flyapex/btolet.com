@@ -5,7 +5,6 @@ import 'package:btolet/model/api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-
 import 'db_controller.dart';
 
 class UserController extends GetxController {

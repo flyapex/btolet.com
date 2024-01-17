@@ -1,9 +1,11 @@
 import 'package:btolet/controller/tolet_controller.dart';
 import 'package:btolet/controller/user_controller.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class TextInput extends StatefulWidget {
   final String title;
@@ -16,7 +18,7 @@ class TextInput extends StatefulWidget {
   final TextInputFormatter? numberFormatter;
   final double iconh;
   final double iconw;
-  final double widthh;
+
   final String svgicon;
   final FocusNode focusNode;
   const TextInput({
@@ -30,7 +32,6 @@ class TextInput extends StatefulWidget {
     required this.titlelenth,
     required this.iconh,
     required this.iconw,
-    required this.widthh,
     this.numberFormatter,
     required this.svgicon,
     required this.focusNode,
@@ -98,6 +99,7 @@ class _TextInputState extends State<TextInput> {
             letterSpacing: 0.7,
             color: Colors.black.withOpacity(0.6),
           ),
+          overflow: TextOverflow.ellipsis,
         ),
         const SizedBox(height: 15),
         Container(
@@ -131,62 +133,160 @@ class _TextInputState extends State<TextInput> {
                   : const SizedBox(),
               SizedBox(
                 height: 48,
-                width: (Get.width / widget.widthh),
+                // width: (Get.width / widget.widthh),
                 child: Focus(
                   onFocusChange: (val) {
                     setState(() {
                       val ? iconColorChange = true : iconColorChange = false;
                     });
                   },
-                  child: TextField(
-                    focusNode: widget.focusNode,
-                    inputFormatters: [
-                      if (widget.numberFormatter != null)
-                        widget.numberFormatter!,
-                    ],
-                    cursorHeight: 24,
-                    cursorWidth: 1.8,
-                    cursorRadius: const Radius.circular(10),
-                    controller: widget.controller,
-                    textInputAction: TextInputAction.done,
-                    keyboardType: widget.textType,
-                    maxLines: 1,
-                    cursorColor: Colors.black,
-                    style: textstyle,
-                    decoration: InputDecoration(
-                      suffix: Text(
-                        widget.suffixtext,
-                        style: TextStyle(
-                          color: iconColorChange
-                              ? const Color(0xff0166EE)
-                              : Colors.amber,
+                  child: IntrinsicWidth(
+                    child: TextField(
+                      focusNode: widget.focusNode,
+                      inputFormatters: [
+                        if (widget.numberFormatter != null)
+                          widget.numberFormatter!,
+                      ],
+                      cursorHeight: 24,
+                      cursorWidth: 1.8,
+                      cursorRadius: const Radius.circular(10),
+                      controller: widget.controller,
+                      textInputAction: TextInputAction.done,
+                      keyboardType: widget.textType,
+                      maxLines: 1,
+                      cursorColor: Colors.black,
+                      style: textstyle,
+                      decoration: InputDecoration(
+                        suffix: Text(
+                          widget.suffixtext,
+                          style: TextStyle(
+                            color: iconColorChange
+                                ? const Color(0xff0166EE)
+                                : Colors.amber,
+                          ),
                         ),
+                        border: const OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                        ),
+                        isDense: true,
+                        hintText: widget.hintText,
+                        hintStyle: textstyleh,
                       ),
-                      border: const OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                      ),
-                      isDense: true,
-                      hintText: widget.hintText,
-                      hintStyle: textstyleh,
+                      onChanged: (val) {
+                        // postController.alltextfield();
+                        if (val != '' &&
+                            toletController.rent == widget.controller) {
+                          toletController.priceFlag.value = true;
+                          // postController.istitletxt.value == true;
+                          // widget.flag = true;
+                          // postController.page2chack();
+                        }
+                        // postController.allCategoryCheck();
+                      },
+                      onSubmitted: (v) {
+                        getFocus();
+                      },
                     ),
-                    onChanged: (val) {
-                      // postController.alltextfield();
-                      if (val != '' &&
-                          toletController.rent == widget.controller) {
-                        toletController.priceFlag.value = true;
-                        // postController.istitletxt.value == true;
-                        // widget.flag = true;
-                        // postController.page2chack();
-                      }
-                      // postController.allCategoryCheck();
-                    },
-                    onSubmitted: (v) {
-                      getFocus();
-                    },
                   ),
                 ),
               ),
             ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class DateTimeSelect extends StatefulWidget {
+  const DateTimeSelect({super.key});
+
+  @override
+  State<DateTimeSelect> createState() => _DateTimeSelectState();
+}
+
+class _DateTimeSelectState extends State<DateTimeSelect> {
+  ToletController toletController = Get.find();
+  DateTime? _chosenDateTime;
+
+  void _showDatePicker(ctx) {
+    var now = DateTime.now();
+    DateTime minDate = DateTime(now.year, now.month);
+    showCupertinoModalPopup(
+        context: ctx,
+        builder: (_) => Container(
+              height: 500,
+              color: const Color.fromARGB(255, 255, 255, 255),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 400,
+                    child: CupertinoDatePicker(
+                      initialDateTime: now,
+                      minimumDate: minDate,
+                      mode: CupertinoDatePickerMode.date,
+                      onDateTimeChanged: (val) {
+                        print(val);
+                        toletController.rentFrom = val;
+                        setState(() {
+                          _chosenDateTime = val;
+                          toletController.rentFrom = val;
+                        });
+                      },
+                    ),
+                  ),
+                  CupertinoButton(
+                    child: const Text('OK'),
+                    onPressed: () => Navigator.of(ctx).pop(),
+                  )
+                ],
+              ),
+            ));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Rent From',
+          style: TextStyle(
+            letterSpacing: 0.7,
+            color: Colors.black.withOpacity(0.5),
+          ),
+        ),
+        const SizedBox(height: 15),
+        SizedBox(
+          height: 46,
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              minimumSize: const Size(double.infinity, double.infinity),
+              backgroundColor: const Color(0xffF2F3F5),
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(6),
+              ),
+            ),
+            onPressed: () {
+              _showDatePicker(context);
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _chosenDateTime == null
+                    ? Text(
+                        DateFormat().add_MMMd().format(DateTime.now()),
+                      )
+                    : Text(
+                        DateFormat().add_MMMd().format(_chosenDateTime!),
+                        style: const TextStyle(
+                          fontSize: 18,
+                          color: Colors.black,
+                        ),
+                      ),
+              ],
+            ),
           ),
         ),
       ],

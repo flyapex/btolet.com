@@ -18,14 +18,14 @@ class DropDown extends StatefulWidget {
   final String title;
   final double topPadding;
   final Category category;
-  final double widthh;
+  // final double widthh;
 
   const DropDown({
     super.key,
     required this.title,
     this.topPadding = 10.0,
     required this.category,
-    required this.widthh,
+    // required this.widthh,
   });
 
   @override
@@ -110,45 +110,41 @@ class _DropDownState extends State<DropDown> {
               ),
               borderRadius: BorderRadius.circular(6),
             ),
-            child: Row(
-              children: [
-                SizedBox(
-                  height: 48,
-                  width: (Get.width / widget.widthh),
-                  child: DropdownButtonHideUnderline(
-                    child: ButtonTheme(
-                      alignedDropdown: true,
-                      child: DropdownButton(
-                        isExpanded: true,
-                        icon: Icon(
-                          Feather.chevron_down,
-                          color: Colors.black.withOpacity(0.4),
-                        ),
-                        hint: Text(
-                          toletController.getCategoryValue(widget.category),
-                          style: toletController
-                                      .getCategoryValue(widget.category) ==
+            child: SizedBox(
+              height: 48,
+              // width: (Get.width / widget.widthh),
+              child: DropdownButtonHideUnderline(
+                child: ButtonTheme(
+                  alignedDropdown: true,
+                  child: DropdownButton(
+                    isExpanded: true,
+                    icon: Icon(
+                      Feather.chevron_down,
+                      color: Colors.black.withOpacity(0.4),
+                    ),
+                    hint: Text(
+                      toletController.getCategoryValue(widget.category),
+                      style:
+                          toletController.getCategoryValue(widget.category) ==
                                   'select'
                               ? textstyleh
                               : textstylemain,
-                        ),
-                        items: categoryValues.map((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                        onChanged: (val) {
-                          toletController.setCategoryValue(
-                              widget.category, val.toString());
-
-                          toletController.flagCheck();
-                        },
-                      ),
                     ),
+                    items: categoryValues.map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                    onChanged: (val) {
+                      toletController.setCategoryValue(
+                          widget.category, val.toString());
+
+                      toletController.flagCheck();
+                    },
                   ),
                 ),
-              ],
+              ),
             ),
           ),
         ],

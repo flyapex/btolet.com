@@ -6,7 +6,7 @@ import 'package:another_xlider/models/tooltip/tooltip.dart';
 import 'package:another_xlider/models/trackbar.dart';
 import 'package:btolet/controller/tolet_controller.dart';
 import 'package:btolet/model/category.dart';
-import 'package:btolet/view/sort/location_small.dart';
+import 'package:btolet/view/map/location_post.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -166,7 +166,8 @@ class _SortHereState extends State<SortHere> with TickerProviderStateMixin {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const LocationSmall(),
+                  // const LocationSmall(),
+                  const Location(),
                   Center(
                     child: FittedBox(
                       child: Container(
@@ -249,15 +250,40 @@ class _SortHereState extends State<SortHere> with TickerProviderStateMixin {
                       toletController.sortingPostCount();
                     },
                   ),
-                  Row(
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.start,
+                  //   children: [
+                  //     Expanded(
+                  //       child: Wrap(
+                  //         spacing: 10,
+                  //         alignment: WrapAlignment.spaceEvenly,
+                  //         runAlignment: WrapAlignment.start,
+                  //         children: toletController.categoriesSort.entries
+                  //             .map((entry) {
+                  //           final category = entry.key;
+                  //           final categoryState = entry.value;
+                  //           return CategoryChipSort(
+                  //             category: category,
+                  //             categoryState: categoryState,
+                  //           );
+                  //         }).toList(),
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
+
+                  Column(
                     mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: Wrap(
-                          spacing: 10,
-                          alignment: WrapAlignment.spaceEvenly,
-                          runAlignment: WrapAlignment.start,
+                    children: List.generate(
+                      (toletController.categoriesSort.length / 3).ceil(),
+                      (columnIndex) {
+                        final start = columnIndex * 3;
+                        final end = (columnIndex + 1) * 3;
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: toletController.categoriesSort.entries
+                              .toList()
+                              .sublist(start, end)
                               .map((entry) {
                             final category = entry.key;
                             final categoryState = entry.value;
@@ -266,11 +292,10 @@ class _SortHereState extends State<SortHere> with TickerProviderStateMixin {
                               categoryState: categoryState,
                             );
                           }).toList(),
-                        ),
-                      ),
-                    ],
+                        );
+                      },
+                    ),
                   ),
-
                   const SizedBox(height: 20),
                   const Row(
                     children: [

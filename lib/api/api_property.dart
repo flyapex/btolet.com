@@ -176,7 +176,7 @@ class ApiServicePro {
 
   static Future codinateTopost(geolat, geolon) async {
     final response = await dio.get(
-      '$baseUrl/map/postid',
+      '$baseUrl/map/postlist',
       queryParameters: {
         "geolat": geolat.toString(),
         "geolon": geolon.toString()

@@ -2,7 +2,6 @@ import 'package:btolet/controller/location_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-
 import 'location_sheet.dart';
 
 class Location extends StatelessWidget {
@@ -25,36 +24,33 @@ class Location extends StatelessWidget {
           child: Column(
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        backgroundColor: const Color(0xffEEEEEE),
-                        child: SvgPicture.asset(
-                          'assets/icons/home/location.svg',
-                          height: 18,
-                          width: 18,
-                          // ignore: deprecated_member_use
-                          color: Colors.blue,
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      Obx(
-                        () => SizedBox(
-                          width: Get.width / 1.5,
-                          child: Text(
-                            locationController.locationAddress.value,
-                            style: const TextStyle(
-                              fontSize: 18,
-                              color: Colors.black,
-                              letterSpacing: 0.1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
+                  CircleAvatar(
+                    backgroundColor: const Color(0xffEEEEEE),
+                    child: SvgPicture.asset(
+                      'assets/icons/home/location.svg',
+                      height: 18,
+                      width: 18,
+                      // ignore: deprecated_member_use
+                      color: Colors.blue,
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Obx(
+                    () => Expanded(
+                      child: SizedBox(
+                        width: Get.width / 1.5,
+                        child: Text(
+                          locationController.locationAddress.value,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            color: Colors.black,
+                            letterSpacing: 0.1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ),
-                    ],
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(right: 10),

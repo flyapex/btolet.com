@@ -2,6 +2,7 @@ import 'package:btolet/controller/property_controller.dart';
 import 'package:btolet/controller/tolet_controller.dart';
 import 'package:btolet/controller/user_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
@@ -158,6 +159,7 @@ class NumberInput extends StatefulWidget {
   final double iconh;
   final double iconw;
   final FocusNode focusNode;
+  final int numberLength;
   const NumberInput({
     required this.title,
     required this.icon,
@@ -171,6 +173,7 @@ class NumberInput extends StatefulWidget {
     required this.color,
     Key? key,
     required this.focusNode,
+    required this.numberLength,
   }) : super(key: key);
 
   @override
@@ -263,6 +266,11 @@ class _NumberInputState extends State<NumberInput> {
                           focusNode: widget.focusNode,
                           autofillHints: const [
                             AutofillHints.telephoneNumber,
+                          ],
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(
+                              widget.numberLength,
+                            ),
                           ],
                           onChanged: (val) {
                             if (val.isNotEmpty) {

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:btolet/api/google_api.dart';
+import 'package:btolet/controller/ads_controller.dart';
 import 'package:btolet/controller/location_controller.dart';
 import 'package:btolet/controller/property_controller.dart';
 import 'package:btolet/controller/user_controller.dart';
@@ -111,23 +112,26 @@ class _PropertyState extends State<Property>
                     Obx(
                       () => proController.currentPostCountLoding.value
                           ? const ShimmerSortPostCount()
-                          : RichText(
-                              text: TextSpan(
-                                text:
-                                    "${NumberFormat.decimalPattern().format(proController.currentPostCount.value)} ads in ",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.black.withOpacity(0.8)),
-                                children: [
-                                  TextSpan(
-                                    text: locationController
-                                        .locationAddressShort.value
-                                        .split(', ')[0],
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.w500,
+                          : Flexible(
+                              child: RichText(
+                                text: TextSpan(
+                                  text:
+                                      "${NumberFormat.decimalPattern().format(proController.currentPostCount.value)} ads in ",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.black.withOpacity(0.8)),
+                                  children: [
+                                    TextSpan(
+                                      text: locationController
+                                          .locationAddressShort.value
+                                          .split(', ')[0],
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                     ),
@@ -253,7 +257,7 @@ class PostsPro extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     UserController userController = Get.find();
-
+    AdsController adsController = Get.find();
     return Container(
       height: 400,
       width: double.infinity,
@@ -268,81 +272,134 @@ class PostsPro extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Stack(
+            alignment: Alignment.bottomRight,
             children: [
-              GestureDetector(
-                onTap: () {
-                  Get.to(
-                    () => SinglePostPro(pid: postData.pid),
-                    transition: Transition.circularReveal,
-                    duration: const Duration(milliseconds: 600),
-                  );
-                },
-                child: Container(
-                  height: 200,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10),
-                    ),
-                    image: DecorationImage(
-                      image: MemoryImage(base64Decode(postData.image1)),
-                      fit: BoxFit.cover,
-                      // alignment: Alignment.topCenter,
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 10, right: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    LikeButton(
-                      size: 30,
-                      isLiked: isLikedvalue,
-                      likeBuilder: (bool isLiked) {
-                        return Container(
-                          decoration: BoxDecoration(
-                            color: isLiked ? Colors.white : Colors.black26,
-                            borderRadius: BorderRadius.circular(100),
-                          ),
-                          child: Icon(
-                            isLiked
-                                ? Icons.favorite
-                                : Icons.favorite_border_outlined,
-                            color: isLiked ? Colors.lightBlue : Colors.white,
-                          ),
-                        );
-                      },
-                      animationDuration: const Duration(milliseconds: 400),
-                      onTap: (isLiked) async {
-                        print(!isLiked);
-                        proController.savePost(
-                          postData.pid,
-                          !isLiked,
-                        );
-                        return !isLiked;
-                      },
-                    ),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(50),
-                      child: Material(
-                        color: Colors.black26,
-                        child: InkWell(
-                          child: const Padding(
-                            padding: EdgeInsets.all(5),
-                            child: Icon(
-                              Feather.share_2,
-                              color: Colors.white,
-                              size: 21,
-                            ),
-                          ),
-                          onTap: () {},
+              Stack(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Get.to(
+                        () => SinglePostPro(pid: postData.pid),
+                        transition: Transition.circularReveal,
+                        duration: const Duration(milliseconds: 600),
+                      );
+                    },
+                    child: Container(
+                      height: 200,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10),
+                        ),
+                        image: DecorationImage(
+                          image: MemoryImage(base64Decode(postData.image1)),
+                          fit: BoxFit.cover,
+                          // alignment: Alignment.topCenter,
                         ),
                       ),
                     ),
-                  ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10, right: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        LikeButton(
+                          size: 30,
+                          isLiked: isLikedvalue,
+                          likeBuilder: (bool isLiked) {
+                            return Container(
+                              decoration: BoxDecoration(
+                                color: isLiked ? Colors.white : Colors.black26,
+                                borderRadius: BorderRadius.circular(100),
+                              ),
+                              child: Icon(
+                                isLiked
+                                    ? Icons.favorite
+                                    : Icons.favorite_border_outlined,
+                                color:
+                                    isLiked ? Colors.lightBlue : Colors.white,
+                              ),
+                            );
+                          },
+                          animationDuration: const Duration(milliseconds: 400),
+                          onTap: (isLiked) async {
+                            print(!isLiked);
+                            proController.savePost(
+                              postData.pid,
+                              !isLiked,
+                            );
+                            return !isLiked;
+                          },
+                        ),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(50),
+                          child: Material(
+                            color: Colors.black26,
+                            child: InkWell(
+                              child: const Padding(
+                                padding: EdgeInsets.all(5),
+                                child: Icon(
+                                  Feather.share_2,
+                                  color: Colors.white,
+                                  size: 21,
+                                ),
+                              ),
+                              onTap: () {
+                                adsController.shareBase64Image(
+                                    postData.image1, 'Hi');
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              // postData.totalImage == 1
+              //     ? const SizedBox()
+              //     :
+              Padding(
+                padding: const EdgeInsets.only(
+                  right: 8,
+                  bottom: 8,
+                ),
+                child: SizedBox(
+                  width: 44,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(6),
+                    child: Material(
+                      color: Colors.black38,
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          left: 8,
+                          right: 8,
+                          bottom: 2,
+                          top: 2,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              postData.totalImage.toString(),
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: Colors.white,
+                              ),
+                            ),
+                            const SizedBox(width: 4),
+                            const Icon(
+                              Feather.layers,
+                              color: Colors.white,
+                              size: 10,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ],

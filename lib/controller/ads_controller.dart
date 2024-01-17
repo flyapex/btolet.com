@@ -1,11 +1,16 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:btolet/api/google%20ads/ad_helper.dart';
+import 'package:btolet/controller/tolet_controller.dart';
+import 'package:btolet/view/tolet/single_post.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+ToletController toletController = Get.find();
 
 class AdsController extends GetxController {
   //----------------------Google ads
@@ -112,11 +117,25 @@ class AdsController extends GetxController {
     interstitialAd = null;
   }
 
-  void showRewardedAd(val) async {
+  void showRewardedAd(String type, phone) async {
     if (rewardedAd == null) {
       print('Warning: attempt to show rewarded before loaded.');
-      final call = Uri.parse('tel:$val');
-      launchUrl(call);
+      if (type == "call") {
+        final call = Uri.parse('tel:$phone');
+        launchUrl(call);
+      } else if (type == "sms") {
+        final sms = Uri.parse('sms:${phone.phone}?body=hello%20there');
+        launchUrl(sms);
+      } else if (type == 'wapp') {
+        phone = '+88$phone';
+        var message =
+            'Hi There I Just Saw A ads On btolet app, Is it available?';
+        await launchUrl(Uri.parse(
+            "whatsapp://send?phone=$phone&text=${Uri.parse(message)}"));
+      } else if (type == 'ads') {
+        print('ads');
+      }
+
       return;
     }
     rewardedAd!.fullScreenContentCallback = FullScreenContentCallback(
@@ -136,45 +155,57 @@ class AdsController extends GetxController {
 
     rewardedAd!.setImmersiveMode(true);
     rewardedAd!.show(
-      onUserEarnedReward: (AdWithoutView ad, RewardItem reward) {
+      onUserEarnedReward: (AdWithoutView ad, RewardItem reward) async {
         life += 1;
-        //xxx
-        final call = Uri.parse('tel:$val');
-        launchUrl(call);
+        if (type == "call") {
+          final call = Uri.parse('tel:$phone');
+          launchUrl(call);
+        } else if (type == "sms") {
+          final sms = Uri.parse('sms:${phone.phone}?body=hello%20there');
+          launchUrl(sms);
+        } else if (type == 'wapp') {
+          phone = '+88$phone';
+          var message =
+              'Hi There I Just Saw A ads On btolet app, Is it available?';
+          await launchUrl(Uri.parse(
+              "whatsapp://send?phone=$phone&text=${Uri.parse(message)}"));
+        } else if (type == 'ads') {
+          print('ads');
+        }
       },
     );
 
     rewardedAd = null;
   }
 
-  Future<void> shareBase64Image(String base64Image) async {
-    try {
-      // Get temporary directory
-      final tempDir = await getTemporaryDirectory();
-
-      // Create temporary file
-      final file = File('${tempDir.path}/image.jpg');
-
-      // Decode Base64 string and write to file
-      await file.writeAsBytes(base64Decode(base64Image));
-
-      // Share the file using share_plus
-      // await Share.shareFiles([file.path]);
-
-      // Delete the temporary file after sharing
-      file.delete();
-    } catch (e) {
-      print('Error sharing image: $e');
-    }
-  }
-
-  void showRewardedInterstitialAd(val, message) async {
+  void showRewardedInterstitialAd(String type, data) async {
     if (rewardedInterstitialAd == null) {
       print('Warning: attempt to show rewarded interstitial before loaded.');
-
-      val = '+88$val';
-      await launchUrl(
-          Uri.parse("whatsapp://send?phone=$val&text=${Uri.parse(message)}"));
+      if (type == "call") {
+        final call = Uri.parse('tel:$data');
+        launchUrl(call);
+      } else if (type == "sms") {
+        data = '+88$data';
+        final sms = Uri.parse('sms:$data?body=hello%20there');
+        launchUrl(sms);
+      } else if (type == 'wapp') {
+        data = '+88$data';
+        var message =
+            'Hi There I Just Saw A ads On btolet app, Is it available?';
+        await launchUrl(Uri.parse(
+            "whatsapp://send?phone=$data&text=${Uri.parse(message)}"));
+      } else if (type == 'ads') {
+        print('ads');
+        toletController.singlePostloding(true);
+        Get.to(
+          () => SinglePostTolet(
+            postid: data,
+          ),
+          transition: Transition.circularReveal,
+          duration: const Duration(milliseconds: 600),
+          preventDuplicates: false,
+        );
+      }
 
       return;
     }
@@ -199,9 +230,30 @@ class AdsController extends GetxController {
     rewardedInterstitialAd!.show(
         onUserEarnedReward: (AdWithoutView ad, RewardItem reward) async {
       print('$ad with reward $RewardItem(${reward.amount}, ${reward.type})');
-      val = '+88$val';
-      await launchUrl(
-          Uri.parse("whatsapp://send?phone=$val&text=${Uri.parse(message)}"));
+      if (type == "call") {
+        final call = Uri.parse('tel:$data');
+        launchUrl(call);
+      } else if (type == "sms") {
+        final sms = Uri.parse('sms:${data.phone}?body=hello%20there');
+        launchUrl(sms);
+      } else if (type == 'wapp') {
+        data = '+88$data';
+        var message =
+            'Hi There I Just Saw A ads On btolet app, Is it available?';
+        await launchUrl(Uri.parse(
+            "whatsapp://send?phone=$data&text=${Uri.parse(message)}"));
+      } else if (type == 'ads') {
+        print('ads');
+        toletController.singlePostloding(true);
+        Get.to(
+          () => SinglePostTolet(
+            postid: data,
+          ),
+          transition: Transition.circularReveal,
+          duration: const Duration(milliseconds: 600),
+          preventDuplicates: false,
+        );
+      }
     });
     rewardedInterstitialAd = null;
   }
@@ -237,4 +289,37 @@ class AdsController extends GetxController {
   //     print("Rewarded Ad not yet loaded!");
   //   }
   // }
+
+  Future<void> shareBase64Image(String base64Image, text) async {
+    try {
+      // Decode base64 image to bytes
+      Uint8List bytes =
+          const Base64Decoder().convert(base64Image.split(',').last);
+
+      // Create a temporary file to share
+      // Note: You can use other methods to share images as well
+      final tempDir = await getTemporaryDirectory();
+      final tempFile = await File('${tempDir.path}/image.png').create();
+      await tempFile.writeAsBytes(bytes);
+
+      // ignore: deprecated_member_use
+      await Share.shareFiles(
+        [tempFile.path],
+        text: text,
+        subject: 'Image Sharing',
+      );
+      await tempFile.delete();
+    } catch (e) {
+      print('Error sharing image: $e');
+    }
+
+    // try {
+    //   final tempDir = await getTemporaryDirectory();
+    //   final file = File('${tempDir.path}/image.jpg');
+    //   await file.writeAsBytes(base64Decode(base64Image));
+    //   file.delete();
+    // } catch (e) {
+    //   print('Error sharing image: $e');
+    // }
+  }
 }

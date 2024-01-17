@@ -236,7 +236,6 @@ class PostToletState1 extends State<PostPro2> {
                     controller: userController.nameController,
                     iconh: 23,
                     iconw: 23,
-                    widthh: 2.35,
                     svgicon: 'assets/icons/home/text.svg',
                     suffixtext: '',
                     titlelenth: 500,
@@ -269,6 +268,7 @@ class PostToletState1 extends State<PostPro2> {
               iconw: 21,
               color: const Color(0xff6E7FFC),
               focusNode: userController.phonefocusNode,
+              numberLength: 11,
             ),
             NumberInput(
               topPadding: 10,
@@ -282,6 +282,7 @@ class PostToletState1 extends State<PostPro2> {
               iconw: 28,
               color: Colors.lightGreen,
               focusNode: userController.wappfocusNode,
+              numberLength: 11,
             ),
             const SizedBox(height: 200),
           ],

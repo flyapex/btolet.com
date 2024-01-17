@@ -101,9 +101,10 @@ class _SinglePostProState extends State<SinglePostPro>
 
   final ScrollController _controller = ScrollController();
   final ScrollController _controllerMore = ScrollController();
-
+  late bool morePost;
   @override
   void initState() {
+    morePost = false;
     lodeData();
     rootBundle.loadString('assets/map/map_style.txt').then((string) {
       _mapStyle = string;
@@ -114,22 +115,37 @@ class _SinglePostProState extends State<SinglePostPro>
   }
 
   void _scrollListener() {
-    if (_controller.position.maxScrollExtent > 0) {
-      var scrollPercentage =
-          (_controller.position.pixels / _controller.position.maxScrollExtent)
-              .clamp(0.0, 1.0);
+    double scrollPosition = _controller.position.pixels;
 
-      if (scrollPercentage > 0.5 &&
-          scrollPercentage < 0.6 &&
-          proController.lodeOneTime.value) {
-        print("Lode More Data");
-        proController.getMorePost(
-          1,
-          postData.geolat,
-          postData.geolon,
-        );
-      }
+    double totalPageHeight = _controller.position.maxScrollExtent;
+    double seventyPercentOfPage = 0.7 * totalPageHeight;
+    if (scrollPosition >= seventyPercentOfPage && !morePost) {
+      print("Load More Post Now");
+      proController.getMorePost(
+        1,
+        postData.geolat,
+        postData.geolon,
+      );
+      setState(() {
+        morePost = true;
+      });
     }
+    // if (_controller.position.maxScrollExtent > 0) {
+    //   var scrollPercentage =
+    //       (_controller.position.pixels / _controller.position.maxScrollExtent)
+    //           .clamp(0.0, 1.0);
+
+    //   if (scrollPercentage > 0.5 &&
+    //       scrollPercentage < 0.6 &&
+    //       proController.lodeOneTime.value) {
+    //     print("Lode More Data");
+    //     proController.getMorePost(
+    //       1,
+    //       postData.geolat,
+    //       postData.geolon,
+    //     );
+    //   }
+    // }
     if (_controller.position.userScrollDirection == ScrollDirection.reverse) {
       locationController.singlePostPromap.value = true;
     } else {
@@ -549,18 +565,15 @@ class _SinglePostProState extends State<SinglePostPro>
                                       ),
                                     ),
                                     const SizedBox(width: 10),
-                                    SizedBox(
-                                      width: width / 1.7,
-                                      child: Text(
-                                        postData.location,
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                          color: Color(0xff083437),
-                                          fontWeight: FontWeight.w500,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                        maxLines: 2,
+                                    Text(
+                                      postData.location,
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        color: Color(0xff083437),
+                                        fontWeight: FontWeight.w500,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
+                                      maxLines: 1,
                                     ),
                                   ],
                                 ),
@@ -571,7 +584,9 @@ class _SinglePostProState extends State<SinglePostPro>
                                   fontSize: 12,
                                   color: Color(0xff083437),
                                   fontWeight: FontWeight.normal,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
+                                maxLines: 1,
                               ),
                             ],
                           ),

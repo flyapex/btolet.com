@@ -80,7 +80,6 @@ class PostToletState1 extends State<PostTolet1> {
               controller: toletController.nameController,
               iconh: 23,
               iconw: 23,
-              widthh: 2.35 / 2,
               svgicon: '',
               focusNode: toletController.namefocusNode,
             ),
@@ -93,15 +92,39 @@ class PostToletState1 extends State<PostTolet1> {
               ),
             ),
             const SizedBox(height: 10),
-            Row(
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.start,
+            //   children: [
+            //     Expanded(
+            //       child: Wrap(
+            //         spacing: 10,
+            //         alignment: WrapAlignment.spaceEvenly,
+            //         runAlignment: WrapAlignment.start,
+            //         children: toletController.categories.entries.map((entry) {
+            //           final category = entry.key;
+            //           final categoryState = entry.value;
+            //           return CategoryChip(
+            //             category: category,
+            //             categoryState: categoryState,
+            //           );
+            //         }).toList(),
+            //       ),
+            //     ),
+            //   ],
+            // ),
+            Column(
               mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Wrap(
-                    spacing: 10,
-                    alignment: WrapAlignment.spaceEvenly,
-                    runAlignment: WrapAlignment.start,
-                    children: toletController.categories.entries.map((entry) {
+              children: List.generate(
+                (toletController.categories.length / 3).ceil(),
+                (columnIndex) {
+                  final start = columnIndex * 3;
+                  final end = (columnIndex + 1) * 3;
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: toletController.categories.entries
+                        .toList()
+                        .sublist(start, end)
+                        .map((entry) {
                       final category = entry.key;
                       final categoryState = entry.value;
                       return CategoryChip(
@@ -109,9 +132,9 @@ class PostToletState1 extends State<PostTolet1> {
                         categoryState: categoryState,
                       );
                     }).toList(),
-                  ),
-                ),
-              ],
+                  );
+                },
+              ),
             ),
             const CategoryBody(),
             SizedBox(height: space),

@@ -166,12 +166,13 @@ class PostListSimmer extends StatelessWidget {
       height: height / 7,
       width: Get.width,
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: const [
-          BoxShadow(color: Colors.black12, spreadRadius: 1.1),
-        ],
-      ),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: Colors.black12, width: 0.9)
+          // boxShadow: const [
+          //   BoxShadow(color: Colors.black12, spreadRadius: 1.1),
+          // ],
+          ),
       child: Row(
         children: [
           _buildPostImage(),

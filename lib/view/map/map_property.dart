@@ -19,7 +19,8 @@ class MapProperty extends StatefulWidget {
   State<MapProperty> createState() => _MapPropertyState();
 }
 
-class _MapPropertyState extends State<MapProperty> {
+class _MapPropertyState extends State<MapProperty>
+    with AutomaticKeepAliveClientMixin {
   LocationController locationController = Get.find();
 
   UserController userController = Get.find();
@@ -86,6 +87,7 @@ class _MapPropertyState extends State<MapProperty> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return PopScope(
       canPop: false,
       onPopInvoked: (didPop) {
@@ -244,4 +246,7 @@ class _MapPropertyState extends State<MapProperty> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

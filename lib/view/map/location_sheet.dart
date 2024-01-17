@@ -209,18 +209,21 @@ class _LocationSheetState extends State<LocationSheet>
                                       size: 25,
                                     ),
                                     const SizedBox(width: 18),
-                                    SizedBox(
-                                      width: (Get.width - 100),
-                                      child: Text(
-                                        locationController
-                                            .locationAddress.value,
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.black.withOpacity(0.4),
-                                          overflow: TextOverflow.ellipsis,
+                                    Flexible(
+                                      child: SizedBox(
+                                        child: Text(
+                                          locationController
+                                              .locationAddress.value,
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color:
+                                                Colors.black.withOpacity(0.4),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
                                         ),
                                       ),
                                     ),
+                                    const SizedBox(width: 18),
                                   ],
                                 ),
                               ),

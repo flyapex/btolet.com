@@ -127,6 +127,7 @@ class ImagePickerState extends State<ImagePicker> {
                                       ? () {}
                                       : null,
                                   child: Stack(
+                                    alignment: Alignment.center,
                                     children: [
                                       Stack(
                                         alignment: Alignment.topRight,

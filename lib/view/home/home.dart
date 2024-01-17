@@ -28,6 +28,7 @@ class _HomeState extends State<Home>
   late ScrollController scrollController;
   UserController userController = Get.put(UserController());
   LocationController locationController = Get.put(LocationController());
+  // AdsController adsController = Get.put(AdsController());
   var index = 0;
   @override
   void initState() {
@@ -97,6 +98,13 @@ class _HomeState extends State<Home>
       curve: Curves.easeIn,
     ),
   );
+
+  // @override
+  // void dispose() {
+  //   adsController.rewardedAd?.dispose();
+  //   adsController.rewardedInterstitialAd?.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -213,67 +221,76 @@ class _HomeState extends State<Home>
                   centerTitle: false,
                   automaticallyImplyLeading: false,
                   floating: true,
-                  title: Row(
-                    children: [
-                      IconButton(
-                        padding: EdgeInsets.zero,
-                        onPressed: () {
-                          Scaffold.of(context).openDrawer();
-                        },
-                        icon: CircleAvatar(
-                          backgroundImage: NetworkImage(
-                            userController.image.value,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 6),
-                      SizedBox(
-                        width: Get.width / 3,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(50),
-                          child: Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              onTap: () {
-                                Get.to(
-                                  () => const LocationSheet(),
-                                  duration: const Duration(milliseconds: 170),
-                                  transition: Transition.circularReveal,
-                                  fullscreenDialog: true,
-                                );
-                              },
-                              splashColor: Colors.black12,
-                              child: Row(
-                                children: [
-                                  Obx(
-                                    () => Text(
-                                      locationController
-                                          .locationAddressShort.value
-                                          .split(',')[0],
-                                      style: TextStyle(
-                                        color: const Color(0xff1A3259)
-                                            .withOpacity(0.8),
-                                        decoration: TextDecoration.underline,
-                                        decorationStyle:
-                                            TextDecorationStyle.dotted,
-                                        fontSize: 14,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 2),
-                                  const Icon(
-                                    Icons.place_outlined,
-                                    color: Colors.blueAccent,
-                                    size: 13,
-                                  ),
-                                ],
+                  title: ClipRect(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          IconButton(
+                            padding: EdgeInsets.zero,
+                            onPressed: () {
+                              Scaffold.of(context).openDrawer();
+                            },
+                            icon: CircleAvatar(
+                              backgroundImage: NetworkImage(
+                                userController.image.value,
                               ),
                             ),
                           ),
-                        ),
+                          const SizedBox(width: 6),
+                          SizedBox(
+                            width: Get.width / 3,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(50),
+                              child: Material(
+                                color: Colors.transparent,
+                                child: InkWell(
+                                  onTap: () {
+                                    Get.to(
+                                      () => const LocationSheet(),
+                                      duration:
+                                          const Duration(milliseconds: 170),
+                                      transition: Transition.circularReveal,
+                                      fullscreenDialog: true,
+                                    );
+                                  },
+                                  splashColor: Colors.black12,
+                                  child: Row(
+                                    children: [
+                                      Obx(
+                                        () => Flexible(
+                                          child: Text(
+                                            locationController
+                                                .locationAddressShort.value
+                                                .split(',')[0],
+                                            style: TextStyle(
+                                              color: const Color(0xff1A3259)
+                                                  .withOpacity(0.8),
+                                              decoration:
+                                                  TextDecoration.underline,
+                                              decorationStyle:
+                                                  TextDecorationStyle.dotted,
+                                              fontSize: 14,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 2),
+                                      const Icon(
+                                        Icons.place_outlined,
+                                        color: Colors.blueAccent,
+                                        size: 13,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                   actions: [
                     Padding(

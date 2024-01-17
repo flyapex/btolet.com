@@ -78,8 +78,8 @@ class ToletController extends GetxController {
   var lodeOneTime = true.obs;
 
   void getMorePost(page, latitude, longitude) async {
+    print('ModeList Count ${morePost.length}');
     lodeOneTime(false);
-    // morePost.clear();
     lodingmorePosts(true);
     try {
       var response = await ApiServiceTolet.getPost(
@@ -87,15 +87,15 @@ class ToletController extends GetxController {
         latitude,
         longitude,
       );
-
       if (response != null) {
         morePost.addAll(response);
-        if (response.isEmpty) {
+        if (response.isEmpty || response.length < 4) {
           lodingmorePosts(false);
         }
       }
     } finally {
-      lodingmorePosts(false);
+      print('ModeList Count ${morePost.length}');
+      // lodingmorePosts(false);
     }
   }
 
@@ -135,19 +135,39 @@ class ToletController extends GetxController {
     return jsonStringArray;
   }
 
+  // var fasalitis = {
+  //   'Balcony':
+  //       FasalitisModel(state: false.obs, icon: Icons.balcony_rounded), //1
+  //   'Parking':
+  //       FasalitisModel(state: false.obs, icon: Icons.directions_bike), //2
+  //   'CCTV': FasalitisModel(state: false.obs, icon: Icons.photo_camera), //3
+  //   'GAS': FasalitisModel(
+  //       state: false.obs, icon: Icons.local_fire_department_outlined), //1
+  //   'Lift': FasalitisModel(state: false.obs, icon: Icons.elevator_outlined), //2
+  //   'Security Guard':
+  //       FasalitisModel(state: false.obs, icon: Icons.security_rounded), //3
+  //   'WIFI': FasalitisModel(state: false.obs, icon: Icons.wifi_rounded), //1
+  //   'Power Backup': FasalitisModel(
+  //       state: false.obs, icon: Icons.power_settings_new_rounded), //2
+  //   'Giser':
+  //       FasalitisModel(state: false.obs, icon: Icons.gas_meter_outlined), //3
+  //   'Fire Alarm':
+  //       FasalitisModel(state: false.obs, icon: Icons.fire_extinguisher), //1
+  // };
+
   var fasalitis = {
-    'Balcony': FasalitisModel(state: false.obs, icon: Icons.balcony_rounded),
-    'Parking': FasalitisModel(state: false.obs, icon: Icons.directions_bike),
-    'CCTV': FasalitisModel(state: false.obs, icon: Icons.photo_camera),
     'GAS': FasalitisModel(
         state: false.obs, icon: Icons.local_fire_department_outlined),
     'Lift': FasalitisModel(state: false.obs, icon: Icons.elevator_outlined),
+    'WIFI': FasalitisModel(state: false.obs, icon: Icons.wifi_rounded),
+    'CCTV': FasalitisModel(state: false.obs, icon: Icons.photo_camera),
+    'Giser': FasalitisModel(state: false.obs, icon: Icons.gas_meter_outlined),
+    'Balcony': FasalitisModel(state: false.obs, icon: Icons.balcony_rounded),
+    'Parking': FasalitisModel(state: false.obs, icon: Icons.directions_bike),
     'Security Guard':
         FasalitisModel(state: false.obs, icon: Icons.security_rounded),
-    'WIFI': FasalitisModel(state: false.obs, icon: Icons.wifi_rounded),
     'Power Backup': FasalitisModel(
         state: false.obs, icon: Icons.power_settings_new_rounded),
-    'Giser': FasalitisModel(state: false.obs, icon: Icons.gas_meter_outlined),
     'Fire Alarm':
         FasalitisModel(state: false.obs, icon: Icons.fire_extinguisher),
   };

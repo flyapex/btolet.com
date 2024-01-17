@@ -6,7 +6,7 @@ import 'package:another_xlider/models/tooltip/tooltip.dart';
 import 'package:another_xlider/models/trackbar.dart';
 import 'package:btolet/controller/property_controller.dart';
 import 'package:btolet/model/category.dart';
-import 'package:btolet/view/sort/location_small.dart';
+import 'package:btolet/view/map/location_post.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -167,7 +167,8 @@ class _SortHereState extends State<SortHere> with TickerProviderStateMixin {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const LocationSmall(),
+                  // const LocationSmall(),
+                  const Location(),
                   Center(
                     child: FittedBox(
                       child: Container(

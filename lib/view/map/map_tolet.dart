@@ -18,7 +18,8 @@ class MapTolet extends StatefulWidget {
   State<MapTolet> createState() => _MapToletState();
 }
 
-class _MapToletState extends State<MapTolet> {
+class _MapToletState extends State<MapTolet>
+    with AutomaticKeepAliveClientMixin {
   LocationController locationController = Get.find();
 
   ToletController toletController = Get.find();
@@ -81,6 +82,7 @@ class _MapToletState extends State<MapTolet> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return PopScope(
       canPop: false,
       onPopInvoked: (didPop) {
@@ -157,4 +159,7 @@ class _MapToletState extends State<MapTolet> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

@@ -8,6 +8,7 @@ import 'package:btolet/view/tolet/single_post.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:like_button/like_button.dart';
@@ -178,217 +179,272 @@ class _PostsToletSavedState extends State<PostsToletSaved> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Container(
-                  width: width / 2.8,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      bottomLeft: Radius.circular(10),
+                Stack(
+                  alignment: Alignment.bottomRight,
+                  children: [
+                    Container(
+                      width: width / 2.8,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          bottomLeft: Radius.circular(10),
+                        ),
+                        image: DecorationImage(
+                          image:
+                              MemoryImage(base64Decode(widget.postData.image1)),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
-                    image: DecorationImage(
-                      image: MemoryImage(base64Decode(widget.postData.image1)),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: width - ((width / 2.8) + 40),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 15, right: 15),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "৳ ${NumberFormat.decimalPattern().format(widget.postData.rent)}",
-                          style: const TextStyle(
-                            fontSize: 22,
-                            color: Color(0xff083437),
-                            fontWeight: FontWeight.bold,
+                    //  widget.postData.totalImage == 1
+                    // ? const SizedBox()
+                    // :
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 4,
+                        right: 4,
+                        bottom: 6,
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(6),
+                        child: Material(
+                          color: Colors.black38,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              left: 8,
+                              right: 8,
+                              bottom: 2,
+                              top: 2,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  widget.postData.totalImage.toString(),
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                const SizedBox(width: 4),
+                                const Icon(
+                                  Feather.layers,
+                                  color: Colors.white,
+                                  size: 10,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                        const SizedBox(height: 6),
-                        widget.postData.garagetype.isEmpty
-                            ? Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Expanded(
-                                    flex: 1,
-                                    child: Row(
-                                      children: [
-                                        SizedBox(
-                                          height: 20,
-                                          width: 20,
-                                          child: SvgPicture.asset(
-                                            'assets/icons/tolet/bed.svg',
-                                            colorFilter: const ColorFilter.mode(
-                                              // Color(0xff083437),
-                                              Colors.black87,
-                                              // Colors.black87,
-                                              BlendMode.srcIn,
+                      ),
+                    ),
+                  ],
+                ),
+                Expanded(
+                  child: SizedBox(
+                    // width: width - ((width / 2.8) + 40),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 15, right: 15),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "৳ ${NumberFormat.decimalPattern().format(widget.postData.rent)}",
+                            style: const TextStyle(
+                              fontSize: 22,
+                              color: Color(0xff083437),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 6),
+                          widget.postData.garagetype.isEmpty
+                              ? Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: Row(
+                                        children: [
+                                          SizedBox(
+                                            height: 20,
+                                            width: 20,
+                                            child: SvgPicture.asset(
+                                              'assets/icons/tolet/bed.svg',
+                                              colorFilter:
+                                                  const ColorFilter.mode(
+                                                // Color(0xff083437),
+                                                Colors.black87,
+                                                // Colors.black87,
+                                                BlendMode.srcIn,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        Text(
-                                          "  ${widget.postData.bed}",
-                                          style: const TextStyle(
-                                            color: Color(0xff083437),
-                                            fontSize: 14,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 1,
-                                    child: Row(
-                                      children: [
-                                        SizedBox(
-                                          height: 18,
-                                          width: 18,
-                                          child: SvgPicture.asset(
-                                            'assets/icons/tolet/bath.svg',
-                                            colorFilter: const ColorFilter.mode(
-                                              // Color(0xff083437),
-                                              Colors.black87,
-                                              BlendMode.srcIn,
+                                          Text(
+                                            "  ${widget.postData.bed}",
+                                            style: const TextStyle(
+                                              color: Color(0xff083437),
+                                              fontSize: 14,
                                             ),
                                           ),
-                                        ),
-                                        Text(
-                                          "  ${widget.postData.bath}",
-                                          style: const TextStyle(
-                                            color: Color(0xff083437),
-                                            fontSize: 14,
-                                          ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  Expanded(
-                                    flex: 1,
-                                    child: widget.postData.roomsize == ''
-                                        ? Row(
-                                            children: [
-                                              SizedBox(
-                                                height: 16,
-                                                width: 16,
-                                                child: SvgPicture.asset(
-                                                  'assets/icons/tolet/kitchen.svg',
-                                                  colorFilter:
-                                                      const ColorFilter.mode(
-                                                    // Color(0xff083437),
-                                                    Colors.black87,
-                                                    BlendMode.srcIn,
+                                    Expanded(
+                                      flex: 1,
+                                      child: Row(
+                                        children: [
+                                          SizedBox(
+                                            height: 18,
+                                            width: 18,
+                                            child: SvgPicture.asset(
+                                              'assets/icons/tolet/bath.svg',
+                                              colorFilter:
+                                                  const ColorFilter.mode(
+                                                // Color(0xff083437),
+                                                Colors.black87,
+                                                BlendMode.srcIn,
+                                              ),
+                                            ),
+                                          ),
+                                          Text(
+                                            "  ${widget.postData.bath}",
+                                            style: const TextStyle(
+                                              color: Color(0xff083437),
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: widget.postData.roomsize == ''
+                                          ? Row(
+                                              children: [
+                                                SizedBox(
+                                                  height: 16,
+                                                  width: 16,
+                                                  child: SvgPicture.asset(
+                                                    'assets/icons/tolet/kitchen.svg',
+                                                    colorFilter:
+                                                        const ColorFilter.mode(
+                                                      // Color(0xff083437),
+                                                      Colors.black87,
+                                                      BlendMode.srcIn,
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                              Text(
-                                                "  ${widget.postData.kitchen}",
-                                                style: const TextStyle(
-                                                  color: Color(0xff083437),
-                                                  fontSize: 14,
-                                                ),
-                                              ),
-                                            ],
-                                          )
-                                        : Row(
-                                            children: [
-                                              SizedBox(
-                                                height: 16,
-                                                width: 16,
-                                                child: SvgPicture.asset(
-                                                  'assets/icons/tolet/size.svg',
-                                                  colorFilter:
-                                                      const ColorFilter.mode(
-                                                    // Color(0xff083437),
-                                                    Colors.black87,
-                                                    BlendMode.srcIn,
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Text(
-                                                  "  ${widget.postData.roomsize} ", //ft\u00b2
+                                                Text(
+                                                  "  ${widget.postData.kitchen}",
                                                   style: const TextStyle(
                                                     color: Color(0xff083437),
                                                     fontSize: 14,
                                                   ),
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                  ),
-                                ],
-                              )
-                            : widget.postData.garagetype == "Car"
-                                ? Row(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      SizedBox(
-                                        height: 22,
-                                        width: 22,
-                                        child: SvgPicture.asset(
-                                          'assets/icons/tolet/car.svg',
-                                          colorFilter: const ColorFilter.mode(
-                                            // Color(0xff083437),
-                                            Colors.black87,
-                                            BlendMode.srcIn,
+                                              ],
+                                            )
+                                          : Row(
+                                              children: [
+                                                SizedBox(
+                                                  height: 16,
+                                                  width: 16,
+                                                  child: SvgPicture.asset(
+                                                    'assets/icons/tolet/size.svg',
+                                                    colorFilter:
+                                                        const ColorFilter.mode(
+                                                      // Color(0xff083437),
+                                                      Colors.black87,
+                                                      BlendMode.srcIn,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  child: Text(
+                                                    "  ${widget.postData.roomsize} ", //ft\u00b2
+                                                    style: const TextStyle(
+                                                      color: Color(0xff083437),
+                                                      fontSize: 14,
+                                                    ),
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                    ),
+                                  ],
+                                )
+                              : widget.postData.garagetype == "Car"
+                                  ? Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        SizedBox(
+                                          height: 22,
+                                          width: 22,
+                                          child: SvgPicture.asset(
+                                            'assets/icons/tolet/car.svg',
+                                            colorFilter: const ColorFilter.mode(
+                                              // Color(0xff083437),
+                                              Colors.black87,
+                                              BlendMode.srcIn,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      const SizedBox(width: 10),
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 4),
-                                        child: Text(
+                                        const SizedBox(width: 10),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 4),
+                                          child: Text(
+                                            " ${widget.postData.garagetype} Garage",
+                                            style: const TextStyle(
+                                              color: Color(0xff083437),
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  : Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        SizedBox(
+                                          height: 22,
+                                          width: 22,
+                                          child: SvgPicture.asset(
+                                            'assets/icons/tolet/bike.svg',
+                                            colorFilter: const ColorFilter.mode(
+                                              // Color(0xff083437),
+                                              Colors.black87,
+                                              BlendMode.srcIn,
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 10),
+                                        Text(
                                           " ${widget.postData.garagetype} Garage",
                                           style: const TextStyle(
                                             color: Color(0xff083437),
                                             fontSize: 14,
                                           ),
                                         ),
-                                      ),
-                                    ],
-                                  )
-                                : Row(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      SizedBox(
-                                        height: 22,
-                                        width: 22,
-                                        child: SvgPicture.asset(
-                                          'assets/icons/tolet/bike.svg',
-                                          colorFilter: const ColorFilter.mode(
-                                            // Color(0xff083437),
-                                            Colors.black87,
-                                            BlendMode.srcIn,
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 10),
-                                      Text(
-                                        " ${widget.postData.garagetype} Garage",
-                                        style: const TextStyle(
-                                          color: Color(0xff083437),
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                        const SizedBox(height: 6),
-                        Text(
-                          widget.postData.location,
-                          style: TextStyle(
-                            color: const Color(0xff083437).withOpacity(0.6),
-                            fontSize: 12,
+                                      ],
+                                    ),
+                          const SizedBox(height: 6),
+                          Text(
+                            widget.postData.location,
+                            style: TextStyle(
+                              color: const Color(0xff083437).withOpacity(0.6),
+                              fontSize: 12,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 )
