@@ -52,6 +52,12 @@ class PostToletState1 extends State<PostTolet2> {
                     var res = await toletController.newpost();
                     await userController.snakberSuccess(res);
                     toletController.resetAllflag();
+                    Future.delayed(const Duration(seconds: 2)).then((val) {
+                      toletController.refreshkey.currentState!.refresh(
+                        draggingDuration: const Duration(milliseconds: 350),
+                        draggingCurve: Curves.easeOutBack,
+                      );
+                    });
                   } else {
                     toletController.checkAllCatagory();
                     // await userController.snakberSuccess('Missing Someting ✨!');

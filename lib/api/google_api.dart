@@ -74,6 +74,26 @@ class GoogleMapApi {
     }
   }
 
+  static Future coordinateToLocationOnly(
+      double latitude, double longitude) async {
+    var response = await dio.get(
+      "http://154.26.130.64/nominatim/reverse.php",
+      queryParameters: {
+        'lat': latitude.toString(),
+        'lon': longitude.toString(),
+        'format': 'jsonv2',
+        'accept-language': 'bn'
+      },
+    );
+
+    if (response.statusCode == 200) {
+      var data = response.data;
+      return data['display_name'].toString();
+    } else {
+      return null;
+    }
+  }
+
   static Future searchSuggstion(searchText) async {
     // print('---------------------------------------------------------');
 

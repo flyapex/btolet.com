@@ -67,9 +67,10 @@ class PostToletState1 extends State<PostPro1> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             PorCategoryChips(
-                title: 'Category',
-                options: category,
-                selected: proController.selectedCategory),
+              title: 'Category',
+              options: category,
+              selected: proController.selectedCategory,
+            ),
             const CategoryBodyPro(),
             SizedBox(height: space),
             TextInputPro(
@@ -173,7 +174,7 @@ class PostToletState1 extends State<PostPro1> {
             const ImagePickerPro(
               icon: Feather.image,
               imagnumber: 12,
-              color: Color(0xff5E72E4), 
+              color: Color(0xff5E72E4),
             ),
             const SizedBox(height: 200),
           ],

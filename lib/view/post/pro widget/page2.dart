@@ -48,56 +48,72 @@ class PostToletState1 extends State<PostPro2> {
                 elevation: 0,
                 onPressed: () async {
                   proController.activeFlag.value = true;
-                  // proController.flagCheck();
                   Vibration.vibrate(pattern: [10, 20, 10]);
-                  if (proController.selectedCategory.value == category[0] ||
-                      proController.selectedCategory.value == category[1]) {
-                    proController.protypeFlag(true);
-                    proController.areaFlag(true);
-                    proController.rodeSizeFlag(true);
-                    proController.flagCheck();
-
-                    if (proController.allFlag.value) {
-                      print('--------------Posting Now------------------');
-                      Get.back();
-                      var res = await proController.newpost();
-                      await userController.snakberSuccess(res);
-                      proController.resetAllflag();
-                    } else {
-                      proController.protypeFlag(false);
-                      proController.areaFlag(false);
-                      proController.rodeSizeFlag(false);
-                      proController.flagCheck();
-                    }
+                  proController.flagCheck();
+                  if (proController.allFlag.value) {
+                    Get.back();
+                    print('--------------Posting Now------------------');
+                    var res = await proController.newpost();
+                    await userController.snakberSuccess(res);
+                    proController.resetAllflag();
+                    Future.delayed(const Duration(seconds: 2)).then((val) {
+                      proController.refreshkey.currentState!.refresh(
+                        draggingDuration: const Duration(milliseconds: 350),
+                        draggingCurve: Curves.easeOutBack,
+                      );
+                    });
                   } else {
-                    proController.diningFlag(true);
-                    proController.kitchenFlag(true);
-                    proController.facingFlag(true);
-                    proController.totalfloorFlag(true);
-                    proController.floornumberFlag(true);
-                    proController.totalsizeFlag(true);
-                    proController.totalUnitFlag(true);
-                    proController.floornumberFlag(true);
-                    proController.flagCheck();
-
-                    if (proController.allFlag.value) {
-                      print('--------------Posting Now------------------');
-                      Get.back();
-                      var res = await proController.newpost();
-                      await userController.snakberSuccess(res);
-                      proController.resetAllflag();
-                    } else {
-                      proController.diningFlag(false);
-                      proController.kitchenFlag(false);
-                      proController.facingFlag(false);
-                      proController.totalfloorFlag(false);
-                      proController.floornumberFlag(false);
-                      proController.totalsizeFlag(false);
-                      proController.totalUnitFlag(false);
-                      proController.floornumberFlag(false);
-                      proController.flagCheck();
-                    }
+                    proController.checkAllCatagory();
+                    // await userController.snakberSuccess('Missing Someting ✨!');
                   }
+                  // if (proController.selectedCategory.value == category[0] ||
+                  //     proController.selectedCategory.value == category[1]) {
+                  //   proController.protypeFlag(true);
+                  //   proController.areaFlag(true);
+                  //   proController.rodeSizeFlag(true);
+                  //   proController.flagCheck();
+
+                  //   if (proController.allFlag.value) {
+                  //     print('--------------Posting Now------------------');
+                  //     Get.back();
+                  //     var res = await proController.newpost();
+                  //     await userController.snakberSuccess(res);
+                  //     proController.resetAllflag();
+                  //   } else {
+                  //     proController.protypeFlag(false);
+                  //     proController.areaFlag(false);
+                  //     proController.rodeSizeFlag(false);
+                  //     proController.flagCheck();
+                  //   }
+                  // } else {
+                  //   proController.diningFlag(true);
+                  //   proController.kitchenFlag(true);
+                  //   proController.facingFlag(true);
+                  //   proController.totalfloorFlag(true);
+                  //   proController.floornumberFlag(true);
+                  //   proController.totalsizeFlag(true);
+                  //   proController.totalUnitFlag(true);
+                  //   proController.floornumberFlag(true);
+                  //   proController.flagCheck();
+
+                  //   if (proController.allFlag.value) {
+                  //     print('--------------Posting Now------------------');
+                  //     Get.back();
+                  //     var res = await proController.newpost();
+                  //     await userController.snakberSuccess(res);
+                  //     proController.resetAllflag();
+                  //   } else {
+                  //     proController.diningFlag(false);
+                  //     proController.kitchenFlag(false);
+                  //     proController.facingFlag(false);
+                  //     proController.totalfloorFlag(false);
+                  //     proController.floornumberFlag(false);
+                  //     proController.totalsizeFlag(false);
+                  //     proController.totalUnitFlag(false);
+                  //     proController.floornumberFlag(false);
+                  //     proController.flagCheck();
+                  //   }
+                  // }
                   // if (proController.allFlag.value) {
                   //   print('--------------Posting Now------------------');
                   //   Get.back();

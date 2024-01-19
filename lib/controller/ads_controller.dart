@@ -124,7 +124,7 @@ class AdsController extends GetxController {
         final call = Uri.parse('tel:$phone');
         launchUrl(call);
       } else if (type == "sms") {
-        final sms = Uri.parse('sms:${phone.phone}?body=hello%20there');
+        final sms = Uri.parse('sms:$phone?body=hello%20there');
         launchUrl(sms);
       } else if (type == 'wapp') {
         phone = '+88$phone';
@@ -161,7 +161,7 @@ class AdsController extends GetxController {
           final call = Uri.parse('tel:$phone');
           launchUrl(call);
         } else if (type == "sms") {
-          final sms = Uri.parse('sms:${phone.phone}?body=hello%20there');
+          final sms = Uri.parse('sms:$phone?body=hello%20there');
           launchUrl(sms);
         } else if (type == 'wapp') {
           phone = '+88$phone';
@@ -234,7 +234,8 @@ class AdsController extends GetxController {
         final call = Uri.parse('tel:$data');
         launchUrl(call);
       } else if (type == "sms") {
-        final sms = Uri.parse('sms:${data.phone}?body=hello%20there');
+        data = '+88$data';
+        final sms = Uri.parse('sms:$data?body=hello%20there');
         launchUrl(sms);
       } else if (type == 'wapp') {
         data = '+88$data';

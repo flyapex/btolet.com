@@ -264,9 +264,10 @@ class PostsPro extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
-        boxShadow: const [
-          BoxShadow(color: Colors.black12, spreadRadius: 1.1),
-        ],
+        // boxShadow: const [
+        //   BoxShadow(color: Colors.black12, spreadRadius: 1.1),
+        // ],
+        border: Border.all(color: Colors.black12, width: 0.9),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -419,7 +420,7 @@ class PostsPro extends StatelessWidget {
                         ),
                       )
                     : Text(
-                        "BDT ${userController.currency(postData.price)} ",
+                        "৳ ${userController.currency(postData.price)} ",
 
                         // "${NumberFormat.decimalPattern().format(postData.price)} BDT",
                         style: const TextStyle(
@@ -661,6 +662,11 @@ class PostsPro extends StatelessWidget {
                               ),
                             ),
                             onTap: () async {
+                              var data = '+88${postData.wapp}';
+                              var message =
+                                  'Hi There I Just Saw A ads On btolet app, Is it available?';
+                              await launchUrl(Uri.parse(
+                                  "whatsapp://send?phone=$data&text=${Uri.parse(message)}"));
                               // final coords = Coords(
                               //   double.parse(postData.geolat),
                               //   double.parse(postData.geolon),

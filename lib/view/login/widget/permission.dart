@@ -13,6 +13,7 @@ class Permission extends StatelessWidget {
     LocationController locationController = Get.put(LocationController());
     checkPermission() async {
       LocationPermission permission = await Geolocator.checkPermission();
+
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied) {
@@ -20,9 +21,10 @@ class Permission extends StatelessWidget {
           return Future.error('Location permissions are denied');
         }
       }
+
       print(permission);
       if (permission == LocationPermission.whileInUse) {
-        locationController.getCurrnetlanlongLocation(false, 'home');
+        locationController.getCurrnetlanlongLocation(false, 'Map Permission');
         Get.offAll(
           const Home(),
           transition: Transition.circularReveal,

@@ -118,10 +118,12 @@ class _SinglePostProState extends State<SinglePostPro>
     double scrollPosition = _controller.position.pixels;
 
     double totalPageHeight = _controller.position.maxScrollExtent;
-    double seventyPercentOfPage = 0.7 * totalPageHeight;
+    double seventyPercentOfPage = 0.6 * totalPageHeight;
     if (scrollPosition >= seventyPercentOfPage && !morePost) {
       print("Load More Post Now");
       proController.getMorePost(
+        postData.pid,
+        postData.category,
         1,
         postData.geolat,
         postData.geolon,
@@ -162,6 +164,8 @@ class _SinglePostProState extends State<SinglePostPro>
         proController.lodingmorePosts.value == false) {
       print("Lode More Page");
       proController.getMorePost(
+        postData.pid,
+        postData.category,
         lodingPage,
         postData.geolat,
         postData.geolon,
@@ -214,171 +218,172 @@ class _SinglePostProState extends State<SinglePostPro>
       () => proController.singlePostloding.value
           ? const SinglePostShimmer() //! Work here
           : Scaffold(
-              floatingActionButtonLocation:
-                  FloatingActionButtonLocation.centerDocked,
-              floatingActionButton: Container(
-                height: 70,
-                width: width,
-                color: Colors.white,
-                child: Column(
-                  children: [
-                    const SizedBox(height: 15),
-                    Row(
-                      children: [
-                        SizedBox(width: space),
-                        Expanded(
-                          flex: 1,
-                          child: InkWell(
-                            onTap: () async {
-                              final call = Uri.parse('tel:${postData.phone}');
-                              if (await canLaunchUrl(call)) {
-                                launchUrl(call);
-                              } else {
-                                throw 'Could not launch $call';
-                              }
-                            },
-                            child: Container(
-                              height: 44,
-                              decoration: BoxDecoration(
-                                // color: Colors.deepOrange,
-                                color: const Color(0xffF36251),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              // ignore: prefer__ructors
-                              child: const Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.call,
-                                    color: Colors.white,
-                                    size: 26,
-                                  ),
-                                  SizedBox(width: 5),
-                                  Text(
-                                    'CALL',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          flex: 1,
-                          child: InkWell(
-                            onTap: () async {
-                              var uri = Uri.parse(
-                                  'sms:${postData.phone}?body=hello%20there');
-                              if (await canLaunchUrl(uri)) {
-                                await launchUrl(uri);
-                              } else {
-                                if (await canLaunchUrl(uri)) {
-                                  await launchUrl(uri);
-                                } else {
-                                  throw 'Could not launch $uri';
-                                }
-                              }
-                            },
-                            child: Container(
-                              height: 44,
-                              decoration: BoxDecoration(
-                                // color: Colors.blueAccent,
-                                color: Colors.blue,
-                                // color:  Color(0xff27D468),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SizedBox(
-                                    height: 23,
-                                    width: 23,
-                                    child: Center(
-                                      child: SvgPicture.asset(
-                                        'assets/icons/home/message.svg',
-                                        colorFilter: const ColorFilter.mode(
-                                          Colors.white,
-                                          BlendMode.srcIn,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  const Text(
-                                    'SMS',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          flex: 2,
-                          child: InkWell(
-                            onTap: () async {
-                              String appUrl;
-                              String phone = postData.wapp;
-                              String message = 'Surprice Bitch! ';
-                              if (Platform.isAndroid) {
-                                appUrl =
-                                    "whatsapp://send?phone=$phone&text=${Uri.parse(message)}";
-                              } else {
-                                appUrl =
-                                    "https://api.whatsapp.com/send?phone=$phone=${Uri.parse(message)}"; // URL for non-Android devices
-                              }
+              // floatingActionButtonLocation:
+              //     FloatingActionButtonLocation.centerDocked,
+              // floatingActionButton: Container(
+              //   height: 70,
+              //   width: width,
+              //   color: Colors.white,
+              //   child: Column(
+              //     children: [
+              //       const SizedBox(height: 15),
+              //       Row(
+              //         children: [
+              //           SizedBox(width: space),
+              //           Expanded(
+              //             flex: 1,
+              //             child: InkWell(
+              //               onTap: () async {
+              //                 final call = Uri.parse('tel:${postData.phone}');
+              //                 if (await canLaunchUrl(call)) {
+              //                   launchUrl(call);
+              //                 } else {
+              //                   throw 'Could not launch $call';
+              //                 }
+              //               },
+              //               child: Container(
+              //                 height: 44,
+              //                 decoration: BoxDecoration(
+              //                   // color: Colors.deepOrange,
+              //                   color: const Color(0xffF36251),
+              //                   borderRadius: BorderRadius.circular(6),
+              //                 ),
+              //                 // ignore: prefer__ructors
+              //                 child: const Row(
+              //                   mainAxisAlignment: MainAxisAlignment.center,
+              //                   children: [
+              //                     Icon(
+              //                       Icons.call,
+              //                       color: Colors.white,
+              //                       size: 26,
+              //                     ),
+              //                     SizedBox(width: 5),
+              //                     Text(
+              //                       'CALL',
+              //                       style: TextStyle(
+              //                         fontSize: 16,
+              //                         color: Colors.white,
+              //                       ),
+              //                     ),
+              //                   ],
+              //                 ),
+              //               ),
+              //             ),
+              //           ),
+              //           const SizedBox(width: 10),
+              //           Expanded(
+              //             flex: 1,
+              //             child: InkWell(
+              //               onTap: () async {
+              //                 var uri = Uri.parse(
+              //                     'sms:${postData.phone}?body=hello%20there');
+              //                 if (await canLaunchUrl(uri)) {
+              //                   await launchUrl(uri);
+              //                 } else {
+              //                   if (await canLaunchUrl(uri)) {
+              //                     await launchUrl(uri);
+              //                   } else {
+              //                     throw 'Could not launch $uri';
+              //                   }
+              //                 }
+              //               },
+              //               child: Container(
+              //                 height: 44,
+              //                 decoration: BoxDecoration(
+              //                   // color: Colors.blueAccent,
+              //                   color: Colors.blue,
+              //                   // color:  Color(0xff27D468),
+              //                   borderRadius: BorderRadius.circular(6),
+              //                 ),
+              //                 child: Row(
+              //                   mainAxisAlignment: MainAxisAlignment.center,
+              //                   children: [
+              //                     SizedBox(
+              //                       height: 23,
+              //                       width: 23,
+              //                       child: Center(
+              //                         child: SvgPicture.asset(
+              //                           'assets/icons/home/message.svg',
+              //                           colorFilter: const ColorFilter.mode(
+              //                             Colors.white,
+              //                             BlendMode.srcIn,
+              //                           ),
+              //                         ),
+              //                       ),
+              //                     ),
+              //                     const SizedBox(width: 10),
+              //                     const Text(
+              //                       'SMS',
+              //                       style: TextStyle(
+              //                         fontSize: 16,
+              //                         color: Colors.white,
+              //                       ),
+              //                     ),
+              //                   ],
+              //                 ),
+              //               ),
+              //             ),
+              //           ),
+              //           const SizedBox(width: 10),
+              //           Expanded(
+              //             flex: 2,
+              //             child: InkWell(
+              //               onTap: () async {
+              //                 String appUrl;
+              //                 String phone = postData.wapp;
+              //                 String message = 'Surprice Bitch! ';
+              //                 if (Platform.isAndroid) {
+              //                   appUrl =
+              //                       "whatsapp://send?phone=$phone&text=${Uri.parse(message)}";
+              //                 } else {
+              //                   appUrl =
+              //                       "https://api.whatsapp.com/send?phone=$phone=${Uri.parse(message)}"; // URL for non-Android devices
+              //                 }
 
-                              if (await canLaunchUrl(Uri.parse(appUrl))) {
-                                await launchUrl(Uri.parse(appUrl));
-                              } else {
-                                throw 'Could not launch $appUrl';
-                              }
-                            },
-                            child: Container(
-                              height: 44,
-                              decoration: BoxDecoration(
-                                color: const Color(0xff27D468),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SizedBox(
-                                    height: 30,
-                                    width: 30,
-                                    child: SvgPicture.asset(
-                                      'assets/icons/home/wapp.svg',
-                                      height: 10,
-                                      width: 22,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  const Text(
-                                    'WhatsApp',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: space),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
+              //                 if (await canLaunchUrl(Uri.parse(appUrl))) {
+              //                   await launchUrl(Uri.parse(appUrl));
+              //                 } else {
+              //                   throw 'Could not launch $appUrl';
+              //                 }
+              //               },
+              //               child: Container(
+              //                 height: 44,
+              //                 decoration: BoxDecoration(
+              //                   color: const Color(0xff27D468),
+              //                   borderRadius: BorderRadius.circular(6),
+              //                 ),
+              //                 child: Row(
+              //                   mainAxisAlignment: MainAxisAlignment.center,
+              //                   children: [
+              //                     SizedBox(
+              //                       height: 30,
+              //                       width: 30,
+              //                       child: SvgPicture.asset(
+              //                         'assets/icons/home/wapp.svg',
+              //                         height: 10,
+              //                         width: 22,
+              //                       ),
+              //                     ),
+              //                     const SizedBox(width: 10),
+              //                     const Text(
+              //                       'WhatsApp',
+              //                       style: TextStyle(
+              //                         fontSize: 16,
+              //                         color: Colors.white,
+              //                       ),
+              //                     ),
+              //                   ],
+              //                 ),
+              //               ),
+              //             ),
+              //           ),
+              //           SizedBox(width: space),
+              //         ],
+              //       ),
+              //     ],
+              //   ),
+              // ),
+
               body: SingleChildScrollView(
                 controller: _controller,
                 child: Column(
@@ -1219,21 +1224,21 @@ class _SinglePostProState extends State<SinglePostPro>
                         ),
                       ],
                     ),
-                    // SizedBox(height: space),
-                    // const Row(
-                    //   children: [
-                    //     Padding(
-                    //       padding: EdgeInsets.only(left: 20),
-                    //       child: Text(
-                    //         'more',
-                    //         style: TextStyle(
-                    //           fontSize: 13,
-                    //           color: Colors.black38,
-                    //         ),
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
+                    SizedBox(height: space),
+                    const Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(left: 20),
+                          child: Text(
+                            'more',
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: Colors.black38,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                     SizedBox(height: space),
                     SizedBox(
                       height: height / 7,
@@ -1312,6 +1317,171 @@ class _SinglePostProState extends State<SinglePostPro>
                     //   ),
                     // ),
                     const SizedBox(height: 140),
+                  ],
+                ),
+              ),
+
+              bottomNavigationBar: Container(
+                height: 75,
+                width: width,
+                margin: const EdgeInsets.only(bottom: 10),
+                color: Colors.white,
+                child: Column(
+                  children: [
+                    const SizedBox(height: 15),
+                    Row(
+                      children: [
+                        SizedBox(width: space),
+                        Expanded(
+                          flex: 1,
+                          child: InkWell(
+                            onTap: () async {
+                              final call = Uri.parse('tel:${postData.phone}');
+                              if (await canLaunchUrl(call)) {
+                                launchUrl(call);
+                              } else {
+                                throw 'Could not launch $call';
+                              }
+                            },
+                            child: Container(
+                              height: 44,
+                              decoration: BoxDecoration(
+                                // color: Colors.deepOrange,
+                                color: const Color(0xffF36251),
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              // ignore: prefer__ructors
+                              child: const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.call,
+                                    color: Colors.white,
+                                    size: 26,
+                                  ),
+                                  SizedBox(width: 5),
+                                  Text(
+                                    'CALL',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          flex: 1,
+                          child: InkWell(
+                            onTap: () async {
+                              var uri = Uri.parse(
+                                  'sms:${postData.phone}?body=hello%20there');
+                              if (await canLaunchUrl(uri)) {
+                                await launchUrl(uri);
+                              } else {
+                                if (await canLaunchUrl(uri)) {
+                                  await launchUrl(uri);
+                                } else {
+                                  throw 'Could not launch $uri';
+                                }
+                              }
+                            },
+                            child: Container(
+                              height: 44,
+                              decoration: BoxDecoration(
+                                // color: Colors.blueAccent,
+                                color: Colors.blue,
+                                // color:  Color(0xff27D468),
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    height: 23,
+                                    width: 23,
+                                    child: Center(
+                                      child: SvgPicture.asset(
+                                        'assets/icons/home/message.svg',
+                                        colorFilter: const ColorFilter.mode(
+                                          Colors.white,
+                                          BlendMode.srcIn,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  const Text(
+                                    'SMS',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          flex: 2,
+                          child: InkWell(
+                            onTap: () async {
+                              String appUrl;
+                              String phone = postData.wapp;
+                              String message = 'Surprice Bitch! ';
+                              if (Platform.isAndroid) {
+                                appUrl =
+                                    "whatsapp://send?phone=$phone&text=${Uri.parse(message)}";
+                              } else {
+                                appUrl =
+                                    "https://api.whatsapp.com/send?phone=$phone=${Uri.parse(message)}"; // URL for non-Android devices
+                              }
+
+                              if (await canLaunchUrl(Uri.parse(appUrl))) {
+                                await launchUrl(Uri.parse(appUrl));
+                              } else {
+                                throw 'Could not launch $appUrl';
+                              }
+                            },
+                            child: Container(
+                              height: 44,
+                              decoration: BoxDecoration(
+                                color: const Color(0xff27D468),
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    height: 30,
+                                    width: 30,
+                                    child: SvgPicture.asset(
+                                      'assets/icons/home/wapp.svg',
+                                      height: 10,
+                                      width: 22,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  const Text(
+                                    'WhatsApp',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: space),
+                      ],
+                    ),
                   ],
                 ),
               ),

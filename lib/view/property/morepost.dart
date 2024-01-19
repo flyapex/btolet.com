@@ -1,14 +1,11 @@
 import 'dart:convert';
-
 import 'package:btolet/controller/property_controller.dart';
 import 'package:btolet/controller/user_controller.dart';
 import 'package:btolet/model/pro_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:like_button/like_button.dart';
-
 import 'single_post.dart';
 
 class MorePostsPro extends StatefulWidget {
@@ -95,7 +92,7 @@ class _MorePostsProState extends State<MorePostsPro> {
                                   ),
                                 )
                               : Text(
-                                  "${NumberFormat.decimalPattern().format(widget.postData.price)} BDT",
+                                  "৳ ${userController.currency(widget.postData.price)} ",
                                   style: const TextStyle(
                                     fontSize: 22,
                                     color: Color(0xff083437),

@@ -7,7 +7,7 @@ Map<Category, List<String>> categoryData = {
   Category.bedrooms: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10+"],
   Category.bathrooms: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10+"],
   Category.dining: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10+"],
-  Category.kitchen: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10+"],
+  Category.kitchen: ['0', "1", "2", "3", "4", "5", "6", "7", "8", "9", "10+"],
   Category.floorno: [
     "1 st",
     "2 nd",
@@ -18,7 +18,7 @@ Map<Category, List<String>> categoryData = {
     "7 th",
     "8 th",
     "9 th",
-    "10 th",
+    "10 th+",
   ],
   Category.facing: [
     "East",

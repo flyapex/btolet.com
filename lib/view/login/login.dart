@@ -1,6 +1,7 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:btolet/api/google_api.dart';
 import 'package:btolet/controller/db_controller.dart';
+import 'package:btolet/controller/notification.dart';
 import 'package:btolet/controller/user_controller.dart';
 import 'package:btolet/model/api.dart';
 import 'package:btolet/view/login/widget/permission.dart';
@@ -23,6 +24,7 @@ class _LoginState extends State<Login> {
 
   @override
   void initState() {
+    // getNofi();
     super.initState();
     _controller = VideoPlayerController.asset("assets/video/1.mp4")
       ..initialize().then((value) {
@@ -30,6 +32,10 @@ class _LoginState extends State<Login> {
         _controller.setLooping(true);
         setState(() {});
       });
+  }
+
+  getNofi() async {
+    await FirebaseMessagingService.initializeFirebaseMessaging();
   }
 
   @override

@@ -77,12 +77,18 @@ class ToletController extends GetxController {
   var morePost = [].obs;
   var lodeOneTime = true.obs;
 
-  void getMorePost(page, latitude, longitude) async {
-    print('ModeList Count ${morePost.length}');
+  void getMorePost(postid, category, price, page, latitude, longitude) async {
+    // print('ModeList Count ${morePost.length}');
+    // morePost.clear();
+    print(postid);
+    print(category);
     lodeOneTime(false);
     lodingmorePosts(true);
     try {
-      var response = await ApiServiceTolet.getPost(
+      var response = await ApiServiceTolet.getMorePost(
+        postid,
+        category,
+        price,
         page,
         latitude,
         longitude,
@@ -156,20 +162,20 @@ class ToletController extends GetxController {
   // };
 
   var fasalitis = {
-    'GAS': FasalitisModel(
-        state: false.obs, icon: Icons.local_fire_department_outlined),
-    'Lift': FasalitisModel(state: false.obs, icon: Icons.elevator_outlined),
-    'WIFI': FasalitisModel(state: false.obs, icon: Icons.wifi_rounded),
-    'CCTV': FasalitisModel(state: false.obs, icon: Icons.photo_camera),
-    'Giser': FasalitisModel(state: false.obs, icon: Icons.gas_meter_outlined),
     'Balcony': FasalitisModel(state: false.obs, icon: Icons.balcony_rounded),
     'Parking': FasalitisModel(state: false.obs, icon: Icons.directions_bike),
-    'Security Guard':
-        FasalitisModel(state: false.obs, icon: Icons.security_rounded),
-    'Power Backup': FasalitisModel(
-        state: false.obs, icon: Icons.power_settings_new_rounded),
+    'GAS': FasalitisModel(
+        state: false.obs, icon: Icons.local_fire_department_outlined),
     'Fire Alarm':
         FasalitisModel(state: false.obs, icon: Icons.fire_extinguisher),
+    'CCTV': FasalitisModel(state: false.obs, icon: Icons.photo_camera),
+    'Lift': FasalitisModel(state: false.obs, icon: Icons.elevator_outlined),
+    'Power Backup': FasalitisModel(
+        state: false.obs, icon: Icons.power_settings_new_rounded),
+    'Security Guard':
+        FasalitisModel(state: false.obs, icon: Icons.security_rounded),
+    'WIFI': FasalitisModel(state: false.obs, icon: Icons.wifi_rounded),
+    'Giser': FasalitisModel(state: false.obs, icon: Icons.gas_meter_outlined),
   };
 
   String getFasalities() {

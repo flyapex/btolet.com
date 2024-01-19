@@ -37,9 +37,15 @@ class LocationController extends GetxController {
     if (userController.tabController.index == 0) {
       mapModetolet.value = !mapModetolet.value;
       animation(mapModetolet.value);
+      // if (mapModetolet.value) {
+      //   locationController.getCurrnetlanlongLocation(true, "Tolet");
+      // }
     } else {
       mapModePro.value = !mapModePro.value;
       animation(mapModePro.value);
+      // if (mapModePro.value) {
+      //   locationController.getCurrnetlanlongLocation(true, "Tolet");
+      // }
     }
   }
 
@@ -117,6 +123,24 @@ class LocationController extends GetxController {
       }
     } finally {
       cordinateToLocationLoding.value = false;
+    }
+  }
+
+  coordinateToLocationOnly(double latitude, double longitude) async {
+    try {
+      var response = await GoogleMapApi.coordinateToLocationOnly(
+        latitude,
+        longitude,
+      );
+      if (response != null) {
+        // currentlatitude.value = latitude;
+        // currentlongitude.value = longitude;
+        locationAddress.value = response;
+      } else {
+        print("Error");
+      }
+    } finally {
+      // cordinateToLocationLoding.value = false;
     }
   }
 

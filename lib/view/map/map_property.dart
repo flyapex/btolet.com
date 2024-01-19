@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:label_marker/label_marker.dart';
@@ -40,7 +41,7 @@ class _MapPropertyState extends State<MapProperty>
     try {
       await proController.mapAllPost();
       addMarker();
-      rootBundle.loadString('assets/map/map_style.txt').then((string) {
+      await rootBundle.loadString('assets/map/map_style.txt').then((string) {
         _mapStyle = string;
       });
       // setState(() {});
@@ -83,6 +84,7 @@ class _MapPropertyState extends State<MapProperty>
     proController.showMapBoxPro(false);
     super.initState();
     loadDataAndInitializeMap();
+    // locationController.getCurrnetlanlongLocation(true, 'Property');
   }
 
   @override
@@ -98,88 +100,85 @@ class _MapPropertyState extends State<MapProperty>
         return;
       },
       child: Scaffold(
-        // floatingActionButton: Padding(
-        //   padding: const EdgeInsets.only(bottom: 140),
-        //   child: Padding(
-        //     padding: const EdgeInsets.all(10.0),
-        //     child: Align(
-        //       alignment: Alignment.bottomRight,
-        //       child: SizedBox(
-        //         height: 40,
-        //         child: FloatingActionButton.extended(
-        //           backgroundColor: Colors.blue,
-        //           onPressed: () async {
-        //             final coords = Coords(
-        //               double.parse(proController.singlepost.geolat),
-        //               double.parse(proController.singlepost.geolon),
-        //             );
-        //             var title =
-        //                 "Price ৳ ${NumberFormat.decimalPattern().format(proController.singlepost.price)}";
-        //             final availableMaps = await MapLauncher.installedMaps;
-        //             print(availableMaps.length);
-        //             if (availableMaps.length == 1) {
-        //               await availableMaps.first.showMarker(
-        //                 coords: coords,
-        //                 title: title,
-        //                 description: "description",
-        //               );
-        //             } else {
-        //               Get.bottomSheet(
-        //                 SafeArea(
-        //                   child: SingleChildScrollView(
-        //                     child: Wrap(
-        //                       children: <Widget>[
-        //                         for (var map in availableMaps)
-        //                           ListTile(
-        //                             onTap: () => map.showMarker(
-        //                               coords: coords,
-        //                               title: title,
-        //                             ),
-        //                             title: Text(map.mapName),
-        //                             leading: SvgPicture.asset(
-        //                               map.icon,
-        //                               height: 30.0,
-        //                               width: 30.0,
-        //                             ),
-        //                           ),
-        //                       ],
-        //                     ),
-        //                   ),
-        //                 ),
-        //               );
-        //             }
-        //           },
-        //           shape: RoundedRectangleBorder(
-        //             // side: const BorderSide(
-        //             //     width: 3,
-        //             //     color: Colors.brown),
-        //             borderRadius: BorderRadius.circular(
-        //               100,
-        //             ),
-        //           ),
-        //           label: const Row(
-        //             children: [
-        //               Text(
-        //                 'Map',
-        //                 style: TextStyle(
-        //                   fontSize: 14,
-        //                   color: Colors.white,
-        //                 ),
-        //               ),
-        //               SizedBox(width: 10),
-        //               Icon(
-        //                 Feather.navigation,
-        //                 color: Colors.white,
-        //                 size: 18,
-        //               ),
-        //             ],
-        //           ),
-        //           elevation: 0,
-        //         ),
-        //       ),
-        //     ),
-        //   ),
-        // ),
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Align(
+            alignment: Alignment.bottomRight,
+            child: SizedBox(
+              height: 40,
+              child: FloatingActionButton.extended(
+                backgroundColor: Colors.blue,
+                onPressed: () async {
+                  // final coords = Coords(
+                  //   double.parse(proController.singlepost.geolat),
+                  //   double.parse(proController.singlepost.geolon),
+                  // );
+                  // var title =
+                  //     "Price ৳ ${NumberFormat.decimalPattern().format(proController.singlepost.price)}";
+                  // final availableMaps = await MapLauncher.installedMaps;
+                  // print(availableMaps.length);
+                  // if (availableMaps.length == 1) {
+                  //   await availableMaps.first.showMarker(
+                  //     coords: coords,
+                  //     title: title,
+                  //     description: "description",
+                  //   );
+                  // } else {
+                  //   Get.bottomSheet(
+                  //     SafeArea(
+                  //       child: SingleChildScrollView(
+                  //         child: Wrap(
+                  //           children: <Widget>[
+                  //             for (var map in availableMaps)
+                  //               ListTile(
+                  //                 onTap: () => map.showMarker(
+                  //                   coords: coords,
+                  //                   title: title,
+                  //                 ),
+                  //                 title: Text(map.mapName),
+                  //                 leading: SvgPicture.asset(
+                  //                   map.icon,
+                  //                   height: 30.0,
+                  //                   width: 30.0,
+                  //                 ),
+                  //               ),
+                  //           ],
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   );
+                  // }
+                },
+                shape: RoundedRectangleBorder(
+                  // side: const BorderSide(
+                  //     width: 3,
+                  //     color: Colors.brown),
+                  borderRadius: BorderRadius.circular(
+                    100,
+                  ),
+                ),
+                label: const Row(
+                  children: [
+                    Text(
+                      'Map',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.white,
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    Icon(
+                      Feather.navigation,
+                      color: Colors.white,
+                      size: 18,
+                    ),
+                  ],
+                ),
+                elevation: 0,
+              ),
+            ),
+          ),
+        ),
         body: Obx(
           () => proController.mapLoding.value
               ? const MapLodingShimmer()

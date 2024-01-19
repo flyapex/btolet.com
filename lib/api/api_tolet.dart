@@ -60,6 +60,39 @@ class ApiServiceTolet {
     }
   }
 
+  static Future getMorePost(
+      postid, category, price, page, geolat, geolon) async {
+    // var data = jsonEncode(
+    //   {
+    //     "postid": postid,
+    //     "category": category,
+    //     "price": price,
+    //     "page": page,
+    //     "geolat": geolat.toString(),
+    //     "geolon": geolon.toString(),
+    //   },
+    // );
+    // print(data);
+
+    final response = await dio.post(
+      '$baseUrl/more/post',
+      data: {
+        "postid": postid,
+        "category": category,
+        "price": price,
+        "page": page,
+        "geolat": geolat.toString(),
+        "geolon": geolon.toString(),
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return postListToletFromJson(jsonEncode(response.data));
+    } else {
+      return null;
+    }
+  }
+
   static Future newPost(NewPostTolet data) async {
     final response = await dio.post(
       '$baseUrl/newPost',
@@ -100,15 +133,14 @@ class ApiServiceTolet {
   }
 
   static Future savedPost(int uid, int pid, bool status) async {
+    print({"uid": uid, "pid": pid, "status": status});
     final response = await dio.post(
-      '$baseUrl/post/save',
-      data: jsonEncode(
-        {
-          "uid": uid,
-          "pid": pid,
-          "status": status,
-        },
-      ),
+      '$baseUrl/save/post',
+      data: {
+        "uid": uid,
+        "pid": pid,
+        "status": status,
+      },
     );
 
     if (response.statusCode == 200) {
@@ -120,7 +152,7 @@ class ApiServiceTolet {
 
   static Future getSaved(int uid, int page) async {
     final response = await dio.post(
-      '$baseUrl/post/getsave',
+      '$baseUrl/save/post/get',
       data: jsonEncode(
         {
           "uid": uid,

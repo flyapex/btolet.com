@@ -54,6 +54,35 @@ class ApiServicePro {
     }
   }
 
+  static Future getMorePost(postid, category, page, geolat, geolon) async {
+    // var data = jsonEncode(
+    //   {
+    //     "postid": postid,
+    //     "category": category,
+    //     "page": page,
+    //     "geolat": geolat.toString(),
+    //     "geolon": geolon.toString(),
+    //   },
+    // );
+    // print(data);
+    final response = await dio.post(
+      '$baseUrl/more/post',
+      data: {
+        "postid": postid,
+        "category": category,
+        "page": page,
+        "geolat": geolat.toString(),
+        "geolon": geolon.toString(),
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return postListProFromJson(jsonEncode(response.data));
+    } else {
+      return null;
+    }
+  }
+
   static Future newPost(NewPostPro data) async {
     final response = await dio.post(
       '$baseUrl/newPost',

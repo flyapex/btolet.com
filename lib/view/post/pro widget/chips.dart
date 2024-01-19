@@ -1,4 +1,5 @@
 import 'package:btolet/api/google_api.dart';
+import 'package:btolet/model/category.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -61,6 +62,22 @@ class PorCategoryChips extends StatelessWidget {
                       if (isSelected) {
                         selected.value = option;
                       }
+                      var c = proController.selectedCategory.value;
+                      var t = proController;
+                      if (c == category[0] || c == category[1]) {
+                        t.mesurementFlag(true);
+                        t.rodeSizeFlag(true);
+                      } else {
+                        t.diningFlag(true);
+                        t.kitchenFlag(true);
+                        t.facingFlag(true);
+                        t.totalfloorFlag(true);
+                        t.floornumberFlag(true);
+                        t.totalsizeFlag(true);
+                        t.totalUnitFlag(true);
+                      }
+                      print("object");
+                      t.checkAllCatagory();
                     },
                   ),
                 );

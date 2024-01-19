@@ -2,7 +2,6 @@ import 'package:btolet/controller/db_controller.dart';
 import 'package:btolet/controller/location_controller.dart';
 import 'package:btolet/controller/user_controller.dart';
 import 'package:btolet/view/home/home.dart';
-import 'package:btolet/view/map/location_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
@@ -18,6 +17,8 @@ class MapLoading extends StatelessWidget {
 
     getUserDetails() async {
       await userController.userDetailsByID(await dbController.getUserID());
+      await locationController.getCurrnetlanlongLocation(
+          false, "Map Loding Main");
     }
 
     getUserDetails();
@@ -29,7 +30,7 @@ class MapLoading extends StatelessWidget {
               body: Stack(
                 alignment: Alignment.center,
                 children: [
-                  const LocationSheet(),
+                  // const LocationSheet(),
                   Container(
                     color: Colors.white,
                   ),

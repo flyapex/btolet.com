@@ -1,4 +1,4 @@
-import 'package:btolet/view/home/widget/maploading.dart';
+import 'package:btolet/view/map/maploading.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +26,7 @@ void main() async {
       enabled: !kReleaseMode,
       builder: (context) => const MyApp(),
     ),
+    // const MyApp(),
   );
 }
 

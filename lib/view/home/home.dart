@@ -167,9 +167,12 @@ class _HomeState extends State<Home>
                         },
                         gradient: const LinearGradient(
                           colors: [
-                            Colors.blue,
-                            Colors.cyanAccent,
-                            Colors.yellow
+                            // Colors.blue,
+                            // Colors.cyanAccent,
+                            // Colors.yellow
+
+                            Colors.lightBlue,
+                            Colors.greenAccent,
                           ],
                         ),
                         strokeWidth: 4,
@@ -246,6 +249,13 @@ class _HomeState extends State<Home>
                                 color: Colors.transparent,
                                 child: InkWell(
                                   onTap: () {
+                                    // Get.to(
+                                    //   () => const MapTolet(),
+                                    //   duration:
+                                    //       const Duration(milliseconds: 170),
+                                    //   transition: Transition.circularReveal,
+                                    //   fullscreenDialog: true,
+                                    // );
                                     Get.to(
                                       () => const LocationSheet(),
                                       duration:

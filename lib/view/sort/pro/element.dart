@@ -246,7 +246,7 @@ class SortPostListProState extends State<SortPostListPro> {
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
+          padding: const EdgeInsets.only(top: 0, left: 20, right: 20),
           child: SingleChildScrollView(
             controller: scrollController,
             child: Column(

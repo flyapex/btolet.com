@@ -125,10 +125,13 @@ class _SinglePostToletState extends State<SinglePostTolet>
     double scrollPosition = _controller.position.pixels;
 
     double totalPageHeight = _controller.position.maxScrollExtent;
-    double seventyPercentOfPage = 0.7 * totalPageHeight;
+    double seventyPercentOfPage = 0.6 * totalPageHeight;
     if (scrollPosition >= seventyPercentOfPage && !morePost) {
       print("Load More Post Now");
       toletController.getMorePost(
+        postData.postId,
+        postData.category,
+        postData.rent,
         1,
         postData.geolat,
         postData.geolon,
@@ -170,6 +173,9 @@ class _SinglePostToletState extends State<SinglePostTolet>
         toletController.lodingmorePosts.value == false) {
       print("Lode More Page");
       toletController.getMorePost(
+        postData.postId,
+        postData.category,
+        postData.rent,
         lodingPage,
         postData.geolat,
         postData.geolon,
@@ -221,150 +227,151 @@ class _SinglePostToletState extends State<SinglePostTolet>
       () => toletController.singlePostloding.value
           ? const SinglePostShimmer()
           : Scaffold(
-              floatingActionButtonLocation:
-                  FloatingActionButtonLocation.centerDocked,
-              floatingActionButton: Container(
-                height: 70,
-                width: width,
-                color: Colors.white,
-                child: Column(
-                  children: [
-                    const SizedBox(height: 15),
-                    Row(
-                      children: [
-                        const SizedBox(width: 20),
-                        Expanded(
-                          flex: 1,
-                          child: InkWell(
-                            onTap: () async {
-                              adsController.showRewardedAd(
-                                'call',
-                                postData.phone,
-                              );
-                            },
-                            child: Container(
-                              height: 44,
-                              decoration: BoxDecoration(
-                                // color: Colors.deepOrange,
-                                color: const Color(0xffF36251),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              // ignore: prefer_const_constructors
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: const [
-                                  Icon(
-                                    Icons.call,
-                                    color: Colors.white,
-                                    size: 26,
-                                  ),
-                                  SizedBox(width: 5),
-                                  Text(
-                                    'CALL',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          flex: 1,
-                          child: InkWell(
-                            onTap: () async {
-                              adsController.showRewardedInterstitialAd(
-                                'sms',
-                                postData.phone,
-                              );
-                            },
-                            child: Container(
-                              height: 44,
-                              decoration: BoxDecoration(
-                                // color: Colors.blueAccent,
-                                color: Colors.blue,
-                                // color: const Color(0xff27D468),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SizedBox(
-                                    height: 23,
-                                    width: 23,
-                                    child: Center(
-                                      child: SvgPicture.asset(
-                                        'assets/icons/home/message.svg',
-                                        colorFilter: const ColorFilter.mode(
-                                          Colors.white,
-                                          BlendMode.srcIn,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  const Text(
-                                    'SMS',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          flex: 2,
-                          child: InkWell(
-                            onTap: () async {
-                              adsController.showRewardedInterstitialAd(
-                                'wapp',
-                                postData.phone,
-                              );
-                            },
-                            child: Container(
-                              height: 44,
-                              decoration: BoxDecoration(
-                                color: const Color(0xff27D468),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SizedBox(
-                                    height: 30,
-                                    width: 30,
-                                    child: SvgPicture.asset(
-                                      'assets/icons/home/wapp.svg',
-                                      height: 10,
-                                      width: 22,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  const Text(
-                                    'WhatsApp',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 20),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
+              // floatingActionButtonLocation:
+              //     FloatingActionButtonLocation.centerDocked,
+              // floatingActionButton: Container(
+              //   height: 70,
+              //   width: width,
+              //   color: Colors.white,
+              //   child: Column(
+              //     children: [
+              //       const SizedBox(height: 15),
+              //       Row(
+              //         children: [
+              //           const SizedBox(width: 20),
+              //           Expanded(
+              //             flex: 1,
+              //             child: InkWell(
+              //               onTap: () async {
+              //                 adsController.showRewardedAd(
+              //                   'call',
+              //                   postData.phone,
+              //                 );
+              //               },
+              //               child: Container(
+              //                 height: 44,
+              //                 decoration: BoxDecoration(
+              //                   // color: Colors.deepOrange,
+              //                   color: const Color(0xffF36251),
+              //                   borderRadius: BorderRadius.circular(6),
+              //                 ),
+              //                 // ignore: prefer_const_constructors
+              //                 child: Row(
+              //                   mainAxisAlignment: MainAxisAlignment.center,
+              //                   children: const [
+              //                     Icon(
+              //                       Icons.call,
+              //                       color: Colors.white,
+              //                       size: 26,
+              //                     ),
+              //                     SizedBox(width: 5),
+              //                     Text(
+              //                       'CALL',
+              //                       style: TextStyle(
+              //                         fontSize: 16,
+              //                         color: Colors.white,
+              //                       ),
+              //                     ),
+              //                   ],
+              //                 ),
+              //               ),
+              //             ),
+              //           ),
+              //           const SizedBox(width: 10),
+              //           Expanded(
+              //             flex: 1,
+              //             child: InkWell(
+              //               onTap: () async {
+              //                 adsController.showRewardedInterstitialAd(
+              //                   'sms',
+              //                   postData.phone,
+              //                 );
+              //               },
+              //               child: Container(
+              //                 height: 44,
+              //                 decoration: BoxDecoration(
+              //                   // color: Colors.blueAccent,
+              //                   color: Colors.blue,
+              //                   // color: const Color(0xff27D468),
+              //                   borderRadius: BorderRadius.circular(6),
+              //                 ),
+              //                 child: Row(
+              //                   mainAxisAlignment: MainAxisAlignment.center,
+              //                   children: [
+              //                     SizedBox(
+              //                       height: 23,
+              //                       width: 23,
+              //                       child: Center(
+              //                         child: SvgPicture.asset(
+              //                           'assets/icons/home/message.svg',
+              //                           colorFilter: const ColorFilter.mode(
+              //                             Colors.white,
+              //                             BlendMode.srcIn,
+              //                           ),
+              //                         ),
+              //                       ),
+              //                     ),
+              //                     const SizedBox(width: 10),
+              //                     const Text(
+              //                       'SMS',
+              //                       style: TextStyle(
+              //                         fontSize: 16,
+              //                         color: Colors.white,
+              //                       ),
+              //                     ),
+              //                   ],
+              //                 ),
+              //               ),
+              //             ),
+              //           ),
+              //           const SizedBox(width: 10),
+              //           Expanded(
+              //             flex: 2,
+              //             child: InkWell(
+              //               onTap: () async {
+              //                 adsController.showRewardedInterstitialAd(
+              //                   'wapp',
+              //                   postData.phone,
+              //                 );
+              //               },
+              //               child: Container(
+              //                 height: 44,
+              //                 decoration: BoxDecoration(
+              //                   color: const Color(0xff27D468),
+              //                   borderRadius: BorderRadius.circular(6),
+              //                 ),
+              //                 child: Row(
+              //                   mainAxisAlignment: MainAxisAlignment.center,
+              //                   children: [
+              //                     SizedBox(
+              //                       height: 30,
+              //                       width: 30,
+              //                       child: SvgPicture.asset(
+              //                         'assets/icons/home/wapp.svg',
+              //                         height: 10,
+              //                         width: 22,
+              //                       ),
+              //                     ),
+              //                     const SizedBox(width: 10),
+              //                     const Text(
+              //                       'WhatsApp',
+              //                       style: TextStyle(
+              //                         fontSize: 16,
+              //                         color: Colors.white,
+              //                       ),
+              //                     ),
+              //                   ],
+              //                 ),
+              //               ),
+              //             ),
+              //           ),
+              //           const SizedBox(width: 20),
+              //         ],
+              //       ),
+              //     ],
+              //   ),
+              // ),
+
               body: Stack(
                 children: [
                   SingleChildScrollView(
@@ -400,11 +407,13 @@ class _SinglePostToletState extends State<SinglePostTolet>
                                   children: [
                                     InkWell(
                                       child: const Padding(
-                                        padding: EdgeInsets.only(left: 10),
+                                        padding: EdgeInsets.only(left: 8),
                                         child: Icon(
-                                          Feather.arrow_left,
+                                          // Feather.arrow_left,
+                                          Feather.chevron_left,
                                           color: Colors.white,
-                                          size: 22,
+                                          // size: 22,
+                                          size: 24,
                                         ),
                                       ),
                                       onTap: () {
@@ -502,13 +511,19 @@ class _SinglePostToletState extends State<SinglePostTolet>
                                                     ),
                                                   ),
                                                   const SizedBox(width: 10),
-                                                  Text(
-                                                    '${postData.bed} Beds',
-                                                    style: const TextStyle(
-                                                      color: Color(0xff083437),
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 16,
+                                                  Flexible(
+                                                    child: Text(
+                                                      '${postData.bed} Beds',
+                                                      style: const TextStyle(
+                                                        color:
+                                                            Color(0xff083437),
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 16,
+                                                      ),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      maxLines: 1,
                                                     ),
                                                   ),
                                                 ],
@@ -535,13 +550,19 @@ class _SinglePostToletState extends State<SinglePostTolet>
                                                     ),
                                                   ),
                                                   const SizedBox(width: 10),
-                                                  Text(
-                                                    '${postData.bath} Baths',
-                                                    style: const TextStyle(
-                                                      color: Color(0xff083437),
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 16,
+                                                  Flexible(
+                                                    child: Text(
+                                                      '${postData.bath} Baths',
+                                                      style: const TextStyle(
+                                                        color:
+                                                            Color(0xff083437),
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 16,
+                                                      ),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      maxLines: 1,
                                                     ),
                                                   ),
                                                 ],
@@ -574,15 +595,22 @@ class _SinglePostToletState extends State<SinglePostTolet>
                                                         ),
                                                         const SizedBox(
                                                             width: 10),
-                                                        Text(
-                                                          "  ${postData.kitchen} Kitchen",
-                                                          style:
-                                                              const TextStyle(
-                                                            color: Color(
-                                                                0xff083437),
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            fontSize: 16,
+                                                        Flexible(
+                                                          child: Text(
+                                                            "  ${postData.kitchen} Kitchen",
+                                                            style:
+                                                                const TextStyle(
+                                                              color: Color(
+                                                                  0xff083437),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontSize: 16,
+                                                            ),
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            maxLines: 1,
                                                           ),
                                                         ),
                                                       ],
@@ -608,7 +636,7 @@ class _SinglePostToletState extends State<SinglePostTolet>
                                                         ),
                                                         const SizedBox(
                                                             width: 10),
-                                                        Expanded(
+                                                        Flexible(
                                                           child: Text(
                                                             "  ${postData.roomsize}", //ft\u00b2
                                                             style:
@@ -623,6 +651,7 @@ class _SinglePostToletState extends State<SinglePostTolet>
                                                             overflow:
                                                                 TextOverflow
                                                                     .ellipsis,
+                                                            maxLines: 1,
                                                           ),
                                                         ),
                                                       ],
@@ -1358,6 +1387,156 @@ class _SinglePostToletState extends State<SinglePostTolet>
                   //   ),
                   // ),
                 ],
+              ),
+
+              bottomNavigationBar: Container(
+                height: 75,
+                width: width,
+                margin: const EdgeInsets.only(bottom: 10),
+                color: Colors.white,
+                child: Row(
+                  children: [
+                    const SizedBox(width: 20),
+                    Expanded(
+                      flex: 1,
+                      child: InkWell(
+                        onTap: () async {
+                          adsController.showRewardedAd(
+                            'call',
+                            postData.phone,
+                          );
+                        },
+                        child: Container(
+                          height: 44,
+                          decoration: BoxDecoration(
+                            // color: Colors.deepOrange,
+                            color: const Color(0xffF36251),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.call,
+                                color: Colors.white,
+                                size: 26,
+                              ),
+                              SizedBox(width: 5),
+                              Flexible(
+                                child: Text(
+                                  'CALL',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      flex: 1,
+                      child: InkWell(
+                        onTap: () async {
+                          adsController.showRewardedInterstitialAd(
+                            'sms',
+                            postData.phone,
+                          );
+                        },
+                        child: Container(
+                          height: 44,
+                          decoration: BoxDecoration(
+                            // color: Colors.blueAccent,
+                            color: Colors.blue,
+                            // color: const Color(0xff27D468),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: 23,
+                                width: 23,
+                                child: Center(
+                                  child: SvgPicture.asset(
+                                    'assets/icons/home/message.svg',
+                                    colorFilter: const ColorFilter.mode(
+                                      Colors.white,
+                                      BlendMode.srcIn,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              const Flexible(
+                                child: Text(
+                                  'SMS',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      flex: 2,
+                      child: InkWell(
+                        onTap: () async {
+                          adsController.showRewardedInterstitialAd(
+                            'wapp',
+                            postData.phone,
+                          );
+                        },
+                        child: Container(
+                          height: 44,
+                          decoration: BoxDecoration(
+                            color: const Color(0xff27D468),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: 30,
+                                width: 30,
+                                child: SvgPicture.asset(
+                                  'assets/icons/home/wapp.svg',
+                                  height: 10,
+                                  width: 22,
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              const Flexible(
+                                child: Text(
+                                  'WhatsApp',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 20),
+                  ],
+                ),
               ),
             ),
     );

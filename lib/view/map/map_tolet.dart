@@ -38,7 +38,7 @@ class _MapToletState extends State<MapTolet>
     try {
       await toletController.mapAllPost();
       addMarker();
-      rootBundle.loadString('assets/map/map_style.txt').then((string) {
+      await rootBundle.loadString('assets/map/map_style.txt').then((string) {
         _mapStyle = string;
       });
       // setState(() {});
@@ -76,8 +76,10 @@ class _MapToletState extends State<MapTolet>
 
   @override
   void initState() {
+    toletController.showMapBoxTolet(false);
     super.initState();
     loadDataAndInitializeMap();
+    // locationController.getCurrnetlanlongLocation(true, 'Tolet');
   }
 
   @override

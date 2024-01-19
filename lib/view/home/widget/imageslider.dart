@@ -5,6 +5,7 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ImageSlide extends StatefulWidget {
   final double topPadding;
@@ -69,11 +70,26 @@ class _ImageSlideState extends State<ImageSlide> {
                       layout: SwiperLayout.DEFAULT,
                       controller: swiperController,
                       itemBuilder: (context, index) {
-                        return SizedBox(
-                          height: 200,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(6),
-                            child: userController.bannerImage[index],
+                        return InkWell(
+                          onTap: () async {
+                            print("object");
+                            print(bannerController.banneradsList[index].url);
+                            final Uri url = Uri.parse(
+                                bannerController.banneradsList[index].url);
+
+                            if (!await launchUrl(
+                              url,
+                              mode: LaunchMode.externalApplication,
+                            )) {
+                              throw Exception('Could not launch $url');
+                            }
+                          },
+                          child: SizedBox(
+                            height: 200,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(6),
+                              child: userController.bannerImage[index],
+                            ),
                           ),
                         );
                       },

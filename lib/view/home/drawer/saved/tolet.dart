@@ -21,7 +21,8 @@ class SavedToletPage extends StatefulWidget {
   State<SavedToletPage> createState() => _SavedToletPageState();
 }
 
-class _SavedToletPageState extends State<SavedToletPage> {
+class _SavedToletPageState extends State<SavedToletPage>
+    with AutomaticKeepAliveClientMixin {
   ToletController toletController = Get.find();
   final scrollController = ScrollController();
 
@@ -51,6 +52,7 @@ class _SavedToletPageState extends State<SavedToletPage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       body: CustomRefreshIndicator(
         completeStateDuration: const Duration(milliseconds: 450),
@@ -122,6 +124,9 @@ class _SavedToletPageState extends State<SavedToletPage> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class PostsToletSaved extends StatefulWidget {

@@ -48,7 +48,7 @@ class ProController extends GetxController {
 
       if (response != null) {
         allPost.addAll(response);
-        print(allPost.length);
+        // print(allPost.length);
         if (response.isEmpty || response.length < 4) {
           lodingPosts(false);
         }
@@ -59,7 +59,7 @@ class ProController extends GetxController {
 
   var singlePostloding = true.obs;
   getSinglePost(postid) async {
-    print("get Data");
+    // print("get Data");
     singlePostloding(true);
     try {
       var response = await ApiServicePro.getSinglePost(postid);
@@ -119,12 +119,15 @@ class ProController extends GetxController {
   var morePost = [].obs;
   var lodeOneTime = true.obs;
 
-  void getMorePost(page, latitude, longitude) async {
+  void getMorePost(postid, category, page, latitude, longitude) async {
     lodeOneTime(false);
-    // morePost.clear();
     lodingmorePosts(true);
+    print(postid);
+    print(category);
     try {
-      var response = await ApiServicePro.getPost(
+      var response = await ApiServicePro.getMorePost(
+        postid,
+        category,
         page,
         latitude,
         longitude,
@@ -155,19 +158,19 @@ class ProController extends GetxController {
     'CCTV': FasalitisModel(state: false.obs, icon: Icons.photo_camera),
     'GAS': FasalitisModel(
         state: false.obs, icon: Icons.local_fire_department_outlined),
+    'Giser': FasalitisModel(state: false.obs, icon: Icons.gas_meter_outlined),
     'Elevator': FasalitisModel(state: false.obs, icon: Icons.elevator_outlined),
-    'Security Guard':
-        FasalitisModel(state: false.obs, icon: Icons.security_rounded),
-    'Power Backup': FasalitisModel(
-        state: false.obs, icon: Icons.power_settings_new_rounded),
     'Fire Alarm':
         FasalitisModel(state: false.obs, icon: Icons.fire_extinguisher),
-    'Giser': FasalitisModel(state: false.obs, icon: Icons.gas_meter_outlined),
     'Wasa Connection':
         FasalitisModel(state: false.obs, icon: Icons.gas_meter_outlined),
-    "Garden": FasalitisModel(state: false.obs, icon: Icons.grass_rounded),
     'Fire exit': FasalitisModel(state: false.obs, icon: Icons.exit_to_app),
-    "West Disposal":
+    'Security Guard':
+        FasalitisModel(state: false.obs, icon: Icons.security_rounded),
+    "Garden": FasalitisModel(state: false.obs, icon: Icons.grass_rounded),
+    'Power Backup': FasalitisModel(
+        state: false.obs, icon: Icons.power_settings_new_rounded),
+    "Waste Disposal":
         FasalitisModel(state: false.obs, icon: Icons.fire_truck_sharp),
   };
   var fasalitis2 = {
@@ -291,7 +294,7 @@ class ProController extends GetxController {
   var imageFlag = false.obs;
   // different category
   var protypeFlag = false.obs;
-  var areaFlag = false.obs;
+  // var areaFlag = false.obs;
   var mesurementFlag = false.obs;
   var rodeSizeFlag = false.obs;
 
@@ -310,7 +313,7 @@ class ProController extends GetxController {
     priceFlag(false);
     imageFlag(false);
     protypeFlag(false);
-    areaFlag(false);
+    // areaFlag(false);
     mesurementFlag(false);
     rodeSizeFlag(false);
 
@@ -322,15 +325,25 @@ class ProController extends GetxController {
     name.clear();
     totalFloor.clear();
     floorNumber.clear();
+    totalSize.clear();
     totalUnit.clear();
     price.clear();
-    totalSize.clear();
+
     ytVideo.clear();
 
     mesurement.clear();
     roadSize.clear();
 
-    allFlag.value = false;
+    selectedImageProFloorplan.clear();
+    selectedImagePro.clear();
+    fasalitis.forEach((key, value) {
+      value.state.value = false;
+    });
+    fasalitis2.forEach((key, value) {
+      value.state.value = false;
+    });
+
+    allFlag(false);
   }
 
   void animateToPage(val) {
@@ -341,10 +354,10 @@ class ProController extends GetxController {
     );
   }
 
-  animateToEnd(val) {
+  animateToEnd() {
     pageController
         .animateToPage(
-      val,
+      0,
       duration: const Duration(milliseconds: 500),
       curve: Curves.easeInOut,
     )
@@ -358,19 +371,43 @@ class ProController extends GetxController {
   }
 
   UserController userController = Get.find();
+
+  checkAllCatagory() {
+    diningFlag.value = dining.value != "select";
+    kitchenFlag.value = kitchen.value != "select";
+    facingFlag.value = facing.value != "select";
+    totalfloorFlag.value = totalFloor.text.isNotEmpty;
+    floornumberFlag.value = floorNumber.text.isNotEmpty;
+    totalsizeFlag.value = totalSize.text.isNotEmpty;
+    totalUnitFlag.value = totalUnit.text.isNotEmpty;
+    mesurementFlag.value = mesurement.text.isNotEmpty;
+    rodeSizeFlag.value = roadSize.text.isNotEmpty;
+    priceFlag.value =
+        price.text.isNotEmpty && selectedPriceType.value == priceType[0];
+    imageFlag.value = selectedImagePro.isNotEmpty;
+
+    userController.phoneFlag.value =
+        userController.phonenumber.text.isNotEmpty ||
+            userController.wappnumber.text.isNotEmpty;
+
+    var c = selectedCategory.value;
+    if (c == category[0] || c == category[1]) {
+      mesurementFlag(true);
+      rodeSizeFlag(true);
+    } else {
+      diningFlag(true);
+      kitchenFlag(true);
+      facingFlag(true);
+      totalfloorFlag(true);
+      floornumberFlag(true);
+      totalsizeFlag(true);
+      totalUnitFlag(true);
+    }
+  }
+
   flagCheck() {
     if (selectedCategory.value == category[0] ||
         selectedCategory.value == category[1]) {
-      // protypeFlag(true);
-      // areaFlag(true);
-      // rodeSizeFlag(true);
-
-      if (selectedPriceType.value == priceType[1]) {
-        priceFlag.value = true;
-      } else {
-        animateToPage(0);
-      }
-
       if (dining.value != "select") {
         diningFlag.value = true;
       } else {
@@ -386,16 +423,6 @@ class ProController extends GetxController {
       } else {
         animateToPage(0);
       }
-      if (totalUnit.text.isNotEmpty) {
-        totalUnitFlag.value = true;
-      } else {
-        animateToPage(0);
-      }
-      if (totalSize.text.isNotEmpty) {
-        totalsizeFlag.value = true;
-      } else {
-        animateToPage(0);
-      }
       if (totalFloor.text.isNotEmpty) {
         totalfloorFlag.value = true;
       } else {
@@ -406,7 +433,18 @@ class ProController extends GetxController {
       } else {
         animateToPage(0);
       }
-      if (price.text.isNotEmpty) {
+      if (totalSize.text.isNotEmpty) {
+        totalsizeFlag.value = true;
+      } else {
+        animateToPage(0);
+      }
+      if (totalUnit.text.isNotEmpty) {
+        totalUnitFlag.value = true;
+      } else {
+        animateToPage(0);
+      }
+
+      if (price.text.isNotEmpty && selectedPriceType.value == priceType[0]) {
         priceFlag.value = true;
       } else {
         animateToPage(0);
@@ -417,58 +455,31 @@ class ProController extends GetxController {
       } else {
         if (diningFlag.value == true &&
             kitchenFlag.value &&
-            totalSize.text.isEmpty) {
-          animateToEnd(0);
+            facingFlag.value &&
+            totalfloorFlag.value &&
+            floornumberFlag.value &&
+            totalsizeFlag.value &&
+            totalUnitFlag.value &&
+            priceFlag.value &&
+            !imageFlag.value) {
+          animateToEnd();
         }
       }
-      // if (selectedPostedBy.isNotEmpty) {
-      //   postedByFlag.value = true;
-      // } else {
-      //   animateToEnd(1);
-      // }
+      userController.phoneFlag.value =
+          userController.phonenumber.text.isNotEmpty ||
+              userController.wappnumber.text.isNotEmpty;
 
-      // if (diningFlag.value &&
-      //     kitchenFlag.value &&
-      //     facingFlag.value &&
-      //     totalUnitFlag.value &&
-      //     totalsizeFlag.value &&
-      //     totalfloorFlag.value &&
-      //     floornumberFlag.value &&
-      //     priceFlag.value &&
-      //     imageFlag.value &&
-      //     userController.phoneFlag.value) {
-      //   allFlag.value = true;
-      // }
-      if ([
-        diningFlag,
-        kitchenFlag,
-        facingFlag,
-        totalUnitFlag,
-        totalsizeFlag,
-        totalfloorFlag,
-        floornumberFlag,
-        priceFlag,
-        imageFlag,
-        userController.phoneFlag,
-      ].every((flag) => flag.value)) {
-        allFlag.value = true;
-      }
+      allFlag.value = diningFlag.value &&
+          kitchenFlag.value &&
+          facingFlag.value &&
+          totalfloorFlag.value &&
+          floornumberFlag.value &&
+          totalsizeFlag.value &&
+          totalUnitFlag.value &&
+          priceFlag.value &&
+          imageFlag.value &&
+          userController.phoneFlag.value;
     } else {
-      // diningFlag(true);
-      // kitchenFlag(true);
-      // facingFlag(true);
-      // totalfloorFlag(true);
-      // floornumberFlag(true);
-      // totalsizeFlag(true);
-      // totalUnitFlag(true);
-      // floornumberFlag(true);
-
-      if (selectedPriceType.value == priceType[1]) {
-        priceFlag.value = true;
-      } else {
-        animateToPage(0);
-      }
-
       if (mesurement.text.isNotEmpty) {
         mesurementFlag.value = true;
       } else {
@@ -479,7 +490,8 @@ class ProController extends GetxController {
       } else {
         animateToPage(0);
       }
-      if (price.text.isNotEmpty) {
+
+      if (price.text.isNotEmpty && selectedPriceType.value == priceType[0]) {
         priceFlag.value = true;
       } else {
         animateToPage(0);
@@ -489,20 +501,15 @@ class ProController extends GetxController {
       } else {
         animateToPage(0);
       }
-      if (userController.phonenumber.text.isNotEmpty ||
-          userController.wappnumber.text.isNotEmpty) {
-        userController.phoneFlag.value = true;
-      } else {
-        // animateToPage(1);
-      }
+      userController.phoneFlag.value =
+          userController.phonenumber.text.isNotEmpty ||
+              userController.wappnumber.text.isNotEmpty;
 
-      if (rodeSizeFlag.value &&
+      allFlag.value = rodeSizeFlag.value &&
           mesurementFlag.value &&
           priceFlag.value &&
-          userController.phoneFlag.value &&
-          imageFlag.value) {
-        allFlag.value = true;
-      }
+          imageFlag.value &&
+          userController.phoneFlag.value;
     }
   }
 
@@ -697,24 +704,24 @@ class ProController extends GetxController {
     'CCTV': FasalitisModel(state: false.obs, icon: Icons.photo_camera),
     'GAS': FasalitisModel(
         state: false.obs, icon: Icons.local_fire_department_outlined),
-    'Elevator': FasalitisModel(state: false.obs, icon: Icons.elevator_outlined),
-    'Security Guard':
-        FasalitisModel(state: false.obs, icon: Icons.security_rounded),
-    'Power Backup': FasalitisModel(
-        state: false.obs, icon: Icons.power_settings_new_rounded),
+    'Giser': FasalitisModel(state: false.obs, icon: Icons.gas_meter_outlined),
     'Fire Alarm':
         FasalitisModel(state: false.obs, icon: Icons.fire_extinguisher),
-    'Drain':
-        FasalitisModel(state: false.obs, icon: Icons.turn_sharp_right_sharp),
-    'Giser': FasalitisModel(state: false.obs, icon: Icons.gas_meter_outlined),
     'Wasa Connection':
         FasalitisModel(state: false.obs, icon: Icons.gas_meter_outlined),
-    "Garden": FasalitisModel(state: false.obs, icon: Icons.grass_rounded),
     'Fire exit': FasalitisModel(state: false.obs, icon: Icons.exit_to_app),
+    'Security Guard':
+        FasalitisModel(state: false.obs, icon: Icons.security_rounded),
+    "Garden": FasalitisModel(state: false.obs, icon: Icons.grass_rounded),
+    'Elevator': FasalitisModel(state: false.obs, icon: Icons.elevator_outlined),
     "West Disposal":
         FasalitisModel(state: false.obs, icon: Icons.fire_truck_sharp),
+    'Power Backup': FasalitisModel(
+        state: false.obs, icon: Icons.power_settings_new_rounded),
     'Electricity':
         FasalitisModel(state: false.obs, icon: Icons.power_settings_new),
+    'Drain':
+        FasalitisModel(state: false.obs, icon: Icons.turn_sharp_right_sharp),
   };
 
   String getFasalitiesSort() {
@@ -758,7 +765,7 @@ class ProController extends GetxController {
   var sortloding = true.obs;
   var allSortedPost = [].obs;
   void sortedPostList() async {
-    print("object");
+    // print("object");
     sortloding(true);
     try {
       var response = await ApiServicePro.sortingPost(

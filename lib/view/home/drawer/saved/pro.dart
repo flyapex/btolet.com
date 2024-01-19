@@ -22,7 +22,8 @@ class SavedProPage extends StatefulWidget {
   State<SavedProPage> createState() => _SavedProPageState();
 }
 
-class _SavedProPageState extends State<SavedProPage> {
+class _SavedProPageState extends State<SavedProPage>
+    with AutomaticKeepAliveClientMixin {
   ProController proController = Get.find();
   final scrollController = ScrollController();
 
@@ -52,6 +53,7 @@ class _SavedProPageState extends State<SavedProPage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       body: CustomRefreshIndicator(
         completeStateDuration: const Duration(milliseconds: 450),
@@ -124,6 +126,9 @@ class _SavedProPageState extends State<SavedProPage> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class PostsProSaved extends StatefulWidget {

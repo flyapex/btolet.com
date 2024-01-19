@@ -60,7 +60,12 @@ class _LocationSheetState extends State<LocationSheet>
 
     super.initState();
     // print("object");
-    locationController.getCurrnetlanlongLocation(false, "MAP");
+    // locationController.getCurrnetlanlongLocation(true, "MAP Sheet");
+
+    locationController.coordinateToLocationOnly(
+      locationController.currentlatitude.value,
+      locationController.currentlongitude.value,
+    );
   }
 
   @override
@@ -113,7 +118,7 @@ class _LocationSheetState extends State<LocationSheet>
                     onCameraIdle: () {
                       if (latitude != 0) {
                         Vibration.vibrate(pattern: [10, 30, 10]);
-                        locationController.coordinateToLocation(
+                        locationController.coordinateToLocationOnly(
                           latitude,
                           longitude,
                         );
@@ -233,8 +238,8 @@ class _LocationSheetState extends State<LocationSheet>
                               children: [
                                 Expanded(
                                   child: ElevatedButton.icon(
-                                    onPressed: () {
-                                      locationController
+                                    onPressed: () async {
+                                      await locationController
                                           .getCurrnetlanlongLocation(
                                               true, 'My Current Location');
                                     },
@@ -256,6 +261,7 @@ class _LocationSheetState extends State<LocationSheet>
                                         htt / 17,
                                       ),
                                       backgroundColor: Colors.red,
+                                      // backgroundColor: const Color(0xff196EFF),
                                       shape: const RoundedRectangleBorder(
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(6),
@@ -281,6 +287,11 @@ class _LocationSheetState extends State<LocationSheet>
                                       // await toletController
                                       //     .getCurrentPostCount();
                                       // await proController.getCurrentPostCount();
+
+                                      locationController.coordinateToLocation(
+                                        latitude,
+                                        longitude,
+                                      );
                                       if (userController.tabController.index ==
                                           0) {
                                         toletController.refreshkey.currentState!
@@ -480,9 +491,9 @@ class _LocationSheetMapState extends State<LocationSheetMap> {
                 children: [
                   Expanded(
                     child: ElevatedButton.icon(
-                      onPressed: () {
+                      onPressed: () async {
                         Get.back();
-                        locationController.getCurrnetlanlongLocation(
+                        await locationController.getCurrnetlanlongLocation(
                             true, 'My Current Location');
                         // locationController.onMyLocationButtonPressed();
                       },

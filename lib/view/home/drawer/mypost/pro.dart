@@ -20,7 +20,8 @@ class MyProPage extends StatefulWidget {
   State<MyProPage> createState() => _MyProPageState();
 }
 
-class _MyProPageState extends State<MyProPage> {
+class _MyProPageState extends State<MyProPage>
+    with AutomaticKeepAliveClientMixin {
   ProController proController = Get.find();
 
   final scrollController = ScrollController();
@@ -51,6 +52,7 @@ class _MyProPageState extends State<MyProPage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       body: CustomRefreshIndicator(
         completeStateDuration: const Duration(milliseconds: 450),
@@ -122,6 +124,9 @@ class _MyProPageState extends State<MyProPage> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class MyPostsPro extends StatefulWidget {

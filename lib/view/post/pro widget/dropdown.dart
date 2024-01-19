@@ -1,8 +1,10 @@
 import 'package:btolet/controller/property_controller.dart';
 import 'package:btolet/model/category.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class DropDownPro extends StatefulWidget {
   final String title;
@@ -96,49 +98,140 @@ class _DropDownProState extends State<DropDownPro> {
               ),
               borderRadius: BorderRadius.circular(6),
             ),
-            child: Row(
-              children: [
-                SizedBox(
-                  height: 48,
-                  width: (Get.width / widget.widthh),
-                  child: DropdownButtonHideUnderline(
-                    child: ButtonTheme(
-                      alignedDropdown: true,
-                      child: DropdownButton(
-                        isExpanded: true,
-                        icon: Icon(
-                          Feather.chevron_down,
-                          color: Colors.black.withOpacity(0.4),
-                        ),
-                        hint: Text(
-                          proController.getCategoryValue(widget.category),
-                          style:
-                              proController.getCategoryValue(widget.category) ==
-                                      'select'
-                                  ? textstyleh
-                                  : textstylemain,
-                        ),
-                        items: categoryValues.map((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                        onChanged: (val) {
-                          proController.setCategoryValue(
-                              widget.category, val.toString());
-
-                          proController.flagCheck();
-                        },
-                      ),
+            child: SizedBox(
+              height: 48,
+              // width: (Get.width / widget.widthh),
+              child: DropdownButtonHideUnderline(
+                child: ButtonTheme(
+                  alignedDropdown: true,
+                  child: DropdownButton(
+                    isExpanded: true,
+                    icon: Icon(
+                      Feather.chevron_down,
+                      color: Colors.black.withOpacity(0.4),
                     ),
+                    hint: Text(
+                      proController.getCategoryValue(widget.category),
+                      style: proController.getCategoryValue(widget.category) ==
+                              'select'
+                          ? textstyleh
+                          : textstylemain,
+                    ),
+                    items: categoryValues.map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                    onChanged: (val) {
+                      proController.setCategoryValue(
+                          widget.category, val.toString());
+
+                      proController.flagCheck();
+                    },
                   ),
                 ),
-              ],
+              ),
             ),
           ),
         ],
       );
     });
+  }
+}
+
+class DateTimeSelectPro extends StatefulWidget {
+  const DateTimeSelectPro({super.key});
+
+  @override
+  State<DateTimeSelectPro> createState() => _DateTimeSelectProState();
+}
+
+class _DateTimeSelectProState extends State<DateTimeSelectPro> {
+  ProController proController = Get.find();
+  DateTime? _chosenDateTime;
+
+  void _showDatePicker(ctx) {
+    var now = DateTime.now();
+    DateTime minDate = DateTime(now.year, now.month);
+    showCupertinoModalPopup(
+        context: ctx,
+        builder: (_) => Container(
+              height: 500,
+              color: const Color.fromARGB(255, 255, 255, 255),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 400,
+                    child: CupertinoDatePicker(
+                      initialDateTime: now,
+                      minimumDate: minDate,
+                      mode: CupertinoDatePickerMode.date,
+                      onDateTimeChanged: (val) {
+                        print(val);
+                        proController.sellFrom = val;
+                        setState(() {
+                          _chosenDateTime = val;
+                          proController.sellFrom = val;
+                        });
+                      },
+                    ),
+                  ),
+                  CupertinoButton(
+                    child: const Text('OK'),
+                    onPressed: () => Navigator.of(ctx).pop(),
+                  )
+                ],
+              ),
+            ));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Rent From',
+          style: TextStyle(
+            letterSpacing: 0.7,
+            color: Colors.black.withOpacity(0.5),
+          ),
+        ),
+        const SizedBox(height: 15),
+        SizedBox(
+          height: 46,
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              minimumSize: const Size(double.infinity, double.infinity),
+              backgroundColor: const Color(0xffF2F3F5),
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(6),
+              ),
+            ),
+            onPressed: () {
+              _showDatePicker(context);
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _chosenDateTime == null
+                    ? Text(
+                        DateFormat().add_MMMd().format(DateTime.now()),
+                      )
+                    : Text(
+                        DateFormat().add_MMMd().format(_chosenDateTime!),
+                        style: const TextStyle(
+                          fontSize: 18,
+                          color: Colors.black,
+                        ),
+                      ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }

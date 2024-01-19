@@ -1,10 +1,9 @@
 import 'package:btolet/controller/property_controller.dart';
 import 'package:btolet/model/category.dart';
 import 'package:btolet/view/post/pro%20widget/dropdown.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:btolet/view/post/pro%20widget/fasalitis.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:pattern_formatter/pattern_formatter.dart';
 
 import 'chips.dart';
@@ -20,42 +19,6 @@ class CategoryBodyPro extends StatefulWidget {
 class _CategoryBodyProState extends State<CategoryBodyPro> {
   ProController proController = Get.find();
   double space = 20.0;
-  DateTime? _chosenDateTime;
-
-  void _showDatePicker(ctx) {
-    var now = DateTime.now();
-    DateTime minDate = DateTime(now.year, now.month);
-    showCupertinoModalPopup(
-        context: ctx,
-        builder: (_) => Container(
-              height: 500,
-              color: const Color.fromARGB(255, 255, 255, 255),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 400,
-                    child: CupertinoDatePicker(
-                      initialDateTime: now,
-                      minimumDate: minDate,
-                      mode: CupertinoDatePickerMode.date,
-                      onDateTimeChanged: (val) {
-                        print(val);
-                        proController.sellFrom = val;
-                        setState(() {
-                          _chosenDateTime = val;
-                          proController.sellFrom = val;
-                        });
-                      },
-                    ),
-                  ),
-                  CupertinoButton(
-                    child: const Text('OK'),
-                    onPressed: () => Navigator.of(ctx).pop(),
-                  )
-                ],
-              ),
-            ));
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -93,89 +56,55 @@ class _CategoryBodyProState extends State<CategoryBodyPro> {
               selected: proController.selectedBath,
               icon: Icons.bathtub_outlined,
             ),
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                DropDownPro(
-                  title: "Dining *",
-                  category: CategoryPro.dining,
-                  widthh: 2.35,
-                  topPadding: 20,
+                const Expanded(
+                  flex: 1,
+                  child: DropDownPro(
+                    title: "Dining *",
+                    category: CategoryPro.dining,
+                    widthh: 2.35,
+                    topPadding: 20,
+                  ),
                 ),
-                DropDownPro(
-                  title: "Kitchen *",
-                  category: CategoryPro.kitchen,
-                  widthh: 2.35,
-                  topPadding: 20,
+                SizedBox(width: space),
+                const Expanded(
+                  flex: 1,
+                  child: DropDownPro(
+                    title: "Kitchen *",
+                    category: CategoryPro.kitchen,
+                    widthh: 2.35,
+                    topPadding: 20,
+                  ),
                 ),
               ],
             ),
             SizedBox(height: space),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const DropDownPro(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Expanded(
+                  child: DropDownPro(
                     title: "Facing *",
                     category: CategoryPro.facing,
                     widthh: 2.35,
                     topPadding: 0,
                   ),
-                  SizedBox(width: space),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Sell From',
-                        style: TextStyle(
-                          letterSpacing: 0.7,
-                          color: Colors.black.withOpacity(0.5),
-                        ),
-                      ),
-                      const SizedBox(height: 15),
-                      SizedBox(
-                        height: 48,
-                        width: Get.width / 2.35,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xffF2F3F5),
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                          ),
-                          onPressed: () {
-                            _showDatePicker(context);
-                          },
-                          child: _chosenDateTime == null
-                              ? Text(
-                                  DateFormat()
-                                      .add_MMMd()
-                                      .format(DateTime.now()),
-                                )
-                              : Text(
-                                  DateFormat()
-                                      .add_MMMd()
-                                      .format(_chosenDateTime!),
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                ),
+                SizedBox(width: space),
+                const Expanded(
+                  flex: 1,
+                  child: DateTimeSelectPro(),
+                ),
+              ],
             ),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextInputPro(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: TextInputPro(
                     topPadding: space,
                     title: "Total Floor *",
                     textType: TextInputType.number,
@@ -187,8 +116,11 @@ class _CategoryBodyProState extends State<CategoryBodyPro> {
                     widthh: 2.35,
                     focusNode: proController.totalFloorfocusNode,
                   ),
-                  SizedBox(width: space),
-                  TextInputPro(
+                ),
+                SizedBox(width: space),
+                Expanded(
+                  flex: 1,
+                  child: TextInputPro(
                     topPadding: space,
                     title: "Floor Number *",
                     textType: TextInputType.number,
@@ -200,15 +132,15 @@ class _CategoryBodyProState extends State<CategoryBodyPro> {
                     widthh: 2.35,
                     focusNode: proController.floorNumberfocusNode,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextInputPro(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: TextInputPro(
                     topPadding: space,
                     title: "Total Size *",
                     textType: TextInputType.text,
@@ -220,8 +152,11 @@ class _CategoryBodyProState extends State<CategoryBodyPro> {
                     widthh: 2.35,
                     focusNode: proController.totalSizefocusNode,
                   ),
-                  SizedBox(width: space),
-                  TextInputPro(
+                ),
+                SizedBox(width: space),
+                Expanded(
+                  flex: 1,
+                  child: TextInputPro(
                     topPadding: space,
                     title: "Total Unit *",
                     textType: TextInputType.number,
@@ -233,8 +168,8 @@ class _CategoryBodyProState extends State<CategoryBodyPro> {
                     widthh: 2.35,
                     focusNode: proController.totalUnitfocusNode,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
             PorChipsNotext(
               options: priceType,
@@ -255,39 +190,7 @@ class _CategoryBodyProState extends State<CategoryBodyPro> {
                   )
                 : const SizedBox(),
             SizedBox(height: space),
-            const Row(
-              children: [
-                Text(
-                  'Facilities(op)',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.black,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Wrap(
-                    spacing: 10,
-                    children: proController.fasalitis.entries.map((entry) {
-                      final String text = entry.key;
-                      final FasalitisModel fasalitis = entry.value;
-                      final categoryState = fasalitis.state;
-
-                      return FasalitisChipPro(
-                        text: text,
-                        icon: fasalitis.icon,
-                        categoryState: categoryState,
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ],
-            ),
+            const FacilitiesPro(),
           ],
         );
       } else {
@@ -336,6 +239,10 @@ class _CategoryBodyProState extends State<CategoryBodyPro> {
               numberFormatter: ThousandsFormatter(),
               widthh: 1.2,
               focusNode: proController.roadSizefocusNode,
+            ),
+            PorChipsNotext(
+              options: priceType,
+              selected: proController.selectedPriceType,
             ),
             proController.selectedPriceType.value == priceType[0]
                 ? TextInputPro(
