@@ -37,6 +37,7 @@ class _HomeState extends State<Home>
     scrollController = ScrollController();
     scrollController.addListener(_scrollListener);
     userController.getnote();
+    // locationController.getCurrnetlanlongLocation(true, "MAP Home");
     super.initState();
   }
 

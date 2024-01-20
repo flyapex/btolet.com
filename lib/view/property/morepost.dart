@@ -30,7 +30,7 @@ class _MorePostsProState extends State<MorePostsPro> {
     var width = Get.width;
     return Container(
       height: height / 7,
-      width: Get.width / 1.2,
+      width: width / 1.2,
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),

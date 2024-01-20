@@ -59,6 +59,7 @@ class _LocationSheetState extends State<LocationSheet>
     });
 
     super.initState();
+    // locationController.isLoading(false);
     // print("object");
     // locationController.getCurrnetlanlongLocation(true, "MAP Sheet");
 
@@ -405,7 +406,7 @@ class _LocationSheetMapState extends State<LocationSheetMap> {
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              const SizedBox(height: 15),
+              const SizedBox(height: 10),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -457,18 +458,29 @@ class _LocationSheetMapState extends State<LocationSheetMap> {
                                 isDense: true,
                                 prefixIcon: Icon(
                                   Feather.search,
-                                  color: focus
+                                  color: !focus
                                       ? Colors.black.withOpacity(0.6)
-                                      : Colors.orange,
+                                      : Colors.blue,
                                   // prefixIconColor: Color(0xff374957),
                                   size: 25,
                                 ),
-
-                                // suffixIcon: Icon(
-                                //   Icons.search,
-                                //   color: Colors.black.withOpacity(0.2),
-                                //   size: 24,
-                                // ),
+                                suffixIcon: IconButton(
+                                  icon: Container(
+                                    padding: const EdgeInsets.all(3),
+                                    decoration: BoxDecoration(
+                                      color: Colors.black.withOpacity(0.4),
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
+                                    child: const Icon(
+                                      Feather.x,
+                                      color: Colors.white,
+                                      size: 14,
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    locationController.searchController.clear();
+                                  },
+                                ),
                               ),
                               focusNode: focusNode,
                               cursorHeight: 22,
@@ -486,50 +498,51 @@ class _LocationSheetMapState extends State<LocationSheetMap> {
                   ),
                 ],
               ),
-              const SizedBox(height: 15),
-              Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton.icon(
-                      onPressed: () async {
-                        Get.back();
-                        await locationController.getCurrnetlanlongLocation(
-                            true, 'My Current Location');
-                        // locationController.onMyLocationButtonPressed();
-                      },
-                      icon: const Icon(
-                        Icons.near_me,
-                        color: Colors.white,
-                      ),
-                      label: const Text(
-                        'Use My Current Location',
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        fixedSize: Size(
-                          double.infinity,
-                          height / 17,
-                        ),
-                        backgroundColor: Colors.red,
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(6),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
+              // const SizedBox(height: 15),
+              // Row(
+              //   children: [
+              //     Expanded(
+              //       child: ElevatedButton.icon(
+              //         onPressed: () async {
+              //           Get.back();
+              //           await locationController.getCurrnetlanlongLocation(
+              //               true, 'My Current Location');
+              //           // locationController.onMyLocationButtonPressed();
+              //         },
+              //         icon: const Icon(
+              //           Icons.near_me,
+              //           color: Colors.white,
+              //         ),
+              //         label: const Text(
+              //           'Use My Current Location',
+              //           style: TextStyle(
+              //             color: Colors.white,
+              //           ),
+              //         ),
+              //         style: ElevatedButton.styleFrom(
+              //           fixedSize: Size(
+              //             double.infinity,
+              //             height / 17,
+              //           ),
+              //           backgroundColor: Colors.red,
+              //           shape: const RoundedRectangleBorder(
+              //             borderRadius: BorderRadius.all(
+              //               Radius.circular(6),
+              //             ),
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
+              // const SizedBox(height: 10),
               Expanded(
                 child: ListView.builder(
                   // controller: scrollController,
                   // primary: false,
                   shrinkWrap: true,
                   // physics: const NeverScrollableScrollPhysics(),
+                  // padding: EdgeInsets.zero,
                   physics: const BouncingScrollPhysics(
                       parent: AlwaysScrollableScrollPhysics()),
                   itemCount: locationController.suggstions.length,
@@ -556,7 +569,7 @@ class _LocationSheetMapState extends State<LocationSheetMap> {
                                 ),
                               );
 
-                              locationController.coordinateToLocation(
+                              locationController.coordinateToLocationOnly(
                                 locationController.currentlatitude.value,
                                 locationController.currentlongitude.value,
                               );
@@ -589,20 +602,34 @@ class LocationListTail extends StatelessWidget {
     return Column(
       children: [
         ListTile(
+          contentPadding: EdgeInsets.zero,
           onTap: press,
           horizontalTitleGap: 0,
-          leading: const Icon(
-            Icons.near_me,
-            color: Colors.red,
+          leading: Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.06),
+              borderRadius: BorderRadius.circular(6),
+            ),
+            child: Icon(
+              Feather.map_pin,
+              color: Colors.black.withOpacity(0.4),
+              size: 14,
+            ),
           ),
-          title: Text(
-            location,
-            style: TextStyle(
+          title: Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: Text(
+              location,
+              style: TextStyle(
                 fontSize: 18,
                 color: Colors.black.withOpacity(0.5),
-                fontWeight: FontWeight.w400),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
+                fontWeight: FontWeight.w400,
+                letterSpacing: 0.3,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
         ),
         Divider(

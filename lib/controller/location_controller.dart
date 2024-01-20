@@ -57,6 +57,7 @@ class LocationController extends GetxController {
   RxBool isLoading = true.obs;
 
   getCurrnetlanlongLocation(bool mapAnimation, v) async {
+    // isLoading(true);
     print(v);
     print("Get Current Location");
     var permission = await Geolocator.checkPermission();

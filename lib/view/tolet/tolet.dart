@@ -282,7 +282,7 @@ class _PostsToletState extends State<PostsTolet> {
 
     return Container(
       height: height / 7,
-      width: Get.width,
+      width: width / 1.2,
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
