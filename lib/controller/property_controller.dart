@@ -115,35 +115,35 @@ class ProController extends GetxController {
   // }
 //*---------------------- More Post
 
-  var lodingmorePosts = true.obs;
-  var morePost = [].obs;
-  var lodeOneTime = true.obs;
+  // var lodingmorePosts = true.obs;
+  // var morePost = [].obs;
+  // var lodeOneTime = true.obs;
 
-  void getMorePost(postid, category, page, latitude, longitude) async {
-    lodeOneTime(false);
-    lodingmorePosts(true);
-    print(postid);
-    print(category);
-    try {
-      var response = await ApiServicePro.getMorePost(
-        postid,
-        category,
-        page,
-        latitude,
-        longitude,
-      );
+  // void getMorePost(postid, category, page, latitude, longitude) async {
+  //   lodeOneTime(false);
+  //   lodingmorePosts(true);
+  //   print(postid);
+  //   print(category);
+  //   try {
+  //     var response = await ApiServicePro.getMorePost(
+  //       postid,
+  //       category,
+  //       page,
+  //       latitude,
+  //       longitude,
+  //     );
 
-      if (response != null) {
-        morePost.addAll(response);
-        print(morePost.length);
-        if (response.isEmpty) {
-          lodingmorePosts(false);
-        }
-      }
-    } finally {
-      lodingmorePosts(false);
-    }
-  }
+  //     if (response != null) {
+  //       morePost.addAll(response);
+  //       print(morePost.length);
+  //       if (response.isEmpty) {
+  //         lodingmorePosts(false);
+  //       }
+  //     }
+  //   } finally {
+  //     lodingmorePosts(false);
+  //   }
+  // }
 
 //*----------------------Post
   var pageController = PageController();
@@ -203,6 +203,7 @@ class ProController extends GetxController {
   var selectedCategory = category[0].obs;
   var selectedType = type[0].obs;
   var selectedPriceType = priceType[0].obs;
+  var selectedEMIType = emi[0].obs;
 
   var selectedRooms = bed[0].obs;
   var selectedBath = bath[0].obs;
@@ -383,7 +384,7 @@ class ProController extends GetxController {
     mesurementFlag.value = mesurement.text.isNotEmpty;
     rodeSizeFlag.value = roadSize.text.isNotEmpty;
     priceFlag.value =
-        price.text.isNotEmpty && selectedPriceType.value == priceType[0];
+        price.text.isNotEmpty || selectedPriceType.value != priceType[0];
     imageFlag.value = selectedImagePro.isNotEmpty;
 
     userController.phoneFlag.value =
@@ -444,7 +445,7 @@ class ProController extends GetxController {
         animateToPage(0);
       }
 
-      if (price.text.isNotEmpty && selectedPriceType.value == priceType[0]) {
+      if (price.text.isNotEmpty || selectedPriceType.value != priceType[0]) {
         priceFlag.value = true;
       } else {
         animateToPage(0);
@@ -491,7 +492,7 @@ class ProController extends GetxController {
         animateToPage(0);
       }
 
-      if (price.text.isNotEmpty && selectedPriceType.value == priceType[0]) {
+      if (price.text.isNotEmpty || selectedPriceType.value != priceType[0]) {
         priceFlag.value = true;
       } else {
         animateToPage(0);
@@ -601,6 +602,7 @@ class ProController extends GetxController {
             area: '',
             measurement: '',
             roadSize: '',
+            emi: selectedEMIType.value,
           ),
         );
       } else {
@@ -653,6 +655,7 @@ class ProController extends GetxController {
             area: area.value,
             measurement: mesurement.text,
             roadSize: roadSize.text,
+            emi: selectedEMIType.value,
           ),
         );
       }

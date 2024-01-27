@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:ui';
+import 'package:btolet/api/api_tolet.dart';
 import 'package:btolet/controller/ads_controller.dart';
 import 'package:btolet/controller/location_controller.dart';
 import 'package:btolet/controller/tolet_controller.dart';
@@ -94,7 +95,7 @@ class _SinglePostToletState extends State<SinglePostTolet>
   }
 
   lodeData() async {
-    toletController.lodeOneTime(true);
+    // toletController.lodeOneTime(true);
     var data = await toletController.getSinglePost(widget.postid);
     if (data != null) {
       postData = data;
@@ -106,6 +107,7 @@ class _SinglePostToletState extends State<SinglePostTolet>
   final ScrollController _controllerMore = ScrollController();
 
   late bool morePost;
+
   @override
   void initState() {
     morePost = false;
@@ -121,6 +123,30 @@ class _SinglePostToletState extends State<SinglePostTolet>
     // adsController.createInterstitialAd();
   }
 
+  var lodingmorePosts = true.obs;
+  var morePostList = [].obs;
+  void getMorePost(postid, category, price, page, latitude, longitude) async {
+    lodingmorePosts(true);
+    try {
+      var response = await ApiServiceTolet.getMorePost(
+        postid,
+        category,
+        price,
+        page,
+        latitude,
+        longitude,
+      );
+      if (response != null) {
+        morePostList.addAll(response);
+        if (response.isEmpty || response.length < 4) {
+          lodingmorePosts(false);
+        }
+      }
+    } finally {
+      print('ModeList Count ${morePostList.length}');
+    }
+  }
+
   void _scrollListener() {
     double scrollPosition = _controller.position.pixels;
 
@@ -128,7 +154,7 @@ class _SinglePostToletState extends State<SinglePostTolet>
     double seventyPercentOfPage = 0.6 * totalPageHeight;
     if (scrollPosition >= seventyPercentOfPage && !morePost) {
       print("Load More Post Now");
-      toletController.getMorePost(
+      getMorePost(
         postData.postId,
         postData.category,
         postData.rent,
@@ -136,43 +162,26 @@ class _SinglePostToletState extends State<SinglePostTolet>
         postData.geolat,
         postData.geolon,
       );
+      // toletController.getMorePost(
+      //   postData.postId,
+      //   postData.category,
+      //   postData.rent,
+      //   1,
+      //   postData.geolat,
+      //   postData.geolon,
+      // );
       setState(() {
         morePost = true;
       });
     }
-
-    // if (_controller.position.maxScrollExtent > 0) {
-    //   var scrollPercentage =
-    //       (_controller.position.pixels / _controller.position.maxScrollExtent)
-    //           .clamp(0.0, 1.0);
-
-    //   if (scrollPercentage > 0.5 &&
-    //       scrollPercentage < 0.6 &&
-    //       toletController.lodeOneTime.value) {
-    //     print("Lode More Data");
-    //     toletController.getMorePost(
-    //       1,
-    //       postData.geolat,
-    //       postData.geolon,
-    //     );
-    //   }
-    // }
-    // if (_controller.position.userScrollDirection == ScrollDirection.reverse) {
-    //   locationController.singlePostTolemap.value = true;
-    // } else {
-    //   if (_controller.position.userScrollDirection == ScrollDirection.forward) {
-    //     locationController.singlePostTolemap.value = false;
-    //   }
-    // }
   }
 
   var lodingPage = 2;
   void _scrollListenerMore() {
     if (_controllerMore.position.pixels ==
-            _controllerMore.position.maxScrollExtent &&
-        toletController.lodingmorePosts.value == false) {
+        _controllerMore.position.maxScrollExtent) {
       print("Lode More Page");
-      toletController.getMorePost(
+      getMorePost(
         postData.postId,
         postData.category,
         postData.rent,
@@ -180,6 +189,14 @@ class _SinglePostToletState extends State<SinglePostTolet>
         postData.geolat,
         postData.geolon,
       );
+      // toletController.getMorePost(
+      //   postData.postId,
+      //   postData.category,
+      //   postData.rent,
+      //   lodingPage,
+      //   postData.geolat,
+      //   postData.geolon,
+      // );
       print(lodingPage);
       lodingPage++;
     }
@@ -498,14 +515,14 @@ class _SinglePostToletState extends State<SinglePostTolet>
                                                     CrossAxisAlignment.end,
                                                 children: [
                                                   SizedBox(
-                                                    height: 30,
-                                                    width: 30,
+                                                    height: 28,
+                                                    width: 28,
                                                     child: SvgPicture.asset(
                                                       'assets/icons/tolet/bed.svg',
                                                       colorFilter:
-                                                          const ColorFilter
-                                                              .mode(
-                                                        Color(0xff083437),
+                                                          ColorFilter.mode(
+                                                        const Color(0xff083437)
+                                                            .withOpacity(0.5),
                                                         BlendMode.srcIn,
                                                       ),
                                                     ),
@@ -542,9 +559,9 @@ class _SinglePostToletState extends State<SinglePostTolet>
                                                     child: SvgPicture.asset(
                                                       'assets/icons/tolet/bath.svg',
                                                       colorFilter:
-                                                          const ColorFilter
-                                                              .mode(
-                                                        Color(0xff083437),
+                                                          ColorFilter.mode(
+                                                        const Color(0xff083437)
+                                                            .withOpacity(0.5),
                                                         BlendMode.srcIn,
                                                       ),
                                                     ),
@@ -586,9 +603,12 @@ class _SinglePostToletState extends State<SinglePostTolet>
                                                               SvgPicture.asset(
                                                             'assets/icons/tolet/kitchen.svg',
                                                             colorFilter:
-                                                                const ColorFilter
+                                                                ColorFilter
                                                                     .mode(
-                                                              Color(0xff083437),
+                                                              const Color(
+                                                                      0xff083437)
+                                                                  .withOpacity(
+                                                                      0.5),
                                                               BlendMode.srcIn,
                                                             ),
                                                           ),
@@ -627,9 +647,12 @@ class _SinglePostToletState extends State<SinglePostTolet>
                                                               SvgPicture.asset(
                                                             'assets/icons/tolet/size.svg',
                                                             colorFilter:
-                                                                const ColorFilter
+                                                                ColorFilter
                                                                     .mode(
-                                                              Color(0xff083437),
+                                                              const Color(
+                                                                      0xff083437)
+                                                                  .withOpacity(
+                                                                      0.5),
                                                               BlendMode.srcIn,
                                                             ),
                                                           ),
@@ -659,7 +682,7 @@ class _SinglePostToletState extends State<SinglePostTolet>
                                             ),
                                           ],
                                         )
-                                      : postData.garagetype == "Car"
+                                      : postData.garagetype == "Both"
                                           ? Row(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.center,
@@ -668,11 +691,12 @@ class _SinglePostToletState extends State<SinglePostTolet>
                                                   height: 25,
                                                   width: 25,
                                                   child: SvgPicture.asset(
-                                                    'assets/icons/tolet/car.svg',
+                                                    'assets/icons/tolet/garage.svg',
                                                     colorFilter:
-                                                        const ColorFilter.mode(
+                                                        ColorFilter.mode(
                                                       // Color(0xff083437),
-                                                      Colors.black87,
+                                                      const Color(0xff083437)
+                                                          .withOpacity(0.5),
                                                       BlendMode.srcIn,
                                                     ),
                                                   ),
@@ -708,48 +732,101 @@ class _SinglePostToletState extends State<SinglePostTolet>
                                                 ),
                                               ],
                                             )
-                                          : Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                SizedBox(
-                                                  height: 30,
-                                                  width: 30,
-                                                  child: SvgPicture.asset(
-                                                    'assets/icons/tolet/bike.svg',
-                                                    colorFilter:
-                                                        const ColorFilter.mode(
-                                                      // Color(0xff083437),
-                                                      Colors.black87,
-                                                      BlendMode.srcIn,
+                                          : postData.garagetype == "Bike"
+                                              ? Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    SizedBox(
+                                                      height: 30,
+                                                      width: 30,
+                                                      child: SvgPicture.asset(
+                                                        'assets/icons/tolet/bike.svg',
+                                                        colorFilter:
+                                                            ColorFilter.mode(
+                                                          // Color(0xff083437),
+                                                          const Color(
+                                                                  0xff083437)
+                                                              .withOpacity(0.5),
+                                                          BlendMode.srcIn,
+                                                        ),
+                                                      ),
                                                     ),
-                                                  ),
-                                                ),
-                                                const SizedBox(width: 10),
-                                                Text(
-                                                  "${postData.garagetype} Garage",
-                                                  style: const TextStyle(
-                                                    color: Color(0xff083437),
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 16,
-                                                  ),
-                                                ),
-                                                const SizedBox(width: 3),
-                                                SizedBox(
-                                                  height: 10,
-                                                  width: 10,
-                                                  child: SvgPicture.asset(
-                                                    'assets/icons/tolet/security.svg',
-                                                    colorFilter:
-                                                        const ColorFilter.mode(
-                                                      // Color(0xff083437),
-                                                      Colors.green,
-                                                      BlendMode.srcIn,
+                                                    const SizedBox(width: 10),
+                                                    Text(
+                                                      "${postData.garagetype} Garage",
+                                                      style: const TextStyle(
+                                                        color:
+                                                            Color(0xff083437),
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 16,
+                                                      ),
                                                     ),
-                                                  ),
+                                                    const SizedBox(width: 3),
+                                                    SizedBox(
+                                                      height: 10,
+                                                      width: 10,
+                                                      child: SvgPicture.asset(
+                                                        'assets/icons/tolet/security.svg',
+                                                        colorFilter:
+                                                            const ColorFilter
+                                                                .mode(
+                                                          // Color(0xff083437),
+                                                          Colors.green,
+                                                          BlendMode.srcIn,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )
+                                              : Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    SizedBox(
+                                                      height: 30,
+                                                      width: 30,
+                                                      child: SvgPicture.asset(
+                                                        'assets/icons/tolet/car.svg',
+                                                        colorFilter:
+                                                            ColorFilter.mode(
+                                                          // Color(0xff083437),
+                                                          const Color(
+                                                                  0xff083437)
+                                                              .withOpacity(0.5),
+                                                          BlendMode.srcIn,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    const SizedBox(width: 10),
+                                                    Text(
+                                                      "${postData.garagetype} Garage",
+                                                      style: const TextStyle(
+                                                        color:
+                                                            Color(0xff083437),
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 16,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(width: 3),
+                                                    SizedBox(
+                                                      height: 10,
+                                                      width: 10,
+                                                      child: SvgPicture.asset(
+                                                        'assets/icons/tolet/security.svg',
+                                                        colorFilter:
+                                                            const ColorFilter
+                                                                .mode(
+                                                          // Color(0xff083437),
+                                                          Colors.green,
+                                                          BlendMode.srcIn,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
-                                              ],
-                                            ),
                                 ],
                               ),
                             ),
@@ -783,77 +860,11 @@ class _SinglePostToletState extends State<SinglePostTolet>
                                           "Price ৳ ${NumberFormat.decimalPattern().format(postData.rent)}";
                                       final availableMaps =
                                           await MapLauncher.installedMaps;
-                                      // await availableMaps.first
-                                      //     .showMarker(
-                                      //   coords: coords,
-                                      //   title: title,
-                                      //   description: "description",
-                                      // );
-                                      // print(availableMaps.length);
-                                      if (availableMaps.length == 1) {
-                                        await availableMaps.first.showMarker(
-                                          coords: coords,
-                                          title: title,
-                                          description: "description",
-                                        );
-                                      } else {
-                                        Get.bottomSheet(
-                                          SafeArea(
-                                            child: SingleChildScrollView(
-                                              child: Container(
-                                                padding: const EdgeInsets.only(
-                                                  bottom: 10,
-                                                ),
-                                                decoration: const BoxDecoration(
-                                                  color: Colors.white,
-                                                  borderRadius:
-                                                      BorderRadius.only(
-                                                    topLeft: Radius.circular(6),
-                                                    topRight:
-                                                        Radius.circular(6),
-                                                  ),
-                                                ),
-                                                child: Wrap(
-                                                  children: <Widget>[
-                                                    for (var map
-                                                        in availableMaps)
-                                                      ListTile(
-                                                        onTap: () =>
-                                                            map.showMarker(
-                                                          coords: coords,
-                                                          title: title,
-                                                        ),
-                                                        title:
-                                                            Text(map.mapName),
-                                                        leading:
-                                                            SvgPicture.asset(
-                                                          map.icon,
-                                                          height: 30.0,
-                                                          width: 30.0,
-                                                        ),
-                                                        trailing: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .only(
-                                                                  right: 10),
-                                                          child:
-                                                              SvgPicture.asset(
-                                                            'assets/icons/home/arrow.svg',
-                                                            height: 12,
-                                                            width: 12,
-                                                            // ignore: deprecated_member_use
-                                                            color: const Color(
-                                                                0xffAFAFAF),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        );
-                                      }
+                                      await availableMaps.first.showMarker(
+                                        coords: coords,
+                                        title: title,
+                                        description: "description",
+                                      );
                                     },
                                     child: Row(
                                       children: [
@@ -1036,7 +1047,7 @@ class _SinglePostToletState extends State<SinglePostTolet>
                                   Details(
                                     type: "Floor",
                                     detailstext: postData.floornumber,
-                                    icon: Icons.person_pin_circle_rounded,
+                                    icon: Icons.person_pin_circle_outlined,
                                   ),
 
                                   Details(
@@ -1047,7 +1058,7 @@ class _SinglePostToletState extends State<SinglePostTolet>
                                   Details(
                                     type: "Rent From",
                                     detailstext: DateFormat('d MMM')
-                                        .format(postData.time),
+                                        .format(postData.rentfrom),
                                     icon: Icons.access_time,
                                   ),
 
@@ -1192,50 +1203,56 @@ class _SinglePostToletState extends State<SinglePostTolet>
                                                   final availableMaps =
                                                       await MapLauncher
                                                           .installedMaps;
-                                                  print(availableMaps.length);
-                                                  if (availableMaps.length ==
-                                                      1) {
-                                                    await availableMaps.first
-                                                        .showMarker(
-                                                      coords: coords,
-                                                      title: title,
-                                                      description:
-                                                          "description",
-                                                    );
-                                                  } else {
-                                                    Get.bottomSheet(
-                                                      SafeArea(
-                                                        child:
-                                                            SingleChildScrollView(
-                                                          child: Wrap(
-                                                            children: <Widget>[
-                                                              for (var map
-                                                                  in availableMaps)
-                                                                ListTile(
-                                                                  onTap: () => map
-                                                                      .showMarker(
-                                                                    coords:
-                                                                        coords,
-                                                                    title:
-                                                                        title,
-                                                                  ),
-                                                                  title: Text(map
-                                                                      .mapName),
-                                                                  leading:
-                                                                      SvgPicture
-                                                                          .asset(
-                                                                    map.icon,
-                                                                    height:
-                                                                        30.0,
-                                                                    width: 30.0,
-                                                                  ),
-                                                                ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    );
-                                                  }
+                                                  await availableMaps.first
+                                                      .showMarker(
+                                                    coords: coords,
+                                                    title: title,
+                                                    description: "description",
+                                                  );
+                                                  // print(availableMaps.length);
+                                                  // if (availableMaps.length ==
+                                                  //     1) {
+                                                  //   await availableMaps.first
+                                                  //       .showMarker(
+                                                  //     coords: coords,
+                                                  //     title: title,
+                                                  //     description:
+                                                  //         "description",
+                                                  //   );
+                                                  // } else {
+                                                  //   Get.bottomSheet(
+                                                  //     SafeArea(
+                                                  //       child:
+                                                  //           SingleChildScrollView(
+                                                  //         child: Wrap(
+                                                  //           children: <Widget>[
+                                                  //             for (var map
+                                                  //                 in availableMaps)
+                                                  //               ListTile(
+                                                  //                 onTap: () => map
+                                                  //                     .showMarker(
+                                                  //                   coords:
+                                                  //                       coords,
+                                                  //                   title:
+                                                  //                       title,
+                                                  //                 ),
+                                                  //                 title: Text(map
+                                                  //                     .mapName),
+                                                  //                 leading:
+                                                  //                     SvgPicture
+                                                  //                         .asset(
+                                                  //                   map.icon,
+                                                  //                   height:
+                                                  //                       30.0,
+                                                  //                   width: 30.0,
+                                                  //                 ),
+                                                  //               ),
+                                                  //           ],
+                                                  //         ),
+                                                  //       ),
+                                                  //     ),
+                                                  //   );
+                                                  // }
                                                 },
                                                 shape: RoundedRectangleBorder(
                                                   // side: const BorderSide(
@@ -1294,7 +1311,7 @@ class _SinglePostToletState extends State<SinglePostTolet>
                             SizedBox(
                               height: height / 7,
                               child: StreamBuilder(
-                                stream: toletController.morePost.stream,
+                                stream: morePostList.stream,
                                 builder: (BuildContext context,
                                     AsyncSnapshot snapshot) {
                                   if (snapshot.data == null) {
@@ -1329,14 +1346,24 @@ class _SinglePostToletState extends State<SinglePostTolet>
                                             ),
                                           );
                                         } else {
-                                          return const Center(
-                                            child: Padding(
-                                              padding: EdgeInsets.all(20),
-                                              child: CircularProgressIndicator(
-                                                color: Colors.red,
+                                          if (lodingmorePosts.value) {
+                                            return const Center(
+                                              child: Padding(
+                                                padding: EdgeInsets.all(20),
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  color: Colors.red,
+                                                ),
                                               ),
-                                            ),
-                                          );
+                                            );
+                                          } else {
+                                            return const Padding(
+                                              padding: EdgeInsets.all(8.0),
+                                              child: Center(
+                                                child: Text(''),
+                                              ),
+                                            );
+                                          }
                                         }
                                       },
                                     );
@@ -1344,7 +1371,7 @@ class _SinglePostToletState extends State<SinglePostTolet>
                                 },
                               ),
                             ),
-                            const SizedBox(height: 140),
+                            const SizedBox(height: 80),
                           ],
                         ),
                       ],
@@ -1574,13 +1601,13 @@ class Details extends StatelessWidget {
                       children: [
                         Icon(
                           icon,
-                          color: const Color(0xff083437),
+                          color: textColor.withOpacity(0.5),
                         ),
                         const SizedBox(width: 10),
                         Text(
                           type,
-                          style: const TextStyle(
-                            color: Color(0xff083437),
+                          style: TextStyle(
+                            color: textColor.withOpacity(0.8),
                           ),
                         ),
                       ],

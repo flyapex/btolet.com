@@ -177,7 +177,7 @@ class _CategoryBodyProState extends State<CategoryBodyPro> {
             ),
             proController.selectedPriceType.value == priceType[0]
                 ? TextInputPro(
-                    topPadding: space,
+                    topPadding: 20,
                     title: "Price *",
                     textType: TextInputType.number,
                     hintText: "2,000,000 ৳",
@@ -190,7 +190,20 @@ class _CategoryBodyProState extends State<CategoryBodyPro> {
                   )
                 : const SizedBox(),
             SizedBox(height: space),
+            Text(
+              'EMI',
+              style: TextStyle(
+                letterSpacing: 0.7,
+                color: Colors.black.withOpacity(0.6),
+              ),
+            ),
+            PorChipsNotext(
+              options: emi,
+              selected: proController.selectedEMIType,
+            ),
+            SizedBox(height: space),
             const FacilitiesPro(),
+            SizedBox(height: space),
           ],
         );
       } else {
@@ -201,19 +214,22 @@ class _CategoryBodyProState extends State<CategoryBodyPro> {
               options: landType,
               selected: proController.selectedLandTypes,
             ),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const DropDownPro(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Expanded(
+                  flex: 1,
+                  child: DropDownPro(
                     title: "Area *",
                     category: CategoryPro.area,
                     widthh: 2.4,
                     topPadding: 20,
                   ),
-                  SizedBox(width: space),
-                  TextInputPro(
+                ),
+                SizedBox(width: space),
+                Expanded(
+                  flex: 1,
+                  child: TextInputPro(
                     topPadding: space,
                     title: "Mesurement *",
                     textType: TextInputType.number,
@@ -225,8 +241,8 @@ class _CategoryBodyProState extends State<CategoryBodyPro> {
                     widthh: 2.4,
                     focusNode: proController.mesurementfocusNode,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
             TextInputPro(
               topPadding: space,

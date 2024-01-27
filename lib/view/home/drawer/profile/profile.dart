@@ -170,7 +170,7 @@ class Profile extends StatelessWidget {
                             topPadding: 20,
                             title: "Phone",
                             textType: TextInputType.number,
-                            hintText: userController.name.value,
+                            hintText: userController.phone.value,
                             suffixtext: "",
                             controller: userController.phonenumber,
                             iconh: 23,

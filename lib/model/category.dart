@@ -6,7 +6,7 @@ import '../view/post/tolet widget/dropdown.dart';
 Map<Category, List<String>> categoryData = {
   Category.bedrooms: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10+"],
   Category.bathrooms: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10+"],
-  Category.dining: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10+"],
+  Category.dining: ['0', "1", "2", "3", "4", "5", "6", "7", "8", "9", "10+"],
   Category.kitchen: ['0', "1", "2", "3", "4", "5", "6", "7", "8", "9", "10+"],
   Category.floorno: [
     "1 st",
@@ -31,6 +31,7 @@ Map<Category, List<String>> categoryData = {
     "West",
   ],
   Category.garage: [
+    "Both",
     "Car",
     "Bike",
   ],
@@ -80,6 +81,11 @@ var bath = [
   "5",
   "6",
   "7+",
+];
+
+var emi = [
+  "Yes",
+  "No",
 ];
 var landType = [
   "Residential",

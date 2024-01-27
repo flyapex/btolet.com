@@ -103,7 +103,7 @@ class _SavedToletPageState extends State<SavedToletPage>
                         if (toletController.savedPostloding.value) {
                           return const PostListSimmer(
                             topPadding: 20,
-                            count: 3,
+                            count: 10,
                           );
                         } else {
                           return const Padding(

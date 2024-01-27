@@ -1,6 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
-    <g>
-        <path d="M10 10h60v60H10zM441.999 10h60v60h-60zM10 441.999h60v60H10zM441.999 441.999h60v60h-60zM75 40h361.999M472 75v361.999M436.999 472H75m-35-35.001V75M106 106h60v60h-60zM136 467V363.997m0-90V171.001M171.001 136H467M200.763 236.118v-35.355h35.355M371.882 407.238h35.356v-35.356M204.298 204.298l199.404 199.404" style="fill-rule:evenodd;clip-rule:evenodd;stroke-width:20.0001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:22.9256;" fill-rule="evenodd" clip-rule="evenodd" fill="none" stroke="#000000" stroke-width="20.0001" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="22.9256" data-original="#000000" class=""></path>
-        <path d="M136 318.993V319" style="fill-rule:evenodd;clip-rule:evenodd;stroke-width:19.9998;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:2.6131;" fill-rule="evenodd" clip-rule="evenodd" fill="none" stroke="#000000" stroke-width="19.9998" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="2.6131" data-original="#000000" class=""></path>
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g clip-path="url(#clip0_286_15)">
+        <path d="M75 40H436.999M472 75V436.999M436.999 472H75M40 436.999V75M109.465 144.82V109.465H144.82M371.882 407.238H407.238V371.882M113 113L403.702 403.702M10 10H70V70H10V10ZM441.999 10H501.999V70H441.999V10ZM10 441.999H70V501.999H10V441.999ZM441.999 441.999H501.999V501.999H441.999V441.999Z" stroke="black" stroke-width="29" stroke-miterlimit="22.9256" stroke-linecap="round" stroke-linejoin="round"/>
     </g>
+    <defs>
+        <clipPath id="clip0_286_15">
+            <rect width="512" height="512" fill="white"/>
+        </clipPath>
+    </defs>
 </svg>

@@ -73,37 +73,36 @@ class ToletController extends GetxController {
 
 //*---------------------- More Post
 
-  var lodingmorePosts = true.obs;
-  var morePost = [].obs;
-  var lodeOneTime = true.obs;
+  // var morePost = [].obs;
+  // var lodeOneTime = true.obs;
 
-  void getMorePost(postid, category, price, page, latitude, longitude) async {
-    // print('ModeList Count ${morePost.length}');
-    // morePost.clear();
-    print(postid);
-    print(category);
-    lodeOneTime(false);
-    lodingmorePosts(true);
-    try {
-      var response = await ApiServiceTolet.getMorePost(
-        postid,
-        category,
-        price,
-        page,
-        latitude,
-        longitude,
-      );
-      if (response != null) {
-        morePost.addAll(response);
-        if (response.isEmpty || response.length < 4) {
-          lodingmorePosts(false);
-        }
-      }
-    } finally {
-      print('ModeList Count ${morePost.length}');
-      // lodingmorePosts(false);
-    }
-  }
+  // void getMorePost(postid, category, price, page, latitude, longitude) async {
+  //   // print('ModeList Count ${morePost.length}');
+  //   // morePost.clear();
+  //   print(postid);
+  //   print(category);
+  //   lodeOneTime(false);
+  //   lodingmorePosts(true);
+  //   try {
+  //     var response = await ApiServiceTolet.getMorePost(
+  //       postid,
+  //       category,
+  //       price,
+  //       page,
+  //       latitude,
+  //       longitude,
+  //     );
+  //     if (response != null) {
+  //       morePost.addAll(response);
+  //       if (response.isEmpty || response.length < 4) {
+  //         lodingmorePosts(false);
+  //       }
+  //     }
+  //   } finally {
+  //     print('ModeList Count ${morePost.length}');
+  //     // lodingmorePosts(false);
+  //   }
+  // }
 
 //*----------------------Post
   var pageController = PageController();
@@ -520,6 +519,8 @@ class ToletController extends GetxController {
   final DBController dbController = Get.put(DBController());
 
   newpost() async {
+    print('------------------');
+    print(rentFrom);
     List<String> imageBase64List = [];
 
     for (int i = 0; i < 12; i++) {
@@ -639,6 +640,19 @@ class ToletController extends GetxController {
   }
 
   //*----------------- Sort Post
+  var resetSort = false.obs;
+
+  resetAllSort() {
+    resetSort(true);
+    categoriesSort.forEach((key, value) {
+      value.value = false;
+    });
+    fasalitisSort.forEach((key, value) {
+      value.state.value = false;
+    });
+    // resetSort(false);
+  }
+
   var categoriesSort = {
     'Family': false.obs,
     'Bachelor': false.obs,

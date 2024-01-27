@@ -135,6 +135,13 @@ class PorChipsNotext extends StatelessWidget {
                       if (isSelected) {
                         selected.value = option;
                       }
+
+                      if (options == priceType) {
+                        proController.priceFlag.value =
+                            proController.price.text.isNotEmpty ||
+                                proController.selectedPriceType.value !=
+                                    priceType[0];
+                      }
                     },
                   ),
                 );

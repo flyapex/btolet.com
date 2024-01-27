@@ -65,7 +65,10 @@ class _SortingToletState extends State<SortingTolet> {
                   Expanded(
                     flex: 2,
                     child: InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        toletController.resetAllSort();
+                        toletController.sortingPostCount();
+                      },
                       child: Container(
                         height: 40,
                         margin: const EdgeInsets.only(left: 10, right: 10),

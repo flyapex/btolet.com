@@ -118,18 +118,19 @@ class AdsController extends GetxController {
   }
 
   void showRewardedAd(String type, phone) async {
+    var message =
+        '''Hey there👋! I saw your sweet listing on btolet App(btolet.com) - is it still up for Rent? I'm super interested. 😊 Please let me know what you think.''';
     if (rewardedAd == null) {
       print('Warning: attempt to show rewarded before loaded.');
       if (type == "call") {
         final call = Uri.parse('tel:$phone');
         launchUrl(call);
       } else if (type == "sms") {
-        final sms = Uri.parse('sms:$phone?body=hello%20there');
+        final sms = Uri.parse('sms:$phone?body=${Uri.parse(message)}');
         launchUrl(sms);
       } else if (type == 'wapp') {
         phone = '+88$phone';
-        var message =
-            'Hi There I Just Saw A ads On btolet app, Is it available?';
+
         await launchUrl(Uri.parse(
             "whatsapp://send?phone=$phone&text=${Uri.parse(message)}"));
       } else if (type == 'ads') {
@@ -139,11 +140,12 @@ class AdsController extends GetxController {
       return;
     }
     rewardedAd!.fullScreenContentCallback = FullScreenContentCallback(
-      onAdShowedFullScreenContent: (RewardedAd ad) =>
-          print('ad onAdShowedFullScreenContent.'),
+      onAdShowedFullScreenContent: (RewardedAd ad) {
+        print('ad onAdShowedFullScreenContent.   xx');
+      },
       onAdDismissedFullScreenContent: (RewardedAd ad) {
-        print('$ad onAdDismissedFullScreenContent.');
         ad.dispose();
+        print('$ad onAdDismissedFullScreenContent.   yy');
         createRewardedAd();
       },
       onAdFailedToShowFullScreenContent: (RewardedAd ad, AdError error) {
@@ -156,17 +158,21 @@ class AdsController extends GetxController {
     rewardedAd!.setImmersiveMode(true);
     rewardedAd!.show(
       onUserEarnedReward: (AdWithoutView ad, RewardItem reward) async {
+        print('$ad onAdDismissedFullScreenContent.   zzz');
+        var message =
+            '''Hey there👋! I saw your sweet listing on btolet - is it still up for Rent? I'm super interested. 😊 Please let me know what you think.''';
+        Get.back();
+        print('----------------');
         life += 1;
         if (type == "call") {
           final call = Uri.parse('tel:$phone');
           launchUrl(call);
         } else if (type == "sms") {
-          final sms = Uri.parse('sms:$phone?body=hello%20there');
+          final sms = Uri.parse('sms:$phone?body=${Uri.parse(message)}');
           launchUrl(sms);
         } else if (type == 'wapp') {
           phone = '+88$phone';
-          var message =
-              'Hi There I Just Saw A ads On btolet app, Is it available?';
+
           await launchUrl(Uri.parse(
               "whatsapp://send?phone=$phone&text=${Uri.parse(message)}"));
         } else if (type == 'ads') {
@@ -181,17 +187,19 @@ class AdsController extends GetxController {
   void showRewardedInterstitialAd(String type, data) async {
     if (rewardedInterstitialAd == null) {
       print('Warning: attempt to show rewarded interstitial before loaded.');
+
+      var message =
+          '''Hey there👋! I saw your sweet listing on btolet App(btolet.com) - is it still up for Rent? I'm super interested. 😊 Please let me know what you think.''';
       if (type == "call") {
         final call = Uri.parse('tel:$data');
         launchUrl(call);
       } else if (type == "sms") {
         data = '+88$data';
-        final sms = Uri.parse('sms:$data?body=hello%20there');
+        final sms = Uri.parse('sms:$data?body=${Uri.parse(message)}');
         launchUrl(sms);
       } else if (type == 'wapp') {
         data = '+88$data';
-        var message =
-            'Hi There I Just Saw A ads On btolet app, Is it available?';
+
         await launchUrl(Uri.parse(
             "whatsapp://send?phone=$data&text=${Uri.parse(message)}"));
       } else if (type == 'ads') {
@@ -230,17 +238,18 @@ class AdsController extends GetxController {
     rewardedInterstitialAd!.show(
         onUserEarnedReward: (AdWithoutView ad, RewardItem reward) async {
       print('$ad with reward $RewardItem(${reward.amount}, ${reward.type})');
+      var message =
+          '''Hey there👋! I saw your sweet listing on btolet App(btolet.com) - is it still up for Rent? I'm super interested. 😊 Please let me know what you think.''';
       if (type == "call") {
         final call = Uri.parse('tel:$data');
         launchUrl(call);
       } else if (type == "sms") {
         data = '+88$data';
-        final sms = Uri.parse('sms:$data?body=hello%20there');
+        final sms = Uri.parse('sms:$data?body=${Uri.parse(message)}');
         launchUrl(sms);
       } else if (type == 'wapp') {
         data = '+88$data';
-        var message =
-            'Hi There I Just Saw A ads On btolet app, Is it available?';
+
         await launchUrl(Uri.parse(
             "whatsapp://send?phone=$data&text=${Uri.parse(message)}"));
       } else if (type == 'ads') {

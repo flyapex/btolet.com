@@ -30,7 +30,7 @@ class _MorePostsProState extends State<MorePostsPro> {
     var width = Get.width;
     return Container(
       height: height / 7,
-      width: width / 1.2,
+      width: width / 1.35,
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
@@ -157,19 +157,27 @@ class _MorePostsProState extends State<MorePostsPro> {
                                 ),
                               ),
                               const SizedBox(width: 6),
-                              Text(
-                                widget.postData.size,
-                                style: const TextStyle(
-                                  color: Color(0xff083437),
+                              Flexible(
+                                child: Text(
+                                  widget.postData.size,
+                                  style: const TextStyle(
+                                    color: Color(0xff083437),
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
                                 ),
                               ),
                             ],
                           ),
-                          Text(
-                            widget.postData.location,
-                            style: TextStyle(
-                              color: const Color(0xff083437).withOpacity(0.6),
-                              fontSize: 12,
+                          Flexible(
+                            child: Text(
+                              widget.postData.location,
+                              style: TextStyle(
+                                color: const Color(0xff083437).withOpacity(0.6),
+                                fontSize: 12,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
                             ),
                           ),
                         ],

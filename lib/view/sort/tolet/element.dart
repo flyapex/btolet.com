@@ -277,7 +277,7 @@ class SortPostListState extends State<SortPostList> {
                             if (toletController.sortloding.value) {
                               return const PostListSimmer(
                                 topPadding: 20,
-                                count: 3,
+                                count: 10,
                               );
                             } else {
                               return const Padding(

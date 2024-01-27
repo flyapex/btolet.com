@@ -102,64 +102,66 @@ class PostListPro {
 }
 // To parse this JSON data, do
 //
-//     final singlePostModel = singlePostModelFromJson(jsonString);
+//     final singlePostModelPro = singlePostModelProFromJson(jsonString);
 
-SinglePostModel singlePostModelFromJson(String str) =>
-    SinglePostModel.fromJson(json.decode(str));
+SinglePostModelPro singlePostModelProFromJson(String str) =>
+    SinglePostModelPro.fromJson(json.decode(str));
 
-String singlePostModelToJson(SinglePostModel data) =>
+String singlePostModelProToJson(SinglePostModelPro data) =>
     json.encode(data.toJson());
 
-class SinglePostModel {
-  final int pid;
-  final int uid;
-  final String category;
-  final String name;
-  final String procondition;
-  final String bed;
-  final String bath;
-  final String dining;
-  final String kitchen;
-  final String size;
-  final DateTime sellfrom;
-  final String totalFloor;
-  final String floornumber;
-  final String facing;
-  final String totalUnit;
-  final int price;
-  final String amenities;
-  final String floorPlan;
-  final String ytVideo;
-  final String image1;
-  final String image2;
-  final String image3;
-  final String image4;
-  final String image5;
-  final String image6;
-  final String image7;
-  final String image8;
-  final String image9;
-  final String image10;
-  final String image11;
-  final String image12;
-  final String location;
-  final String shortaddress;
-  final String description;
-  final String ownertype;
-  final String geolat;
-  final String geolon;
-  final String phone;
-  final String wapp;
-  final String landType;
-  final String area;
-  final String measurement;
-  final String roadSize;
-  final int status;
-  final int payment;
-  final int topAds;
-  final DateTime time;
+class SinglePostModelPro {
+  int pid;
+  int uid;
+  String category;
+  String name;
+  String procondition;
+  String bed;
+  String bath;
+  String dining;
+  String kitchen;
+  String size;
+  DateTime sellfrom;
+  String totalFloor;
+  String floornumber;
+  String facing;
+  String totalUnit;
+  int price;
+  String amenities;
+  String floorPlan;
+  String ytVideo;
+  String image1;
+  String image2;
+  String image3;
+  String image4;
+  String image5;
+  String image6;
+  String image7;
+  String image8;
+  String image9;
+  String image10;
+  String image11;
+  String image12;
+  String location;
+  String locationfull;
+  String shortaddress;
+  String description;
+  String ownertype;
+  String geolat;
+  String geolon;
+  String phone;
+  String wapp;
+  String landType;
+  String area;
+  String measurement;
+  String roadSize;
+  String emi;
+  int status;
+  int payment;
+  int topAds;
+  DateTime time;
 
-  SinglePostModel({
+  SinglePostModelPro({
     required this.pid,
     required this.uid,
     required this.category,
@@ -192,6 +194,7 @@ class SinglePostModel {
     required this.image11,
     required this.image12,
     required this.location,
+    required this.locationfull,
     required this.shortaddress,
     required this.description,
     required this.ownertype,
@@ -203,14 +206,15 @@ class SinglePostModel {
     required this.area,
     required this.measurement,
     required this.roadSize,
+    required this.emi,
     required this.status,
     required this.payment,
     required this.topAds,
     required this.time,
   });
 
-  factory SinglePostModel.fromJson(Map<String, dynamic> json) =>
-      SinglePostModel(
+  factory SinglePostModelPro.fromJson(Map<String, dynamic> json) =>
+      SinglePostModelPro(
         pid: json["pid"],
         uid: json["uid"],
         category: json["category"],
@@ -243,6 +247,7 @@ class SinglePostModel {
         image11: json["image11"],
         image12: json["image12"],
         location: json["location"],
+        locationfull: json["locationfull"],
         shortaddress: json["shortaddress"],
         description: json["description"],
         ownertype: json["ownertype"],
@@ -254,6 +259,7 @@ class SinglePostModel {
         area: json["area"],
         measurement: json["measurement"],
         roadSize: json["road_size"],
+        emi: json["emi"],
         status: json["status"],
         payment: json["payment"],
         topAds: json["top_ads"],
@@ -293,6 +299,7 @@ class SinglePostModel {
         "image11": image11,
         "image12": image12,
         "location": location,
+        "locationfull": locationfull,
         "shortaddress": shortaddress,
         "description": description,
         "ownertype": ownertype,
@@ -304,6 +311,7 @@ class SinglePostModel {
         "area": area,
         "measurement": measurement,
         "road_size": roadSize,
+        "emi": emi,
         "status": status,
         "payment": payment,
         "top_ads": topAds,
@@ -360,6 +368,7 @@ class NewPostPro {
   String area;
   String measurement;
   String roadSize;
+  String emi;
 
   NewPostPro({
     required this.uid,
@@ -405,6 +414,7 @@ class NewPostPro {
     required this.area,
     required this.measurement,
     required this.roadSize,
+    required this.emi,
   });
 
   factory NewPostPro.fromJson(Map<String, dynamic> json) => NewPostPro(
@@ -451,6 +461,7 @@ class NewPostPro {
         area: json["area"],
         measurement: json["measurement"],
         roadSize: json["road_size"],
+        emi: json["emi"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -497,6 +508,7 @@ class NewPostPro {
         "area": area,
         "measurement": measurement,
         "road_size": roadSize,
+        "emi": emi,
       };
 }
 

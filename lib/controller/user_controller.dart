@@ -201,6 +201,7 @@ class UserController extends GetxController {
         return false;
       } else {
         // await snakberSuccess(res);
+        print(res);
         return res;
       }
     } finally {}

@@ -1,5 +1,6 @@
 import 'package:btolet/controller/property_controller.dart';
 import 'package:btolet/controller/user_controller.dart';
+import 'package:btolet/model/category.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -151,66 +152,75 @@ class _TextInputProState extends State<TextInputPro> {
           ),
           child: Row(
             children: [
-              SizedBox(
-                height: 48,
-                // width: (Get.width / widget.widthh),
-                child: Focus(
-                  onFocusChange: (val) {
-                    setState(() {
-                      val ? iconColorChange = true : iconColorChange = false;
-                    });
-                  },
-                  child: IntrinsicWidth(
-                    child: TextField(
-                      focusNode: widget.focusNode,
-                      // inputFormatters: [
-                      //   LengthLimitingTextInputFormatter(widget.titlelenth),
-                      // ],
+              Expanded(
+                child: SizedBox(
+                  height: 48,
+                  // width: (Get.width / widget.widthh),
+                  child: Focus(
+                    onFocusChange: (val) {
+                      setState(() {
+                        val ? iconColorChange = true : iconColorChange = false;
+                      });
+                    },
+                    child: IntrinsicWidth(
+                      child: TextField(
+                        focusNode: widget.focusNode,
+                        // inputFormatters: [
+                        //   LengthLimitingTextInputFormatter(widget.titlelenth),
+                        // ],
 
-                      // inputFormatters: [ThousandsFormatter()],
-                      inputFormatters: [
-                        if (widget.numberFormatter != null)
-                          widget.numberFormatter!,
-                      ],
-                      maxLength: widget.textlength,
-                      cursorHeight: 24,
-                      cursorWidth: 1.8,
-                      cursorRadius: const Radius.circular(10),
-                      controller: widget.controller,
-                      textInputAction: TextInputAction.done,
-                      keyboardType: widget.textType,
-                      maxLines: 1,
-                      cursorColor: Colors.black,
-                      style: textstyle,
-                      decoration: InputDecoration(
-                        counterText: '',
-                        suffix: Text(
-                          widget.suffixtext,
-                          style: TextStyle(
-                            color: iconColorChange
-                                ? const Color(0xff0166EE)
-                                : Colors.amber,
+                        // inputFormatters: [ThousandsFormatter()],
+                        inputFormatters: [
+                          if (widget.numberFormatter != null)
+                            widget.numberFormatter!,
+                        ],
+                        maxLength: widget.textlength,
+                        cursorHeight: 24,
+                        cursorWidth: 1.8,
+                        cursorRadius: const Radius.circular(10),
+                        controller: widget.controller,
+                        textInputAction: TextInputAction.done,
+                        keyboardType: widget.textType,
+                        maxLines: 1,
+                        cursorColor: Colors.black,
+                        style: textstyle,
+                        decoration: InputDecoration(
+                          counterText: '',
+                          suffix: Text(
+                            widget.suffixtext,
+                            style: TextStyle(
+                              color: iconColorChange
+                                  ? const Color(0xff0166EE)
+                                  : Colors.amber,
+                            ),
                           ),
+                          border: const OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                          ),
+                          isDense: true,
+                          hintText: widget.hintText,
+                          hintStyle: textstyleh,
                         ),
-                        border: const OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                        ),
-                        isDense: true,
-                        hintText: widget.hintText,
-                        hintStyle: textstyleh,
+                        onChanged: (val) {
+                          if (userController.shortAddress ==
+                                  widget.controller ||
+                              userController.description == widget.controller ||
+                              userController.phonenumber == widget.controller ||
+                              userController.wappnumber == widget.controller) {
+                          } else if (val != '') {
+                            proController.flagCheck();
+                          }
+                          if (widget.controller == proController.price) {
+                            proController.priceFlag.value =
+                                proController.price.text.isNotEmpty ||
+                                    proController.selectedPriceType.value !=
+                                        priceType[0];
+                          }
+                        },
+                        onSubmitted: (v) {
+                          getFocus();
+                        },
                       ),
-                      onChanged: (val) {
-                        if (userController.shortAddress == widget.controller ||
-                            userController.description == widget.controller ||
-                            userController.phonenumber == widget.controller ||
-                            userController.wappnumber == widget.controller) {
-                        } else if (val != '') {
-                          proController.flagCheck();
-                        }
-                      },
-                      onSubmitted: (v) {
-                        getFocus();
-                      },
                     ),
                   ),
                 ),

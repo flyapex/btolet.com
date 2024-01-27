@@ -4,8 +4,8 @@ import 'package:btolet/model/pro_model.dart';
 import 'package:dio/dio.dart';
 
 final dio = Dio();
-var baseUrl = 'http://10.0.2.2:3000/api/pro';
-// var baseUrl = 'http://154.26.135.41:3800/api/pro';
+// var baseUrl = 'http://10.0.2.2:3000/api/pro';
+var baseUrl = 'http://154.26.135.41:3800/api/pro';
 
 class ApiServicePro {
   static Future postCountArea(location, location2) async {
@@ -48,7 +48,7 @@ class ApiServicePro {
     );
 
     if (response.statusCode == 200) {
-      return singlePostModelFromJson(jsonEncode(response.data));
+      return singlePostModelProFromJson(jsonEncode(response.data));
     } else {
       return null;
     }
@@ -83,16 +83,37 @@ class ApiServicePro {
     }
   }
 
-  static Future newPost(NewPostPro data) async {
-    final response = await dio.post(
-      '$baseUrl/newPost',
-      data: newPostProToJson(data),
-    );
+  // static Future newPost(NewPostPro data) async {
+  //   final response = await dio.post(
+  //     '$baseUrl/newpost',
+  //     data: newPostProToJson(data),
+  //   );
 
-    if (response.statusCode == 200) {
-      return response.data.toString();
-    } else {
-      return null;
+  //   if (response.statusCode == 200) {
+  //     print(response);
+  //     return response.data.toString();
+  //   } else {
+  //     return null;
+  //   }
+  // }
+
+  static Future newPost(NewPostPro data) async {
+    try {
+      final response = await dio.post(
+        '$baseUrl/newpost',
+        data: newPostProToJson(data),
+      );
+
+      if (response.statusCode == 200) {
+        print(response);
+        return response.data.toString();
+      } else {
+        print("Unexpected status code: ${response.statusCode}");
+        return null;
+      }
+    } catch (e) {
+      print('----------');
+      print(e.toString());
     }
   }
 
@@ -176,11 +197,14 @@ class ApiServicePro {
   }
 
   static Future deletePost(int uid, int postId) async {
+    print(uid);
+    print(postId);
+    print('$baseUrl/user/mypost/delete');
     final response = await dio.delete(
       '$baseUrl/user/mypost/delete',
       queryParameters: {
         "uid": uid,
-        "post_id": postId,
+        "pid": postId,
       },
     );
 

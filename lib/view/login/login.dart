@@ -1,7 +1,7 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:btolet/api/google_api.dart';
 import 'package:btolet/controller/db_controller.dart';
-import 'package:btolet/controller/notification.dart';
+import 'package:btolet/controller/widget/notification.dart';
 import 'package:btolet/controller/user_controller.dart';
 import 'package:btolet/model/api.dart';
 import 'package:btolet/view/login/widget/permission.dart';
@@ -209,35 +209,35 @@ class _LoginState extends State<Login> {
                       const SizedBox(height: 10),
                       InkWell(
                         onTap: () {
-                          Get.offAll(
-                            () => const Permission(),
-                            transition: Transition.circularReveal,
-                            duration: const Duration(milliseconds: 600),
-                          );
-
-                          Get.snackbar(
-                            'Congrats👏🤝',
-                            'Welcome ',
-                            snackPosition: SnackPosition.TOP,
-                            backgroundColor: Colors.white,
-                            borderRadius: 10,
-                            margin: const EdgeInsets.all(10),
-                          );
-                          // Get.snackbar(
-                          //   '',
-                          //   '',
-                          //   snackPosition: SnackPosition.BOTTOM,
-                          //   borderRadius: 6,
-                          //   margin: const EdgeInsets.only(
-                          //     top: 30,
-                          //     right: 30,
-                          //     left: 30,
-                          //     bottom: 10,
-                          //   ),
-                          //   titleText: const Text('Under Deverlopment 👀👀 '),
-                          //   messageText: const Text('Maybe Google? 👌'),
-                          //   barBlur: 30,
+                          // Get.offAll(
+                          //   () => const Permission(),
+                          //   transition: Transition.circularReveal,
+                          //   duration: const Duration(milliseconds: 600),
                           // );
+
+                          // Get.snackbar(
+                          //   'Congrats👏🤝',
+                          //   'Welcome ',
+                          //   snackPosition: SnackPosition.TOP,
+                          //   backgroundColor: Colors.white,
+                          //   borderRadius: 10,
+                          //   margin: const EdgeInsets.all(10),
+                          // );
+                          Get.snackbar(
+                            '',
+                            '',
+                            snackPosition: SnackPosition.BOTTOM,
+                            borderRadius: 6,
+                            margin: const EdgeInsets.only(
+                              top: 30,
+                              right: 30,
+                              left: 30,
+                              bottom: 10,
+                            ),
+                            titleText: const Text('Under Deverlopment 👀👀 '),
+                            messageText: const Text('Maybe Google? 👌'),
+                            barBlur: 30,
+                          );
                         },
                         child: const SocialIcons(
                           iconsize: 32,

@@ -13,13 +13,15 @@ class FacilitiesPro extends StatelessWidget {
     ProController proController = Get.find();
     return Column(
       children: [
-        const Row(
+        Row(
           children: [
             Text(
               'Facilities(op)',
               style: TextStyle(
-                fontSize: 14,
-                color: Colors.black,
+                // fontSize: 14,
+                // color: Colors.black,
+                letterSpacing: 0.7,
+                color: Colors.black.withOpacity(0.6),
               ),
             ),
           ],
