@@ -104,8 +104,8 @@ class _MapButtonState extends State<MapButton>
                 opacity: (1 - value).clamp(0.0, 1.0),
                 child: Container(
                   padding: isRTL(context)
-                      ? const EdgeInsets.only(left: 10)
-                      : const EdgeInsets.only(right: 10),
+                      ? const EdgeInsets.only(left: 13)
+                      : const EdgeInsets.only(right: 13),
                   alignment: isRTL(context)
                       ? Alignment.centerLeft
                       : Alignment.centerRight,
@@ -115,6 +115,8 @@ class _MapButtonState extends State<MapButton>
                     style: TextStyle(
                       fontSize: widget.fontSize,
                       color: Colors.black.withOpacity(0.2),
+                      height: 0.5,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
@@ -128,8 +130,8 @@ class _MapButtonState extends State<MapButton>
                 opacity: value.clamp(0.0, 1.0),
                 child: Container(
                   padding: isRTL(context)
-                      ? const EdgeInsets.only(right: 5)
-                      : const EdgeInsets.only(left: 5),
+                      ? const EdgeInsets.only(right: 13)
+                      : const EdgeInsets.only(left: 13),
                   alignment: isRTL(context)
                       ? Alignment.centerRight
                       : Alignment.centerLeft,
@@ -139,6 +141,8 @@ class _MapButtonState extends State<MapButton>
                     style: TextStyle(
                       fontSize: widget.fontSize,
                       color: Colors.black.withOpacity(0.2),
+                      height: 0.5,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),

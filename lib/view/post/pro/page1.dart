@@ -1,14 +1,14 @@
 import 'package:btolet/api/google_api.dart';
+import 'package:btolet/constants/colors.dart';
 import 'package:btolet/model/category.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
-
-import 'category_body.dart';
-import 'chips.dart';
-import 'imagepicker.dart';
-import 'text_input.dart';
+import 'widget/category_body.dart';
+import 'widget/chips.dart';
+import 'widget/imagepicker.dart';
+import 'widget/text_input.dart';
 
 class PostPro1 extends StatefulWidget {
   const PostPro1({super.key});
@@ -56,6 +56,7 @@ class PostToletState1 extends State<PostPro1> {
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 1,
+                    fontSize: s4,
                   ),
                 ),
                 backgroundColor: Colors.blueAccent,
@@ -63,6 +64,9 @@ class PostToletState1 extends State<PostPro1> {
             ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.only(left: 20, right: 20),
+        physics: const BouncingScrollPhysics(
+          parent: AlwaysScrollableScrollPhysics(),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -78,7 +82,7 @@ class PostToletState1 extends State<PostPro1> {
               title: "Youtube Video",
               textType: TextInputType.text,
               hintText: "youtu.be/xxxx",
-              textlength: 500,
+              textlength: 5000,
               suffixtext: "...",
               controller: proController.ytVideo,
               widthh: 1.2,
@@ -98,7 +102,6 @@ class PostToletState1 extends State<PostPro1> {
                               child: SvgPicture.asset(
                                 'assets/icons/property/floorplanpost.svg',
                                 colorFilter: const ColorFilter.mode(
-                                  // Color(0xff083437),
                                   Colors.black54,
                                   BlendMode.srcIn,
                                 ),
@@ -110,6 +113,7 @@ class PostToletState1 extends State<PostPro1> {
                               style: TextStyle(
                                 color: Color(0xff7B7B7B),
                                 letterSpacing: 0.7,
+                                fontSize: s3,
                               ),
                             ),
                           ],
@@ -128,9 +132,9 @@ class PostToletState1 extends State<PostPro1> {
                         const Row(
                           children: [
                             Text(
-                              'Facilities(op)',
+                              'Amenities',
                               style: TextStyle(
-                                fontSize: 14,
+                                fontSize: s3,
                                 color: Colors.black,
                               ),
                             ),
@@ -164,10 +168,11 @@ class PostToletState1 extends State<PostPro1> {
             }),
             SizedBox(height: space),
             const Text(
-              'Select Image',
+              'Select Image *',
               style: TextStyle(
                 color: Color(0xff7B7B7B),
                 letterSpacing: 0.7,
+                fontSize: s3,
               ),
             ),
             SizedBox(height: space),

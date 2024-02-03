@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:btolet/constants/colors.dart';
 import 'package:btolet/controller/property_controller.dart';
 import 'package:btolet/controller/user_controller.dart';
 import 'package:btolet/model/pro_model.dart';
@@ -10,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:like_button/like_button.dart';
 import 'package:lottie/lottie.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -89,6 +89,9 @@ class _SavedProPageState extends State<SavedProPage>
                   return AnimatedList(
                     key: proController.deleteKeySaved,
                     controller: scrollController,
+                    physics: const BouncingScrollPhysics(
+                      parent: AlwaysScrollableScrollPhysics(),
+                    ),
                     initialItemCount: proController.allSavedPost.length,
                     padding: const EdgeInsets.only(bottom: 100),
                     itemBuilder: (context, i, animation) {
@@ -305,7 +308,7 @@ class _PostsProSavedState extends State<PostsProSaved> {
                             Text(
                               widget.postData.totalImage.toString(),
                               style: const TextStyle(
-                                fontSize: 12,
+                                fontSize: s6,
                                 color: Colors.white,
                               ),
                             ),
@@ -329,24 +332,34 @@ class _PostsProSavedState extends State<PostsProSaved> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                //৳
+                Text(
+                  "${widget.postData.category} ",
+                  style: const TextStyle(
+                    color: Color(0xff083437),
+                    fontSize: s2,
+                    height: 0.8,
+                  ),
+                ),
+                const SizedBox(height: 12),
                 widget.postData.price == 0
                     ? const Text(
-                        'Call For Price',
+                        'Price On Call',
                         style: TextStyle(
-                          fontSize: 24,
+                          fontSize: s1,
+                          height: 0.8,
                           color: Colors.black,
                         ),
                       )
                     : Text(
-                        "${NumberFormat.decimalPattern().format(widget.postData.price)} BDT",
-                        style: const TextStyle(
-                          fontSize: 24,
-                          color: Color(0xff083437),
-                          fontWeight: FontWeight.w500,
+                        "${userController.currency(widget.postData.price)}  BDT",
+                        style: TextStyle(
+                          fontSize: s1,
+                          height: 0.8,
+                          color: const Color(0xff083437).withOpacity(0.8),
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-
+                const SizedBox(height: 8),
                 Row(
                   children: [
                     const Icon(
@@ -354,11 +367,12 @@ class _PostsProSavedState extends State<PostsProSaved> {
                       size: 16,
                       color: Colors.black45,
                     ),
-                    const SizedBox(width: 10),
+                    const SizedBox(width: 5),
                     Text(
                       widget.postData.location,
-                      style: const TextStyle(
-                        color: Color(0xff083437),
+                      style: TextStyle(
+                        color: const Color(0xff083437).withOpacity(0.6),
+                        fontFamily: 'Roboto',
                       ),
                     ),
                   ],
@@ -373,7 +387,7 @@ class _PostsProSavedState extends State<PostsProSaved> {
                             widget.postData.measurement,
                             style: const TextStyle(
                               color: Color(0xff083437),
-                              fontSize: 18,
+                              fontSize: s1,
                               height: 1.2,
                             ),
                           ),
@@ -382,7 +396,7 @@ class _PostsProSavedState extends State<PostsProSaved> {
                             widget.postData.area,
                             style: const TextStyle(
                               color: Color(0xff083437),
-                              fontSize: 19,
+                              fontSize: s4,
                               height: 1.2,
                             ),
                           )
@@ -409,6 +423,7 @@ class _PostsProSavedState extends State<PostsProSaved> {
                             widget.postData.bed,
                             style: const TextStyle(
                               color: Color(0xff083437),
+                              fontSize: s4,
                             ),
                           ),
                           const SizedBox(width: 10),
@@ -428,6 +443,7 @@ class _PostsProSavedState extends State<PostsProSaved> {
                             widget.postData.bath,
                             style: const TextStyle(
                               color: Color(0xff083437),
+                              fontSize: s4,
                             ),
                           ),
                           const SizedBox(width: 10),
@@ -444,9 +460,10 @@ class _PostsProSavedState extends State<PostsProSaved> {
                           ),
                           const SizedBox(width: 6),
                           Text(
-                            widget.postData.size,
+                            '${widget.postData.size}  ft\u00b2',
                             style: const TextStyle(
                               color: Color(0xff083437),
+                              fontSize: s4,
                             ),
                           ),
                         ],
@@ -483,6 +500,7 @@ class _PostsProSavedState extends State<PostsProSaved> {
                       Text(
                         '${userController.getDayfull(widget.postData.time)}',
                         style: const TextStyle(
+                          fontSize: s4,
                           color: Color(0xff68676C),
                         ),
                         overflow: TextOverflow.fade,

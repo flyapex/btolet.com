@@ -1,4 +1,5 @@
 import 'package:btolet/api/google_api.dart';
+import 'package:btolet/constants/colors.dart';
 import 'package:btolet/model/category.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -23,7 +24,7 @@ class PorCategoryChips extends StatelessWidget {
           Text(
             title,
             style: TextStyle(
-              fontSize: 14,
+              fontSize: s3,
               color: Colors.black.withOpacity(0.5),
             ),
           ),
@@ -56,7 +57,10 @@ class PorCategoryChips extends StatelessWidget {
                     ),
                     checkmarkColor: const Color(0xff0166EE),
                     showCheckmark: false,
-                    label: Text(option),
+                    label: Text(
+                      option,
+                      style: h3,
+                    ).paddingOnly(bottom: 2),
                     selected: selected.value == option,
                     onSelected: (isSelected) {
                       if (isSelected) {
@@ -68,7 +72,7 @@ class PorCategoryChips extends StatelessWidget {
                         t.mesurementFlag(true);
                         t.rodeSizeFlag(true);
                       } else {
-                        t.diningFlag(true);
+                        t.balconyFlag(true);
                         t.kitchenFlag(true);
                         t.facingFlag(true);
                         t.totalfloorFlag(true);
@@ -109,7 +113,7 @@ class PorChipsNotext extends StatelessWidget {
       () => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 15),
+          const SizedBox(height: 10),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
@@ -129,7 +133,10 @@ class PorChipsNotext extends StatelessWidget {
                       ),
                     ),
                     checkmarkColor: const Color(0xff0166EE),
-                    label: Text(option),
+                    label: Text(
+                      option,
+                      style: h3,
+                    ).paddingOnly(bottom: 2),
                     selected: selected.value == option,
                     onSelected: (isSelected) {
                       if (isSelected) {
@@ -196,7 +203,10 @@ class PorChipsNotextMulti extends StatelessWidget {
                       ),
                     ),
                     checkmarkColor: const Color(0xff0166EE),
-                    label: Text(option),
+                    label: Text(
+                      option,
+                      style: h3,
+                    ).paddingOnly(bottom: 2),
                     selected: isSelected,
                     onSelected: (isSelected) {
                       if (isSelected || selected.length > 1) {
@@ -250,7 +260,7 @@ class PorChips extends StatelessWidget {
               Text(
                 title,
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: s3,
                   color: Colors.black.withOpacity(0.5),
                 ),
               ),
@@ -280,8 +290,10 @@ class PorChips extends StatelessWidget {
                       option,
                       style: const TextStyle(
                         color: Colors.black,
+                        fontSize: s3,
+                        height: 0.5,
                       ),
-                    ),
+                    ).paddingOnly(bottom: 2),
                     selected: selected.value == option,
                     onSelected: (isSelected) {
                       if (isSelected) {
@@ -316,7 +328,10 @@ class FasalitisChipPro extends StatelessWidget {
     return Obx(
       () => FilterChip(
         showCheckmark: false,
-        label: Text(text),
+        label: Text(
+          text,
+          style: h3,
+        ).paddingOnly(bottom: 2),
         selected: categoryState.value,
         onSelected: (value) {
           categoryState.value = !categoryState.value;

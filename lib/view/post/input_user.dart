@@ -1,6 +1,9 @@
+import 'package:btolet/constants/colors.dart';
 import 'package:btolet/controller/property_controller.dart';
 import 'package:btolet/controller/tolet_controller.dart';
 import 'package:btolet/controller/user_controller.dart';
+import 'package:country_currency_pickers/country.dart';
+import 'package:country_currency_pickers/currency_picker_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -32,14 +35,18 @@ class DescriptionState extends State<Description> {
   var textstyle = const TextStyle(
     overflow: TextOverflow.fade,
     height: 1.2,
-    fontSize: 16,
-    letterSpacing: 1.2,
+    // fontSize: s2,
+    fontFamily: 'Roboto',
+    fontSize: 14,
   );
-  var textstyleh = const TextStyle(
+  var textstyleh = TextStyle(
     overflow: TextOverflow.fade,
     height: 1.2,
-    fontSize: 15,
-    letterSpacing: 1.2,
+    // fontSize: s2,
+    // letterSpacing: 1.2,
+    fontFamily: 'Roboto',
+    fontSize: 14,
+    color: Colors.black.withOpacity(0.3),
   );
   var iconColorChange = false;
   var focusNode = FocusNode();
@@ -59,6 +66,7 @@ class DescriptionState extends State<Description> {
           widget.title,
           style: const TextStyle(
             letterSpacing: 0.7,
+            fontSize: s3,
           ),
         ),
         const SizedBox(height: 15),
@@ -110,24 +118,28 @@ class DescriptionState extends State<Description> {
                         });
                       },
                       child: TextField(
+                        // textAlignVertical: TextAlignVertical.top,
+                        // textAlign: TextAlign.center,
                         focusNode: widget.focusNode,
-                        cursorHeight: 22,
+                        cursorHeight: 28,
                         cursorWidth: 1.8,
                         cursorRadius: const Radius.circular(10),
                         keyboardType: TextInputType.multiline,
                         minLines: 1,
                         maxLines: 100,
                         controller: widget.controller,
-                        textInputAction: TextInputAction.done,
+                        textInputAction: TextInputAction.newline,
                         cursorColor: Colors.black,
                         style: textstyle,
+
                         decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.only(top: 30),
+                          // contentPadding:
+                          //     EdgeInsets.only(top: !iconColorChange ? 0 : 30),
                           border: const OutlineInputBorder(
                             borderSide: BorderSide.none,
                           ),
                           isDense: true,
-                          hintText: widget.hintText,
+                          hintText: iconColorChange ? '' : widget.hintText,
                           hintStyle: textstyleh,
                         ),
                         onChanged: (v) {},
@@ -188,14 +200,14 @@ class _NumberInputState extends State<NumberInput> {
   static const TextStyle textstyle = TextStyle(
     overflow: TextOverflow.fade,
     height: 1.2,
-    fontSize: 16,
+    fontSize: s3,
     letterSpacing: 1.2,
   );
 
   static const TextStyle textstyleh = TextStyle(
     overflow: TextOverflow.fade,
     height: 1.2,
-    fontSize: 15,
+    fontSize: s3,
     letterSpacing: 1.2,
   );
 
@@ -225,82 +237,106 @@ class _NumberInputState extends State<NumberInput> {
         SizedBox(height: widget.topPadding),
         Text(
           widget.title,
-          style: const TextStyle(
-            letterSpacing: 0.7,
-          ),
+          style: const TextStyle(letterSpacing: 0.7, fontSize: s3),
         ),
         SizedBox(height: widget.bottomPadding),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            Container(
+              height: 48,
+              padding: const EdgeInsets.only(left: 10),
+              decoration: BoxDecoration(
+                color: const Color(0xffF2F3F5),
+                borderRadius: BorderRadius.circular(6),
+                border: Border.all(color: getBorderColor()),
+              ),
+              child: Center(
+                child: CurrencyPickerDropdown(
+                  initialValue: 'BDT',
+                  itemBuilder: (Country country) {
+                    var code = country.phoneCode;
+
+                    if (code != null && code.isNotEmpty) {
+                      code = code.substring(0, code.length - 1);
+                    }
+                    userController.code.value = '+$code';
+                    return Text(
+                      '+$code',
+                      style: h3,
+                    );
+                  },
+                  onValuePicked: (v) {
+                    print(v!.phoneCode);
+                  },
+                ),
+              ),
+            ),
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(right: 10),
-                child: Container(
-                  height: 48,
-                  decoration: BoxDecoration(
-                    color: const Color(0xffF2F3F5),
-                    borderRadius: BorderRadius.circular(6),
-                    border: Border.all(color: getBorderColor()),
-                  ),
-                  child: Stack(
-                    children: [
-                      if (widget.hintText == '')
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: Text(
-                              hinttex,
-                              style: textstyleh,
-                            ),
+              child: Container(
+                height: 48,
+                decoration: BoxDecoration(
+                  color: const Color(0xffF2F3F5),
+                  borderRadius: BorderRadius.circular(6),
+                  border: Border.all(color: getBorderColor()),
+                ),
+                child: Stack(
+                  children: [
+                    if (widget.hintText == '')
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: Text(
+                            hinttex,
+                            style: textstyleh,
                           ),
-                        ),
-                      Focus(
-                        onFocusChange: (v) {
-                          if (widget.hintText == '') {
-                            hinttex = '';
-                          }
-                        },
-                        child: TextField(
-                          focusNode: widget.focusNode,
-                          autofillHints: const [
-                            AutofillHints.telephoneNumber,
-                          ],
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(
-                              widget.numberLength,
-                            ),
-                          ],
-                          onChanged: (val) {
-                            if (val.isNotEmpty) {
-                              userController.phoneFlag.value = true;
-                            }
-                          },
-                          cursorHeight: 22,
-                          cursorWidth: 1.8,
-                          cursorRadius: const Radius.circular(10),
-                          controller: widget.controller,
-                          textInputAction: TextInputAction.done,
-                          keyboardType: widget.textType,
-                          maxLines: 1,
-                          cursorColor: Colors.black,
-                          style: textstyle,
-                          decoration: InputDecoration(
-                            border: const OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                            ),
-                            isDense: true,
-                            hintText: widget.hintText,
-                            hintStyle: textstyleh,
-                          ),
-                          onSubmitted: (v) {
-                            getFocus();
-                          },
                         ),
                       ),
-                    ],
-                  ),
+                    Focus(
+                      onFocusChange: (v) {
+                        if (widget.hintText == '') {
+                          hinttex = '';
+                        }
+                      },
+                      child: TextField(
+                        focusNode: widget.focusNode,
+                        autofillHints: const [
+                          AutofillHints.telephoneNumber,
+                        ],
+                        inputFormatters: [
+                          LengthLimitingTextInputFormatter(
+                            widget.numberLength,
+                          ),
+                        ],
+                        onChanged: (val) {
+                          if (val.isNotEmpty) {
+                            userController.phoneFlag.value = true;
+                          }
+                        },
+                        cursorHeight: 22,
+                        cursorWidth: 1.8,
+                        cursorRadius: const Radius.circular(10),
+                        controller: widget.controller,
+                        textInputAction: TextInputAction.done,
+                        keyboardType: widget.textType,
+                        maxLines: 1,
+                        cursorColor: Colors.black,
+                        style: textstyle,
+                        decoration: InputDecoration(
+                          border: const OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                          ),
+                          isDense: true,
+                          hintText: widget.hintText,
+                          hintStyle: textstyleh,
+                        ),
+                        onSubmitted: (v) {
+                          getFocus();
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),

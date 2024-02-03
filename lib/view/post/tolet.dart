@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import 'tolet widget/page1.dart';
-import 'tolet widget/page2.dart';
+import 'tolet/page1.dart';
+import 'tolet/page2.dart';
 
 class PostTolet extends StatefulWidget {
   const PostTolet({super.key});
@@ -22,12 +22,8 @@ class _PostToletState extends State<PostTolet> {
   void dispose() {
     toletController.activeFlag(false);
     toletController.categoryFlag.value = false;
-    toletController.bedFlag(false);
-    toletController.bathFlag(false);
-    toletController.kitchenFlag(false);
     toletController.priceFlag(false);
     toletController.imageFlag(false);
-    toletController.floornoFlag(false);
     userController.phoneFlag(false);
     super.dispose();
   }

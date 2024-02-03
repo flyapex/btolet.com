@@ -1,3 +1,4 @@
+import 'package:btolet/constants/colors.dart';
 import 'package:btolet/controller/property_controller.dart';
 import 'package:btolet/model/category.dart';
 import 'package:flutter/material.dart';
@@ -16,14 +17,13 @@ class FacilitiesPro extends StatelessWidget {
         Row(
           children: [
             Text(
-              'Facilities(op)',
+              'Aminities',
               style: TextStyle(
-                // fontSize: 14,
-                // color: Colors.black,
                 letterSpacing: 0.7,
                 color: Colors.black.withOpacity(0.6),
+                fontSize: s3,
               ),
-            ),
+            ).paddingOnly(bottom: 2),
           ],
         ),
         const SizedBox(height: 10),

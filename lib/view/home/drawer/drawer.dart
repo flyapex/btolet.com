@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:btolet/constants/colors.dart';
 import 'package:btolet/controller/db_controller.dart';
 import 'package:btolet/controller/user_controller.dart';
 
@@ -9,6 +10,7 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'aboutus.dart';
 import 'mypost.dart';
 import 'profile/profile.dart';
 import 'saved.dart';
@@ -50,18 +52,23 @@ class _CustomeDrawerState extends State<CustomeDrawer>
     return Obx(
       () => Drawer(
         child: ListView(
+          physics: const BouncingScrollPhysics(
+            parent: AlwaysScrollableScrollPhysics(),
+          ),
           padding: const EdgeInsets.all(0.0),
           children: [
             UserAccountsDrawerHeader(
               decoration: const BoxDecoration(color: Colors.lightBlue),
               accountName: Text(
-                  "${userController.name.value} (${dbController.getUserID()})"),
+                "${userController.name.value} (${dbController.getUserID()})",
+                style: h3,
+              ),
               currentAccountPicture: CircleAvatar(
                 backgroundImage: NetworkImage(userController.image.value),
               ),
               accountEmail: Text(
                 userController.email.value,
-                style: const TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white, fontSize: s3),
               ),
               // otherAccountsPictures: [
               //   IconButton(
@@ -97,7 +104,7 @@ class _CustomeDrawerState extends State<CustomeDrawer>
                   ),
                   Text(
                     'Profile',
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(color: Colors.black, fontSize: s3),
                   ),
                 ],
               ),
@@ -130,7 +137,7 @@ class _CustomeDrawerState extends State<CustomeDrawer>
                   ),
                   Text(
                     'Saved',
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(color: Colors.black, fontSize: s3),
                   ),
                 ],
               ),
@@ -147,7 +154,7 @@ class _CustomeDrawerState extends State<CustomeDrawer>
                   ),
                   Text(
                     'My Post',
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(color: Colors.black, fontSize: s3),
                   ),
                 ],
               ),
@@ -215,7 +222,7 @@ class _CustomeDrawerState extends State<CustomeDrawer>
                   ),
                   Text(
                     'Feedback',
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(color: Colors.black, fontSize: s3),
                   ),
                 ],
               ),
@@ -242,7 +249,7 @@ class _CustomeDrawerState extends State<CustomeDrawer>
                     ),
                     Text(
                       'Terms & Condition',
-                      style: TextStyle(color: Colors.black),
+                      style: TextStyle(color: Colors.black, fontSize: s3),
                     ),
                   ],
                 ),
@@ -262,24 +269,27 @@ class _CustomeDrawerState extends State<CustomeDrawer>
                     ),
                     Text(
                       'Contact Us',
-                      style: TextStyle(color: Colors.black),
+                      style: TextStyle(color: Colors.black, fontSize: s3),
                     ),
                   ],
                 ),
                 onTap: () async {
                   String appUrl;
                   String phone = '+8801799261773';
-                  String message = 'Hi.. I am from btolet.com';
+                  String message =
+                      '''Hello Btolet Team This is ${userController.name.value} id:${dbController.getUserID()} ''';
                   if (Platform.isAndroid) {
                     appUrl =
-                        "whatsapp://send?phone=$phone&text=${Uri.parse(message)}";
+                        "whatsapp://send?phone=$phone&text=${Uri.encodeComponent(message)}";
                   } else {
                     appUrl =
-                        "https://api.whatsapp.com/send?phone=$phone=${Uri.parse(message)}"; // URL for non-Android devices
+                        "https://api.whatsapp.com/send?phone=$phone&text=${Uri.encodeComponent(message)}"; // URL for non-Android devices
                   }
 
-                  if (await canLaunchUrl(Uri.parse(appUrl))) {
-                    await launchUrl(Uri.parse(appUrl));
+                  // ignore: deprecated_member_use
+                  if (await canLaunch(appUrl)) {
+                    // ignore: deprecated_member_use
+                    await launch(appUrl);
                   } else {
                     throw 'Could not launch $appUrl';
                   }
@@ -298,11 +308,17 @@ class _CustomeDrawerState extends State<CustomeDrawer>
                   ),
                   Text(
                     'About us',
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(color: Colors.black, fontSize: s3),
                   ),
                 ],
               ),
-              onTap: () {},
+              onTap: () {
+                Get.to(
+                  () => const AboutUS(),
+                  transition: Transition.circularReveal,
+                  duration: const Duration(milliseconds: 500),
+                );
+              },
             ),
             // InkWell(
             //   onTap: () {

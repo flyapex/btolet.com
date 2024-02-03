@@ -1,14 +1,14 @@
+import 'package:btolet/constants/colors.dart';
 import 'package:btolet/controller/tolet_controller.dart';
 import 'package:btolet/controller/user_controller.dart';
 import 'package:btolet/view/post/input_user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
-
-import 'catagory_body.dart';
-import 'chips.dart';
-import 'imagepicker.dart';
-import 'text_input.dart';
+import 'widget/catagory_body.dart';
+import 'widget/chips.dart';
+import 'widget/imagepicker.dart';
+import 'widget/text_input.dart';
 
 class PostTolet1 extends StatefulWidget {
   const PostTolet1({super.key});
@@ -58,6 +58,7 @@ class PostToletState1 extends State<PostTolet1> {
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 1,
+                    fontSize: s4,
                   ),
                 ),
                 backgroundColor: Colors.blueAccent,
@@ -66,7 +67,9 @@ class PostToletState1 extends State<PostTolet1> {
       body: SingleChildScrollView(
         controller: toletController.scrollControllerPost,
         padding: const EdgeInsets.only(left: 20, right: 20),
-        physics: const BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(
+          parent: AlwaysScrollableScrollPhysics(),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -87,31 +90,11 @@ class PostToletState1 extends State<PostTolet1> {
             Text(
               'Category *',
               style: TextStyle(
-                fontSize: 14,
+                fontSize: s3,
                 color: Colors.black.withOpacity(0.5),
               ),
             ),
             const SizedBox(height: 10),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.start,
-            //   children: [
-            //     Expanded(
-            //       child: Wrap(
-            //         spacing: 10,
-            //         alignment: WrapAlignment.spaceEvenly,
-            //         runAlignment: WrapAlignment.start,
-            //         children: toletController.categories.entries.map((entry) {
-            //           final category = entry.key;
-            //           final categoryState = entry.value;
-            //           return CategoryChip(
-            //             category: category,
-            //             categoryState: categoryState,
-            //           );
-            //         }).toList(),
-            //       ),
-            //     ),
-            //   ],
-            // ),
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: List.generate(
@@ -120,7 +103,8 @@ class PostToletState1 extends State<PostTolet1> {
                   final start = columnIndex * 3;
                   final end = (columnIndex + 1) * 3;
                   return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: toletController.categories.entries
                         .toList()
                         .sublist(start, end)
@@ -141,6 +125,7 @@ class PostToletState1 extends State<PostTolet1> {
             const Text(
               'Select image *',
               style: TextStyle(
+                fontSize: s3,
                 color: Color(0xff7B7B7B),
                 letterSpacing: 0.7,
               ),
@@ -152,10 +137,12 @@ class PostToletState1 extends State<PostTolet1> {
             ),
             SizedBox(height: space),
             Description(
-              title: "Description *",
+              title: "Description",
               textType: TextInputType.text,
               hintText:
-                  "\nSpecify house condition, extra features and house etc👀",
+                  '''\nফুল টাইলস,পর্যাপ্ত আলোবাতাস এবং সিসিটিভি সিকিউরিটি। 
+রাত ১১ টার পরে গেট বন্ধ হয়ে যাবে।''',
+              // hintText: '',
               controller: userController.description,
               icon: Feather.file_text,
               focusNode: userController.descriptionfocusNode,

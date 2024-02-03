@@ -1,3 +1,4 @@
+import 'package:btolet/constants/colors.dart';
 import 'package:btolet/controller/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
@@ -27,7 +28,17 @@ class _MyPostState extends State<MyPost>
     super.build(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Post'),
+        title: Text(
+          'My Post',
+          // style: h3,
+          style: TextStyle(
+            fontSize: s1,
+            height: 0.5,
+            fontWeight: FontWeight.bold,
+            color: Colors.black.withOpacity(0.7),
+            // fontFamily: 'Roboto',
+          ),
+        ),
         centerTitle: false,
         leadingWidth: 54,
         leading: Align(
@@ -51,13 +62,29 @@ class _MyPostState extends State<MyPost>
             indicatorColor: Colors.black,
             unselectedLabelColor: Colors.black,
             labelColor: Colors.black,
-            tabs: const [
+            tabs: [
               Tab(
-                text: 'RENT',
+                child: Text(
+                  'Rent',
+                  style: TextStyle(
+                    fontSize: s3,
+                    height: 0.5,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black.withOpacity(0.8),
+                  ),
+                ),
                 // icon: Icon(Icons.account_circle_outlined),
               ),
               Tab(
-                text: 'SELL',
+                child: Text(
+                  'Sell',
+                  style: TextStyle(
+                    fontSize: s3,
+                    height: 0.5,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black.withOpacity(0.8),
+                  ),
+                ),
                 // icon: Icon(Icons.account_circle_outlined),
               ),
             ],

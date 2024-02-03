@@ -1,5 +1,6 @@
 import 'package:btolet/view/map/widget/post_tolet.dart';
 import 'package:btolet/view/shimmer/shimmer.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -125,34 +126,78 @@ class _MapToletState extends State<MapTolet>
                       onMapCreated: _onMapCreated,
                       markers: markers,
                     ),
+                    // toletController.showMapBoxTolet.value
+                    //     ? InkWell(
+                    //         onTap: () {
+                    //           toletController.showMapBoxTolet.value =
+                    //               !toletController.showMapBoxTolet.value;
+                    //         },
+                    //         child: toletController.mapPostLoding.value
+                    //             ? const MultiMapShimmer()
+                    //             : Align(
+                    //                 alignment: Alignment.bottomCenter,
+                    //                 child: ListView.builder(
+                    //                   padding: const EdgeInsets.only(
+                    //                     left: 30,
+                    //                     right: 10,
+                    //                   ),
+                    //                   itemCount: toletController
+                    //                       .mapPostToletList.length,
+                    //                   scrollDirection: Axis.horizontal,
+                    //                   // physics: const NeverScrollableScrollPhysics(),
+                    //                   itemBuilder:
+                    //                       (BuildContext context, int index) {
+                    //                     return PostsToletMap(
+                    //                       postData: toletController
+                    //                           .mapPostToletList[index],
+                    //                     );
+                    //                   },
+                    //                 ),
+                    //               ),
+                    //       )
+                    //     : const SizedBox(),
                     toletController.showMapBoxTolet.value
-                        ? InkWell(
-                            onTap: () {
-                              toletController.showMapBoxTolet.value =
-                                  !toletController.showMapBoxTolet.value;
-                            },
-                            child: toletController.mapPostLoding.value
-                                ? const MultiMapShimmer()
-                                : Align(
-                                    alignment: Alignment.bottomCenter,
-                                    child: ListView.builder(
+                        ? Align(
+                            alignment: Alignment.bottomCenter,
+                            child: InkWell(
+                              onTap: () {
+                                toletController.showMapBoxTolet.value =
+                                    !toletController.showMapBoxTolet.value;
+                              },
+                              child: toletController.mapPostLoding.value
+                                  ? const MultiMapShimmer()
+                                  : Padding(
                                       padding: const EdgeInsets.only(
-                                        left: 30,
-                                        right: 10,
+                                        bottom: 40,
                                       ),
-                                      itemCount: toletController
-                                          .mapPostToletList.length,
-                                      scrollDirection: Axis.horizontal,
-                                      // physics: const NeverScrollableScrollPhysics(),
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        return PostsToletMap(
-                                          postData: toletController
-                                              .mapPostToletList[index],
-                                        );
-                                      },
+                                      child: CarouselSlider.builder(
+                                        options: CarouselOptions(
+                                          height: 120,
+                                          autoPlay: false,
+                                          enlargeCenterPage: true,
+                                          enableInfiniteScroll: true,
+                                          autoPlayInterval:
+                                              const Duration(seconds: 3),
+                                          autoPlayAnimationDuration:
+                                              const Duration(milliseconds: 900),
+                                          autoPlayCurve: Curves.fastOutSlowIn,
+                                        ),
+                                        itemCount: toletController
+                                            .mapPostToletList.length,
+                                        itemBuilder: (BuildContext context,
+                                            int index, int pageViewIndex) {
+                                          return PostsToletMap(
+                                            wid: Get.width,
+                                            mar: const EdgeInsets.symmetric(
+                                              horizontal: 1.0,
+                                            ),
+                                            postData: toletController
+                                                .mapPostToletList[index],
+                                          );
+                                        },
+                                      ),
                                     ),
-                                  ),
+                            ),
                           )
                         : const SizedBox(),
                   ],

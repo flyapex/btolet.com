@@ -129,7 +129,7 @@ class AdsController extends GetxController {
         final sms = Uri.parse('sms:$phone?body=${Uri.parse(message)}');
         launchUrl(sms);
       } else if (type == 'wapp') {
-        phone = '+88$phone';
+        phone = '$phone';
 
         await launchUrl(Uri.parse(
             "whatsapp://send?phone=$phone&text=${Uri.parse(message)}"));
@@ -171,7 +171,7 @@ class AdsController extends GetxController {
           final sms = Uri.parse('sms:$phone?body=${Uri.parse(message)}');
           launchUrl(sms);
         } else if (type == 'wapp') {
-          phone = '+88$phone';
+          phone = '$phone';
 
           await launchUrl(Uri.parse(
               "whatsapp://send?phone=$phone&text=${Uri.parse(message)}"));
@@ -194,12 +194,9 @@ class AdsController extends GetxController {
         final call = Uri.parse('tel:$data');
         launchUrl(call);
       } else if (type == "sms") {
-        data = '+88$data';
         final sms = Uri.parse('sms:$data?body=${Uri.parse(message)}');
         launchUrl(sms);
       } else if (type == 'wapp') {
-        data = '+88$data';
-
         await launchUrl(Uri.parse(
             "whatsapp://send?phone=$data&text=${Uri.parse(message)}"));
       } else if (type == 'ads') {
@@ -244,12 +241,9 @@ class AdsController extends GetxController {
         final call = Uri.parse('tel:$data');
         launchUrl(call);
       } else if (type == "sms") {
-        data = '+88$data';
         final sms = Uri.parse('sms:$data?body=${Uri.parse(message)}');
         launchUrl(sms);
       } else if (type == 'wapp') {
-        data = '+88$data';
-
         await launchUrl(Uri.parse(
             "whatsapp://send?phone=$data&text=${Uri.parse(message)}"));
       } else if (type == 'ads') {
@@ -302,12 +296,9 @@ class AdsController extends GetxController {
 
   Future<void> shareBase64Image(String base64Image, text) async {
     try {
-      // Decode base64 image to bytes
       Uint8List bytes =
           const Base64Decoder().convert(base64Image.split(',').last);
 
-      // Create a temporary file to share
-      // Note: You can use other methods to share images as well
       final tempDir = await getTemporaryDirectory();
       final tempFile = await File('${tempDir.path}/image.png').create();
       await tempFile.writeAsBytes(bytes);
@@ -322,14 +313,5 @@ class AdsController extends GetxController {
     } catch (e) {
       print('Error sharing image: $e');
     }
-
-    // try {
-    //   final tempDir = await getTemporaryDirectory();
-    //   final file = File('${tempDir.path}/image.jpg');
-    //   await file.writeAsBytes(base64Decode(base64Image));
-    //   file.delete();
-    // } catch (e) {
-    //   print('Error sharing image: $e');
-    // }
   }
 }

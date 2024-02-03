@@ -1,6 +1,6 @@
 import 'package:btolet/controller/property_controller.dart';
-import 'package:btolet/view/post/pro%20widget/page1.dart';
-import 'package:btolet/view/post/pro%20widget/page2.dart';
+import 'package:btolet/view/post/pro/page1.dart';
+import 'package:btolet/view/post/pro/page2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';

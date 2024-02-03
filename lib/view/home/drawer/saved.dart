@@ -1,3 +1,4 @@
+import 'package:btolet/constants/colors.dart';
 import 'package:btolet/controller/tolet_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
@@ -27,7 +28,16 @@ class _SavedState extends State<Saved>
     super.build(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Saved Post'),
+        title: Text(
+          'Saved Post',
+          style: TextStyle(
+            fontSize: s1,
+            height: 0.5,
+            fontWeight: FontWeight.bold,
+            color: Colors.black.withOpacity(0.7),
+            // fontFamily: 'Roboto',
+          ),
+        ),
         centerTitle: false,
         leadingWidth: 54,
         leading: Align(
@@ -51,13 +61,31 @@ class _SavedState extends State<Saved>
             indicatorColor: Colors.black,
             unselectedLabelColor: Colors.black,
             labelColor: Colors.black,
-            tabs: const [
+            tabs: [
               Tab(
-                text: 'Rent',
+                child: Text(
+                  'Rent',
+                  style: TextStyle(
+                    fontSize: s3,
+                    height: 0.5,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black.withOpacity(0.8),
+                  ),
+                ),
+
                 // icon: Icon(Icons.account_circle_outlined),
               ),
               Tab(
-                text: 'Buy',
+                child: Text(
+                  'Buy',
+                  style: TextStyle(
+                    fontSize: s3,
+                    height: 0.5,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black.withOpacity(0.8),
+                  ),
+                ),
+
                 // icon: Icon(Icons.account_circle_outlined),
               ),
             ],

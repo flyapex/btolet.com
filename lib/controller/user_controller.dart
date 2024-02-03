@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:btolet/api/api.dart';
+import 'package:btolet/constants/colors.dart';
 import 'package:btolet/model/api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,6 +13,8 @@ class UserController extends GetxController {
   TextEditingController description = TextEditingController();
 
   TextEditingController nameController = TextEditingController();
+
+  var code = '+88'.obs;
   TextEditingController phonenumber = TextEditingController();
   TextEditingController wappnumber = TextEditingController();
 
@@ -30,7 +33,7 @@ class UserController extends GetxController {
     } else if (amount.abs() >= 100000) {
       formattedAmount = (amount / 100000).toStringAsFixed(2) + ' Lakh';
     } else if (amount.abs() >= 1000) {
-      formattedAmount = (amount / 1000).toStringAsFixed(2) + 'k';
+      formattedAmount = (amount / 1000).toStringAsFixed(2) + 'K';
     } else {
       formattedAmount = amount.toStringAsFixed(2);
     }
@@ -215,7 +218,7 @@ class UserController extends GetxController {
       messageText: Text(
         text,
         style: const TextStyle(
-          fontSize: 14,
+          fontSize: s4,
           color: Colors.white,
         ),
         maxLines: 1,
@@ -237,7 +240,10 @@ class UserController extends GetxController {
         },
         child: const Text(
           'Okay',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: s4,
+          ),
         ),
       ),
     );

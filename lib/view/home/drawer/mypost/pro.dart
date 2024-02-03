@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:btolet/constants/colors.dart';
 import 'package:btolet/controller/property_controller.dart';
 import 'package:btolet/controller/user_controller.dart';
 import 'package:btolet/model/pro_model.dart';
@@ -9,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -88,6 +88,9 @@ class _MyProPageState extends State<MyProPage>
                   return AnimatedList(
                     key: proController.deleteKeyMypost,
                     controller: scrollController,
+                    physics: const BouncingScrollPhysics(
+                      parent: AlwaysScrollableScrollPhysics(),
+                    ),
                     initialItemCount: proController.mypostList.length,
                     padding: const EdgeInsets.only(bottom: 100),
                     itemBuilder: (context, i, animation) {
@@ -151,7 +154,10 @@ class _MyPostsProState extends State<MyPostsPro> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Delete this post?'),
+          title: Text(
+            'Delete this post?',
+            style: h3,
+          ),
           actionsAlignment: MainAxisAlignment.spaceBetween,
           actions: [
             TextButton(
@@ -185,13 +191,19 @@ class _MyPostsProState extends State<MyPostsPro> {
                 proController.deleteMypost(widget.postData.pid);
                 Get.back();
               },
-              child: const Text('Yes'),
+              child: Text(
+                'Yes',
+                style: h3,
+              ),
             ),
             TextButton(
               onPressed: () {
                 Get.back();
               },
-              child: const Text('No'),
+              child: Text(
+                'No',
+                style: h3,
+              ),
             ),
           ],
         );
@@ -301,7 +313,7 @@ class _MyPostsProState extends State<MyPostsPro> {
                             Text(
                               widget.postData.totalImage.toString(),
                               style: const TextStyle(
-                                fontSize: 12,
+                                fontSize: s6,
                                 color: Colors.white,
                               ),
                             ),
@@ -325,24 +337,35 @@ class _MyPostsProState extends State<MyPostsPro> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                //৳
+                Text(
+                  "${widget.postData.category} ",
+                  style: const TextStyle(
+                    color: Color(0xff083437),
+                    fontSize: s2,
+                    height: 0.8,
+                  ),
+                ),
+                const SizedBox(height: 12),
                 widget.postData.price == 0
-                    ? const Text(
-                        'Call For Price',
+                    ? Text(
+                        'Price On Call',
                         style: TextStyle(
-                          fontSize: 24,
-                          color: Colors.black,
+                          fontSize: s1,
+                          height: 0.8,
+                          color: const Color(0xff083437).withOpacity(0.8),
+                          fontWeight: FontWeight.bold,
                         ),
                       )
                     : Text(
-                        "${NumberFormat.decimalPattern().format(widget.postData.price)} BDT",
-                        style: const TextStyle(
-                          fontSize: 24,
-                          color: Color(0xff083437),
-                          fontWeight: FontWeight.w500,
+                        "${userController.currency(widget.postData.price)}  BDT",
+                        style: TextStyle(
+                          fontSize: s1,
+                          height: 0.8,
+                          color: const Color(0xff083437).withOpacity(0.8),
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-
+                const SizedBox(height: 8),
                 Row(
                   children: [
                     const Icon(
@@ -350,36 +373,42 @@ class _MyPostsProState extends State<MyPostsPro> {
                       size: 16,
                       color: Colors.black45,
                     ),
-                    const SizedBox(width: 10),
+                    const SizedBox(width: 5),
                     Text(
                       widget.postData.location,
-                      style: const TextStyle(
-                        color: Color(0xff083437),
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: const Color(0xff083437).withOpacity(0.6),
+                        fontFamily: 'Roboto',
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 10),
-                SizedBox(height: widget.postData.bed == "" ? 10 : 4),
+                // const SizedBox(height: 10),
+                // SizedBox(height: postData.bed == "" ? 10 : 4),
+                const SizedBox(height: 8),
                 widget.postData.bed == ""
                     ? Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
                             widget.postData.measurement,
-                            style: const TextStyle(
-                              color: Color(0xff083437),
-                              fontSize: 18,
+                            style: TextStyle(
+                              color: const Color(0xff083437).withOpacity(0.7),
+                              fontSize: 16,
                               height: 1.2,
+                              fontFamily: 'Roboto',
+                              // fontWeight: FontWeight.bold,
                             ),
                           ),
-                          const SizedBox(width: 10),
+                          const SizedBox(width: 4),
                           Text(
                             widget.postData.area,
-                            style: const TextStyle(
-                              color: Color(0xff083437),
-                              fontSize: 19,
+                            style: TextStyle(
+                              color: const Color(0xff083437).withOpacity(0.8),
+                              fontSize: 17,
                               height: 1.2,
+                              fontFamily: 'Roboto',
                             ),
                           )
                         ],
@@ -405,6 +434,7 @@ class _MyPostsProState extends State<MyPostsPro> {
                             widget.postData.bed,
                             style: const TextStyle(
                               color: Color(0xff083437),
+                              fontSize: s4,
                             ),
                           ),
                           const SizedBox(width: 10),
@@ -424,6 +454,7 @@ class _MyPostsProState extends State<MyPostsPro> {
                             widget.postData.bath,
                             style: const TextStyle(
                               color: Color(0xff083437),
+                              fontSize: s4,
                             ),
                           ),
                           const SizedBox(width: 10),
@@ -440,9 +471,10 @@ class _MyPostsProState extends State<MyPostsPro> {
                           ),
                           const SizedBox(width: 6),
                           Text(
-                            widget.postData.size,
+                            '${widget.postData.size}  ft\u00b2',
                             style: const TextStyle(
                               color: Color(0xff083437),
+                              fontSize: s4,
                             ),
                           ),
                         ],
@@ -480,6 +512,7 @@ class _MyPostsProState extends State<MyPostsPro> {
                         '${userController.getDayfull(widget.postData.time)}',
                         style: const TextStyle(
                           color: Color(0xff68676C),
+                          fontSize: s4,
                         ),
                         overflow: TextOverflow.fade,
                       ),

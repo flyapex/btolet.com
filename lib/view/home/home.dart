@@ -1,3 +1,4 @@
+import 'package:btolet/constants/colors.dart';
 import 'package:btolet/controller/location_controller.dart';
 import 'package:btolet/controller/user_controller.dart';
 import 'package:btolet/view/map/map_tolet.dart';
@@ -186,18 +187,19 @@ class _HomeState extends State<Home>
                               width: 18,
                               child: SvgPicture.asset(
                                 'assets/icons/home/plus.svg',
-                                colorFilter: const ColorFilter.mode(
-                                  Color(0xff083437),
+                                colorFilter: ColorFilter.mode(
+                                  const Color(0xff083437).withOpacity(0.8),
                                   BlendMode.srcIn,
                                 ),
                               ),
                             ),
                             const SizedBox(width: 6),
-                            const Text(
+                            Text(
                               "Post",
                               style: TextStyle(
-                                color: Color(0xff083437),
-                                fontSize: 18,
+                                color: const Color(0xff083437).withOpacity(0.8),
+                                fontSize: s1,
+                                height: 0.7,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -282,6 +284,7 @@ class _HomeState extends State<Home>
                                               decorationStyle:
                                                   TextDecorationStyle.dotted,
                                               fontSize: 14,
+                                              fontFamily: 'Roboto',
                                             ),
                                             overflow: TextOverflow.ellipsis,
                                           ),
@@ -336,7 +339,7 @@ class _HomeState extends State<Home>
                       child: MapButton(
                         width: 96,
                         height: 40,
-                        fontSize: 17,
+                        fontSize: s3,
                         textOn: 'LIST',
                         textOff: 'MAP',
                         colorOn: Colors.blue,
@@ -414,11 +417,13 @@ class CustomTab extends SliverPersistentHeaderDelegate {
                     ),
                   ),
                   const SizedBox(width: 10),
-                  const Text(
+                  Text(
                     'Rent',
                     style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.black,
+                      fontSize: s3,
+                      height: 0.5,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black.withOpacity(0.8),
                     ),
                   ),
                 ],
@@ -444,11 +449,13 @@ class CustomTab extends SliverPersistentHeaderDelegate {
                     ),
                   ),
                   const SizedBox(width: 10),
-                  const Text(
+                  Text(
                     'Buy',
                     style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.black,
+                      fontSize: s3,
+                      height: 0.5,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black.withOpacity(0.8),
                     ),
                   ),
                 ],

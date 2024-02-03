@@ -4,6 +4,7 @@ import 'package:another_xlider/models/handler_animation.dart';
 import 'package:another_xlider/models/slider_step.dart';
 import 'package:another_xlider/models/tooltip/tooltip.dart';
 import 'package:another_xlider/models/trackbar.dart';
+import 'package:btolet/constants/colors.dart';
 import 'package:btolet/controller/tolet_controller.dart';
 import 'package:btolet/model/category.dart';
 import 'package:btolet/view/map/location_post.dart';
@@ -77,7 +78,7 @@ class _SortingToletState extends State<SortingTolet> {
                             "Clear All",
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 16,
+                              fontSize: s3,
                             ),
                           ),
                         ),
@@ -111,7 +112,7 @@ class _SortingToletState extends State<SortingTolet> {
                             "Show ${toletController.totalResult}  Properties",
                             style: const TextStyle(
                               color: Colors.white,
-                              fontSize: 16,
+                              fontSize: s3,
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -138,21 +139,21 @@ class SortHere extends StatefulWidget {
 
 class _SortHereState extends State<SortHere> with TickerProviderStateMixin {
   ToletController toletController = Get.find();
-  double startval1 = 0, endval1 = 50000;
-  String priceText = "Any Price";
-  sliderText(startval1, endval1) {
-    setState(() {
-      if (startval1 == 0 && endval1 == 50000) {
-        priceText = "Any Price";
-      } else if (endval1 == 50000) {
-        priceText =
-            '৳ ${NumberFormat.decimalPattern().format(startval1.toInt())} to ${NumberFormat.decimalPattern().format(endval1.toInt())}+/month';
-      } else {
-        priceText =
-            '৳ ${NumberFormat.decimalPattern().format(startval1.toInt())} to ${NumberFormat.decimalPattern().format(endval1.toInt())}/month';
-      }
-    });
-  }
+
+  // String priceText = "Any Price";
+  // sliderText(startval1, endval1) {
+  //   setState(() {
+  //     if (startval1 == 0 && endval1 == 50000) {
+  //       priceText = "Any Price";
+  //     } else if (endval1 == 50000) {
+  //       priceText =
+  //           '৳ ${NumberFormat.decimalPattern().format(startval1.toInt())} to ${NumberFormat.decimalPattern().format(endval1.toInt())}+/month';
+  //     } else {
+  //       priceText =
+  //           '৳ ${NumberFormat.decimalPattern().format(startval1.toInt())} to ${NumberFormat.decimalPattern().format(endval1.toInt())}/month';
+  //     }
+  //   });
+  // }
 
   double categorySize = 117.0;
   @override
@@ -160,120 +161,160 @@ class _SortHereState extends State<SortHere> with TickerProviderStateMixin {
     // double space = 20.0;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       body: Stack(
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 20, right: 20),
             child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics(),
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // const LocationSmall(),
                   const Location(),
-                  Center(
-                    child: FittedBox(
-                      child: Container(
-                        height: 32,
-                        padding: const EdgeInsets.only(left: 10, right: 10),
-                        decoration: BoxDecoration(
-                          color: Colors.orange,
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                        child: Center(
-                          child: Text(
-                            priceText,
-                            style: const TextStyle(
-                              fontSize: 20,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
+                  Obx(
+                    () => Column(
+                      children: [
+                        Center(
+                          child: FittedBox(
+                            child: Container(
+                              height: 32,
+                              padding:
+                                  const EdgeInsets.only(left: 10, right: 10),
+                              decoration: BoxDecoration(
+                                color: Colors.orange,
+                                borderRadius: BorderRadius.circular(100),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  toletController.priceText.value,
+                                  style: const TextStyle(
+                                    fontSize: s1,
+                                    height: 0.5,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ).paddingOnly(bottom: 2),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                  ),
-                  FlutterSlider(
-                    step: const FlutterSliderStep(step: 500),
-                    trackBar: FlutterSliderTrackBar(
-                      activeTrackBarHeight: 10,
-                      inactiveTrackBarHeight: 10,
-                      inactiveTrackBar: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        color: Colors.blueAccent.withOpacity(0.2),
-                      ),
-                      activeTrackBar: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: const Color(0xff537FE7),
-                      ),
-                    ),
-                    handler: FlutterSliderHandler(
-                      decoration: BoxDecoration(
-                        color: Colors.blueAccent,
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                      child: const Icon(
-                        Icons.circle,
-                        color: Colors.white,
-                        size: 18,
-                      ),
-                    ),
-                    rightHandler: FlutterSliderHandler(
-                      decoration: BoxDecoration(
-                        color: Colors.blueAccent,
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                      child: const Icon(
-                        Icons.circle,
-                        color: Colors.white,
-                        size: 18,
-                      ),
-                    ),
-                    handlerAnimation: const FlutterSliderHandlerAnimation(
-                      duration: Duration(milliseconds: 100),
-                    ),
-                    tooltip: FlutterSliderTooltip(disabled: true),
-                    handlerHeight: 28,
-                    handlerWidth: 28,
-                    values: [startval1, endval1],
-                    rangeSlider: true,
-                    max: 50000,
-                    min: 0,
-                    onDragging: (handlerIndex, lowerValue, upperValue) {
-                      setState(() {
-                        startval1 = lowerValue;
-                        endval1 = upperValue;
-                        sliderText(startval1, endval1);
+                        FlutterSlider(
+                          step: const FlutterSliderStep(step: 500),
+                          trackBar: FlutterSliderTrackBar(
+                            activeTrackBarHeight: 10,
+                            inactiveTrackBarHeight: 10,
+                            inactiveTrackBar: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: Colors.blueAccent.withOpacity(0.2),
+                            ),
+                            activeTrackBar: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: const Color(0xff537FE7),
+                            ),
+                          ),
+                          handler: FlutterSliderHandler(
+                            decoration: BoxDecoration(
+                              color: Colors.blueAccent,
+                              borderRadius: BorderRadius.circular(100),
+                            ),
+                            child: const Icon(
+                              Icons.circle,
+                              color: Colors.white,
+                              size: 18,
+                            ),
+                          ),
+                          rightHandler: FlutterSliderHandler(
+                            decoration: BoxDecoration(
+                              color: Colors.blueAccent,
+                              borderRadius: BorderRadius.circular(100),
+                            ),
+                            child: const Icon(
+                              Icons.circle,
+                              color: Colors.white,
+                              size: 18,
+                            ),
+                          ),
+                          handlerAnimation: const FlutterSliderHandlerAnimation(
+                            duration: Duration(milliseconds: 100),
+                          ),
+                          tooltip: FlutterSliderTooltip(disabled: true),
+                          handlerHeight: 28,
+                          handlerWidth: 28,
+                          values: [
+                            toletController.startval1.value,
+                            toletController.endval1.value
+                          ],
+                          rangeSlider: true,
+                          max: 50000,
+                          min: 0,
+                          onDragging: (handlerIndex, lowerValue, upperValue) {
+                            toletController.startval1.value = lowerValue;
+                            toletController.endval1.value = upperValue;
 
-                        toletController.rentmin.value = startval1.toInt();
-                        toletController.rentmax.value = endval1.toInt();
-                      });
-                    },
-                    onDragCompleted: (handlerIndex, lowerValue, upperValue) {
-                      toletController.sortingPostCount();
-                    },
+                            if (toletController.startval1.value == 0 &&
+                                toletController.endval1.value == 50000) {
+                              toletController.priceText.value = "Any Price";
+                            } else if (toletController.endval1.value == 50000) {
+                              toletController.priceText.value =
+                                  'BDT ${NumberFormat.decimalPattern().format(toletController.startval1.value.toInt())} to ${NumberFormat.decimalPattern().format(toletController.endval1.value.toInt())}+/month';
+                            } else {
+                              toletController.priceText.value =
+                                  'BDT ${NumberFormat.decimalPattern().format(toletController.startval1.value.toInt())} to ${NumberFormat.decimalPattern().format(toletController.endval1.value.toInt())}/month';
+                            }
+                            toletController.rentmin.value =
+                                toletController.startval1.value.toInt();
+                            toletController.rentmax.value =
+                                toletController.endval1.value.toInt();
+                          },
+                          onDragCompleted:
+                              (handlerIndex, lowerValue, upperValue) {
+                            toletController.sortingPostCount();
+                          },
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: TextInputToletSort(
+                                topPadding: 0,
+                                title: "min",
+                                textType: TextInputType.number,
+                                hintText:
+                                    toletController.rentmin.value.toString(),
+                                textlength: 500,
+                                suffixtext: "৳",
+                                controller: toletController.pricemin,
+                                widthh: 2.35 / 2,
+                                focusNode: toletController.priceminfocusNode,
+                              ),
+                            ),
+                            const SizedBox(width: 20),
+                            Expanded(
+                              flex: 1,
+                              child: TextInputToletSort(
+                                topPadding: 0,
+                                title: "max",
+                                textType: TextInputType.number,
+                                hintText:
+                                    toletController.rentmax.value.toString(),
+                                textlength: 500,
+                                suffixtext: "৳",
+                                controller: toletController.pricemax,
+                                widthh: 2.35 / 2,
+                                focusNode: toletController.pricemaxfocusNode,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.start,
-                  //   children: [
-                  //     Expanded(
-                  //       child: Wrap(
-                  //         spacing: 10,
-                  //         alignment: WrapAlignment.spaceEvenly,
-                  //         runAlignment: WrapAlignment.start,
-                  //         children: toletController.categoriesSort.entries
-                  //             .map((entry) {
-                  //           final category = entry.key;
-                  //           final categoryState = entry.value;
-                  //           return CategoryChipSort(
-                  //             category: category,
-                  //             categoryState: categoryState,
-                  //           );
-                  //         }).toList(),
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
+                  const SizedBox(height: 20),
 
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -300,28 +341,43 @@ class _SortHereState extends State<SortHere> with TickerProviderStateMixin {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  const Row(
+                  Row(
                     children: [
-                      Icon(Icons.king_bed_outlined),
-                      SizedBox(width: 10),
-                      Text('Bedroom'),
+                      Icon(
+                        Icons.king_bed_outlined,
+                        color: Colors.black.withOpacity(0.5),
+                      ),
+                      const SizedBox(width: 10),
+                      Text(
+                        'Bedroom',
+                        style: h3,
+                      ),
                     ],
                   ),
                   const SizedBox(height: 20),
                   const SortButton(type: 1), // 1 for bed
                   const SizedBox(height: 20),
-                  const Row(
+                  Row(
                     children: [
-                      Icon(Icons.shower_outlined),
-                      SizedBox(width: 10),
-                      Text('Bathroom'),
+                      Icon(
+                        Icons.shower_outlined,
+                        color: Colors.black.withOpacity(0.5),
+                      ),
+                      const SizedBox(width: 10),
+                      Text(
+                        'Bathroom',
+                        style: h3,
+                      ),
                     ],
                   ),
                   const SizedBox(height: 20),
                   const SortButton(type: 2), // 2 for bath
                   const SizedBox(height: 20),
-                  const Text('Fasalitis'),
-                  const SizedBox(height: 20),
+                  Text(
+                    'Facilities',
+                    style: h3,
+                  ),
+                  const SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [

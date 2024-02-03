@@ -118,6 +118,8 @@ class SinglePostModelPro {
   String procondition;
   String bed;
   String bath;
+  String balcony;
+  String drawing;
   String dining;
   String kitchen;
   String size;
@@ -169,6 +171,8 @@ class SinglePostModelPro {
     required this.procondition,
     required this.bed,
     required this.bath,
+    required this.balcony,
+    required this.drawing,
     required this.dining,
     required this.kitchen,
     required this.size,
@@ -222,6 +226,8 @@ class SinglePostModelPro {
         procondition: json["procondition"],
         bed: json["bed"],
         bath: json["bath"],
+        balcony: json["balcony"],
+        drawing: json["drawing"],
         dining: json["dining"],
         kitchen: json["kitchen"],
         size: json["size"],
@@ -274,6 +280,8 @@ class SinglePostModelPro {
         "procondition": procondition,
         "bed": bed,
         "bath": bath,
+        "balcony": balcony,
+        "drawing": drawing,
         "dining": dining,
         "kitchen": kitchen,
         "size": size,
@@ -331,6 +339,8 @@ class NewPostPro {
   String procondition;
   String bed;
   String bath;
+  String balcony;
+  String drawing;
   String dining;
   String kitchen;
   String size;
@@ -377,6 +387,8 @@ class NewPostPro {
     required this.procondition,
     required this.bed,
     required this.bath,
+    required this.balcony,
+    required this.drawing,
     required this.dining,
     required this.kitchen,
     required this.size,
@@ -424,6 +436,8 @@ class NewPostPro {
         procondition: json["procondition"],
         bed: json["bed"],
         bath: json["bath"],
+        balcony: json["balcony"],
+        drawing: json["drawing"],
         dining: json["dining"],
         kitchen: json["kitchen"],
         size: json["size"],
@@ -471,6 +485,8 @@ class NewPostPro {
         "procondition": procondition,
         "bed": bed,
         "bath": bath,
+        "balcony": balcony,
+        "drawing": drawing,
         "dining": dining,
         "kitchen": kitchen,
         "size": size,
@@ -617,6 +633,7 @@ class MapProPostListModel {
   final int uid;
   final String bed;
   final String bath;
+  final String category;
   final String kitchen;
   final String size;
   final int price;
@@ -632,6 +649,7 @@ class MapProPostListModel {
     required this.uid,
     required this.bed,
     required this.bath,
+    required this.category,
     required this.kitchen,
     required this.size,
     required this.price,
@@ -650,6 +668,7 @@ class MapProPostListModel {
         uid: json["uid"],
         bed: json["bed"],
         bath: json["bath"],
+        category: json["category"],
         kitchen: json["kitchen"],
         size: json["size"],
         price: json["price"],
@@ -667,6 +686,7 @@ class MapProPostListModel {
         "uid": uid,
         "bed": bed,
         "bath": bath,
+        "category": category,
         "kitchen": kitchen,
         "size": size,
         "price": price,

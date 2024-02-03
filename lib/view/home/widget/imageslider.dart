@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:btolet/controller/user_controller.dart';
 import 'package:btolet/view/shimmer/shimmer.dart';
 import 'package:card_swiper/card_swiper.dart';
@@ -27,19 +26,19 @@ class _ImageSlideState extends State<ImageSlide> {
   UserController userController = Get.find();
   // late List<Image> decodedImages;
 
-  Future getBannerAds() async {
-    if (bannerController.fatchOneTime.value) {
-      await bannerController.bannerApi();
-      // decodedImages = decodeImages();
-    }
-  }
+  // Future getBannerAds() async {
+  //   if (bannerController.fatchOneTime.value) {
+  //     await bannerController.bannerApi();
+  //     // decodedImages = decodeImages();
+  //   }
+  // }
 
-  @override
-  void initState() {
-    getBannerAds();
+  // @override
+  // void initState() {
+  //   getBannerAds();
 
-    super.initState();
-  }
+  //   super.initState();
+  // }
 
   @override
   void dispose() {

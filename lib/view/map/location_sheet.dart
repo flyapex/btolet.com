@@ -1,4 +1,5 @@
 import 'package:btolet/api/google_api.dart';
+import 'package:btolet/constants/colors.dart';
 import 'package:btolet/controller/location_controller.dart';
 import 'package:btolet/controller/user_controller.dart';
 import 'package:flutter/material.dart';
@@ -225,6 +226,7 @@ class _LocationSheetState extends State<LocationSheet>
                                             color:
                                                 Colors.black.withOpacity(0.4),
                                             overflow: TextOverflow.ellipsis,
+                                            fontFamily: 'Roboto',
                                           ),
                                         ),
                                       ),
@@ -254,6 +256,7 @@ class _LocationSheetState extends State<LocationSheet>
                                       style: TextStyle(
                                         fontWeight: FontWeight.w500,
                                         color: Colors.white,
+                                        fontSize: s3,
                                       ),
                                     ),
                                     style: ElevatedButton.styleFrom(
@@ -450,10 +453,12 @@ class _LocationSheetMapState extends State<LocationSheetMap> {
                                 hintText: locationController
                                     .locationAddressShort.value,
                                 border: const OutlineInputBorder(
-                                    borderSide: BorderSide.none),
+                                  borderSide: BorderSide.none,
+                                ),
                                 hintStyle: TextStyle(
                                   fontSize: 16,
                                   color: Colors.black.withOpacity(0.5),
+                                  fontFamily: 'Roboto',
                                 ),
                                 isDense: true,
                                 prefixIcon: Icon(
@@ -481,6 +486,11 @@ class _LocationSheetMapState extends State<LocationSheetMap> {
                                     locationController.searchController.clear();
                                   },
                                 ),
+                              ),
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black.withOpacity(0.5),
+                                fontFamily: 'Roboto',
                               ),
                               focusNode: focusNode,
                               cursorHeight: 22,
@@ -623,6 +633,7 @@ class LocationListTail extends StatelessWidget {
               location,
               style: TextStyle(
                 fontSize: 18,
+                fontFamily: 'Roboto',
                 color: Colors.black.withOpacity(0.5),
                 fontWeight: FontWeight.w400,
                 letterSpacing: 0.3,

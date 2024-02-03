@@ -26,7 +26,7 @@ class _LoginState extends State<Login> {
   void initState() {
     // getNofi();
     super.initState();
-    _controller = VideoPlayerController.asset("assets/video/1.mp4")
+    _controller = VideoPlayerController.asset("assets/video/3.mp4")
       ..initialize().then((value) {
         _controller.play();
         _controller.setLooping(true);

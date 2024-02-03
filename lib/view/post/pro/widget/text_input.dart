@@ -1,3 +1,4 @@
+import 'package:btolet/constants/colors.dart';
 import 'package:btolet/controller/property_controller.dart';
 import 'package:btolet/controller/user_controller.dart';
 import 'package:btolet/model/category.dart';
@@ -41,13 +42,13 @@ class _TextInputProState extends State<TextInputPro> {
     overflow: TextOverflow.ellipsis,
     color: Colors.black.withOpacity(0.5),
     height: 1.2,
-    fontSize: 16,
+    fontSize: s3,
     letterSpacing: 1.2,
   );
   var textstyleh = TextStyle(
     overflow: TextOverflow.ellipsis,
     height: 1.2,
-    fontSize: 15,
+    fontSize: s3,
     letterSpacing: 1.2,
     color: Colors.black.withOpacity(0.5),
   );
@@ -139,6 +140,7 @@ class _TextInputProState extends State<TextInputPro> {
           style: TextStyle(
             letterSpacing: 0.7,
             color: Colors.black.withOpacity(0.6),
+            fontSize: s3,
           ),
         ),
         const SizedBox(height: 15),
@@ -153,9 +155,9 @@ class _TextInputProState extends State<TextInputPro> {
           child: Row(
             children: [
               Expanded(
+                flex: 1,
                 child: SizedBox(
                   height: 48,
-                  // width: (Get.width / widget.widthh),
                   child: Focus(
                     onFocusChange: (val) {
                       setState(() {
@@ -192,6 +194,7 @@ class _TextInputProState extends State<TextInputPro> {
                               color: iconColorChange
                                   ? const Color(0xff0166EE)
                                   : Colors.amber,
+                              fontSize: widget.suffixtext == '৳' ? 15 : s3,
                             ),
                           ),
                           border: const OutlineInputBorder(

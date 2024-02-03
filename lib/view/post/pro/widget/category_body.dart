@@ -1,12 +1,13 @@
+import 'package:btolet/constants/colors.dart';
 import 'package:btolet/controller/property_controller.dart';
 import 'package:btolet/model/category.dart';
-import 'package:btolet/view/post/pro%20widget/dropdown.dart';
-import 'package:btolet/view/post/pro%20widget/fasalitis.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pattern_formatter/pattern_formatter.dart';
 
 import 'chips.dart';
+import 'dropdown.dart';
+import 'fasalitis.dart';
 import 'text_input.dart';
 
 class CategoryBodyPro extends StatefulWidget {
@@ -56,14 +57,26 @@ class _CategoryBodyProState extends State<CategoryBodyPro> {
               selected: proController.selectedBath,
               icon: Icons.bathtub_outlined,
             ),
+            PorChips(
+              title: 'Drawing  *',
+              options: bed,
+              selected: proController.selectedDrawing,
+              icon: Icons.chair_outlined,
+            ),
+            PorChips(
+              title: 'Dining *',
+              options: bath,
+              selected: proController.selectedDining,
+              icon: Icons.table_restaurant_outlined,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Expanded(
                   flex: 1,
                   child: DropDownPro(
-                    title: "Dining *",
-                    category: CategoryPro.dining,
+                    title: "Balcony *",
+                    category: CategoryPro.balcony,
                     widthh: 2.35,
                     topPadding: 20,
                   ),
@@ -143,10 +156,10 @@ class _CategoryBodyProState extends State<CategoryBodyPro> {
                   child: TextInputPro(
                     topPadding: space,
                     title: "Total Size *",
-                    textType: TextInputType.text,
-                    hintText: "12x12 or ft\u00b2",
-                    textlength: 15,
-                    suffixtext: "",
+                    textType: TextInputType.number,
+                    hintText: "2500 ft\u00b2",
+                    textlength: 5,
+                    suffixtext: "ft\u00b2",
                     controller: proController.totalSize,
                     // numberFormatter: ThousandsFormatter(),
                     widthh: 2.35,
@@ -171,16 +184,17 @@ class _CategoryBodyProState extends State<CategoryBodyPro> {
                 ),
               ],
             ),
+            const SizedBox(height: 20),
             PorChipsNotext(
               options: priceType,
               selected: proController.selectedPriceType,
             ),
             proController.selectedPriceType.value == priceType[0]
                 ? TextInputPro(
-                    topPadding: 20,
+                    topPadding: 10,
                     title: "Price *",
                     textType: TextInputType.number,
-                    hintText: "2,000,000 ৳",
+                    hintText: "2,000,000",
                     textlength: 500,
                     suffixtext: "৳",
                     controller: proController.price,
@@ -195,8 +209,10 @@ class _CategoryBodyProState extends State<CategoryBodyPro> {
               style: TextStyle(
                 letterSpacing: 0.7,
                 color: Colors.black.withOpacity(0.6),
+                fontSize: s3,
+                height: 1,
               ),
-            ),
+            ).paddingOnly(bottom: 2),
             PorChipsNotext(
               options: emi,
               selected: proController.selectedEMIType,
@@ -248,24 +264,25 @@ class _CategoryBodyProState extends State<CategoryBodyPro> {
               topPadding: space,
               title: "Road Size *",
               textType: TextInputType.number,
-              hintText: "20m",
+              hintText: "20 feet",
               textlength: 500,
-              suffixtext: "m",
+              suffixtext: "f",
               controller: proController.roadSize,
               numberFormatter: ThousandsFormatter(),
               widthh: 1.2,
               focusNode: proController.roadSizefocusNode,
             ),
+            const SizedBox(height: 20),
             PorChipsNotext(
               options: priceType,
               selected: proController.selectedPriceType,
             ),
             proController.selectedPriceType.value == priceType[0]
                 ? TextInputPro(
-                    topPadding: space,
+                    topPadding: 10,
                     title: "Price *",
                     textType: TextInputType.number,
-                    hintText: "2,000,000 ৳",
+                    hintText: "2,000,000",
                     textlength: 500,
                     suffixtext: "৳",
                     controller: proController.price,
@@ -274,6 +291,7 @@ class _CategoryBodyProState extends State<CategoryBodyPro> {
                     focusNode: proController.pricefocusNode,
                   )
                 : const SizedBox(),
+            // SizedBox(height: space),
           ],
         );
       }

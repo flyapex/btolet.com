@@ -1,3 +1,4 @@
+import 'package:btolet/constants/colors.dart';
 import 'package:btolet/controller/tolet_controller.dart';
 import 'package:btolet/controller/user_controller.dart';
 import 'package:flutter/cupertino.dart';
@@ -48,13 +49,13 @@ class _TextInputState extends State<TextInput> {
     overflow: TextOverflow.ellipsis,
     color: Colors.black.withOpacity(0.5),
     height: 1.2,
-    fontSize: 16,
+    fontSize: s3,
     letterSpacing: 1.2,
   );
   var textstyleh = TextStyle(
     overflow: TextOverflow.ellipsis,
     height: 1.2,
-    fontSize: 15,
+    fontSize: s3,
     letterSpacing: 1.2,
     color: Colors.black.withOpacity(0.5),
   );
@@ -98,6 +99,7 @@ class _TextInputState extends State<TextInput> {
           style: TextStyle(
             letterSpacing: 0.7,
             color: Colors.black.withOpacity(0.6),
+            fontSize: s3,
           ),
           overflow: TextOverflow.ellipsis,
         ),
@@ -164,6 +166,7 @@ class _TextInputState extends State<TextInput> {
                               color: iconColorChange
                                   ? const Color(0xff0166EE)
                                   : Colors.amber,
+                              fontSize: widget.suffixtext == '৳' ? 15 : s3,
                             ),
                           ),
                           border: const OutlineInputBorder(
@@ -256,6 +259,7 @@ class _DateTimeSelectState extends State<DateTimeSelect> {
           style: TextStyle(
             letterSpacing: 0.7,
             color: Colors.black.withOpacity(0.5),
+            fontSize: s3,
           ),
         ),
         const SizedBox(height: 15),
@@ -279,11 +283,12 @@ class _DateTimeSelectState extends State<DateTimeSelect> {
                 _chosenDateTime == null
                     ? Text(
                         DateFormat().add_MMMd().format(DateTime.now()),
+                        style: h3,
                       )
                     : Text(
                         DateFormat().add_MMMd().format(_chosenDateTime!),
                         style: const TextStyle(
-                          fontSize: 18,
+                          fontSize: s3,
                           color: Colors.black,
                         ),
                       ),

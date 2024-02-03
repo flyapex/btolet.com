@@ -42,11 +42,12 @@ class Location extends StatelessWidget {
                         width: Get.width / 1.5,
                         child: Text(
                           locationController.locationAddress.value,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 18,
-                            color: Colors.black,
+                            color: Colors.black.withOpacity(0.9),
                             letterSpacing: 0.1,
                             overflow: TextOverflow.ellipsis,
+                            fontFamily: 'Roboto',
                           ),
                         ),
                       ),

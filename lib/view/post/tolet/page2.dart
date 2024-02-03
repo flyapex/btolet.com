@@ -1,3 +1,4 @@
+import 'package:btolet/constants/colors.dart';
 import 'package:btolet/controller/tolet_controller.dart';
 import 'package:btolet/controller/user_controller.dart';
 import 'package:btolet/view/map/location_post.dart';
@@ -7,7 +8,7 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 import 'package:vibration/vibration.dart';
 
-import 'text_input.dart';
+import 'widget/text_input.dart';
 
 class PostTolet2 extends StatefulWidget {
   const PostTolet2({super.key});
@@ -59,7 +60,7 @@ class PostToletState1 extends State<PostTolet2> {
                       );
                     });
                   } else {
-                    toletController.checkAllCatagory();
+                    // toletController.checkAllCatagory();
                     // await userController.snakberSuccess('Missing Someting ✨!');
                   }
                 },
@@ -73,6 +74,7 @@ class PostToletState1 extends State<PostTolet2> {
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 1,
+                    fontSize: s4,
                   ),
                 ),
                 backgroundColor: Colors.blueAccent,
@@ -80,6 +82,9 @@ class PostToletState1 extends State<PostTolet2> {
             ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.only(left: 20, right: 20),
+        physics: const BouncingScrollPhysics(
+          parent: AlwaysScrollableScrollPhysics(),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -99,9 +104,9 @@ class PostToletState1 extends State<PostTolet2> {
             ),
             SizedBox(height: space),
             Text(
-              'Connect with others',
+              'Your Details',
               style: TextStyle(
-                fontSize: 14,
+                fontSize: s3,
                 letterSpacing: 1,
                 color: Colors.black.withOpacity(0.3),
               ),
@@ -177,7 +182,7 @@ class PostToletState1 extends State<PostTolet2> {
             NumberInput(
               topPadding: 15,
               bottomPadding: 6,
-              title: "Phone",
+              title: "Phone *",
               textType: TextInputType.number,
               hintText: '013XXXX',
               controller: userController.phonenumber,

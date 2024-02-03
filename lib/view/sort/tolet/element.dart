@@ -1,7 +1,10 @@
+import 'package:btolet/constants/colors.dart';
 import 'package:btolet/controller/tolet_controller.dart';
+import 'package:btolet/controller/user_controller.dart';
 import 'package:btolet/view/shimmer/shimmer.dart';
 import 'package:btolet/view/tolet/tolet.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 
@@ -23,6 +26,7 @@ class _SortButtonState extends State<SortButton> {
     return DefaultTextStyle(
       style: const TextStyle(
         color: Colors.black,
+        fontSize: s4,
       ),
       child: SizedBox(
         height: 40,
@@ -42,6 +46,8 @@ class _SortButtonState extends State<SortButton> {
                 categories[index],
                 style: TextStyle(
                   color: Colors.black.withOpacity(0.5),
+                  fontSize: s3,
+                  height: 0.5,
                 ),
               ),
               selected: isSelected[index],
@@ -106,41 +112,46 @@ class CategoryChipSort extends StatelessWidget {
     ToletController toletController = Get.find();
     return Obx(
       () {
-        return FilterChip(
-          showCheckmark: false,
-          label: Text(
-            category,
-            style: TextStyle(
-              color: Colors.black.withOpacity(0.5),
+        return SizedBox(
+          height: 45,
+          child: FilterChip(
+            showCheckmark: false,
+            label: Text(
+              category,
+              style: TextStyle(
+                height: 0.7,
+                color: Colors.black.withOpacity(0.5),
+                fontSize: s3,
+              ),
+            ).paddingOnly(bottom: 2),
+            selected: categoryState.value,
+            onSelected: (value) {
+              categoryState.value = !categoryState.value;
+              toletController.sortingPostCount();
+            },
+            avatar: Icon(
+              categoryState.value ? Icons.check_circle_rounded : Icons.add,
+              color: categoryState.value
+                  ? const Color(0xff0166EE)
+                  : const Color.fromARGB(255, 192, 194, 198),
             ),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)),
+            side: BorderSide(
+              color: toletController.activeFlag.value
+                  ? toletController.categoryFlag.value
+                      ? Colors.black.withOpacity(0.1)
+                      : Colors.red
+                  : categoryState.value
+                      ? const Color(0xff0166EE)
+                      : Colors.black.withOpacity(0.1),
+            ),
+            elevation: 0.3,
+            selectedShadowColor: Colors.black.withOpacity(0.5),
+            shadowColor: Colors.black.withOpacity(0.5),
+            backgroundColor: Colors.white,
+            selectedColor: Colors.white,
           ),
-          selected: categoryState.value,
-          onSelected: (value) {
-            categoryState.value = !categoryState.value;
-            toletController.sortingPostCount();
-          },
-          avatar: Icon(
-            categoryState.value ? Icons.check_circle_rounded : Icons.add,
-            color: categoryState.value
-                ? const Color(0xff0166EE)
-                : const Color.fromARGB(255, 192, 194, 198),
-          ),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-          side: BorderSide(
-            color: toletController.activeFlag.value
-                ? toletController.categoryFlag.value
-                    ? Colors.black.withOpacity(0.1)
-                    : Colors.red
-                : categoryState.value
-                    ? const Color(0xff0166EE)
-                    : Colors.black.withOpacity(0.1),
-          ),
-          elevation: 0.3,
-          selectedShadowColor: Colors.black.withOpacity(0.5),
-          shadowColor: Colors.black.withOpacity(0.5),
-          backgroundColor: Colors.white,
-          selectedColor: Colors.white,
         );
       },
     );
@@ -165,7 +176,7 @@ class FasalitisChipSort extends StatelessWidget {
     return Obx(
       () => FilterChip(
         showCheckmark: false,
-        label: Text(text),
+        label: Text(text, style: h3),
         selected: categoryState.value,
         onSelected: (value) {
           categoryState.value = !categoryState.value;
@@ -249,6 +260,9 @@ class SortPostListState extends State<SortPostList> {
           padding: const EdgeInsets.only(top: 0, left: 20, right: 20),
           child: SingleChildScrollView(
             controller: scrollController,
+            physics: const BouncingScrollPhysics(
+              parent: AlwaysScrollableScrollPhysics(),
+            ),
             child: Column(
               children: [
                 StreamBuilder(
@@ -298,6 +312,179 @@ class SortPostListState extends State<SortPostList> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class TextInputToletSort extends StatefulWidget {
+  final String title;
+  final int textlength;
+  final String hintText;
+  final String suffixtext;
+  final TextInputType textType;
+  final double topPadding;
+  final TextEditingController controller;
+  final TextInputFormatter? numberFormatter;
+  final double widthh;
+  final FocusNode focusNode;
+  const TextInputToletSort({
+    super.key,
+    required this.title,
+    required this.hintText,
+    required this.textType,
+    this.topPadding = 10,
+    required this.controller,
+    required this.suffixtext,
+    required this.textlength,
+    required this.widthh,
+    this.numberFormatter,
+    required this.focusNode,
+  });
+
+  @override
+  State<TextInputToletSort> createState() => _TextInputToletSortState();
+}
+
+class _TextInputToletSortState extends State<TextInputToletSort> {
+  ToletController toletController = Get.find();
+  UserController userController = Get.find();
+  var textstyle = TextStyle(
+    overflow: TextOverflow.ellipsis,
+    color: Colors.black.withOpacity(0.5),
+    height: 1.2,
+    fontSize: s3,
+    letterSpacing: 1.2,
+  );
+  var textstyleh = TextStyle(
+    overflow: TextOverflow.ellipsis,
+    height: 1.2,
+    fontSize: s3,
+    letterSpacing: 1.2,
+    color: Colors.black.withOpacity(0.5),
+  );
+  var iconColorChange = false;
+  getBorderColor() {
+    return Colors.white;
+  }
+
+  getFocus() {
+    final focusNodeMap = {
+      toletController.priceminfocusNode: toletController.pricemaxfocusNode,
+    };
+
+    final nextFocusNode = focusNodeMap[widget.focusNode];
+
+    if (nextFocusNode != null) {
+      FocusScope.of(context).requestFocus(nextFocusNode);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(height: widget.topPadding),
+        Text(
+          widget.title,
+          style: TextStyle(
+            fontSize: s3,
+            height: 0.7,
+            letterSpacing: 0.7,
+            color: Colors.black.withOpacity(0.6),
+          ),
+        ),
+        const SizedBox(height: 15),
+        Container(
+          decoration: BoxDecoration(
+            color: const Color(0xffF2F3F5),
+            borderRadius: BorderRadius.circular(6),
+            border: Border.all(
+              color: getBorderColor(),
+            ),
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: SizedBox(
+                  height: 48,
+                  // width: (Get.width / widget.widthh),
+                  child: Focus(
+                    onFocusChange: (val) {
+                      // if (val) {
+                      //   if (toletController.pricemin == widget.controller) {
+                      //     toletController.pricemin.text =
+                      //         toletController.rentmin.value.toString();
+                      //   } else if (toletController.pricemax ==
+                      //       widget.controller) {
+                      //     toletController.pricemax.text =
+                      //         toletController.rentmax.value.toString();
+                      //   }
+                      // }
+                      setState(() {
+                        val ? iconColorChange = true : iconColorChange = false;
+                      });
+                    },
+                    child: IntrinsicWidth(
+                      child: TextField(
+                        focusNode: widget.focusNode,
+                        // inputFormatters: [
+                        //   LengthLimitingTextInputFormatter(widget.titlelenth),
+                        // ],
+
+                        // inputFormatters: [ThousandsFormatter()],
+                        inputFormatters: [
+                          if (widget.numberFormatter != null)
+                            widget.numberFormatter!,
+                        ],
+                        maxLength: widget.textlength,
+                        cursorHeight: 24,
+                        cursorWidth: 1.8,
+                        cursorRadius: const Radius.circular(10),
+                        controller: widget.controller,
+                        textInputAction: TextInputAction.done,
+                        keyboardType: widget.textType,
+                        maxLines: 1,
+                        cursorColor: Colors.black,
+                        style: textstyle,
+                        decoration: InputDecoration(
+                          counterText: '',
+                          suffix: Text(
+                            widget.suffixtext,
+                            style: TextStyle(
+                              color: iconColorChange
+                                  ? const Color(0xff0166EE)
+                                  : Colors.amber,
+                              fontSize: widget.suffixtext == '৳' ? 15 : s3,
+                            ),
+                          ),
+                          border: const OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                          ),
+                          isDense: true,
+                          hintText: widget.hintText,
+                          hintStyle: textstyleh,
+                        ),
+                        onChanged: (val) {
+                          if (toletController.pricemin == widget.controller) {
+                            toletController.rentmin.value = val as int;
+                          } else if (toletController.pricemax ==
+                              widget.controller) {
+                            toletController.rentmax.value = val as int;
+                          }
+                        },
+                        onSubmitted: (v) {
+                          getFocus();
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

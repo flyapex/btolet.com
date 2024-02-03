@@ -4,6 +4,7 @@ import 'package:another_xlider/models/handler_animation.dart';
 import 'package:another_xlider/models/slider_step.dart';
 import 'package:another_xlider/models/tooltip/tooltip.dart';
 import 'package:another_xlider/models/trackbar.dart';
+import 'package:btolet/constants/colors.dart';
 import 'package:btolet/controller/property_controller.dart';
 import 'package:btolet/model/category.dart';
 import 'package:btolet/view/map/location_post.dart';
@@ -70,14 +71,14 @@ class _SortingProState extends State<SortingPro> {
                       child: Container(
                         height: 40,
                         margin: const EdgeInsets.only(left: 10, right: 10),
-                        child: const Center(
-                          child: Text(
+                        child: Center(
+                          child: const Text(
                             "Clear All",
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 16,
+                              fontSize: s3,
                             ),
-                          ),
+                          ).paddingOnly(bottom: 2),
                         ),
                       ),
                     ),
@@ -109,10 +110,10 @@ class _SortingProState extends State<SortingPro> {
                             "Show ${proController.totalResult}  Properties",
                             style: const TextStyle(
                               color: Colors.white,
-                              fontSize: 16,
+                              fontSize: s3,
                               overflow: TextOverflow.ellipsis,
                             ),
-                          ),
+                          ).paddingOnly(bottom: 2),
                         ),
                       ),
                     ),
@@ -136,21 +137,6 @@ class SortHere extends StatefulWidget {
 
 class _SortHereState extends State<SortHere> with TickerProviderStateMixin {
   ProController proController = Get.find();
-  double startval1 = 100000, endval1 = 10000000;
-  String priceText = "Any Price";
-  sliderText(startval1, endval1) {
-    setState(() {
-      if (startval1 == 100000 && endval1 == 10000000) {
-        priceText = "Any Price";
-      } else if (endval1 == 10000000) {
-        priceText =
-            '৳ ${NumberFormat.decimalPattern().format(startval1.toInt())} to ${NumberFormat.decimalPattern().format(endval1.toInt())}+/month';
-      } else {
-        priceText =
-            '৳ ${NumberFormat.decimalPattern().format(startval1.toInt())} to ${NumberFormat.decimalPattern().format(endval1.toInt())}/month';
-      }
-    });
-  }
 
   double categorySize = 117.0;
   @override
@@ -159,104 +145,158 @@ class _SortHereState extends State<SortHere> with TickerProviderStateMixin {
 
     return Scaffold(
       backgroundColor: Colors.white,
+      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 20, right: 20),
             child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics(),
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // const LocationSmall(),
                   const Location(),
-                  Center(
-                    child: FittedBox(
-                      child: Container(
-                        height: 32,
-                        padding: const EdgeInsets.only(left: 10, right: 10),
-                        decoration: BoxDecoration(
-                          color: Colors.orange,
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                        child: Center(
-                          child: Text(
-                            priceText,
-                            style: const TextStyle(
-                              fontSize: 20,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
+                  Obx(
+                    () => Column(
+                      children: [
+                        Center(
+                          child: FittedBox(
+                            child: Container(
+                              height: 32,
+                              padding:
+                                  const EdgeInsets.only(left: 10, right: 10),
+                              decoration: BoxDecoration(
+                                color: Colors.orange,
+                                borderRadius: BorderRadius.circular(100),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  proController.priceText.value,
+                                  style: const TextStyle(
+                                    fontSize: s1,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    height: 0.5,
+                                  ),
+                                ).paddingOnly(bottom: 2),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                  ),
-                  FlutterSlider(
-                    step: const FlutterSliderStep(step: 500),
-                    trackBar: FlutterSliderTrackBar(
-                      activeTrackBarHeight: 10,
-                      inactiveTrackBarHeight: 10,
-                      inactiveTrackBar: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        color: Colors.blueAccent.withOpacity(0.2),
-                      ),
-                      activeTrackBar: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: const Color(0xff537FE7),
-                      ),
-                    ),
-                    handler: FlutterSliderHandler(
-                      decoration: BoxDecoration(
-                        color: Colors.blueAccent,
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                      child: const Icon(
-                        Icons.circle,
-                        color: Colors.white,
-                        size: 18,
-                      ),
-                    ),
-                    rightHandler: FlutterSliderHandler(
-                      decoration: BoxDecoration(
-                        color: Colors.blueAccent,
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                      child: const Icon(
-                        Icons.circle,
-                        color: Colors.white,
-                        size: 18,
-                      ),
-                    ),
-                    handlerAnimation: const FlutterSliderHandlerAnimation(
-                      duration: Duration(milliseconds: 100),
-                    ),
-                    tooltip: FlutterSliderTooltip(disabled: true),
-                    handlerHeight: 28,
-                    handlerWidth: 28,
-                    values: [startval1, endval1],
-                    rangeSlider: true,
-                    max: 10000000,
-                    min: 100000,
-                    onDragging: (handlerIndex, lowerValue, upperValue) {
-                      setState(() {
-                        startval1 = lowerValue;
-                        endval1 = upperValue;
-                        sliderText(startval1, endval1);
+                        FlutterSlider(
+                          step: const FlutterSliderStep(step: 500),
+                          trackBar: FlutterSliderTrackBar(
+                            activeTrackBarHeight: 10,
+                            inactiveTrackBarHeight: 10,
+                            inactiveTrackBar: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: Colors.blueAccent.withOpacity(0.2),
+                            ),
+                            activeTrackBar: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: const Color(0xff537FE7),
+                            ),
+                          ),
+                          handler: FlutterSliderHandler(
+                            decoration: BoxDecoration(
+                              color: Colors.blueAccent,
+                              borderRadius: BorderRadius.circular(100),
+                            ),
+                            child: const Icon(
+                              Icons.circle,
+                              color: Colors.white,
+                              size: 18,
+                            ),
+                          ),
+                          rightHandler: FlutterSliderHandler(
+                            decoration: BoxDecoration(
+                              color: Colors.blueAccent,
+                              borderRadius: BorderRadius.circular(100),
+                            ),
+                            child: const Icon(
+                              Icons.circle,
+                              color: Colors.white,
+                              size: 18,
+                            ),
+                          ),
+                          handlerAnimation: const FlutterSliderHandlerAnimation(
+                            duration: Duration(milliseconds: 100),
+                          ),
+                          tooltip: FlutterSliderTooltip(disabled: true),
+                          handlerHeight: 28,
+                          handlerWidth: 28,
+                          values: [
+                            proController.startval1.value,
+                            proController.endval1.value
+                          ],
+                          rangeSlider: true,
+                          max: 10000000,
+                          min: 100000,
+                          onDragging: (handlerIndex, lowerValue, upperValue) {
+                            proController.startval1.value = lowerValue;
+                            proController.endval1.value = upperValue;
 
-                        proController.rentmin.value = startval1.toInt();
-                        proController.rentmax.value = endval1.toInt();
-                      });
-                    },
-                    onDragCompleted: (handlerIndex, lowerValue, upperValue) {
-                      proController.sortingPostCount();
-                    },
+                            proController.rentmin.value = lowerValue.toInt();
+                            proController.rentmax.value = upperValue.toInt();
+                            // proController.pricemin.text = lowerValue.toInt();
+                            // proController.pricemax.text = upperValue.toInt();
+                            if (lowerValue == 100000 &&
+                                upperValue == 10000000) {
+                              proController.priceText.value = "Any Price";
+                            } else if (upperValue == 10000000) {
+                              proController.priceText.value =
+                                  'BDT ${NumberFormat.decimalPattern().format(lowerValue.toInt())} to ${NumberFormat.decimalPattern().format(upperValue.toInt())}+/month';
+                            } else {
+                              proController.priceText.value =
+                                  'BDT ${NumberFormat.decimalPattern().format(lowerValue.toInt())} to ${NumberFormat.decimalPattern().format(upperValue.toInt())}/month';
+                            }
+                          },
+                          onDragCompleted:
+                              (handlerIndex, lowerValue, upperValue) {
+                            proController.sortingPostCount();
+                          },
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: TextInputProSort(
+                                topPadding: 0,
+                                title: "min",
+                                textType: TextInputType.number,
+                                hintText:
+                                    proController.rentmin.value.toString(),
+                                textlength: 500,
+                                suffixtext: "৳",
+                                controller: proController.pricemin,
+                                widthh: 2.35 / 2,
+                                focusNode: proController.priceminfocusNode,
+                              ),
+                            ),
+                            const SizedBox(width: 20),
+                            Expanded(
+                              flex: 1,
+                              child: TextInputProSort(
+                                topPadding: 0,
+                                title: "max",
+                                textType: TextInputType.number,
+                                hintText:
+                                    proController.rentmax.value.toString(),
+                                textlength: 500,
+                                suffixtext: "৳",
+                                controller: proController.pricemax,
+                                widthh: 2.35 / 2,
+                                focusNode: proController.pricemaxfocusNode,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                  // Text(
-                  //   'Category',
-                  //   style: TextStyle(
-                  //     color: Colors.black.withOpacity(0.5),
-                  //   ),
-                  // ),
                   const SizedBox(height: 20),
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
@@ -292,6 +332,8 @@ class _SortHereState extends State<SortHere> with TickerProviderStateMixin {
                         'Beds',
                         style: TextStyle(
                           color: Colors.black.withOpacity(0.7),
+                          fontSize: s3,
+                          height: 0.5,
                         ),
                       ),
                     ],
@@ -310,54 +352,22 @@ class _SortHereState extends State<SortHere> with TickerProviderStateMixin {
                         'Baths',
                         style: TextStyle(
                           color: Colors.black.withOpacity(0.7),
+                          fontSize: s3,
+                          height: 0.5,
                         ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 20),
                   const SortButtonPro(type: 2), // 2 for bath
-                  // const SizedBox(height: 20),
-                  // Row(
-                  //   children: [
-                  //     Icon(
-                  //       Icons.kitchen_outlined,
-                  //       color: Colors.black.withOpacity(0.7),
-                  //     ),
-                  //     const SizedBox(width: 10),
-                  //     Text(
-                  //       'kitchen',
-                  //       style: TextStyle(
-                  //         color: Colors.black.withOpacity(0.7),
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
-                  // const SizedBox(height: 20),
-                  // const SortButtonPro(type: 3), // 3 for kitchen
-                  // const SizedBox(height: 20),
-                  // Row(
-                  //   children: [
-                  //     Icon(
-                  //       Icons.dining_outlined,
-                  //       color: Colors.black.withOpacity(0.7),
-                  //     ),
-                  //     const SizedBox(width: 10),
-                  //     Text(
-                  //       'Dining',
-                  //       style: TextStyle(
-                  //         color: Colors.black.withOpacity(0.7),
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
-                  // const SizedBox(height: 20),
-                  // const SortButtonPro(type: 4), // 4 for Dining
-
                   const SizedBox(height: 30),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text('Aminities'),
+                      Text(
+                        'Amenities',
+                        style: h3,
+                      ),
                       Obx(
                         () {
                           final trueAmenitiesCount = proController
@@ -376,9 +386,11 @@ class _SortHereState extends State<SortHere> with TickerProviderStateMixin {
                                   child: Text(
                                     '$trueAmenitiesCount selected',
                                     style: const TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w500),
-                                  ),
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: s3,
+                                    ),
+                                  ).paddingOnly(bottom: 2),
                                 )
                               : const SizedBox();
                         },

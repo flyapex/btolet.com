@@ -1,18 +1,9 @@
+import 'package:btolet/constants/colors.dart';
 import 'package:btolet/controller/tolet_controller.dart';
 import 'package:btolet/model/category.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
-
-enum Category {
-  bedrooms,
-  bathrooms,
-  dining,
-  kitchen,
-  floorno,
-  facing,
-  garage,
-}
 
 class DropDown extends StatefulWidget {
   final String title;
@@ -38,14 +29,14 @@ class _DropDownState extends State<DropDown> {
   var textstylemain = TextStyle(
     overflow: TextOverflow.ellipsis,
     height: 1.2,
-    fontSize: 15,
+    fontSize: s3,
     letterSpacing: 1.2,
     color: Colors.black.withOpacity(0.7),
   );
   var textstyleh = TextStyle(
     overflow: TextOverflow.ellipsis,
     height: 1.2,
-    fontSize: 15,
+    fontSize: s3,
     letterSpacing: 1.2,
     color: Colors.black.withOpacity(0.6),
   );
@@ -54,39 +45,7 @@ class _DropDownState extends State<DropDown> {
   Widget build(BuildContext context) {
     final List<String> categoryValues = categoryData[widget.category] ?? [];
     getBorderColor() {
-      if (widget.category == Category.bedrooms) {
-        return toletController.activeFlag.value
-            ? toletController.bedFlag.value
-                ? Colors.white
-                : Colors.red
-            : Colors.white;
-      } else if (widget.category == Category.bathrooms) {
-        return toletController.activeFlag.value
-            ? toletController.bathFlag.value
-                ? Colors.white
-                : Colors.red
-            : Colors.white;
-      } else if (widget.category == Category.kitchen) {
-        return toletController.activeFlag.value
-            ? toletController.kitchenFlag.value
-                ? Colors.white
-                : Colors.red
-            : Colors.white;
-      } else if (widget.category == Category.floorno) {
-        return toletController.activeFlag.value
-            ? toletController.floornoFlag.value
-                ? Colors.white
-                : Colors.red
-            : Colors.white;
-      } else if (widget.category == Category.garage) {
-        return toletController.activeFlag.value
-            ? toletController.garageFlag.value
-                ? Colors.white
-                : Colors.red
-            : Colors.white;
-      } else {
-        return Colors.white;
-      }
+      return Colors.white;
     }
 
     return Obx(() {
@@ -99,6 +58,7 @@ class _DropDownState extends State<DropDown> {
             style: TextStyle(
               letterSpacing: 0.7,
               color: Colors.black.withOpacity(0.5),
+              fontSize: s3,
             ),
           ),
           const SizedBox(height: 15),
@@ -133,7 +93,10 @@ class _DropDownState extends State<DropDown> {
                     items: categoryValues.map((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
-                        child: Text(value),
+                        child: Text(
+                          value,
+                          style: h3,
+                        ),
                       );
                     }).toList(),
                     onChanged: (val) {

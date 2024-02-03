@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:btolet/api/api_property.dart';
+import 'package:btolet/constants/colors.dart';
 import 'package:btolet/controller/location_controller.dart';
 import 'package:btolet/controller/property_controller.dart';
 import 'package:btolet/controller/user_controller.dart';
@@ -214,7 +215,7 @@ class _SinglePostProState extends State<SinglePostPro>
     await markers.addLabelMarker(
       LabelMarker(
         label: postData.price == 0
-            ? "call for price"
+            ? "price on call"
             : "৳ ${userController.currency(postData.price)}",
         // label: data.rent.toString(),
         markerId: MarkerId(postData.pid.toString()),
@@ -234,6 +235,254 @@ class _SinglePostProState extends State<SinglePostPro>
 
   UserController userController = Get.find();
 
+  getCategory() {
+    var space = 20.0;
+
+    if (postData.category == category[0] || postData.category == category[1]) {
+      return Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            color: Colors.black.withOpacity(0.3),
+          ),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                DetailsCircle(
+                  icon: 'assets/icons/property/bed.svg',
+                  title: 'Beds',
+                  subtitle: postData.bed,
+                  iconheight: 32,
+                  iconwidth: 32,
+                ),
+                DetailsCircle(
+                  icon: 'assets/icons/property/bath.svg',
+                  title: 'Baths',
+                  subtitle: postData.bath,
+                  iconheight: 31,
+                  iconwidth: 31,
+                ),
+                DetailsCircle(
+                  icon: 'assets/icons/property/kitchen.svg',
+                  title: 'Kitchen',
+                  subtitle: postData.kitchen,
+                  iconheight: 30,
+                  iconwidth: 30,
+                ),
+                DetailsCircle(
+                  icon: 'assets/icons/property/dining.svg',
+                  title: 'Dining',
+                  subtitle: postData.dining,
+                  iconheight: 34,
+                  iconwidth: 34,
+                ),
+              ],
+            ),
+            SizedBox(height: space),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                DetailsCircle(
+                  icon: 'assets/icons/property/drawing.svg',
+                  title: 'Drawing',
+                  subtitle: postData.drawing,
+                  iconheight: 28,
+                  iconwidth: 28,
+                ),
+                DetailsCircle(
+                  icon: 'assets/icons/property/balcony.svg',
+                  title: 'Balcony',
+                  subtitle: postData.balcony,
+                  iconheight: 30,
+                  iconwidth: 30,
+                ),
+                DetailsCircle(
+                  icon: 'assets/icons/property/size.svg',
+                  title: 'Size',
+                  subtitle: postData.size,
+                  iconheight: 29,
+                  iconwidth: 29,
+                ),
+                DetailsCircle(
+                  icon: 'assets/icons/property/window.svg',
+                  title: 'Facing',
+                  subtitle: postData.facing,
+                  iconheight: 30,
+                  iconwidth: 30,
+                ),
+              ],
+            ),
+            SizedBox(height: space),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                DetailsCircle(
+                  icon: 'assets/icons/property/floor.svg',
+                  title: 'Total Floor',
+                  subtitle: postData.totalFloor,
+                  iconheight: 28,
+                  iconwidth: 28,
+                ),
+                DetailsCircle(
+                  icon: 'assets/icons/property/floorno.svg',
+                  title: 'Floor No.',
+                  subtitle: postData.floornumber, //3rd
+                  iconheight: 28,
+                  iconwidth: 28,
+                ),
+                DetailsCircle(
+                  icon: 'assets/icons/property/floorplan.svg',
+                  title: 'Total Unit',
+                  subtitle: postData.totalUnit,
+                  iconheight: 25,
+                  iconwidth: 25,
+                ),
+                DetailsCircle(
+                  icon: 'assets/icons/property/emi.svg',
+                  title: 'EMI',
+                  subtitle: postData.emi,
+                  iconheight: 30,
+                  iconwidth: 30,
+                ),
+
+                // DetailsCircle(
+                //   icon:
+                //       'assets/icons/property/new.svg',
+                //   title: 'Condition',
+                //   subtitle: postData.procondition,
+                //   iconheight: 30,
+                //   iconwidth: 30,
+                // ),
+                // DetailsCircle(
+                //   icon:
+                //       'assets/icons/property/users.svg',
+                //   title: 'Posted by',
+                //   subtitle: postData.ownertype,
+                //   iconheight: 28,
+                //   iconwidth: 28,
+                // ),
+              ],
+            ),
+            const SizedBox(height: 10),
+          ],
+        ),
+      );
+    } else {
+      return Column(
+        children: [
+          Row(
+            children: List.generate(
+              json.decode(postData.landType).length,
+              (index) => Expanded(
+                flex: 1,
+                child: Container(
+                  height: 36,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(
+                      100,
+                    ),
+                    border: Border.all(
+                      color: Colors.blueAccent,
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Feather.check,
+                        color: Colors.black45,
+                        size: 18,
+                      ),
+                      const SizedBox(width: 4),
+                      Flexible(
+                        child: Text(
+                          json.decode(postData.landType)[index],
+                          style: TextStyle(
+                            fontSize: s3,
+                            color: Colors.black.withOpacity(0.5),
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ).expand((widget) => [widget, const SizedBox(width: 5)]).toList()
+              ..removeLast(),
+          ),
+          const SizedBox(height: 20),
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: Colors.grey.withOpacity(
+                  0.3,
+                ),
+              ),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    DetailsCircle(
+                      icon: 'assets/icons/property/area.svg',
+                      title: postData.area,
+                      subtitle: postData.measurement,
+                      iconheight: 32,
+                      iconwidth: 32,
+                      fontflag: false,
+                    ),
+                    DetailsCircle(
+                      icon: 'assets/icons/property/road.svg',
+                      title: "Rode size",
+                      subtitle: postData.roadSize,
+                      iconheight: 32,
+                      iconwidth: 32,
+                      fontflag: false,
+                    ),
+                    // DetailsCircle(
+                    //   icon:
+                    //       'assets/icons/property/users.svg',
+                    //   title: 'Posted by',
+                    //   subtitle:
+                    //       postData.ownertype,
+                    //   iconheight: 28,
+                    //   iconwidth: 28,
+                    //   fontflag: false,
+                    // ),
+                    // DetailsCircle(
+                    //   icon:
+                    //       'assets/icons/property/users.svg',
+                    //   title: 'Posted by',
+                    //   subtitle: postData.landType,
+                    //   iconheight: 28,
+                    //   iconwidth: 28,
+                    // ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+              ],
+            ),
+          ),
+        ],
+      );
+    }
+  }
+
   var height = Get.height;
   var width = Get.width;
   @override
@@ -244,173 +493,10 @@ class _SinglePostProState extends State<SinglePostPro>
       () => proController.singlePostloding.value
           ? const SinglePostShimmer() //! Work here
           : Scaffold(
-              // floatingActionButtonLocation:
-              //     FloatingActionButtonLocation.centerDocked,
-              // floatingActionButton: Container(
-              //   height: 70,
-              //   width: width,
-              //   color: Colors.white,
-              //   child: Column(
-              //     children: [
-              //       const SizedBox(height: 15),
-              //       Row(
-              //         children: [
-              //           SizedBox(width: space),
-              //           Expanded(
-              //             flex: 1,
-              //             child: InkWell(
-              //               onTap: () async {
-              //                 final call = Uri.parse('tel:${postData.phone}');
-              //                 if (await canLaunchUrl(call)) {
-              //                   launchUrl(call);
-              //                 } else {
-              //                   throw 'Could not launch $call';
-              //                 }
-              //               },
-              //               child: Container(
-              //                 height: 44,
-              //                 decoration: BoxDecoration(
-              //                   // color: Colors.deepOrange,
-              //                   color: const Color(0xffF36251),
-              //                   borderRadius: BorderRadius.circular(6),
-              //                 ),
-              //                 // ignore: prefer__ructors
-              //                 child: const Row(
-              //                   mainAxisAlignment: MainAxisAlignment.center,
-              //                   children: [
-              //                     Icon(
-              //                       Icons.call,
-              //                       color: Colors.white,
-              //                       size: 26,
-              //                     ),
-              //                     SizedBox(width: 5),
-              //                     Text(
-              //                       'CALL',
-              //                       style: TextStyle(
-              //                         fontSize: 16,
-              //                         color: Colors.white,
-              //                       ),
-              //                     ),
-              //                   ],
-              //                 ),
-              //               ),
-              //             ),
-              //           ),
-              //           const SizedBox(width: 10),
-              //           Expanded(
-              //             flex: 1,
-              //             child: InkWell(
-              //               onTap: () async {
-              //                 var uri = Uri.parse(
-              //                     'sms:${postData.phone}?body=hello%20there');
-              //                 if (await canLaunchUrl(uri)) {
-              //                   await launchUrl(uri);
-              //                 } else {
-              //                   if (await canLaunchUrl(uri)) {
-              //                     await launchUrl(uri);
-              //                   } else {
-              //                     throw 'Could not launch $uri';
-              //                   }
-              //                 }
-              //               },
-              //               child: Container(
-              //                 height: 44,
-              //                 decoration: BoxDecoration(
-              //                   // color: Colors.blueAccent,
-              //                   color: Colors.blue,
-              //                   // color:  Color(0xff27D468),
-              //                   borderRadius: BorderRadius.circular(6),
-              //                 ),
-              //                 child: Row(
-              //                   mainAxisAlignment: MainAxisAlignment.center,
-              //                   children: [
-              //                     SizedBox(
-              //                       height: 23,
-              //                       width: 23,
-              //                       child: Center(
-              //                         child: SvgPicture.asset(
-              //                           'assets/icons/home/message.svg',
-              //                           colorFilter: const ColorFilter.mode(
-              //                             Colors.white,
-              //                             BlendMode.srcIn,
-              //                           ),
-              //                         ),
-              //                       ),
-              //                     ),
-              //                     const SizedBox(width: 10),
-              //                     const Text(
-              //                       'SMS',
-              //                       style: TextStyle(
-              //                         fontSize: 16,
-              //                         color: Colors.white,
-              //                       ),
-              //                     ),
-              //                   ],
-              //                 ),
-              //               ),
-              //             ),
-              //           ),
-              //           const SizedBox(width: 10),
-              //           Expanded(
-              //             flex: 2,
-              //             child: InkWell(
-              //               onTap: () async {
-              //                 String appUrl;
-              //                 String phone = postData.wapp;
-              //                 String message = 'Surprice Bitch! ';
-              //                 if (Platform.isAndroid) {
-              //                   appUrl =
-              //                       "whatsapp://send?phone=$phone&text=${Uri.parse(message)}";
-              //                 } else {
-              //                   appUrl =
-              //                       "https://api.whatsapp.com/send?phone=$phone=${Uri.parse(message)}"; // URL for non-Android devices
-              //                 }
-
-              //                 if (await canLaunchUrl(Uri.parse(appUrl))) {
-              //                   await launchUrl(Uri.parse(appUrl));
-              //                 } else {
-              //                   throw 'Could not launch $appUrl';
-              //                 }
-              //               },
-              //               child: Container(
-              //                 height: 44,
-              //                 decoration: BoxDecoration(
-              //                   color: const Color(0xff27D468),
-              //                   borderRadius: BorderRadius.circular(6),
-              //                 ),
-              //                 child: Row(
-              //                   mainAxisAlignment: MainAxisAlignment.center,
-              //                   children: [
-              //                     SizedBox(
-              //                       height: 30,
-              //                       width: 30,
-              //                       child: SvgPicture.asset(
-              //                         'assets/icons/home/wapp.svg',
-              //                         height: 10,
-              //                         width: 22,
-              //                       ),
-              //                     ),
-              //                     const SizedBox(width: 10),
-              //                     const Text(
-              //                       'WhatsApp',
-              //                       style: TextStyle(
-              //                         fontSize: 16,
-              //                         color: Colors.white,
-              //                       ),
-              //                     ),
-              //                   ],
-              //                 ),
-              //               ),
-              //             ),
-              //           ),
-              //           SizedBox(width: space),
-              //         ],
-              //       ),
-              //     ],
-              //   ),
-              // ),
-
               body: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(
+                  parent: AlwaysScrollableScrollPhysics(),
+                ),
                 controller: _controller,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -495,11 +581,6 @@ class _SinglePostProState extends State<SinglePostPro>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(height: space),
-                        // Padding(
-                        //   padding:  EdgeInsets.only(left: 20, right: 20),
-                        //   child: Column(
-                        //     crossAxisAlignment: CrossAxisAlignment.center,
-                        //     children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -508,9 +589,9 @@ class _SinglePostProState extends State<SinglePostPro>
                                 padding: const EdgeInsets.only(left: 20),
                                 child: postData.price == 0
                                     ? const Text(
-                                        'Call For Price',
+                                        'Price On Call',
                                         style: TextStyle(
-                                          fontSize: 24,
+                                          fontSize: s1,
                                           color: Colors.black,
                                         ),
                                       )
@@ -519,23 +600,26 @@ class _SinglePostProState extends State<SinglePostPro>
                                         //   singlepost.price,
                                         //   '৳',
                                         // ),
-                                        "BDT ${userController.currency(postData.price)} ",
+                                        "${userController.currency(postData.price)} BDT",
                                         // "${NumberFormat.decimalPattern().format(singlepost.price)} BDT",
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           fontSize: 28,
-                                          color: Color(0xff083437),
+                                          color: const Color(0xff083437)
+                                              .withOpacity(0.8),
                                           fontWeight: FontWeight.w500,
                                           overflow: TextOverflow.ellipsis,
+                                          fontFamily: 'Roboto',
                                         ),
                                       ),
                               ),
                             ),
                             InkWell(
-                              child: const Padding(
-                                padding: EdgeInsets.only(right: 20),
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 20),
                                 child: Icon(
                                   Feather.share_2,
-                                  color: Color(0xff083437),
+                                  color:
+                                      const Color(0xff083437).withOpacity(0.8),
                                   size: 22,
                                 ),
                               ),
@@ -543,7 +627,6 @@ class _SinglePostProState extends State<SinglePostPro>
                             ),
                           ],
                         ),
-
                         SizedBox(height: space),
                         Padding(
                           padding: const EdgeInsets.only(left: 20, right: 20),
@@ -612,7 +695,7 @@ class _SinglePostProState extends State<SinglePostPro>
                               Text(
                                 '${userController.getDay(postData.time)}',
                                 style: const TextStyle(
-                                  fontSize: 12,
+                                  fontSize: s4,
                                   color: Color(0xff083437),
                                   fontWeight: FontWeight.normal,
                                   overflow: TextOverflow.ellipsis,
@@ -622,271 +705,14 @@ class _SinglePostProState extends State<SinglePostPro>
                             ],
                           ),
                         ),
-
                         Padding(
                           padding: const EdgeInsets.only(left: 20, right: 20),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               SizedBox(height: space),
-                              postData.category == category[2] ||
-                                      postData.category == category[3]
-                                  ? Column(
-                                      children: [
-                                        Row(
-                                          children: List.generate(
-                                            json
-                                                .decode(postData.landType)
-                                                .length,
-                                            (index) => Expanded(
-                                              flex: 1,
-                                              child: Container(
-                                                height: 36,
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                    100,
-                                                  ),
-                                                  border: Border.all(
-                                                    color: Colors.blueAccent,
-                                                  ),
-                                                ),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    const Icon(
-                                                      Feather.check,
-                                                      color: Colors.black45,
-                                                      size: 18,
-                                                    ),
-                                                    const SizedBox(width: 4),
-                                                    Flexible(
-                                                      child: Text(
-                                                        json.decode(postData
-                                                            .landType)[index],
-                                                        style: TextStyle(
-                                                          fontSize: 14,
-                                                          color: Colors.black
-                                                              .withOpacity(0.5),
-                                                        ),
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        maxLines: 1,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          )
-                                              .expand((widget) => [
-                                                    widget,
-                                                    const SizedBox(width: 5)
-                                                  ])
-                                              .toList()
-                                            ..removeLast(),
-                                        ),
-                                        const SizedBox(height: 20),
-                                        Container(
-                                          padding: const EdgeInsets.all(10),
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            border: Border.all(
-                                              color: Colors.grey.withOpacity(
-                                                0.3,
-                                              ),
-                                            ),
-                                          ),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              const SizedBox(height: 10),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceEvenly,
-                                                children: [
-                                                  DetailsCircle(
-                                                    icon:
-                                                        'assets/icons/property/area.svg',
-                                                    title: postData.area,
-                                                    subtitle:
-                                                        postData.measurement,
-                                                    iconheight: 32,
-                                                    iconwidth: 32,
-                                                  ),
-                                                  DetailsCircle(
-                                                    icon:
-                                                        'assets/icons/property/road.svg',
-                                                    title: "Rode size",
-                                                    subtitle: postData.roadSize,
-                                                    iconheight: 32,
-                                                    iconwidth: 32,
-                                                  ),
-                                                  DetailsCircle(
-                                                    icon:
-                                                        'assets/icons/property/users.svg',
-                                                    title: 'Posted by',
-                                                    subtitle:
-                                                        postData.ownertype,
-                                                    iconheight: 28,
-                                                    iconwidth: 28,
-                                                  ),
-                                                  // DetailsCircle(
-                                                  //   icon:
-                                                  //       'assets/icons/property/users.svg',
-                                                  //   title: 'Posted by',
-                                                  //   subtitle: postData.landType,
-                                                  //   iconheight: 28,
-                                                  //   iconwidth: 28,
-                                                  // ),
-                                                ],
-                                              ),
-                                              const SizedBox(height: 10),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  : Container(
-                                      padding: const EdgeInsets.all(10),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(10),
-                                        border: Border.all(
-                                          color: Colors.black.withOpacity(0.3),
-                                        ),
-                                      ),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          const SizedBox(height: 10),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              DetailsCircle(
-                                                icon:
-                                                    'assets/icons/property/bed.svg',
-                                                title: 'Beds',
-                                                subtitle: postData.bed,
-                                                iconheight: 32,
-                                                iconwidth: 32,
-                                              ),
-                                              DetailsCircle(
-                                                icon:
-                                                    'assets/icons/property/bath.svg',
-                                                title: 'Baths',
-                                                subtitle: postData.bath,
-                                                iconheight: 31,
-                                                iconwidth: 31,
-                                              ),
-                                              DetailsCircle(
-                                                icon:
-                                                    'assets/icons/property/kitchen.svg',
-                                                title: 'Kitchen',
-                                                subtitle: postData.kitchen,
-                                                iconheight: 30,
-                                                iconwidth: 30,
-                                              ),
-                                              DetailsCircle(
-                                                icon:
-                                                    'assets/icons/property/dining.svg',
-                                                title: 'Dining',
-                                                subtitle: postData.dining,
-                                                iconheight: 34,
-                                                iconwidth: 34,
-                                              ),
-                                            ],
-                                          ),
-                                          SizedBox(height: space),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              DetailsCircle(
-                                                icon:
-                                                    'assets/icons/property/size.svg',
-                                                title: 'Size',
-                                                subtitle: postData.size,
-                                                iconheight: 29,
-                                                iconwidth: 29,
-                                              ),
-                                              DetailsCircle(
-                                                icon:
-                                                    'assets/icons/property/window.svg',
-                                                title: 'Facing',
-                                                subtitle: postData.facing,
-                                                iconheight: 30,
-                                                iconwidth: 30,
-                                              ),
-                                              DetailsCircle(
-                                                icon:
-                                                    'assets/icons/property/floor.svg',
-                                                title: 'Total Floor',
-                                                subtitle: postData.totalFloor,
-                                                iconheight: 28,
-                                                iconwidth: 28,
-                                              ),
-                                              DetailsCircle(
-                                                icon:
-                                                    'assets/icons/property/floorno.svg',
-                                                title: 'Floor No.',
-                                                subtitle:
-                                                    postData.floornumber, //3rd
-                                                iconheight: 28,
-                                                iconwidth: 28,
-                                              ),
-                                            ],
-                                          ),
-                                          SizedBox(height: space),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              DetailsCircle(
-                                                icon:
-                                                    'assets/icons/property/floorplan.svg',
-                                                title: 'Total Unit',
-                                                subtitle: postData.totalUnit,
-                                                iconheight: 25,
-                                                iconwidth: 25,
-                                              ),
-                                              DetailsCircle(
-                                                icon:
-                                                    'assets/icons/property/emi.svg',
-                                                title: 'EMI',
-                                                subtitle: postData.emi,
-                                                iconheight: 30,
-                                                iconwidth: 30,
-                                              ),
-                                              DetailsCircle(
-                                                icon:
-                                                    'assets/icons/property/new.svg',
-                                                title: 'Condition',
-                                                subtitle: postData.procondition,
-                                                iconheight: 30,
-                                                iconwidth: 30,
-                                              ),
-                                              DetailsCircle(
-                                                icon:
-                                                    'assets/icons/property/users.svg',
-                                                title: 'Posted by',
-                                                subtitle: postData.ownertype,
-                                                iconheight: 28,
-                                                iconwidth: 28,
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(height: 10),
-                                        ],
-                                      ),
-                                    ),
+                              getCategory(),
+
                               postData.category == category[0] ||
                                       postData.category == category[1]
                                   ? const SizedBox()
@@ -902,6 +728,21 @@ class _SinglePostProState extends State<SinglePostPro>
                               ),
                               const SizedBox(height: 10),
                               Details(
+                                type: "Property Name",
+                                detailstext: postData.name,
+                                icon: Icons.home_outlined,
+                              ),
+                              Details(
+                                type: "Type",
+                                detailstext: postData.category,
+                                icon: Icons.home_work_outlined,
+                              ),
+                              Details(
+                                type: "Condition",
+                                detailstext: postData.procondition,
+                                icon: Icons.build_circle_outlined,
+                              ),
+                              Details(
                                 type: "Available From",
                                 detailstext: DateFormat('d MMM')
                                     .format(postData.sellfrom),
@@ -912,11 +753,84 @@ class _SinglePostProState extends State<SinglePostPro>
                                 detailstext: postData.shortaddress,
                                 icon: Icons.share_location_rounded,
                               ),
+                              Details(
+                                type: "Posted By",
+                                detailstext: postData.ownertype,
+                                icon: Feather.user,
+                              ),
+
+                              postData.floorPlan == ""
+                                  ? const SizedBox()
+                                  : SizedBox(height: space),
+                              postData.floorPlan == ""
+                                  ? const SizedBox()
+                                  : Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(
+                                            color: Colors.blueAccent),
+                                      ),
+                                      child: ExpandablePanel(
+                                        header: Container(
+                                          padding: const EdgeInsets.only(
+                                            top: 10,
+                                            left: 10,
+                                            bottom: 10,
+                                          ),
+                                          child: const Text(
+                                            'Floor Plan',
+                                            style: TextStyle(
+                                              fontSize: s2,
+                                              height: 0.8,
+                                              color: Colors.black,
+                                            ),
+                                          ).paddingOnly(bottom: 2),
+                                        ),
+                                        collapsed: const SizedBox(),
+                                        expanded: Container(
+                                          height: 300,
+                                          width: width,
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            image: DecorationImage(
+                                              image: MemoryImage(
+                                                base64Decode(
+                                                  postData.floorPlan,
+                                                ),
+                                              ),
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                              SizedBox(height: space),
+                              postData.ytVideo == ""
+                                  ? const SizedBox()
+                                  : Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const Text(
+                                          'Video',
+                                          style: TextStyle(
+                                            fontSize: s3,
+                                            color: Colors.black,
+                                            // fontStyle: FontStyle.italic,
+                                          ),
+                                        ),
+                                        SizedBox(height: space),
+                                        YoutubeVideo(
+                                          videoUrl: postData.ytVideo,
+                                        ),
+                                      ],
+                                    ),
                               SizedBox(height: space),
                               const Text(
-                                'Facilities',
+                                'Amenities',
                                 style: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: s1,
+                                  height: 0.7,
                                   color: Colors.black54,
                                 ),
                               ),
@@ -1007,122 +921,6 @@ class _SinglePostProState extends State<SinglePostPro>
                                 ),
                               ),
 
-                              // Text(
-                              //   'Text Here',
-                              //   style: TextStyle(
-                              //     fontSize: 18,
-                              //     color: Colors.black,
-                              //   ),
-                              // ),
-                              //  Padding(
-                              //   padding: EdgeInsets.only(
-                              //     left: 10,
-                              //     top: 10,
-                              //   ),
-                              //   child: Row(
-                              //     mainAxisAlignment:
-                              //         MainAxisAlignment.spaceBetween,
-                              //     crossAxisAlignment: CrossAxisAlignment.start,
-                              //     children: [
-                              //       Column(
-                              //         mainAxisAlignment:
-                              //             MainAxisAlignment.start,
-                              //         crossAxisAlignment:
-                              //             CrossAxisAlignment.start,
-                              //         children: [
-                              //           Amenities(text: 'Balcony'),
-                              //           Amenities(text: 'Parking'),
-                              //           Amenities(text: 'CCTV'),
-                              //           Amenities(text: 'GAS'),
-                              //           Amenities(text: 'ELEVATOR'),
-                              //           Amenities(text: 'Security Guard'),
-                              //           Amenities(text: 'Power Backup'),
-                              //         ],
-                              //       ),
-                              //       Column(
-                              //         mainAxisAlignment:
-                              //             MainAxisAlignment.start,
-                              //         crossAxisAlignment:
-                              //             CrossAxisAlignment.start,
-                              //         children: [
-                              //           Amenities(text: 'Fire Alarm'),
-                              //           Amenities(text: 'Fire exit'),
-                              //           Amenities(text: 'Gaser'),
-                              //           Amenities(text: 'Wasa Connection'),
-                              //           Amenities(text: 'West Disposal'),
-                              //           Amenities(text: 'Garden'),
-                              //         ],
-                              //       ),
-                              //     ],
-                              //   ),
-                              // ),
-
-                              postData.floorPlan == ""
-                                  ? const SizedBox()
-                                  : SizedBox(height: space),
-                              postData.floorPlan == ""
-                                  ? const SizedBox()
-                                  : Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        border: Border.all(
-                                            color: Colors.blueAccent),
-                                      ),
-                                      child: ExpandablePanel(
-                                        header: Container(
-                                          padding: const EdgeInsets.only(
-                                            top: 10,
-                                            left: 10,
-                                            bottom: 10,
-                                          ),
-                                          child: const Text(
-                                            'Floor Plan',
-                                            style: TextStyle(
-                                              fontSize: 18,
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                        ),
-                                        collapsed: const SizedBox(),
-                                        expanded: Container(
-                                          height: 300,
-                                          width: width,
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            image: DecorationImage(
-                                              image: MemoryImage(
-                                                base64Decode(
-                                                  postData.floorPlan,
-                                                ),
-                                              ),
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                              SizedBox(height: space),
-                              postData.ytVideo == ""
-                                  ? const SizedBox()
-                                  : Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const Text(
-                                          'Video',
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            color: Colors.black,
-                                            // fontStyle: FontStyle.italic,
-                                          ),
-                                        ),
-                                        SizedBox(height: space),
-                                        YoutubeVideo(
-                                          videoUrl: postData.ytVideo,
-                                        ),
-                                      ],
-                                    ),
-
                               SizedBox(height: space),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -1138,13 +936,16 @@ class _SinglePostProState extends State<SinglePostPro>
                                         size: 18,
                                       ),
                                       const SizedBox(width: 10),
-                                      const Text("Discription"),
+                                      Text(
+                                        "Discription",
+                                        style: h3,
+                                      ),
                                     ],
                                   ),
                                   Text(
                                     'id: ${postData.pid}',
                                     style: const TextStyle(
-                                      fontSize: 14,
+                                      fontSize: s4,
                                       color: Colors.black54,
                                     ),
                                   ),
@@ -1169,6 +970,7 @@ class _SinglePostProState extends State<SinglePostPro>
                                     postData.description,
                                     textAlign: TextAlign.justify,
                                     overflow: TextOverflow.clip,
+                                    style: h3,
                                     // maxLines: 5,
                                   ),
                                 ),
@@ -1177,7 +979,8 @@ class _SinglePostProState extends State<SinglePostPro>
                               const Text(
                                 "In Map",
                                 style: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: s2,
+                                  height: 0.5,
                                   color: Color(0xff083437),
                                   fontWeight: FontWeight.normal,
                                 ),
@@ -1295,17 +1098,19 @@ class _SinglePostProState extends State<SinglePostPro>
                                                 100,
                                               ),
                                             ),
-                                            label: const Row(
+                                            label: Row(
                                               children: [
                                                 Text(
                                                   'Map',
                                                   style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.white,
+                                                    fontSize: s2,
+                                                    color: Colors.white
+                                                        .withOpacity(0.95),
+                                                    fontWeight: FontWeight.bold,
                                                   ),
-                                                ),
-                                                SizedBox(width: 10),
-                                                Icon(
+                                                )..paddingOnly(bottom: 2),
+                                                const SizedBox(width: 10),
+                                                const Icon(
                                                   Feather.navigation,
                                                   color: Colors.white,
                                                   size: 18,
@@ -1350,7 +1155,7 @@ class _SinglePostProState extends State<SinglePostPro>
                           child: Text(
                             'more',
                             style: TextStyle(
-                              fontSize: 13,
+                              fontSize: s4,
                               color: Colors.black38,
                             ),
                           ),
@@ -1372,6 +1177,9 @@ class _SinglePostProState extends State<SinglePostPro>
                           } else {
                             return ListView.builder(
                               controller: _controllerMore,
+                              physics: const BouncingScrollPhysics(
+                                parent: AlwaysScrollableScrollPhysics(),
+                              ),
                               scrollDirection: Axis.horizontal,
                               shrinkWrap: true,
                               itemCount: snapshot.data.length + 1,
@@ -1417,37 +1225,10 @@ class _SinglePostProState extends State<SinglePostPro>
                         },
                       ),
                     ),
-                    // SizedBox(
-                    //   height: 120,
-                    //   child: SizedBox(
-                    //     height: 120,
-                    //     child: ListView.builder(
-                    //       scrollDirection: Axis.horizontal,
-                    //       itemCount: 10,
-                    //       itemBuilder: (context, index) {
-                    //         return Padding(
-                    //           padding: const EdgeInsets.only(left: 20),
-                    //           child: Container(
-                    //             width: Get.width / 1.4,
-                    //             decoration: BoxDecoration(
-                    //               color: Colors.red,
-                    //               borderRadius: BorderRadius.circular(10),
-                    //               border: Border.all(
-                    //                 color: Colors.black12,
-                    //                 width: 1,
-                    //               ),
-                    //             ),
-                    //           ),
-                    //         );
-                    //       },
-                    //     ),
-                    //   ),
-                    // ),
                     const SizedBox(height: 80),
                   ],
                 ),
               ),
-
               bottomNavigationBar: Container(
                 height: 75,
                 width: width,
@@ -1490,7 +1271,7 @@ class _SinglePostProState extends State<SinglePostPro>
                                   Text(
                                     'CALL',
                                     style: TextStyle(
-                                      fontSize: 16,
+                                      fontSize: s2,
                                       color: Colors.white,
                                     ),
                                   ),
@@ -1544,7 +1325,7 @@ class _SinglePostProState extends State<SinglePostPro>
                                   const Text(
                                     'SMS',
                                     style: TextStyle(
-                                      fontSize: 16,
+                                      fontSize: s2,
                                       color: Colors.white,
                                     ),
                                   ),
@@ -1598,7 +1379,7 @@ Hey there👋! I saw your sweet listing on btolet - is it still up for sale? I'm
                                   const Text(
                                     'WhatsApp',
                                     style: TextStyle(
-                                      fontSize: 16,
+                                      fontSize: s2,
                                       color: Colors.white,
                                     ),
                                   ),
@@ -1642,7 +1423,7 @@ class Amenities extends StatelessWidget {
             child: SvgPicture.asset(
               'assets/icons/property/check.svg',
               colorFilter: const ColorFilter.mode(
-                Colors.orange,
+                Colors.green,
                 BlendMode.srcIn,
               ),
             ),
@@ -1651,7 +1432,7 @@ class Amenities extends StatelessWidget {
           Text(
             text,
             style: TextStyle(
-              fontSize: 14,
+              fontSize: s4,
               color: Colors.black.withOpacity(0.7),
               height: 1,
               fontWeight: FontWeight.w500,
@@ -1669,14 +1450,17 @@ class DetailsCircle extends StatelessWidget {
   final String subtitle;
   final double iconheight;
   final double iconwidth;
+  final bool fontflag;
 
-  const DetailsCircle(
-      {super.key,
-      required this.icon,
-      required this.title,
-      required this.subtitle,
-      required this.iconheight,
-      required this.iconwidth});
+  const DetailsCircle({
+    super.key,
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.iconheight,
+    required this.iconwidth,
+    this.fontflag = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -1717,16 +1501,19 @@ class DetailsCircle extends StatelessWidget {
         Text(
           title,
           style: TextStyle(
-            fontSize: 16,
-            color: Colors.black.withOpacity(0.8),
+            fontSize: fontflag ? s3 : 18,
+            height: 0.5,
+            color: Colors.black.withOpacity(0.4),
             fontWeight: FontWeight.w400,
+            fontFamily: fontflag ? 'x' : 'Roboto',
           ),
-        ),
+        ).paddingOnly(bottom: 2),
         const SizedBox(height: 2),
         Text(
           subtitle,
           style: TextStyle(
-            fontSize: 16,
+            fontSize: s3,
+            height: 1,
             color: Colors.black.withOpacity(0.6),
             fontWeight: FontWeight.w400,
           ),

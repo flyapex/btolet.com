@@ -3,9 +3,12 @@ import 'package:btolet/model/api.dart';
 import 'package:btolet/model/tolet_model.dart';
 import 'package:dio/dio.dart';
 
+import 'google ads/ad_helper.dart';
+
 final dio = Dio();
+var baseUrl = '$url/tolet';
 // var baseUrl = 'http://10.0.2.2:3000/api/tolet';
-var baseUrl = 'http://154.26.135.41:3800/api/tolet';
+// var baseUrl = 'http://154.26.135.41:3800/api/tolet';
 
 var headers = {
   "content-type": 'application/json;charset=UTF-8',

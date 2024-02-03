@@ -1,3 +1,4 @@
+import 'package:btolet/constants/colors.dart';
 import 'package:btolet/controller/location_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
@@ -292,6 +293,9 @@ class MultiMapShimmer extends StatelessWidget {
     return Align(
       alignment: Alignment.bottomCenter,
       child: ListView.builder(
+        physics: const BouncingScrollPhysics(
+          parent: AlwaysScrollableScrollPhysics(),
+        ),
         itemCount: 3,
         scrollDirection: Axis.horizontal,
         itemBuilder: (BuildContext context, int index) {
@@ -703,7 +707,7 @@ class SinglePostShimmer extends StatelessWidget {
                           const Text(
                             "Details",
                             style: TextStyle(
-                              fontSize: 16,
+                              fontSize: s3,
                               color: Color(0xff083437),
                               fontWeight: FontWeight.normal,
                             ),
@@ -877,7 +881,10 @@ class SinglePostShimmer extends StatelessWidget {
                             size: 18,
                           ),
                           const SizedBox(width: 10),
-                          const Text("Discription"),
+                          Text(
+                            "Discription",
+                            style: h3,
+                          ),
                         ],
                       ),
                       const SizedBox(height: 20),
@@ -905,7 +912,7 @@ class SinglePostShimmer extends StatelessWidget {
                       const Text(
                         "Posted In",
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: s3,
                           color: Color(0xff083437),
                           fontWeight: FontWeight.normal,
                         ),
@@ -947,6 +954,9 @@ class PostListSuggstionSimmer extends StatelessWidget {
     return ListView.builder(
       // physics: const NeverScrollableScrollPhysics(),
       // shrinkWrap: true,
+      physics: const BouncingScrollPhysics(
+        parent: AlwaysScrollableScrollPhysics(),
+      ),
       padding: const EdgeInsets.only(right: 20),
       itemCount: count,
       scrollDirection: Axis.horizontal,

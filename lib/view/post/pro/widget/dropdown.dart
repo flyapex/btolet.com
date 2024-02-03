@@ -1,3 +1,4 @@
+import 'package:btolet/constants/colors.dart';
 import 'package:btolet/controller/property_controller.dart';
 import 'package:btolet/model/category.dart';
 import 'package:flutter/cupertino.dart';
@@ -27,28 +28,13 @@ class DropDownPro extends StatefulWidget {
 class _DropDownProState extends State<DropDownPro> {
   final ProController proController = Get.find();
 
-  var textstylemain = TextStyle(
-    overflow: TextOverflow.ellipsis,
-    height: 1.2,
-    fontSize: 15,
-    letterSpacing: 1.2,
-    color: Colors.black.withOpacity(0.7),
-  );
-  var textstyleh = TextStyle(
-    overflow: TextOverflow.ellipsis,
-    height: 1.2,
-    fontSize: 15,
-    letterSpacing: 1.2,
-    color: Colors.black.withOpacity(0.6),
-  );
-
   @override
   Widget build(BuildContext context) {
     final List<String> categoryValues = categoryProData[widget.category] ?? [];
     getBorderColor() {
-      if (widget.category == CategoryPro.dining) {
+      if (widget.category == CategoryPro.balcony) {
         return proController.activeFlag.value
-            ? proController.diningFlag.value
+            ? proController.balconyFlag.value
                 ? Colors.white
                 : Colors.red
             : Colors.white;
@@ -87,6 +73,7 @@ class _DropDownProState extends State<DropDownPro> {
             style: TextStyle(
               letterSpacing: 0.7,
               color: Colors.black.withOpacity(0.5),
+              fontSize: s3,
             ),
           ),
           const SizedBox(height: 15),
@@ -112,15 +99,29 @@ class _DropDownProState extends State<DropDownPro> {
                     ),
                     hint: Text(
                       proController.getCategoryValue(widget.category),
-                      style: proController.getCategoryValue(widget.category) ==
-                              'select'
-                          ? textstyleh
-                          : textstylemain,
-                    ),
+                      style: widget.category == CategoryPro.area
+                          ? const TextStyle(
+                              fontFamily: 'Roboto',
+                            )
+                          : TextStyle(
+                              overflow: TextOverflow.ellipsis,
+                              height: 1.2,
+                              fontSize: s3,
+                              color: Colors.black.withOpacity(0.7),
+                            ),
+                    ).paddingOnly(bottom: 2),
                     items: categoryValues.map((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
-                        child: Text(value),
+                        child: Text(
+                          value,
+                          style: widget.category == CategoryPro.area
+                              ? TextStyle(
+                                  fontFamily: 'Roboto',
+                                  color: Colors.black.withOpacity(0.6),
+                                )
+                              : h3,
+                        ),
                       );
                     }).toList(),
                     onChanged: (val) {
@@ -192,10 +193,11 @@ class _DateTimeSelectProState extends State<DateTimeSelectPro> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Rent From',
+          'Sell From',
           style: TextStyle(
             letterSpacing: 0.7,
             color: Colors.black.withOpacity(0.5),
+            fontSize: s3,
           ),
         ),
         const SizedBox(height: 15),
@@ -218,12 +220,15 @@ class _DateTimeSelectProState extends State<DateTimeSelectPro> {
               children: [
                 _chosenDateTime == null
                     ? Text(
-                        DateFormat().add_MMMd().format(DateTime.now()),
+                        DateFormat().add_MMMd().format(
+                              DateTime.now(),
+                            ),
+                        style: h3,
                       )
                     : Text(
                         DateFormat().add_MMMd().format(_chosenDateTime!),
                         style: const TextStyle(
-                          fontSize: 18,
+                          fontSize: s3,
                           color: Colors.black,
                         ),
                       ),

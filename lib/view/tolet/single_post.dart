@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:ui';
 import 'package:btolet/api/api_tolet.dart';
+import 'package:btolet/constants/colors.dart';
 import 'package:btolet/controller/ads_controller.dart';
 import 'package:btolet/controller/location_controller.dart';
 import 'package:btolet/controller/tolet_controller.dart';
@@ -19,7 +20,8 @@ import 'package:like_button/like_button.dart';
 import 'package:map_launcher/map_launcher.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import 'tolet.dart';
+import 'morepost.dart';
+import 'widget/category.dart';
 
 class SinglePostTolet extends StatefulWidget {
   final int postid;
@@ -115,8 +117,8 @@ class _SinglePostToletState extends State<SinglePostTolet>
       _mapStyle = string;
     });
     lodeData();
-    adsController.createRewardedAd();
-    adsController.createRewardedInterstitialAd();
+    // adsController.createRewardedAd();
+    // adsController.createRewardedInterstitialAd();
     _controller.addListener(_scrollListener);
     _controllerMore.addListener(_scrollListenerMore);
     super.initState();
@@ -208,8 +210,8 @@ class _SinglePostToletState extends State<SinglePostTolet>
     super.dispose();
 
     // adsController.interstitialAd?.dispose();
-    adsController.rewardedAd?.dispose();
-    adsController.rewardedInterstitialAd?.dispose();
+    // adsController.rewardedAd?.dispose();
+    // adsController.rewardedInterstitialAd?.dispose();
   }
 
   late String _mapStyle;
@@ -244,154 +246,12 @@ class _SinglePostToletState extends State<SinglePostTolet>
       () => toletController.singlePostloding.value
           ? const SinglePostShimmer()
           : Scaffold(
-              // floatingActionButtonLocation:
-              //     FloatingActionButtonLocation.centerDocked,
-              // floatingActionButton: Container(
-              //   height: 70,
-              //   width: width,
-              //   color: Colors.white,
-              //   child: Column(
-              //     children: [
-              //       const SizedBox(height: 15),
-              //       Row(
-              //         children: [
-              //           const SizedBox(width: 20),
-              //           Expanded(
-              //             flex: 1,
-              //             child: InkWell(
-              //               onTap: () async {
-              //                 adsController.showRewardedAd(
-              //                   'call',
-              //                   postData.phone,
-              //                 );
-              //               },
-              //               child: Container(
-              //                 height: 44,
-              //                 decoration: BoxDecoration(
-              //                   // color: Colors.deepOrange,
-              //                   color: const Color(0xffF36251),
-              //                   borderRadius: BorderRadius.circular(6),
-              //                 ),
-              //                 // ignore: prefer_const_constructors
-              //                 child: Row(
-              //                   mainAxisAlignment: MainAxisAlignment.center,
-              //                   children: const [
-              //                     Icon(
-              //                       Icons.call,
-              //                       color: Colors.white,
-              //                       size: 26,
-              //                     ),
-              //                     SizedBox(width: 5),
-              //                     Text(
-              //                       'CALL',
-              //                       style: TextStyle(
-              //                         fontSize: 16,
-              //                         color: Colors.white,
-              //                       ),
-              //                     ),
-              //                   ],
-              //                 ),
-              //               ),
-              //             ),
-              //           ),
-              //           const SizedBox(width: 10),
-              //           Expanded(
-              //             flex: 1,
-              //             child: InkWell(
-              //               onTap: () async {
-              //                 adsController.showRewardedInterstitialAd(
-              //                   'sms',
-              //                   postData.phone,
-              //                 );
-              //               },
-              //               child: Container(
-              //                 height: 44,
-              //                 decoration: BoxDecoration(
-              //                   // color: Colors.blueAccent,
-              //                   color: Colors.blue,
-              //                   // color: const Color(0xff27D468),
-              //                   borderRadius: BorderRadius.circular(6),
-              //                 ),
-              //                 child: Row(
-              //                   mainAxisAlignment: MainAxisAlignment.center,
-              //                   children: [
-              //                     SizedBox(
-              //                       height: 23,
-              //                       width: 23,
-              //                       child: Center(
-              //                         child: SvgPicture.asset(
-              //                           'assets/icons/home/message.svg',
-              //                           colorFilter: const ColorFilter.mode(
-              //                             Colors.white,
-              //                             BlendMode.srcIn,
-              //                           ),
-              //                         ),
-              //                       ),
-              //                     ),
-              //                     const SizedBox(width: 10),
-              //                     const Text(
-              //                       'SMS',
-              //                       style: TextStyle(
-              //                         fontSize: 16,
-              //                         color: Colors.white,
-              //                       ),
-              //                     ),
-              //                   ],
-              //                 ),
-              //               ),
-              //             ),
-              //           ),
-              //           const SizedBox(width: 10),
-              //           Expanded(
-              //             flex: 2,
-              //             child: InkWell(
-              //               onTap: () async {
-              //                 adsController.showRewardedInterstitialAd(
-              //                   'wapp',
-              //                   postData.phone,
-              //                 );
-              //               },
-              //               child: Container(
-              //                 height: 44,
-              //                 decoration: BoxDecoration(
-              //                   color: const Color(0xff27D468),
-              //                   borderRadius: BorderRadius.circular(6),
-              //                 ),
-              //                 child: Row(
-              //                   mainAxisAlignment: MainAxisAlignment.center,
-              //                   children: [
-              //                     SizedBox(
-              //                       height: 30,
-              //                       width: 30,
-              //                       child: SvgPicture.asset(
-              //                         'assets/icons/home/wapp.svg',
-              //                         height: 10,
-              //                         width: 22,
-              //                       ),
-              //                     ),
-              //                     const SizedBox(width: 10),
-              //                     const Text(
-              //                       'WhatsApp',
-              //                       style: TextStyle(
-              //                         fontSize: 16,
-              //                         color: Colors.white,
-              //                       ),
-              //                     ),
-              //                   ],
-              //                 ),
-              //               ),
-              //             ),
-              //           ),
-              //           const SizedBox(width: 20),
-              //         ],
-              //       ),
-              //     ],
-              //   ),
-              // ),
-
               body: Stack(
                 children: [
                   SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(
+                      parent: AlwaysScrollableScrollPhysics(),
+                    ),
                     controller: _controller,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -439,40 +299,60 @@ class _SinglePostToletState extends State<SinglePostTolet>
                                     ),
                                     Row(
                                       children: [
-                                        InkWell(
-                                          child: const Padding(
-                                            padding: EdgeInsets.all(5),
-                                            child: Icon(
-                                              Feather.share_2,
-                                              color: Colors.white,
-                                              size: 22,
+                                        ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(50),
+                                          child: Material(
+                                            color: Colors.black26,
+                                            child: LikeButton(
+                                              size: 32,
+                                              likeBuilder: (bool isLiked) {
+                                                return Icon(
+                                                  isLiked
+                                                      ? Icons.favorite
+                                                      : Icons
+                                                          .favorite_border_outlined,
+                                                  color: isLiked
+                                                      ? Colors.lightBlueAccent
+                                                      : Colors.white,
+                                                );
+                                              },
+                                              animationDuration: const Duration(
+                                                  milliseconds: 400),
+                                              onTap: (isLiked) async {
+                                                print(!isLiked);
+                                                toletController.save(
+                                                  postData.postId,
+                                                  !isLiked,
+                                                );
+                                                return !isLiked;
+                                              },
                                             ),
                                           ),
-                                          onTap: () {},
                                         ),
                                         const SizedBox(width: 10),
-                                        LikeButton(
-                                          size: 32,
-                                          likeBuilder: (bool isLiked) {
-                                            return Icon(
-                                                isLiked
-                                                    ? Icons.favorite
-                                                    : Icons
-                                                        .favorite_border_outlined,
-                                                color: isLiked
-                                                    ? Colors.lightBlue
-                                                    : Colors.white);
-                                          },
-                                          animationDuration:
-                                              const Duration(milliseconds: 400),
-                                          onTap: (isLiked) async {
-                                            print(!isLiked);
-                                            toletController.save(
-                                              postData.postId,
-                                              !isLiked,
-                                            );
-                                            return !isLiked;
-                                          },
+                                        ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(50),
+                                          child: Material(
+                                            color: Colors.black26,
+                                            child: InkWell(
+                                              child: const Padding(
+                                                padding: EdgeInsets.all(5),
+                                                child: Icon(
+                                                  Feather.share_2,
+                                                  color: Colors.white,
+                                                  size: 22,
+                                                ),
+                                              ),
+                                              onTap: () {
+                                                adsController.shareBase64Image(
+                                                  postData.image1,
+                                                  'Hi',
+                                                );
+                                              },
+                                            ),
+                                          ),
                                         ),
                                         const SizedBox(width: 15),
                                       ],
@@ -485,659 +365,20 @@ class _SinglePostToletState extends State<SinglePostTolet>
                         ),
                         Column(
                           children: [
-                            const SizedBox(height: 20),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 20, right: 20),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  Text(
-                                    "৳ ${NumberFormat.decimalPattern().format(postData.rent)}",
-                                    style: const TextStyle(
-                                      fontSize: 30,
-                                      color: Color(0xff083437),
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  postData.garagetype == ""
-                                      ? Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          children: [
-                                            Expanded(
-                                              flex: 1,
-                                              child: Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.end,
-                                                children: [
-                                                  SizedBox(
-                                                    height: 28,
-                                                    width: 28,
-                                                    child: SvgPicture.asset(
-                                                      'assets/icons/tolet/bed.svg',
-                                                      colorFilter:
-                                                          ColorFilter.mode(
-                                                        const Color(0xff083437)
-                                                            .withOpacity(0.5),
-                                                        BlendMode.srcIn,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  const SizedBox(width: 10),
-                                                  Flexible(
-                                                    child: Text(
-                                                      '${postData.bed} Beds',
-                                                      style: const TextStyle(
-                                                        color:
-                                                            Color(0xff083437),
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 16,
-                                                      ),
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      maxLines: 1,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            // const SizedBox(width: 20),
-                                            Expanded(
-                                              flex: 1,
-                                              child: Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.end,
-                                                children: [
-                                                  SizedBox(
-                                                    height: 28,
-                                                    width: 28,
-                                                    child: SvgPicture.asset(
-                                                      'assets/icons/tolet/bath.svg',
-                                                      colorFilter:
-                                                          ColorFilter.mode(
-                                                        const Color(0xff083437)
-                                                            .withOpacity(0.5),
-                                                        BlendMode.srcIn,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  const SizedBox(width: 10),
-                                                  Flexible(
-                                                    child: Text(
-                                                      '${postData.bath} Baths',
-                                                      style: const TextStyle(
-                                                        color:
-                                                            Color(0xff083437),
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 16,
-                                                      ),
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      maxLines: 1,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            // const SizedBox(width: 20),
-                                            Expanded(
-                                              flex: 1,
-                                              child: postData.roomsize == ''
-                                                  ? Row(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .end,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment.end,
-                                                      children: [
-                                                        SizedBox(
-                                                          height: 24,
-                                                          width: 24,
-                                                          child:
-                                                              SvgPicture.asset(
-                                                            'assets/icons/tolet/kitchen.svg',
-                                                            colorFilter:
-                                                                ColorFilter
-                                                                    .mode(
-                                                              const Color(
-                                                                      0xff083437)
-                                                                  .withOpacity(
-                                                                      0.5),
-                                                              BlendMode.srcIn,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        const SizedBox(
-                                                            width: 10),
-                                                        Flexible(
-                                                          child: Text(
-                                                            "  ${postData.kitchen} Kitchen",
-                                                            style:
-                                                                const TextStyle(
-                                                              color: Color(
-                                                                  0xff083437),
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontSize: 16,
-                                                            ),
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
-                                                            maxLines: 1,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    )
-                                                  : Row(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .end,
-                                                      children: [
-                                                        SizedBox(
-                                                          height: 20,
-                                                          width: 20,
-                                                          child:
-                                                              SvgPicture.asset(
-                                                            'assets/icons/tolet/size.svg',
-                                                            colorFilter:
-                                                                ColorFilter
-                                                                    .mode(
-                                                              const Color(
-                                                                      0xff083437)
-                                                                  .withOpacity(
-                                                                      0.5),
-                                                              BlendMode.srcIn,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        const SizedBox(
-                                                            width: 10),
-                                                        Flexible(
-                                                          child: Text(
-                                                            "  ${postData.roomsize}", //ft\u00b2
-                                                            style:
-                                                                const TextStyle(
-                                                              color: Color(
-                                                                  0xff083437),
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontSize: 16,
-                                                            ),
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
-                                                            maxLines: 1,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                            ),
-                                          ],
-                                        )
-                                      : postData.garagetype == "Both"
-                                          ? Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                SizedBox(
-                                                  height: 25,
-                                                  width: 25,
-                                                  child: SvgPicture.asset(
-                                                    'assets/icons/tolet/garage.svg',
-                                                    colorFilter:
-                                                        ColorFilter.mode(
-                                                      // Color(0xff083437),
-                                                      const Color(0xff083437)
-                                                          .withOpacity(0.5),
-                                                      BlendMode.srcIn,
-                                                    ),
-                                                  ),
-                                                ),
-                                                const SizedBox(width: 10),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 4),
-                                                  child: Text(
-                                                    "${postData.garagetype} Garage",
-                                                    style: const TextStyle(
-                                                      color: Color(0xff083437),
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 16,
-                                                    ),
-                                                  ),
-                                                ),
-                                                const SizedBox(width: 3),
-                                                SizedBox(
-                                                  height: 10,
-                                                  width: 10,
-                                                  child: SvgPicture.asset(
-                                                    'assets/icons/tolet/security.svg',
-                                                    colorFilter:
-                                                        const ColorFilter.mode(
-                                                      // Color(0xff083437),
-                                                      Colors.green,
-                                                      BlendMode.srcIn,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            )
-                                          : postData.garagetype == "Bike"
-                                              ? Row(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
-                                                    SizedBox(
-                                                      height: 30,
-                                                      width: 30,
-                                                      child: SvgPicture.asset(
-                                                        'assets/icons/tolet/bike.svg',
-                                                        colorFilter:
-                                                            ColorFilter.mode(
-                                                          // Color(0xff083437),
-                                                          const Color(
-                                                                  0xff083437)
-                                                              .withOpacity(0.5),
-                                                          BlendMode.srcIn,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    const SizedBox(width: 10),
-                                                    Text(
-                                                      "${postData.garagetype} Garage",
-                                                      style: const TextStyle(
-                                                        color:
-                                                            Color(0xff083437),
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 16,
-                                                      ),
-                                                    ),
-                                                    const SizedBox(width: 3),
-                                                    SizedBox(
-                                                      height: 10,
-                                                      width: 10,
-                                                      child: SvgPicture.asset(
-                                                        'assets/icons/tolet/security.svg',
-                                                        colorFilter:
-                                                            const ColorFilter
-                                                                .mode(
-                                                          // Color(0xff083437),
-                                                          Colors.green,
-                                                          BlendMode.srcIn,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                )
-                                              : Row(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
-                                                    SizedBox(
-                                                      height: 30,
-                                                      width: 30,
-                                                      child: SvgPicture.asset(
-                                                        'assets/icons/tolet/car.svg',
-                                                        colorFilter:
-                                                            ColorFilter.mode(
-                                                          // Color(0xff083437),
-                                                          const Color(
-                                                                  0xff083437)
-                                                              .withOpacity(0.5),
-                                                          BlendMode.srcIn,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    const SizedBox(width: 10),
-                                                    Text(
-                                                      "${postData.garagetype} Garage",
-                                                      style: const TextStyle(
-                                                        color:
-                                                            Color(0xff083437),
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 16,
-                                                      ),
-                                                    ),
-                                                    const SizedBox(width: 3),
-                                                    SizedBox(
-                                                      height: 10,
-                                                      width: 10,
-                                                      child: SvgPicture.asset(
-                                                        'assets/icons/tolet/security.svg',
-                                                        colorFilter:
-                                                            const ColorFilter
-                                                                .mode(
-                                                          // Color(0xff083437),
-                                                          Colors.green,
-                                                          BlendMode.srcIn,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                ],
-                              ),
+                            CategoryBodyPost(
+                              postData: postData,
                             ),
-                            const SizedBox(height: 20),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 20, right: 20),
-                              child: Container(
-                                height: 1,
-                                decoration: BoxDecoration(
-                                  color: Colors.black12,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 10, right: 20),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  InkWell(
-                                    onTap: () async {
-                                      final coords = Coords(
-                                        double.parse(postData.geolat),
-                                        double.parse(postData.geolon),
-                                      );
-                                      var title =
-                                          "Price ৳ ${NumberFormat.decimalPattern().format(postData.rent)}";
-                                      final availableMaps =
-                                          await MapLauncher.installedMaps;
-                                      await availableMaps.first.showMarker(
-                                        coords: coords,
-                                        title: title,
-                                        description: "description",
-                                      );
-                                    },
-                                    child: Row(
-                                      children: [
-                                        Material(
-                                          type: MaterialType.transparency,
-                                          child: Ink(
-                                            decoration: BoxDecoration(
-                                              border: Border.all(
-                                                color: Colors.blue,
-                                                width: 2,
-                                              ),
-                                              color: Colors.white,
-                                              shape: BoxShape.circle,
-                                            ),
-                                            child: InkWell(
-                                              borderRadius:
-                                                  BorderRadius.circular(100),
-                                              onTap: () {},
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(10.0),
-                                                child: SizedBox(
-                                                  height: 22,
-                                                  width: 22,
-                                                  child: SvgPicture.asset(
-                                                    'assets/icons/home/map.svg',
-                                                    height: 10,
-                                                    width: 22,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(width: 10),
-                                        Text(
-                                          // locationController.locationAddress.value,
-                                          postData.location,
-                                          style: const TextStyle(
-                                            fontSize: 14,
-                                            color: Color(0xff083437),
-                                            fontWeight: FontWeight.bold,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                          maxLines: 1,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Text(
-                                    '${userController.getDay(postData.time)}',
-                                    // ' ${timeago.format(postData.time, locale: 'en_short')} ago',
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                      color: Color(0xff083437),
-                                      fontWeight: FontWeight.normal,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              height: 20,
-                              margin: const EdgeInsets.only(top: 10),
-                              decoration: const BoxDecoration(
-                                color: Colors.black12,
-                              ),
-                              // child: const Row(
-                              //   children: [
-                              //     Text(
-                              //       "tolet In Khulna, Nirala 14 Nirala",
-                              //       style: TextStyle(
-                              //         fontSize: 16,
-                              //         color: Color(0xff083437),
-                              //         fontWeight: FontWeight.normal,
-                              //         overflow: TextOverflow.clip,
-                              //       ),
-                              //     ),
-                              //   ],
-                              // ),
-                            ),
-                            // const SizedBox(height: 20),
-                            // Padding(
-                            //   padding: const EdgeInsets.only(left: 20, right: 20),
-                            //   child: Container(
-                            //     height: 100,
-                            //     width: width,
-                            //     decoration: BoxDecoration(
-                            //       color: Colors.yellow,
-                            //       borderRadius: BorderRadius.circular(10),
-                            //     ),
-                            //     child: const Center(
-                            //       child: Text('Ads'),
-                            //     ),
-                            //   ),
-                            // ),
-                            // const SizedBox(height: 20),
-                            Container(
-                              height: 1,
-                              decoration: BoxDecoration(
-                                color: Colors.black12,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-
                             Padding(
                               padding:
                                   const EdgeInsets.only(left: 20, right: 20),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const SizedBox(height: 10),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      const Text(
-                                        "Details",
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          color: Color(0xff083437),
-                                          fontWeight: FontWeight.normal,
-                                        ),
-                                      ),
-                                      Text(
-                                        "id:${postData.postId}",
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: const Color(0xff083437)
-                                              .withOpacity(0.7),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-
-                                  Details(
-                                    type: "Property Name",
-                                    detailstext: postData.propertyname,
-                                    icon: Icons.home_rounded,
-                                  ),
-
-                                  Details(
-                                    type: "Property Type",
-                                    detailstext: json
-                                        .decode(postData.category)
-                                        .join(", "),
-                                    icon: Icons.business_outlined,
-                                  ),
-
-                                  // const Details(
-                                  //   type: "Bedrooms",
-                                  //   detailstext: "5",
-                                  //   icon: Icons.bedroom_parent_outlined,
-                                  // ),
-                                  // const SizedBox(height: 15),
-                                  // const Details(
-                                  //   type: "Bathrooms",
-                                  //   detailstext: "2",
-                                  //   icon: Icons.bathtub_outlined,
-                                  // ),
-                                  // const SizedBox(height: 15),
-                                  Details(
-                                    type: "Dining",
-                                    detailstext: postData.dining,
-                                    icon: Icons.dining_outlined,
-                                  ),
-
-                                  Details(
-                                    type: "Kitchen",
-                                    detailstext: postData.kitchen,
-                                    icon: Icons.kitchen_rounded,
-                                  ),
-                                  // const SizedBox(height: 15),
-                                  // const Details(
-                                  //   type: "Room Size",
-                                  //   detailstext: "450 m\u00b2(4,849 ft\u00b2)",
-                                  //   icon: Icons.all_inclusive_rounded,
-                                  // ),
-
-                                  Details(
-                                    type: "Floor",
-                                    detailstext: postData.floornumber,
-                                    icon: Icons.person_pin_circle_outlined,
-                                  ),
-
-                                  Details(
-                                    type: "Facing",
-                                    detailstext: postData.facing,
-                                    icon: Icons.window_outlined,
-                                  ),
-                                  Details(
-                                    type: "Rent From",
-                                    detailstext: DateFormat('d MMM')
-                                        .format(postData.rentfrom),
-                                    icon: Icons.access_time,
-                                  ),
-
-                                  Details(
-                                    type: "Facilities",
-                                    detailstext: postData.fasalitis.isEmpty
-                                        ? ""
-                                        : json
-                                            .decode(postData.fasalitis)
-                                            .join(", "),
-                                    icon: Icons.search_sharp,
-                                    textColor: Colors.green,
-                                  ),
-
-                                  Details(
-                                    type: "Maintenance",
-                                    detailstext: postData.mentenance == 0
-                                        ? ""
-                                        : "${NumberFormat.decimalPattern().format(postData.mentenance)} ৳/mon",
-                                    icon: Icons.monetization_on_outlined,
-                                  ),
-
-                                  Details(
-                                    type: "Short Address",
-                                    detailstext: postData.shortaddress,
-                                    icon: Icons.share_location_rounded,
-                                  ),
-
-                                  const SizedBox(height: 20),
-                                  Container(
-                                    height: 1,
-                                    decoration: BoxDecoration(
-                                      color: Colors.black12,
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Feather.menu,
-                                        color: const Color(0xff8595A9)
-                                            .withOpacity(0.5),
-                                        size: 18,
-                                      ),
-                                      const SizedBox(width: 10),
-                                      const Text("Discription"),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 20),
-                                  Container(
-                                    height: 100,
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xffE3E8FF),
-                                      borderRadius: BorderRadius.circular(6),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                        top: 20,
-                                        left: 20,
-                                        right: 15,
-                                        bottom: 20,
-                                      ),
-                                      child: Text(
-                                        postData.description,
-                                        textAlign: TextAlign.justify,
-                                        overflow: TextOverflow.clip,
-                                        // maxLines: 5,
-                                      ),
-                                    ),
-                                  ),
                                   const SizedBox(height: 20),
                                   const Text(
                                     "In Map",
                                     style: TextStyle(
-                                      fontSize: 16,
+                                      fontSize: s3,
                                       color: Color(0xff083437),
                                       fontWeight: FontWeight.w500,
                                     ),
@@ -1209,50 +450,6 @@ class _SinglePostToletState extends State<SinglePostTolet>
                                                     title: title,
                                                     description: "description",
                                                   );
-                                                  // print(availableMaps.length);
-                                                  // if (availableMaps.length ==
-                                                  //     1) {
-                                                  //   await availableMaps.first
-                                                  //       .showMarker(
-                                                  //     coords: coords,
-                                                  //     title: title,
-                                                  //     description:
-                                                  //         "description",
-                                                  //   );
-                                                  // } else {
-                                                  //   Get.bottomSheet(
-                                                  //     SafeArea(
-                                                  //       child:
-                                                  //           SingleChildScrollView(
-                                                  //         child: Wrap(
-                                                  //           children: <Widget>[
-                                                  //             for (var map
-                                                  //                 in availableMaps)
-                                                  //               ListTile(
-                                                  //                 onTap: () => map
-                                                  //                     .showMarker(
-                                                  //                   coords:
-                                                  //                       coords,
-                                                  //                   title:
-                                                  //                       title,
-                                                  //                 ),
-                                                  //                 title: Text(map
-                                                  //                     .mapName),
-                                                  //                 leading:
-                                                  //                     SvgPicture
-                                                  //                         .asset(
-                                                  //                   map.icon,
-                                                  //                   height:
-                                                  //                       30.0,
-                                                  //                   width: 30.0,
-                                                  //                 ),
-                                                  //               ),
-                                                  //           ],
-                                                  //         ),
-                                                  //       ),
-                                                  //     ),
-                                                  //   );
-                                                  // }
                                                 },
                                                 shape: RoundedRectangleBorder(
                                                   // side: const BorderSide(
@@ -1268,7 +465,7 @@ class _SinglePostToletState extends State<SinglePostTolet>
                                                     Text(
                                                       'Map',
                                                       style: TextStyle(
-                                                        fontSize: 14,
+                                                        fontSize: s3,
                                                         color: Colors.white,
                                                       ),
                                                     ),
@@ -1299,7 +496,7 @@ class _SinglePostToletState extends State<SinglePostTolet>
                                   child: Text(
                                     'more',
                                     style: TextStyle(
-                                      fontSize: 13,
+                                      fontSize: s4,
                                       color: Colors.black38,
                                     ),
                                   ),
@@ -1307,7 +504,6 @@ class _SinglePostToletState extends State<SinglePostTolet>
                               ],
                             ),
                             const SizedBox(height: 20),
-
                             SizedBox(
                               height: height / 7,
                               child: StreamBuilder(
@@ -1321,6 +517,9 @@ class _SinglePostToletState extends State<SinglePostTolet>
                                     );
                                   } else {
                                     return ListView.builder(
+                                      physics: const BouncingScrollPhysics(
+                                        parent: AlwaysScrollableScrollPhysics(),
+                                      ),
                                       controller: _controllerMore,
                                       scrollDirection: Axis.horizontal,
                                       shrinkWrap: true,
@@ -1340,7 +539,7 @@ class _SinglePostToletState extends State<SinglePostTolet>
                                                   width: 0.4,
                                                 ),
                                               ),
-                                              child: PostsTolet(
+                                              child: MoreTolet(
                                                 postData: snapshot.data[i],
                                               ),
                                             ),
@@ -1415,7 +614,6 @@ class _SinglePostToletState extends State<SinglePostTolet>
                   // ),
                 ],
               ),
-
               bottomNavigationBar: Container(
                 height: 75,
                 width: width,
@@ -1453,8 +651,9 @@ class _SinglePostToletState extends State<SinglePostTolet>
                                 child: Text(
                                   'CALL',
                                   style: TextStyle(
-                                    fontSize: 16,
+                                    fontSize: s2,
                                     color: Colors.white,
+                                    height: 0.7,
                                   ),
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 1,
@@ -1504,7 +703,8 @@ class _SinglePostToletState extends State<SinglePostTolet>
                                 child: Text(
                                   'SMS',
                                   style: TextStyle(
-                                    fontSize: 16,
+                                    fontSize: s2,
+                                    height: 0.7,
                                     color: Colors.white,
                                   ),
                                   overflow: TextOverflow.ellipsis,
@@ -1549,7 +749,8 @@ class _SinglePostToletState extends State<SinglePostTolet>
                                 child: Text(
                                   'WhatsApp',
                                   style: TextStyle(
-                                    fontSize: 16,
+                                    fontSize: s2,
+                                    height: 0.7,
                                     color: Colors.white,
                                   ),
                                   overflow: TextOverflow.ellipsis,
@@ -1593,30 +794,35 @@ class Details extends StatelessWidget {
         ? const SizedBox()
         : Column(
             children: [
-              const SizedBox(height: 15),
+              const SizedBox(height: 8),
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
+                    flex: 4,
                     child: Row(
                       children: [
                         Icon(
                           icon,
-                          color: textColor.withOpacity(0.5),
+                          color: const Color(0xff083437).withOpacity(0.5),
                         ),
                         const SizedBox(width: 10),
                         Text(
                           type,
                           style: TextStyle(
-                            color: textColor.withOpacity(0.8),
+                            fontSize: s4,
+                            color: const Color(0xff083437).withOpacity(0.8),
                           ),
                         ),
                       ],
                     ),
                   ),
                   Expanded(
+                    flex: 6,
                     child: Text(
                       detailstext,
                       style: TextStyle(
+                        fontSize: s4,
                         color: textColor,
                       ),
                     ),
@@ -1724,16 +930,16 @@ class _ImageSlidePageState extends State<ImageSlidePage> {
                     ),
                   ),
             Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(0.0),
               child: Align(
                 alignment: Alignment.bottomRight,
                 child: SvgPicture.asset(
                   'assets/logo/logo.svg',
-                  colorFilter: const ColorFilter.mode(
-                    Colors.white,
+                  colorFilter: ColorFilter.mode(
+                    Colors.white.withOpacity(0.5),
                     BlendMode.srcIn,
                   ),
-                  height: 16,
+                  height: 60,
                 ),
               ),
             ),
@@ -1839,15 +1045,18 @@ class ImageFullView extends StatelessWidget {
               SafeArea(
                 child: Padding(
                   padding: const EdgeInsets.only(right: 20, bottom: 20),
-                  child: Align(
-                    alignment: Alignment.bottomRight,
-                    child: SvgPicture.asset(
-                      'assets/logo/logo.svg',
-                      colorFilter: const ColorFilter.mode(
-                        Colors.white,
-                        BlendMode.srcIn,
+                  child: Padding(
+                    padding: const EdgeInsets.all(0.0),
+                    child: Align(
+                      alignment: Alignment.bottomRight,
+                      child: SvgPicture.asset(
+                        'assets/logo/logo.svg',
+                        colorFilter: ColorFilter.mode(
+                          Colors.white.withOpacity(0.5),
+                          BlendMode.srcIn,
+                        ),
+                        height: 60,
                       ),
-                      height: 16,
                     ),
                   ),
                 ),

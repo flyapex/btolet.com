@@ -1,3 +1,4 @@
+import 'package:btolet/constants/colors.dart';
 import 'package:btolet/view/map/maploading.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -54,15 +55,20 @@ class Permission extends StatelessWidget {
                 children: [
                   const Text(
                     'Enable Location Permission',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: s1,
+                      fontWeight: FontWeight.bold,
+                      height: 0.9,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 10),
                   Text(
                     'To get great service you need to provide location permission. You can always change permission from settings.',
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: s3,
                       color: Colors.black.withOpacity(0.3),
+                      height: 0.9,
                     ),
                     textAlign: TextAlign.center,
                     maxLines: 3,
@@ -86,6 +92,8 @@ class Permission extends StatelessWidget {
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
                           color: Colors.white,
+                          fontSize: s2,
+                          height: 0.9,
                         ),
                       ),
                       elevation: 0.2,

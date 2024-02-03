@@ -13,6 +13,7 @@ String postListToletToJson(List<PostListTolet> data) =>
 
 class PostListTolet {
   final int postId;
+  final String category;
   final int uid;
   final String bed;
   final String bath;
@@ -27,6 +28,7 @@ class PostListTolet {
   final int totalImage;
   PostListTolet({
     required this.postId,
+    required this.category,
     required this.uid,
     required this.bed,
     required this.bath,
@@ -43,6 +45,7 @@ class PostListTolet {
 
   factory PostListTolet.fromJson(Map<String, dynamic> json) => PostListTolet(
         postId: json["post_id"],
+        category: json["category"],
         uid: json["uid"],
         bed: json["bed"],
         bath: json["bath"],
@@ -59,6 +62,7 @@ class PostListTolet {
 
   Map<String, dynamic> toJson() => {
         "post_id": postId,
+        "category": category,
         "uid": uid,
         "bed": bed,
         "bath": bath,
@@ -87,6 +91,8 @@ class SingleToletPostModel {
   final String category;
   final String bed;
   final String bath;
+  final String balcony;
+  final String drawing;
   final String dining;
   final String kitchen;
   final String floornumber;
@@ -128,6 +134,8 @@ class SingleToletPostModel {
     required this.category,
     required this.bed,
     required this.bath,
+    required this.balcony,
+    required this.drawing,
     required this.dining,
     required this.kitchen,
     required this.floornumber,
@@ -171,6 +179,8 @@ class SingleToletPostModel {
         category: json["category"],
         bed: json["bed"],
         bath: json["bath"],
+        balcony: json["balcony"],
+        drawing: json["drawing"],
         dining: json["dining"],
         kitchen: json["kitchen"],
         floornumber: json["floornumber"],
@@ -213,6 +223,8 @@ class SingleToletPostModel {
         "category": category,
         "bed": bed,
         "bath": bath,
+        "balcony": balcony,
+        "drawing": drawing,
         "dining": dining,
         "kitchen": kitchen,
         "floornumber": floornumber,
@@ -260,6 +272,8 @@ class NewPostTolet {
   final String category;
   final String bed;
   final String bath;
+  final String balcony;
+  final String drawing;
   final String dining;
   final String kitchen;
   final String floornumber;
@@ -297,6 +311,8 @@ class NewPostTolet {
     required this.category,
     required this.bed,
     required this.bath,
+    required this.balcony,
+    required this.drawing,
     required this.dining,
     required this.kitchen,
     required this.floornumber,
@@ -335,6 +351,8 @@ class NewPostTolet {
         category: json["category"],
         bed: json["bed"],
         bath: json["bath"],
+        balcony: json["balcony"],
+        drawing: json["drawing"],
         dining: json["dining"],
         kitchen: json["kitchen"],
         floornumber: json["floornumber"],
@@ -373,6 +391,8 @@ class NewPostTolet {
         "category": category,
         "bed": bed,
         "bath": bath,
+        "balcony": balcony,
+        "drawing": drawing,
         "dining": dining,
         "kitchen": kitchen,
         "floornumber": floornumber,

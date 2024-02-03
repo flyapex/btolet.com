@@ -1,7 +1,10 @@
+import 'package:btolet/constants/colors.dart';
 import 'package:btolet/controller/property_controller.dart';
+import 'package:btolet/controller/user_controller.dart';
 import 'package:btolet/view/property/property.dart';
 import 'package:btolet/view/shimmer/shimmer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 
@@ -24,10 +27,12 @@ class CategoryChipPro extends StatelessWidget {
           showCheckmark: false,
           label: Text(
             category,
-            // style: TextStyle(
-            //   color: Colors.black.withOpacity(0.5),
-            // ),
-          ),
+            style: TextStyle(
+              height: 0.7,
+              color: Colors.black.withOpacity(0.5),
+              fontSize: s3,
+            ),
+          ).paddingOnly(bottom: 2),
           selected: categoryState.value,
           onSelected: (value) {
             categoryState.value = !categoryState.value;
@@ -74,7 +79,7 @@ class FasalitisChipProSort extends StatelessWidget {
     return Obx(
       () => FilterChip(
         showCheckmark: false,
-        label: Text(text),
+        label: Text(text, style: h3).paddingOnly(bottom: 2),
         selected: categoryState.value,
         onSelected: (value) {
           categoryState.value = !categoryState.value;
@@ -122,6 +127,7 @@ class _SortButtonProState extends State<SortButtonPro> {
     return DefaultTextStyle(
       style: const TextStyle(
         color: Colors.black,
+        fontSize: s4,
       ),
       child: SizedBox(
         height: 40,
@@ -136,7 +142,6 @@ class _SortButtonProState extends State<SortButtonPro> {
               showCheckmark: false,
               shape: const StadiumBorder(side: BorderSide()),
               // padding: const EdgeInsets.only(left: 5, right: 5),
-
               // labelPadding: const EdgeInsets.only(right: 5, left: 5),
               label: Text(
                 categories[index],
@@ -144,8 +149,10 @@ class _SortButtonProState extends State<SortButtonPro> {
                   color: isSelected[index]
                       ? const Color(0xff0166EE)
                       : Colors.black.withOpacity(0.5),
+                  fontSize: s3,
+                  height: 0.5,
                 ),
-              ),
+              ).paddingOnly(bottom: 2),
               selected: isSelected[index],
               onSelected: (bool selected) {
                 setState(() {
@@ -249,6 +256,9 @@ class SortPostListProState extends State<SortPostListPro> {
           padding: const EdgeInsets.only(top: 0, left: 20, right: 20),
           child: SingleChildScrollView(
             controller: scrollController,
+            physics: const BouncingScrollPhysics(
+              parent: AlwaysScrollableScrollPhysics(),
+            ),
             child: Column(
               children: [
                 StreamBuilder(
@@ -298,6 +308,177 @@ class SortPostListProState extends State<SortPostListPro> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class TextInputProSort extends StatefulWidget {
+  final String title;
+  final int textlength;
+  final String hintText;
+  final String suffixtext;
+  final TextInputType textType;
+  final double topPadding;
+  final TextEditingController controller;
+  final TextInputFormatter? numberFormatter;
+  final double widthh;
+  final FocusNode focusNode;
+  const TextInputProSort({
+    super.key,
+    required this.title,
+    required this.hintText,
+    required this.textType,
+    this.topPadding = 10,
+    required this.controller,
+    required this.suffixtext,
+    required this.textlength,
+    required this.widthh,
+    this.numberFormatter,
+    required this.focusNode,
+  });
+
+  @override
+  State<TextInputProSort> createState() => _TextInputProSortState();
+}
+
+class _TextInputProSortState extends State<TextInputProSort> {
+  ProController proController = Get.find();
+  UserController userController = Get.find();
+  var textstyle = TextStyle(
+    overflow: TextOverflow.ellipsis,
+    color: Colors.black.withOpacity(0.5),
+    height: 1.2,
+    fontSize: s3,
+    letterSpacing: 1.2,
+  );
+  var textstyleh = TextStyle(
+    overflow: TextOverflow.ellipsis,
+    height: 1.2,
+    fontSize: s3,
+    letterSpacing: 1.2,
+    color: Colors.black.withOpacity(0.5),
+  );
+  var iconColorChange = false;
+  getBorderColor() {
+    return Colors.white;
+  }
+
+  getFocus() {
+    final focusNodeMap = {
+      proController.priceminfocusNode: proController.pricemaxfocusNode,
+    };
+
+    final nextFocusNode = focusNodeMap[widget.focusNode];
+
+    if (nextFocusNode != null) {
+      FocusScope.of(context).requestFocus(nextFocusNode);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(height: widget.topPadding),
+        Text(
+          widget.title,
+          style: TextStyle(
+            letterSpacing: 0.7,
+            color: Colors.black.withOpacity(0.6),
+            fontSize: s2,
+          ),
+        ),
+        const SizedBox(height: 15),
+        Container(
+          decoration: BoxDecoration(
+            color: const Color(0xffF2F3F5),
+            borderRadius: BorderRadius.circular(6),
+            border: Border.all(
+              color: getBorderColor(),
+            ),
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: SizedBox(
+                  height: 48,
+                  // width: (Get.width / widget.widthh),
+                  child: Focus(
+                    onFocusChange: (val) {
+                      if (val) {
+                        if (proController.pricemin == widget.controller) {
+                          proController.pricemin.text =
+                              proController.rentmin.value.toString();
+                        } else if (proController.pricemax ==
+                            widget.controller) {
+                          proController.pricemax.text =
+                              proController.rentmax.value.toString();
+                        }
+                      }
+                      setState(() {
+                        val ? iconColorChange = true : iconColorChange = false;
+                      });
+                    },
+                    child: IntrinsicWidth(
+                      child: TextField(
+                        focusNode: widget.focusNode,
+                        // inputFormatters: [
+                        //   LengthLimitingTextInputFormatter(widget.titlelenth),
+                        // ],
+
+                        // inputFormatters: [ThousandsFormatter()],
+                        inputFormatters: [
+                          if (widget.numberFormatter != null)
+                            widget.numberFormatter!,
+                        ],
+                        maxLength: widget.textlength,
+                        cursorHeight: 24,
+                        cursorWidth: 1.8,
+                        cursorRadius: const Radius.circular(10),
+                        controller: widget.controller,
+                        textInputAction: TextInputAction.done,
+                        keyboardType: widget.textType,
+                        maxLines: 1,
+                        cursorColor: Colors.black,
+                        style: textstyle,
+                        decoration: InputDecoration(
+                          counterText: '',
+                          suffix: Text(
+                            widget.suffixtext,
+                            style: TextStyle(
+                              color: iconColorChange
+                                  ? const Color(0xff0166EE)
+                                  : Colors.amber,
+                            ),
+                          ),
+                          border: const OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                          ),
+                          isDense: true,
+                          hintText: widget.hintText,
+                          hintStyle: textstyleh,
+                        ),
+                        onChanged: (val) {
+                          if (proController.pricemin == widget.controller) {
+                            proController.rentmin.value = val as int;
+                          } else if (proController.pricemax ==
+                              widget.controller) {
+                            proController.rentmax.value = val as int;
+                          }
+                        },
+                        onSubmitted: (v) {
+                          getFocus();
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

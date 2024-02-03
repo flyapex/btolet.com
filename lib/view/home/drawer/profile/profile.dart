@@ -1,3 +1,4 @@
+import 'package:btolet/constants/colors.dart';
 import 'package:btolet/controller/db_controller.dart';
 import 'package:btolet/controller/user_controller.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,15 @@ class Profile extends StatelessWidget {
           ),
         ),
         backgroundColor: Colors.white,
-        title: const Text('Profile'),
+        title: Text(
+          'Profile',
+          style: TextStyle(
+            fontSize: s1,
+            height: 0.5,
+            fontWeight: FontWeight.bold,
+            color: Colors.black.withOpacity(0.7),
+          ),
+        ),
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
@@ -47,7 +56,9 @@ class Profile extends StatelessWidget {
               child: Text(
                 "Update Porfile",
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: s1,
+                  height: 0.5,
+                  fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
               ),
@@ -56,6 +67,9 @@ class Profile extends StatelessWidget {
         ),
       ),
       body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(
+          parent: AlwaysScrollableScrollPhysics(),
+        ),
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
@@ -128,7 +142,8 @@ class Profile extends StatelessWidget {
                               Text(
                                 userController.name.value,
                                 style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: s3,
+                                  height: 0.5,
                                   color: Colors.black.withOpacity(0.8),
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -136,21 +151,25 @@ class Profile extends StatelessWidget {
                               Text(
                                 "(${dbController.getUserID()})",
                                 style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: s3,
+                                  height: 0.5,
                                   color: Colors.black.withOpacity(0.8),
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ],
                           ),
+                          const SizedBox(height: 10),
                           Text(
                             userController.email.value,
                             style: TextStyle(
-                              fontSize: 12,
+                              fontSize: s3,
+                              height: 0.5,
                               color: Colors.black.withOpacity(0.5),
                               // fontWeight: FontWeight.bold,
                             ),
                           ),
+                          const SizedBox(height: 10),
                           Divider(
                             thickness: 4,
                             color: Colors.black.withOpacity(0.1),
@@ -232,13 +251,13 @@ class _TextInputBoxProfileState extends State<TextInputBoxProfile> {
     overflow: TextOverflow.ellipsis,
     color: Colors.black.withOpacity(0.5),
     height: 1.2,
-    fontSize: 16,
+    fontSize: s3,
     letterSpacing: 1.2,
   );
   var textstyleh = TextStyle(
     overflow: TextOverflow.ellipsis,
     height: 1.2,
-    fontSize: 15,
+    fontSize: s3,
     letterSpacing: 1.2,
     color: Colors.black.withOpacity(0.5),
   );
@@ -255,6 +274,8 @@ class _TextInputBoxProfileState extends State<TextInputBoxProfile> {
           style: TextStyle(
             letterSpacing: 0.7,
             color: Colors.black.withOpacity(0.6),
+            fontSize: s3,
+            height: 0.5,
           ),
         ),
         const SizedBox(height: 15),

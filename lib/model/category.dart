@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../view/post/tolet widget/dropdown.dart';
+enum Category {
+  balcony,
+  drawing,
+  dining,
+  kitchen,
+  floorno,
+  facing,
+  garage,
+}
 
 Map<Category, List<String>> categoryData = {
-  Category.bedrooms: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10+"],
-  Category.bathrooms: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10+"],
+  Category.balcony: ['0', "1", "2", "3", "4", "5", "6", "7", "8", "9", "10+"],
+  Category.drawing: ['0', "1", "2", "3", "4", "5", "6", "7", "8", "9", "10+"],
   Category.dining: ['0', "1", "2", "3", "4", "5", "6", "7", "8", "9", "10+"],
   Category.kitchen: ['0', "1", "2", "3", "4", "5", "6", "7", "8", "9", "10+"],
   Category.floorno: [
@@ -31,11 +39,30 @@ Map<Category, List<String>> categoryData = {
     "West",
   ],
   Category.garage: [
-    "Both",
+    "Garage",
     "Car",
     "Bike",
   ],
 };
+var bedtolet = [
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7+",
+];
+
+var bathtolet = [
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7+",
+];
 
 class FasalitisModel {
   final RxBool state;
@@ -53,7 +80,7 @@ var priceType = [
 
 var category = [
   'House',
-  'Flat/Appartment',
+  'Flat',
   'Land',
   'Plot',
 ];
@@ -82,6 +109,24 @@ var bath = [
   "6",
   "7+",
 ];
+var diningPro = [
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7+",
+];
+var drawingPro = [
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7+",
+];
 
 var emi = [
   "Yes",
@@ -101,14 +146,14 @@ var postedBy = [
 
 //drop down
 enum CategoryPro {
-  dining,
+  balcony,
   kitchen,
   facing,
   area,
 }
 
 Map<CategoryPro, List<String>> categoryProData = {
-  CategoryPro.dining: ["1", "2", "3", "4", "5", "6", "7+"],
+  CategoryPro.balcony: ["1", "2", "3", "4", "5", "6", "7+"],
   CategoryPro.kitchen: ["1", "2", "3", "4", "5", "6", "7+"],
   CategoryPro.facing: [
     "East",
@@ -120,5 +165,5 @@ Map<CategoryPro, List<String>> categoryProData = {
     "South-West",
     "West"
   ],
-  CategoryPro.area: ["শতাংশ", "কাঠা", "বিঘা"],
+  CategoryPro.area: ["শতাংশ", "কাঠা", "বিঘা", 'বর্গফুট'],
 };

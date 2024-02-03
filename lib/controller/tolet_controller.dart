@@ -5,7 +5,7 @@ import 'package:btolet/controller/location_controller.dart';
 import 'package:btolet/controller/user_controller.dart';
 import 'package:btolet/model/category.dart';
 import 'package:btolet/model/tolet_model.dart';
-import 'package:btolet/view/post/tolet%20widget/dropdown.dart';
+
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -105,6 +105,7 @@ class ToletController extends GetxController {
   // }
 
 //*----------------------Post
+
   var pageController = PageController();
 
   late DateTime rentFrom = DateTime(DateTime.now().year, DateTime.now().month);
@@ -122,8 +123,8 @@ class ToletController extends GetxController {
   var categories = {
     'Family': false.obs,
     'Bachelor': false.obs,
-    'Male Sit': false.obs,
-    'Female Sit': false.obs,
+    'Male Seat': false.obs,
+    'Female Seat': false.obs,
     'Sub-let': false.obs,
     'Hostel': false.obs,
     'Shop': false.obs,
@@ -140,28 +141,7 @@ class ToletController extends GetxController {
     return jsonStringArray;
   }
 
-  // var fasalitis = {
-  //   'Balcony':
-  //       FasalitisModel(state: false.obs, icon: Icons.balcony_rounded), //1
-  //   'Parking':
-  //       FasalitisModel(state: false.obs, icon: Icons.directions_bike), //2
-  //   'CCTV': FasalitisModel(state: false.obs, icon: Icons.photo_camera), //3
-  //   'GAS': FasalitisModel(
-  //       state: false.obs, icon: Icons.local_fire_department_outlined), //1
-  //   'Lift': FasalitisModel(state: false.obs, icon: Icons.elevator_outlined), //2
-  //   'Security Guard':
-  //       FasalitisModel(state: false.obs, icon: Icons.security_rounded), //3
-  //   'WIFI': FasalitisModel(state: false.obs, icon: Icons.wifi_rounded), //1
-  //   'Power Backup': FasalitisModel(
-  //       state: false.obs, icon: Icons.power_settings_new_rounded), //2
-  //   'Giser':
-  //       FasalitisModel(state: false.obs, icon: Icons.gas_meter_outlined), //3
-  //   'Fire Alarm':
-  //       FasalitisModel(state: false.obs, icon: Icons.fire_extinguisher), //1
-  // };
-
   var fasalitis = {
-    'Balcony': FasalitisModel(state: false.obs, icon: Icons.balcony_rounded),
     'Parking': FasalitisModel(state: false.obs, icon: Icons.directions_bike),
     'GAS': FasalitisModel(
         state: false.obs, icon: Icons.local_fire_department_outlined),
@@ -175,6 +155,9 @@ class ToletController extends GetxController {
         FasalitisModel(state: false.obs, icon: Icons.security_rounded),
     'WIFI': FasalitisModel(state: false.obs, icon: Icons.wifi_rounded),
     'Giser': FasalitisModel(state: false.obs, icon: Icons.gas_meter_outlined),
+    'Garden': FasalitisModel(state: false.obs, icon: Icons.grass),
+    'Drinking Water':
+        FasalitisModel(state: false.obs, icon: Icons.local_drink_outlined),
   };
 
   String getFasalities() {
@@ -187,22 +170,21 @@ class ToletController extends GetxController {
     return jsonStringArray;
   }
 
+  var selectedBed = bedtolet[0].obs;
+  var selectedbath = bathtolet[0].obs;
+
   // Drop Down
 
-  final bedrooms = 'select'.obs;
-  final bathrooms = 'select'.obs;
   final dining = 'select'.obs;
   final kitchen = 'select'.obs;
   final floorno = 'select'.obs;
   final facing = 'select'.obs;
-  final garage = 'select'.obs;
+  final garage = 'Garage'.obs;
+  final balcony = 'select'.obs;
+  final drawing = 'select'.obs;
 
   String getCategoryValue(Category category) {
     switch (category) {
-      case Category.bedrooms:
-        return bedrooms.value;
-      case Category.bathrooms:
-        return bathrooms.value;
       case Category.dining:
         return dining.value;
       case Category.kitchen:
@@ -213,16 +195,20 @@ class ToletController extends GetxController {
         return facing.value;
       case Category.garage:
         return garage.value;
+      case Category.balcony:
+        return balcony.value;
+      case Category.drawing:
+        return drawing.value;
     }
   }
 
   void setCategoryValue(Category category, String value) {
     switch (category) {
-      case Category.bedrooms:
-        bedrooms.value = value;
+      case Category.balcony:
+        balcony.value = value;
         break;
-      case Category.bathrooms:
-        bathrooms.value = value;
+      case Category.drawing:
+        drawing.value = value;
         break;
       case Category.dining:
         dining.value = value;
@@ -253,26 +239,18 @@ class ToletController extends GetxController {
   var activeFlag = false.obs;
 
   var categoryFlag = false.obs;
-  var bedFlag = false.obs;
-  var bathFlag = false.obs;
-  var kitchenFlag = false.obs;
   var priceFlag = false.obs;
   var imageFlag = false.obs;
-  var floornoFlag = false.obs;
-  var garageFlag = false.obs;
+  var locationFlag = true.obs;
 
   var allFlag = false.obs;
 
   resetAllflag() {
     activeFlag(false);
     categoryFlag(false);
-    bedFlag(false);
-    bathFlag(false);
-    kitchenFlag(false);
     priceFlag(false);
     imageFlag(false);
-    floornoFlag(false);
-    garageFlag(false);
+
     userController.phoneFlag(false);
     categories.forEach((key, value) {
       value.value = false;
@@ -280,13 +258,11 @@ class ToletController extends GetxController {
     fasalitis.forEach((key, value) {
       value.state.value = false;
     });
-    bedrooms.value = 'select';
-    bathrooms.value = 'select';
     dining.value = 'select';
     kitchen.value = 'select';
     floorno.value = 'select';
     facing.value = 'select';
-    garage.value = 'select';
+    garage.value = 'Garage';
     nameController.clear();
     roomSize.clear();
     maintenance.clear();
@@ -294,8 +270,9 @@ class ToletController extends GetxController {
     userController.description.clear();
     userController.shortAddress.clear();
     selectedImages.clear();
+    // locationFlag(false);
 
-    allFlag(false);
+    // allFlag(false);
   }
 
   void animateToPage(val) {
@@ -323,49 +300,19 @@ class ToletController extends GetxController {
   }
 
   checkAllCatagory() {
-    bedFlag.value = bedrooms.value != "select";
-    bathFlag.value = bathrooms.value != "select";
-    kitchenFlag.value = kitchen.value != "select";
-    floornoFlag.value = floorno.value != "select";
-    garageFlag.value = garage.value != "select";
     priceFlag.value = rent.text.isNotEmpty;
     imageFlag.value = selectedImages.isNotEmpty;
 
     userController.phoneFlag.value =
         userController.phonenumber.text.isNotEmpty ||
             userController.wappnumber.text.isNotEmpty;
-    var c = categories;
-    if (c['Only Garage']!.value) {
-      bedFlag(true);
-      bathFlag(true);
-      kitchenFlag(true);
-      floornoFlag(true);
-    } else if (c['Office']!.value && c['Family']!.value) {
-      floornoFlag(true);
-      kitchenFlag(true);
-      garageFlag(true);
-    } else if (c['Office']!.value) {
-      kitchenFlag(true);
-      floornoFlag(true);
-      garageFlag(true);
-    } else if (c['Shop']!.value) {
-      bedFlag(true);
-      bathFlag(true);
-      kitchenFlag(true);
-      garageFlag(true);
-    } else {
-      floornoFlag(true);
-      garageFlag(true);
-    }
+    // if (locationController.locationAddressShort.value != 'Location') {
+    //   locationFlag(false);
+    // }
   }
 
   flagCheck() {
     if (categories['Only Garage']!.value) {
-      if (garage.value != "select") {
-        garageFlag.value = true;
-      } else {
-        animateToPage(0);
-      }
       if (rent.text.isNotEmpty) {
         priceFlag.value = true;
       } else {
@@ -374,31 +321,16 @@ class ToletController extends GetxController {
       if (selectedImages.isNotEmpty) {
         imageFlag.value = true;
       } else {
-        if (garageFlag.value == true && rent.text.isNotEmpty) {
-          animateToEnd();
-        }
+        animateToPage(0);
       }
 
       userController.phoneFlag.value =
           userController.phonenumber.text.isNotEmpty ||
               userController.wappnumber.text.isNotEmpty;
 
-      allFlag.value = garageFlag.value &&
-          imageFlag.value &&
-          priceFlag.value &&
-          userController.phoneFlag.value;
+      allFlag.value =
+          imageFlag.value && priceFlag.value && userController.phoneFlag.value;
     } else if (categories['Office']!.value && categories['Family']!.value) {
-      if (bedrooms.value != "select") {
-        bedFlag.value = true;
-      } else {
-        animateToPage(0);
-      }
-      if (bathrooms.value != "select") {
-        bathFlag.value = true;
-      } else {
-        animateToPage(0);
-      }
-
       if (rent.text.isNotEmpty) {
         priceFlag.value = true;
       } else {
@@ -416,17 +348,6 @@ class ToletController extends GetxController {
       allFlag.value =
           priceFlag.value && imageFlag.value && userController.phoneFlag.value;
     } else if (categories['Office']!.value) {
-      if (bedrooms.value != "select") {
-        bedFlag.value = true;
-      } else {
-        animateToPage(0);
-      }
-      if (bathrooms.value != "select") {
-        bathFlag.value = true;
-      } else {
-        animateToPage(0);
-      }
-
       if (rent.text.isNotEmpty) {
         priceFlag.value = true;
       } else {
@@ -435,9 +356,7 @@ class ToletController extends GetxController {
       if (selectedImages.isNotEmpty) {
         imageFlag.value = true;
       } else {
-        if (bedFlag.value && bathFlag.value && rent.text.isNotEmpty) {
-          animateToEnd();
-        }
+        animateToPage(0);
       }
       userController.phoneFlag.value =
           userController.phonenumber.text.isNotEmpty ||
@@ -446,18 +365,13 @@ class ToletController extends GetxController {
       allFlag.value =
           priceFlag.value && imageFlag.value && userController.phoneFlag.value;
     } else if (categories['Shop']!.value) {
-      if (floorno.value != "select") {
-        floornoFlag.value = true;
-      } else {
-        animateToPage(0);
-      }
       if (rent.text.isNotEmpty) {
         priceFlag.value = true;
       } else {
         animateToPage(0);
       }
 
-      if (floornoFlag.value && selectedImages.isNotEmpty) {
+      if (selectedImages.isNotEmpty) {
         imageFlag.value = true;
       } else {
         animateToEnd();
@@ -466,26 +380,9 @@ class ToletController extends GetxController {
           userController.phonenumber.text.isNotEmpty ||
               userController.wappnumber.text.isNotEmpty;
 
-      allFlag.value = imageFlag.value &&
-          priceFlag.value &&
-          userController.phoneFlag.value &&
-          floornoFlag.value;
+      allFlag.value =
+          imageFlag.value && priceFlag.value && userController.phoneFlag.value;
     } else {
-      if (bedrooms.value != "select") {
-        bedFlag.value = true;
-      } else {
-        animateToPage(0);
-      }
-      if (bathrooms.value != "select") {
-        bathFlag.value = true;
-      } else {
-        animateToPage(0);
-      }
-      if (kitchen.value != "select") {
-        kitchenFlag.value = true;
-      } else {
-        animateToPage(0);
-      }
       if (rent.text.isNotEmpty) {
         priceFlag.value = true;
       } else {
@@ -494,24 +391,14 @@ class ToletController extends GetxController {
       if (selectedImages.isNotEmpty) {
         imageFlag.value = true;
       } else {
-        if (bedFlag.value &&
-            bathFlag.value &&
-            kitchenFlag.value &&
-            priceFlag.value &&
-            !imageFlag.value) {
-          animateToEnd();
-        }
+        animateToPage(0);
       }
       userController.phoneFlag.value =
           userController.phonenumber.text.isNotEmpty ||
               userController.wappnumber.text.isNotEmpty;
 
-      allFlag.value = bedFlag.value &&
-          bathFlag.value &&
-          kitchenFlag.value &&
-          priceFlag.value &&
-          imageFlag.value &&
-          userController.phoneFlag.value;
+      allFlag.value =
+          priceFlag.value && imageFlag.value && userController.phoneFlag.value;
     }
   }
 
@@ -551,6 +438,8 @@ class ToletController extends GetxController {
             category: getCategory(),
             bed: "",
             bath: "",
+            balcony: '',
+            drawing: '',
             dining: "",
             kitchen: "",
             floornumber: "",
@@ -579,25 +468,73 @@ class ToletController extends GetxController {
             location: locationController.locationAddressShort.value.toString(),
             locationfull: locationController.locationAddress.value.toString(),
             shortaddress: userController.shortAddress.text,
-            phone: userController.phonenumber.text,
+            phone: userController.code.value + userController.phonenumber.text,
             wapp: userController.wappnumber.text.isEmpty
                 ? ""
-                : userController.phonenumber.text,
+                : userController.code.value + userController.phonenumber.text,
           ),
         );
-      } else {
+      } else if (categories['Shop']!.value) {
+        print("Shop");
         response = await ApiServiceTolet.newPost(
           NewPostTolet(
             uid: dbController.getUserID(),
             propertyname: nameController.text,
             category: getCategory(),
-            bed: bedrooms.value == "select" ? "" : bedrooms.value,
-            bath: bathrooms.value == "select" ? "" : bathrooms.value,
-            dining: dining.value == "select" ? "" : dining.value,
-            kitchen: kitchen.value == "select" ? "" : kitchen.value,
+            bed: "",
+            bath: "",
+            balcony: '',
+            drawing: '',
+            dining: "",
+            kitchen: "",
             floornumber: floorno.value == "select" ? "" : floorno.value,
             facing: facing.value == "select" ? "" : facing.value,
-            roomsize: roomSize.text == "200" ? "" : roomSize.text,
+            roomsize: roomSize.text == "" ? "" : roomSize.text,
+            rentfrom: rentFrom,
+            mentenance: 0,
+            rent: int.parse(rent.text.replaceAll(",", "")),
+            garagetype: garage.value,
+            fasalitis: "",
+            image1: imageBase64List[0],
+            image2: imageBase64List[1],
+            image3: imageBase64List[2],
+            image4: imageBase64List[3],
+            image5: imageBase64List[4],
+            image6: imageBase64List[5],
+            image7: imageBase64List[6],
+            image8: imageBase64List[7],
+            image9: imageBase64List[8],
+            image10: imageBase64List[9],
+            image11: imageBase64List[10],
+            image12: imageBase64List[11],
+            description: userController.description.text,
+            geolon: locationController.currentlongitude.value.toString(),
+            geolat: locationController.currentlatitude.value.toString(),
+            location: locationController.locationAddressShort.value.toString(),
+            locationfull: locationController.locationAddress.value.toString(),
+            shortaddress: userController.shortAddress.text,
+            phone: userController.code.value + userController.phonenumber.text,
+            wapp: userController.wappnumber.text.isEmpty
+                ? ""
+                : userController.code.value + userController.phonenumber.text,
+          ),
+        );
+      } else if (categories['Office']!.value) {
+        print("Office");
+        response = await ApiServiceTolet.newPost(
+          NewPostTolet(
+            uid: dbController.getUserID(),
+            propertyname: nameController.text,
+            category: getCategory(),
+            bed: selectedBed.value,
+            bath: selectedbath.value,
+            balcony: '',
+            drawing: '',
+            dining: '',
+            kitchen: '',
+            floornumber: floorno.value == "select" ? "" : floorno.value,
+            facing: facing.value == "select" ? "" : facing.value,
+            roomsize: roomSize.text == "" ? "" : roomSize.text,
             rentfrom: rentFrom,
             mentenance: int.parse(maintenance.text == ""
                 ? "0"
@@ -623,10 +560,56 @@ class ToletController extends GetxController {
             location: locationController.locationAddressShort.value.toString(),
             locationfull: locationController.locationAddress.value.toString(),
             shortaddress: userController.shortAddress.text,
-            phone: userController.phonenumber.text,
+            phone: userController.code.value + userController.phonenumber.text,
             wapp: userController.wappnumber.text.isEmpty
                 ? ""
-                : userController.phonenumber.text,
+                : userController.code.value + userController.phonenumber.text,
+          ),
+        );
+      } else {
+        response = await ApiServiceTolet.newPost(
+          NewPostTolet(
+            uid: dbController.getUserID(),
+            propertyname: nameController.text,
+            category: getCategory(),
+            bed: selectedBed.value,
+            bath: selectedbath.value,
+            balcony: balcony.value == "select" ? "" : balcony.value,
+            drawing: drawing.value == "select" ? "" : drawing.value,
+            dining: dining.value == "select" ? "" : dining.value,
+            kitchen: kitchen.value == "select" ? "" : kitchen.value,
+            floornumber: floorno.value == "select" ? "" : floorno.value,
+            facing: facing.value == "select" ? "" : facing.value,
+            roomsize: roomSize.text == "" ? "" : roomSize.text,
+            rentfrom: rentFrom,
+            mentenance: int.parse(maintenance.text == ""
+                ? "0"
+                : maintenance.text.replaceAll(",", "")),
+            rent: int.parse(rent.text.replaceAll(",", "")),
+            garagetype: "",
+            fasalitis: getFasalities(),
+            image1: imageBase64List[0],
+            image2: imageBase64List[1],
+            image3: imageBase64List[2],
+            image4: imageBase64List[3],
+            image5: imageBase64List[4],
+            image6: imageBase64List[5],
+            image7: imageBase64List[6],
+            image8: imageBase64List[7],
+            image9: imageBase64List[8],
+            image10: imageBase64List[9],
+            image11: imageBase64List[10],
+            image12: imageBase64List[11],
+            description: userController.description.text,
+            geolat: locationController.currentlatitude.value.toString(),
+            geolon: locationController.currentlongitude.value.toString(),
+            location: locationController.locationAddressShort.value.toString(),
+            locationfull: locationController.locationAddress.value.toString(),
+            shortaddress: userController.shortAddress.text,
+            phone: userController.code.value + userController.phonenumber.text,
+            wapp: userController.wappnumber.text.isEmpty
+                ? ""
+                : userController.code.value + userController.phonenumber.text,
           ),
         );
       }
@@ -640,6 +623,19 @@ class ToletController extends GetxController {
   }
 
   //*----------------- Sort Post
+
+  TextEditingController pricemin = TextEditingController();
+  TextEditingController pricemax = TextEditingController();
+
+  final FocusNode priceminfocusNode = FocusNode();
+  final FocusNode pricemaxfocusNode = FocusNode();
+
+  var priceText = "Any Price".obs;
+  var startval1 = 0.0.obs, endval1 = 50000.0.obs;
+
+  var rentmin = 0.obs;
+  var rentmax = 100000.obs;
+
   var resetSort = false.obs;
 
   resetAllSort() {
@@ -656,8 +652,8 @@ class ToletController extends GetxController {
   var categoriesSort = {
     'Family': false.obs,
     'Bachelor': false.obs,
-    'Male Sit': false.obs,
-    'Female Sit': false.obs,
+    'Male seat': false.obs,
+    'Female Seat': false.obs,
     'Sub-let': false.obs,
     'Hostel': false.obs,
     'Shop': false.obs,
@@ -676,7 +672,6 @@ class ToletController extends GetxController {
   }
 
   var fasalitisSort = {
-    'Balcony': FasalitisModel(state: false.obs, icon: Icons.balcony_rounded),
     'Parking': FasalitisModel(state: false.obs, icon: Icons.directions_bike),
     'CCTV': FasalitisModel(state: false.obs, icon: Icons.photo_camera),
     'GAS': FasalitisModel(
@@ -701,8 +696,6 @@ class ToletController extends GetxController {
     return jsonStringArray;
   }
 
-  var rentmin = 0.obs;
-  var rentmax = 100000.obs;
   var bedsort = [].obs;
   var bathsort = [].obs;
 

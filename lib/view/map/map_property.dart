@@ -2,11 +2,11 @@ import 'package:btolet/controller/location_controller.dart';
 import 'package:btolet/controller/property_controller.dart';
 import 'package:btolet/controller/user_controller.dart';
 import 'package:btolet/view/shimmer/shimmer.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:label_marker/label_marker.dart';
@@ -100,85 +100,85 @@ class _MapPropertyState extends State<MapProperty>
         return;
       },
       child: Scaffold(
-        floatingActionButton: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Align(
-            alignment: Alignment.bottomRight,
-            child: SizedBox(
-              height: 40,
-              child: FloatingActionButton.extended(
-                backgroundColor: Colors.blue,
-                onPressed: () async {
-                  // final coords = Coords(
-                  //   double.parse(proController.singlepost.geolat),
-                  //   double.parse(proController.singlepost.geolon),
-                  // );
-                  // var title =
-                  //     "Price ৳ ${NumberFormat.decimalPattern().format(proController.singlepost.price)}";
-                  // final availableMaps = await MapLauncher.installedMaps;
-                  // print(availableMaps.length);
-                  // if (availableMaps.length == 1) {
-                  //   await availableMaps.first.showMarker(
-                  //     coords: coords,
-                  //     title: title,
-                  //     description: "description",
-                  //   );
-                  // } else {
-                  //   Get.bottomSheet(
-                  //     SafeArea(
-                  //       child: SingleChildScrollView(
-                  //         child: Wrap(
-                  //           children: <Widget>[
-                  //             for (var map in availableMaps)
-                  //               ListTile(
-                  //                 onTap: () => map.showMarker(
-                  //                   coords: coords,
-                  //                   title: title,
-                  //                 ),
-                  //                 title: Text(map.mapName),
-                  //                 leading: SvgPicture.asset(
-                  //                   map.icon,
-                  //                   height: 30.0,
-                  //                   width: 30.0,
-                  //                 ),
-                  //               ),
-                  //           ],
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   );
-                  // }
-                },
-                shape: RoundedRectangleBorder(
-                  // side: const BorderSide(
-                  //     width: 3,
-                  //     color: Colors.brown),
-                  borderRadius: BorderRadius.circular(
-                    100,
-                  ),
-                ),
-                label: const Row(
-                  children: [
-                    Text(
-                      'Map',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.white,
-                      ),
-                    ),
-                    SizedBox(width: 10),
-                    Icon(
-                      Feather.navigation,
-                      color: Colors.white,
-                      size: 18,
-                    ),
-                  ],
-                ),
-                elevation: 0,
-              ),
-            ),
-          ),
-        ),
+        // floatingActionButton: Padding(
+        //   padding: const EdgeInsets.all(10.0),
+        //   child: Align(
+        //     alignment: Alignment.bottomRight,
+        //     child: SizedBox(
+        //       height: 40,
+        //       child: FloatingActionButton.extended(
+        //         backgroundColor: Colors.blue,
+        //         onPressed: () async {
+        //           // final coords = Coords(
+        //           //   double.parse(proController.singlepost.geolat),
+        //           //   double.parse(proController.singlepost.geolon),
+        //           // );
+        //           // var title =
+        //           //     "Price ৳ ${NumberFormat.decimalPattern().format(proController.singlepost.price)}";
+        //           // final availableMaps = await MapLauncher.installedMaps;
+        //           // print(availableMaps.length);
+        //           // if (availableMaps.length == 1) {
+        //           //   await availableMaps.first.showMarker(
+        //           //     coords: coords,
+        //           //     title: title,
+        //           //     description: "description",
+        //           //   );
+        //           // } else {
+        //           //   Get.bottomSheet(
+        //           //     SafeArea(
+        //           //       child: SingleChildScrollView(
+        //           //         child: Wrap(
+        //           //           children: <Widget>[
+        //           //             for (var map in availableMaps)
+        //           //               ListTile(
+        //           //                 onTap: () => map.showMarker(
+        //           //                   coords: coords,
+        //           //                   title: title,
+        //           //                 ),
+        //           //                 title: Text(map.mapName),
+        //           //                 leading: SvgPicture.asset(
+        //           //                   map.icon,
+        //           //                   height: 30.0,
+        //           //                   width: 30.0,
+        //           //                 ),
+        //           //               ),
+        //           //           ],
+        //           //         ),
+        //           //       ),
+        //           //     ),
+        //           //   );
+        //           // }
+        //         },
+        //         shape: RoundedRectangleBorder(
+        //           // side: const BorderSide(
+        //           //     width: 3,
+        //           //     color: Colors.brown),
+        //           borderRadius: BorderRadius.circular(
+        //             100,
+        //           ),
+        //         ),
+        //         label: const Row(
+        //           children: [
+        //             Text(
+        //               'Map',
+        //               style: TextStyle(
+        //                 fontSize: 14,
+        //                 color: Colors.white,
+        //               ),
+        //             ),
+        //             SizedBox(width: 10),
+        //             Icon(
+        //               Feather.navigation,
+        //               color: Colors.white,
+        //               size: 18,
+        //             ),
+        //           ],
+        //         ),
+        //         elevation: 0,
+        //       ),
+        //     ),
+        //   ),
+        // ),
         body: Obx(
           () => proController.mapLoding.value
               ? const MapLodingShimmer()
@@ -219,23 +219,54 @@ class _MapPropertyState extends State<MapProperty>
                                 ? const MultiMapShimmer()
                                 : Align(
                                     alignment: Alignment.bottomCenter,
-                                    child: ListView.builder(
+                                    child: Padding(
                                       padding: const EdgeInsets.only(
-                                        left: 30,
-                                        right: 10,
+                                        bottom: 40,
                                       ),
-                                      itemCount:
-                                          proController.mapAllPostPro.length,
-                                      scrollDirection: Axis.horizontal,
-                                      // physics: const NeverScrollableScrollPhysics(),
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        return PostsProMap(
-                                          postData: proController
-                                              .mapAllPostPro[index],
-                                        );
-                                      },
+                                      child: CarouselSlider.builder(
+                                        options: CarouselOptions(
+                                          height: 120,
+                                          autoPlay: false,
+                                          enlargeCenterPage: true,
+                                          enableInfiniteScroll: true,
+                                          autoPlayInterval:
+                                              const Duration(seconds: 3),
+                                          autoPlayAnimationDuration:
+                                              const Duration(milliseconds: 900),
+                                          autoPlayCurve: Curves.fastOutSlowIn,
+                                        ),
+                                        itemCount:
+                                            proController.mapAllPostPro.length,
+                                        itemBuilder: (BuildContext context,
+                                            int index, int pageViewIndex) {
+                                          return PostsProMap(
+                                            wid: Get.width,
+                                            mar: const EdgeInsets.symmetric(
+                                              horizontal: 1.0,
+                                            ),
+                                            postData: proController
+                                                .mapAllPostPro[index],
+                                          );
+                                        },
+                                      ),
                                     ),
+                                    // ListView.builder(
+                                    //   padding: const EdgeInsets.only(
+                                    //     left: 30,
+                                    //     right: 10,
+                                    //   ),
+                                    //   itemCount:
+                                    //       proController.mapAllPostPro.length,
+                                    //   scrollDirection: Axis.horizontal,
+                                    //   // physics: const NeverScrollableScrollPhysics(),
+                                    //   itemBuilder:
+                                    //       (BuildContext context, int index) {
+                                    //     return PostsProMap(
+                                    //       postData: proController
+                                    //           .mapAllPostPro[index],
+                                    //     );
+                                    //   },
+                                    // ),
                                   ),
                           )
                         : const SizedBox(),

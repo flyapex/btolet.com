@@ -1,3 +1,4 @@
+import 'package:btolet/constants/colors.dart';
 import 'package:btolet/controller/db_controller.dart';
 import 'package:btolet/controller/location_controller.dart';
 import 'package:btolet/controller/user_controller.dart';
@@ -22,6 +23,15 @@ class MapLoading extends StatelessWidget {
     }
 
     getUserDetails();
+
+    Future getBannerAds() async {
+      if (userController.fatchOneTime.value) {
+        await userController.bannerApi();
+        // decodedImages = decodeImages();
+      }
+    }
+
+    getBannerAds();
 
     return Obx(
       () => locationController.isLoading.value
@@ -48,7 +58,8 @@ class MapLoading extends StatelessWidget {
                                     text: TextSpan(
                                       text: 'welcome ',
                                       style: const TextStyle(
-                                        fontSize: 18,
+                                        fontSize: s4,
+                                        height: 0.9,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.black45,
                                       ),
@@ -57,7 +68,8 @@ class MapLoading extends StatelessWidget {
                                           text: userController.name.value
                                               .toLowerCase(),
                                           style: const TextStyle(
-                                            fontSize: 18,
+                                            fontSize: s4,
+                                            height: 0.9,
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
@@ -102,8 +114,9 @@ class MapLoading extends StatelessWidget {
                                 Text(
                                   'Locating you',
                                   style: TextStyle(
-                                    fontSize: 14,
+                                    fontSize: s4,
                                     color: Color(0xffa1adb7),
+                                    height: 0.9,
                                   ),
                                 ),
                               ],

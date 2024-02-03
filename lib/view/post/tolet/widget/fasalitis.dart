@@ -1,8 +1,10 @@
+import 'package:btolet/constants/colors.dart';
 import 'package:btolet/controller/tolet_controller.dart';
 import 'package:btolet/model/category.dart';
-import 'package:btolet/view/post/tolet%20widget/chips.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import 'chips.dart';
 
 class Facilities extends StatelessWidget {
   const Facilities({super.key});
@@ -17,13 +19,14 @@ class Facilities extends StatelessWidget {
             Text(
               'Facilities(op)',
               style: TextStyle(
-                fontSize: 14,
+                fontSize: s3,
+                // height: .8,
                 color: Colors.black,
               ),
             ),
           ],
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 15),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [

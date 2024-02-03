@@ -3,9 +3,12 @@ import 'package:btolet/model/api.dart';
 import 'package:btolet/model/pro_model.dart';
 import 'package:dio/dio.dart';
 
+import 'google ads/ad_helper.dart';
+
 final dio = Dio();
+var baseUrl = '$url/pro';
 // var baseUrl = 'http://10.0.2.2:3000/api/pro';
-var baseUrl = 'http://154.26.135.41:3800/api/pro';
+// var baseUrl = 'http://154.26.135.41:3800/api/pro';
 
 class ApiServicePro {
   static Future postCountArea(location, location2) async {
@@ -204,7 +207,7 @@ class ApiServicePro {
       '$baseUrl/user/mypost/delete',
       queryParameters: {
         "uid": uid,
-        "pid": postId,
+        "post_id": postId,
       },
     );
 

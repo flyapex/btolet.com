@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:btolet/constants/colors.dart';
 import 'package:btolet/controller/property_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
@@ -80,7 +81,7 @@ class ImagePickerProFloorPlanState extends State<ImagePickerProFloorPlan> {
                             Text(
                               "Select Image",
                               style: TextStyle(
-                                fontSize: 15,
+                                fontSize: s3,
                                 letterSpacing: 0.8,
                                 color: Colors.white,
                               ),
@@ -219,7 +220,7 @@ class ImagePickerProFloorPlanState extends State<ImagePickerProFloorPlan> {
                                           Text(
                                             "Select Image",
                                             style: TextStyle(
-                                              fontSize: 15,
+                                              fontSize: s3,
                                               letterSpacing: 0.8,
                                               color: Colors.white,
                                             ),
@@ -319,7 +320,7 @@ class ImagePickerProState extends State<ImagePickerPro> {
                             Text(
                               "Select Image",
                               style: TextStyle(
-                                fontSize: 15,
+                                fontSize: s3,
                                 letterSpacing: 0.8,
                                 color: Colors.white,
                               ),
@@ -439,6 +440,7 @@ class ImagePickerProState extends State<ImagePickerPro> {
                                             style: const TextStyle(
                                               color: Colors.white,
                                               fontWeight: FontWeight.bold,
+                                              fontSize: s3,
                                             ),
                                           ),
                                         ),
@@ -487,7 +489,7 @@ class ImagePickerProState extends State<ImagePickerPro> {
                                           Text(
                                             "Select Image",
                                             style: TextStyle(
-                                              fontSize: 15,
+                                              fontSize: s3,
                                               letterSpacing: 0.8,
                                               color: Colors.white,
                                             ),

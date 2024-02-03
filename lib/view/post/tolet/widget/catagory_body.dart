@@ -1,8 +1,9 @@
 import 'package:btolet/controller/tolet_controller.dart';
+import 'package:btolet/model/category.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pattern_formatter/numeric_formatter.dart';
-
+import 'chips.dart';
 import 'dropdown.dart';
 import 'fasalitis.dart';
 import 'text_input.dart';
@@ -37,7 +38,7 @@ class _CategoryBodyState extends State<CategoryBody> {
                   const Expanded(
                     flex: 1,
                     child: DropDown(
-                      title: "Type *",
+                      title: "Type",
                       category: Category.garage,
                       topPadding: 0,
                     ),
@@ -47,9 +48,9 @@ class _CategoryBodyState extends State<CategoryBody> {
               SizedBox(height: space),
               TextInput(
                 topPadding: 0,
-                title: "Garag  Rent*",
+                title: "Garage  Rent*",
                 textType: TextInputType.number,
-                hintText: "3,000 ৳",
+                hintText: "3,000",
                 titlelenth: 4,
                 suffixtext: "৳",
                 controller: toletController.rent,
@@ -61,11 +62,22 @@ class _CategoryBodyState extends State<CategoryBody> {
               ),
             ],
           );
-        } else if (toletController.categories['Office']!.value &&
-            toletController.categories['Family']!.value) {
+        } else if (toletController.categories['Office']!.value) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(height: space),
+              ToletChips(
+                title: 'Room *',
+                options: bedtolet,
+                selected: toletController.selectedBed,
+              ),
+              SizedBox(height: space),
+              ToletChips(
+                title: 'Bathroom *',
+                options: bathtolet,
+                selected: toletController.selectedbath,
+              ),
               SizedBox(height: space),
               const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -73,8 +85,8 @@ class _CategoryBodyState extends State<CategoryBody> {
                   Expanded(
                     flex: 1,
                     child: DropDown(
-                      title: "Bed room *",
-                      category: Category.bedrooms,
+                      title: "Floor No",
+                      category: Category.floorno,
                       topPadding: 0,
                     ),
                   ),
@@ -82,12 +94,101 @@ class _CategoryBodyState extends State<CategoryBody> {
                   Expanded(
                     flex: 1,
                     child: DropDown(
-                      title: "Bath room*",
-                      category: Category.bathrooms,
+                      title: "Facing",
+                      category: Category.facing,
                       topPadding: 0,
                     ),
                   ),
                 ],
+              ),
+              SizedBox(height: space),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: TextInput(
+                      topPadding: 0,
+                      title: "Room Size",
+                      textType: TextInputType.number,
+                      hintText: "1200 ft\u00b2",
+                      titlelenth: 5,
+                      suffixtext: "ft\u00b2",
+                      controller: toletController.roomSize,
+                      iconh: 23,
+                      iconw: 23,
+                      svgicon: '',
+                      focusNode: toletController.roomSizefocusNode,
+                    ),
+                  ),
+                  SizedBox(width: space),
+                  const Expanded(
+                    flex: 1,
+                    child: DateTimeSelect(),
+                  ),
+                ],
+              ),
+              SizedBox(height: space),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: TextInput(
+                      topPadding: 0,
+                      title: "Maintenance(Monthly)",
+                      textType: TextInputType.number,
+                      hintText: "300",
+                      titlelenth: 4,
+                      suffixtext: "",
+                      controller: toletController.maintenance,
+                      numberFormatter: ThousandsFormatter(),
+                      iconh: 23,
+                      iconw: 23,
+                      svgicon: '',
+                      focusNode: toletController.maintenancefocusNode,
+                    ),
+                  ),
+                  SizedBox(width: space),
+                  Expanded(
+                    flex: 1,
+                    child: TextInput(
+                      topPadding: 0,
+                      title: "Rent *",
+                      textType: TextInputType.number,
+                      hintText: "20,000",
+                      titlelenth: 500,
+                      suffixtext: "৳",
+                      controller: toletController.rent,
+                      numberFormatter: ThousandsFormatter(),
+                      iconh: 23,
+                      iconw: 23,
+                      svgicon: '',
+                      focusNode: toletController.rentfocusNode,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: space),
+              const Facilities(),
+            ],
+          );
+        } else if (toletController.categories['Office']!.value &&
+            toletController.categories['Family']!.value) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: space),
+              ToletChips(
+                title: 'Bedroom *',
+                options: bedtolet,
+                selected: toletController.selectedBed,
+              ),
+              SizedBox(height: space),
+              ToletChips(
+                title: 'Bathroom *',
+                options: bathtolet,
+                selected: toletController.selectedbath,
               ),
               SizedBox(height: space),
               const Row(
@@ -142,134 +243,11 @@ class _CategoryBodyState extends State<CategoryBody> {
                   Expanded(
                     child: TextInput(
                       topPadding: 0,
-                      // title: "Room Size (ft\u00b2)",
-                      title: "Room Size ",
-                      textType: TextInputType.text,
-                      hintText: "12x12 or ft\u00b2",
-                      titlelenth: 500,
-                      suffixtext: "",
-                      controller: toletController.roomSize,
-                      iconh: 23,
-                      iconw: 23,
-                      svgicon: '',
-                      focusNode: toletController.roomSizefocusNode,
-                    ),
-                  ),
-                  SizedBox(width: space),
-                  const Expanded(
-                    flex: 1,
-                    child: DateTimeSelect(),
-                  ),
-                ],
-              ),
-              SizedBox(height: space),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: TextInput(
-                      topPadding: 0,
-                      title: "Maintenance(Monthly)",
-                      textType: TextInputType.number,
-                      hintText: "300",
-                      titlelenth: 4,
-                      suffixtext: "",
-                      controller: toletController.maintenance,
-                      numberFormatter: ThousandsFormatter(),
-                      iconh: 23,
-                      iconw: 23,
-                      svgicon: '',
-                      focusNode: toletController.maintenancefocusNode,
-                    ),
-                  ),
-                  SizedBox(width: space),
-                  Expanded(
-                    flex: 1,
-                    child: TextInput(
-                      topPadding: 0,
-                      title: "Rent *",
-                      textType: TextInputType.number,
-                      hintText: "20,000 ৳",
-                      titlelenth: 500,
-                      suffixtext: "৳",
-                      controller: toletController.rent,
-                      numberFormatter: ThousandsFormatter(),
-                      iconh: 23,
-                      iconw: 23,
-                      svgicon: '',
-                      focusNode: toletController.rentfocusNode,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: space),
-              const Facilities(),
-            ],
-          );
-        } else if (toletController.categories['Office']!.value) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: space),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: DropDown(
-                      title: "Room *",
-                      category: Category.bedrooms,
-                      topPadding: 0,
-                    ),
-                  ),
-                  SizedBox(width: 20),
-                  Expanded(
-                    flex: 1,
-                    child: DropDown(
-                      title: "Bathroom *",
-                      category: Category.bathrooms,
-                      topPadding: 0,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: space),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: DropDown(
-                      title: "Floor No",
-                      category: Category.floorno,
-                      topPadding: 0,
-                    ),
-                  ),
-                  SizedBox(width: 20),
-                  Expanded(
-                    flex: 1,
-                    child: DropDown(
-                      title: "Facing",
-                      category: Category.facing,
-                      topPadding: 0,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: space),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: TextInput(
-                      topPadding: 0,
                       title: "Room Size",
-                      textType: TextInputType.text,
-                      hintText: "12x12 or ft\u00b2",
-                      titlelenth: 500,
-                      suffixtext: "",
+                      textType: TextInputType.number,
+                      hintText: "1200 ft\u00b2",
+                      titlelenth: 5,
+                      suffixtext: "ft\u00b2",
                       controller: toletController.roomSize,
                       iconh: 23,
                       iconw: 23,
@@ -312,7 +290,7 @@ class _CategoryBodyState extends State<CategoryBody> {
                       topPadding: 0,
                       title: "Rent *",
                       textType: TextInputType.number,
-                      hintText: "20,000 ৳",
+                      hintText: "20,000",
                       titlelenth: 500,
                       suffixtext: "৳",
                       controller: toletController.rent,
@@ -339,7 +317,7 @@ class _CategoryBodyState extends State<CategoryBody> {
                   Expanded(
                     flex: 1,
                     child: DropDown(
-                      title: "Floor No *",
+                      title: "Floor No",
                       category: Category.floorno,
                       topPadding: 0,
                     ),
@@ -362,11 +340,11 @@ class _CategoryBodyState extends State<CategoryBody> {
                     flex: 1,
                     child: TextInput(
                       topPadding: 0,
-                      title: "Room Size",
-                      textType: TextInputType.text,
-                      hintText: "12x12 or ft\u00b2",
-                      titlelenth: 500,
-                      suffixtext: "",
+                      title: "Size",
+                      textType: TextInputType.number,
+                      hintText: "1200 ft\u00b2",
+                      titlelenth: 5,
+                      suffixtext: "ft\u00b2",
                       controller: toletController.roomSize,
                       iconh: 23,
                       iconw: 23,
@@ -386,7 +364,7 @@ class _CategoryBodyState extends State<CategoryBody> {
                 topPadding: 0,
                 title: "Rent *",
                 textType: TextInputType.number,
-                hintText: "20,000 ৳",
+                hintText: "20,000",
                 titlelenth: 500,
                 suffixtext: "৳",
                 controller: toletController.rent,
@@ -402,22 +380,35 @@ class _CategoryBodyState extends State<CategoryBody> {
           return Column(
             children: [
               SizedBox(height: space),
+              ToletChips(
+                title: 'Bedroom *',
+                options: bedtolet,
+                selected: toletController.selectedBed,
+              ),
+              SizedBox(height: space),
+              ToletChips(
+                title: 'Bathroom *',
+                options: bathtolet,
+                selected: toletController.selectedbath,
+              ),
+              SizedBox(height: space),
               const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
                     flex: 1,
                     child: DropDown(
-                      title: "Bedroom *",
-                      category: Category.bedrooms,
+                      title: "Balcony",
+                      category: Category.balcony,
                       topPadding: 0,
                     ),
                   ),
                   SizedBox(width: 20),
                   Expanded(
+                    flex: 1,
                     child: DropDown(
-                      title: "Bathroom *",
-                      category: Category.bathrooms,
+                      title: "Kitchne",
+                      category: Category.kitchen,
                       topPadding: 0,
                     ),
                   ),
@@ -439,8 +430,8 @@ class _CategoryBodyState extends State<CategoryBody> {
                   Expanded(
                     flex: 1,
                     child: DropDown(
-                      title: "Kitchne *",
-                      category: Category.kitchen,
+                      title: "Drawing",
+                      category: Category.drawing,
                       topPadding: 0,
                     ),
                   ),
@@ -478,9 +469,9 @@ class _CategoryBodyState extends State<CategoryBody> {
                     child: TextInput(
                       topPadding: 0,
                       title: "Room Size",
-                      textType: TextInputType.text,
-                      hintText: "12x12 or ft\u00b2",
-                      titlelenth: 500,
+                      textType: TextInputType.number,
+                      hintText: "1200 ft\u00b2",
+                      titlelenth: 5,
                       suffixtext: "ft\u00b2",
                       controller: toletController.roomSize,
                       iconh: 23,
@@ -503,11 +494,11 @@ class _CategoryBodyState extends State<CategoryBody> {
                   Expanded(
                     child: TextInput(
                       topPadding: 0,
-                      title: "Maintenance(Monthly)",
+                      title: "Maintenance",
                       textType: TextInputType.number,
                       hintText: "300",
                       titlelenth: 4,
-                      suffixtext: "",
+                      suffixtext: "৳",
                       controller: toletController.maintenance,
                       numberFormatter: ThousandsFormatter(),
                       iconh: 23,
@@ -523,7 +514,7 @@ class _CategoryBodyState extends State<CategoryBody> {
                       topPadding: 0,
                       title: "Rent *",
                       textType: TextInputType.number,
-                      hintText: "20,000 ৳",
+                      hintText: "20,000",
                       titlelenth: 500,
                       suffixtext: "৳",
                       controller: toletController.rent,

@@ -48,7 +48,7 @@ class ProController extends GetxController {
 
       if (response != null) {
         allPost.addAll(response);
-        // print(allPost.length);
+        print(allPost.length);
         if (response.isEmpty || response.length < 4) {
           lodingPosts(false);
         }
@@ -153,25 +153,31 @@ class ProController extends GetxController {
   List<HLPickerItem> selectedImagePro = [];
 
   var fasalitis = {
-    'Balcony': FasalitisModel(state: false.obs, icon: Icons.balcony_rounded),
     'Parking': FasalitisModel(state: false.obs, icon: Icons.directions_bike),
     'CCTV': FasalitisModel(state: false.obs, icon: Icons.photo_camera),
     'GAS': FasalitisModel(
         state: false.obs, icon: Icons.local_fire_department_outlined),
     'Giser': FasalitisModel(state: false.obs, icon: Icons.gas_meter_outlined),
     'Elevator': FasalitisModel(state: false.obs, icon: Icons.elevator_outlined),
-    'Fire Alarm':
-        FasalitisModel(state: false.obs, icon: Icons.fire_extinguisher),
+    'Fire Alarm': FasalitisModel(
+        state: false.obs, icon: Icons.fire_extinguisher_outlined),
     'Wasa Connection':
         FasalitisModel(state: false.obs, icon: Icons.gas_meter_outlined),
     'Fire exit': FasalitisModel(state: false.obs, icon: Icons.exit_to_app),
     'Security Guard':
-        FasalitisModel(state: false.obs, icon: Icons.security_rounded),
+        FasalitisModel(state: false.obs, icon: Icons.security_outlined),
     "Garden": FasalitisModel(state: false.obs, icon: Icons.grass_rounded),
     'Power Backup': FasalitisModel(
         state: false.obs, icon: Icons.power_settings_new_rounded),
     "Waste Disposal":
         FasalitisModel(state: false.obs, icon: Icons.fire_truck_sharp),
+    "Earthquake Resistant":
+        FasalitisModel(state: false.obs, icon: Icons.verified_user_outlined),
+    "Swimming pool": FasalitisModel(state: false.obs, icon: Icons.pool),
+    "Telephone": FasalitisModel(state: false.obs, icon: Icons.phone),
+    "Water supply": FasalitisModel(state: false.obs, icon: Icons.water),
+    "Internet": FasalitisModel(state: false.obs, icon: Icons.wifi),
+    "Cable TV": FasalitisModel(state: false.obs, icon: Icons.live_tv_outlined),
   };
   var fasalitis2 = {
     'Electricity':
@@ -207,6 +213,8 @@ class ProController extends GetxController {
 
   var selectedRooms = bed[0].obs;
   var selectedBath = bath[0].obs;
+  var selectedDining = diningPro[0].obs;
+  var selectedDrawing = drawingPro[0].obs;
 
   var selectedLandTypes = ['Residential'].obs;
   var selectedPostedBy = 'Owner'.obs;
@@ -242,15 +250,15 @@ class ProController extends GetxController {
   final FocusNode mesurementfocusNode = FocusNode();
   final FocusNode roadSizefocusNode = FocusNode();
 
-  late final dining = 'select'.obs;
+  final balcony = 'select'.obs;
   final kitchen = 'select'.obs;
   final facing = 'select'.obs;
   final area = 'শতাংশ'.obs;
 
   String getCategoryValue(CategoryPro category) {
     switch (category) {
-      case CategoryPro.dining:
-        return dining.value;
+      case CategoryPro.balcony:
+        return balcony.value;
       case CategoryPro.kitchen:
         return kitchen.value;
       case CategoryPro.facing:
@@ -262,8 +270,8 @@ class ProController extends GetxController {
 
   void setCategoryValue(CategoryPro category, String value) {
     switch (category) {
-      case CategoryPro.dining:
-        dining.value = value;
+      case CategoryPro.balcony:
+        balcony.value = value;
         break;
       case CategoryPro.kitchen:
         kitchen.value = value;
@@ -284,7 +292,8 @@ class ProController extends GetxController {
 
   var activeFlag = false.obs;
 
-  var diningFlag = false.obs;
+  // var diningFlag = false.obs;
+  var balconyFlag = false.obs;
   var kitchenFlag = false.obs;
   var facingFlag = false.obs;
   var totalUnitFlag = false.obs;
@@ -304,7 +313,7 @@ class ProController extends GetxController {
 
   resetAllflag() {
     activeFlag(false);
-    diningFlag(false);
+    balconyFlag(false);
     kitchenFlag(false);
     facingFlag(false);
     totalUnitFlag(false);
@@ -318,7 +327,7 @@ class ProController extends GetxController {
     mesurementFlag(false);
     rodeSizeFlag(false);
 
-    dining.value = 'select';
+    balcony.value = 'select';
     kitchen.value = 'select';
     facing.value = 'select';
     area.value = 'শতাংশ';
@@ -374,7 +383,7 @@ class ProController extends GetxController {
   UserController userController = Get.find();
 
   checkAllCatagory() {
-    diningFlag.value = dining.value != "select";
+    balconyFlag.value = balcony.value != "select";
     kitchenFlag.value = kitchen.value != "select";
     facingFlag.value = facing.value != "select";
     totalfloorFlag.value = totalFloor.text.isNotEmpty;
@@ -396,7 +405,7 @@ class ProController extends GetxController {
       mesurementFlag(true);
       rodeSizeFlag(true);
     } else {
-      diningFlag(true);
+      balconyFlag(true);
       kitchenFlag(true);
       facingFlag(true);
       totalfloorFlag(true);
@@ -409,8 +418,8 @@ class ProController extends GetxController {
   flagCheck() {
     if (selectedCategory.value == category[0] ||
         selectedCategory.value == category[1]) {
-      if (dining.value != "select") {
-        diningFlag.value = true;
+      if (balcony.value != "select") {
+        balconyFlag.value = true;
       } else {
         animateToPage(0);
       }
@@ -454,7 +463,7 @@ class ProController extends GetxController {
       if (selectedImagePro.isNotEmpty) {
         imageFlag.value = true;
       } else {
-        if (diningFlag.value == true &&
+        if (balconyFlag.value == true &&
             kitchenFlag.value &&
             facingFlag.value &&
             totalfloorFlag.value &&
@@ -470,7 +479,7 @@ class ProController extends GetxController {
           userController.phonenumber.text.isNotEmpty ||
               userController.wappnumber.text.isNotEmpty;
 
-      allFlag.value = diningFlag.value &&
+      allFlag.value = balconyFlag.value &&
           kitchenFlag.value &&
           facingFlag.value &&
           totalfloorFlag.value &&
@@ -561,7 +570,9 @@ class ProController extends GetxController {
             procondition: selectedType.value,
             bed: selectedRooms.value,
             bath: selectedBath.value,
-            dining: dining.value == "select" ? "" : dining.value,
+            balcony: balcony.value == "select" ? "" : balcony.value,
+            drawing: selectedDrawing.value,
+            dining: selectedDining.value,
             kitchen: kitchen.value == "select" ? "" : kitchen.value,
             size: totalSize.text,
             sellfrom: sellFrom,
@@ -614,6 +625,8 @@ class ProController extends GetxController {
             procondition: '',
             bed: '',
             bath: '',
+            balcony: '',
+            drawing: '',
             dining: '',
             kitchen: '',
             size: '',
@@ -674,8 +687,18 @@ class ProController extends GetxController {
   var kitchenSort = [].obs;
   var diningSort = [].obs;
 
+  var priceText = "Any Price".obs;
+
+  var startval1 = 100000.0.obs, endval1 = 10000000.0.obs;
+
   var rentmin = 100000.obs;
   var rentmax = 10000000.obs;
+
+  TextEditingController pricemin = TextEditingController();
+  TextEditingController pricemax = TextEditingController();
+
+  final FocusNode priceminfocusNode = FocusNode();
+  final FocusNode pricemaxfocusNode = FocusNode();
 
   String getSort(mainList) {
     String jsonStringArray = jsonEncode(mainList
@@ -687,7 +710,7 @@ class ProController extends GetxController {
 
   var categoriesSort = {
     'House': false.obs,
-    'Flat/Appartment': false.obs,
+    'Appartment': false.obs,
     'Land': false.obs,
     'Plot': false.obs,
   };
@@ -702,25 +725,31 @@ class ProController extends GetxController {
   }
 
   var fasalitisSort = {
-    'Balcony': FasalitisModel(state: false.obs, icon: Icons.balcony_rounded),
     'Parking': FasalitisModel(state: false.obs, icon: Icons.directions_bike),
     'CCTV': FasalitisModel(state: false.obs, icon: Icons.photo_camera),
     'GAS': FasalitisModel(
         state: false.obs, icon: Icons.local_fire_department_outlined),
     'Giser': FasalitisModel(state: false.obs, icon: Icons.gas_meter_outlined),
-    'Fire Alarm':
-        FasalitisModel(state: false.obs, icon: Icons.fire_extinguisher),
+    'Elevator': FasalitisModel(state: false.obs, icon: Icons.elevator_outlined),
+    'Fire Alarm': FasalitisModel(
+        state: false.obs, icon: Icons.fire_extinguisher_outlined),
     'Wasa Connection':
         FasalitisModel(state: false.obs, icon: Icons.gas_meter_outlined),
     'Fire exit': FasalitisModel(state: false.obs, icon: Icons.exit_to_app),
     'Security Guard':
-        FasalitisModel(state: false.obs, icon: Icons.security_rounded),
+        FasalitisModel(state: false.obs, icon: Icons.security_outlined),
     "Garden": FasalitisModel(state: false.obs, icon: Icons.grass_rounded),
-    'Elevator': FasalitisModel(state: false.obs, icon: Icons.elevator_outlined),
-    "West Disposal":
-        FasalitisModel(state: false.obs, icon: Icons.fire_truck_sharp),
     'Power Backup': FasalitisModel(
         state: false.obs, icon: Icons.power_settings_new_rounded),
+    "Waste Disposal":
+        FasalitisModel(state: false.obs, icon: Icons.fire_truck_sharp),
+    "Earthquake Resistant":
+        FasalitisModel(state: false.obs, icon: Icons.verified_user_outlined),
+    "Swimming pool": FasalitisModel(state: false.obs, icon: Icons.pool),
+    "Telephone": FasalitisModel(state: false.obs, icon: Icons.phone),
+    "Water supply": FasalitisModel(state: false.obs, icon: Icons.water),
+    "Internet": FasalitisModel(state: false.obs, icon: Icons.wifi),
+    "Cable TV": FasalitisModel(state: false.obs, icon: Icons.live_tv_outlined),
     'Electricity':
         FasalitisModel(state: false.obs, icon: Icons.power_settings_new),
     'Drain':

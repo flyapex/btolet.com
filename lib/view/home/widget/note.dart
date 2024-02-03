@@ -1,3 +1,4 @@
+import 'package:btolet/constants/colors.dart';
 import 'package:btolet/controller/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -20,7 +21,9 @@ class Note extends StatelessWidget {
           child: DefaultTextStyle(
             style: const TextStyle(
               color: Colors.black,
+              fontSize: s3,
               letterSpacing: 0.5,
+              fontFamily: 'x',
             ),
             child: Marquee(
               text: userController.note.value,

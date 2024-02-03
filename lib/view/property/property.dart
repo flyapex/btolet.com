@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:btolet/api/google_api.dart';
+import 'package:btolet/constants/colors.dart';
 import 'package:btolet/controller/ads_controller.dart';
 import 'package:btolet/controller/location_controller.dart';
 import 'package:btolet/controller/property_controller.dart';
@@ -87,14 +88,17 @@ class _PropertyState extends State<Property>
             // await locationController.getCurrnetlanlongLocation(
             //     false, 'Property Ref'); //!think about it
             proController.getCurrentPostCount();
-
             proController.allPost.clear();
             proController.allPost.refresh();
             proController.page.value = 1;
             proController.getAllPost();
             proController.allPost.sentToStream;
+            setState(() {});
           },
           child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(
+              parent: AlwaysScrollableScrollPhysics(),
+            ),
             padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -163,23 +167,26 @@ class _PropertyState extends State<Property>
                           border:
                               Border.all(color: Colors.black.withOpacity(0.3)),
                         ),
-                        child: const Padding(
-                          padding: EdgeInsets.only(left: 5, right: 5),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 5, right: 5),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Row(
                                 children: [
-                                  Icon(
+                                  const Icon(
                                     Feather.sliders,
                                     color: Colors.black45,
                                     size: 20,
                                   ),
-                                  SizedBox(width: 6),
-                                  Text('Filter'),
+                                  const SizedBox(width: 6),
+                                  Text(
+                                    'Filter',
+                                    style: h3,
+                                  ),
                                 ],
                               ),
-                              Icon(Feather.chevron_down),
+                              const Icon(Feather.chevron_down),
                             ],
                           ),
                         ),
@@ -220,10 +227,13 @@ class _PropertyState extends State<Property>
                                 ),
                               );
                             } else {
-                              return const Padding(
-                                padding: EdgeInsets.all(8.0),
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
                                 child: Center(
-                                  child: Text('nothing more to load!'),
+                                  child: Text(
+                                    'nothing more to load!',
+                                    style: h4,
+                                  ),
                                 ),
                               );
                             }
@@ -386,7 +396,7 @@ class PostsPro extends StatelessWidget {
                             Text(
                               postData.totalImage.toString(),
                               style: const TextStyle(
-                                fontSize: 12,
+                                fontSize: s6,
                                 color: Colors.white,
                               ),
                             ),
@@ -409,27 +419,37 @@ class PostsPro extends StatelessWidget {
             padding: const EdgeInsets.only(left: 15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                //৳
+                Text(
+                  "${postData.category} ",
+                  style: const TextStyle(
+                    color: Color(0xff083437),
+                    fontSize: s2,
+                    height: 0.8,
+                  ),
+                ),
+                const SizedBox(height: 12),
                 postData.price == 0
-                    ? const Text(
-                        'Call For Price',
+                    ? Text(
+                        'Price On Call',
                         style: TextStyle(
-                          fontSize: 24,
-                          color: Colors.black,
+                          fontSize: s1,
+                          height: 0.8,
+                          color: const Color(0xff083437).withOpacity(0.8),
+                          fontWeight: FontWeight.bold,
                         ),
                       )
                     : Text(
-                        "৳ ${userController.currency(postData.price)} ",
-
-                        // "${NumberFormat.decimalPattern().format(postData.price)} BDT",
-                        style: const TextStyle(
-                          fontSize: 24,
-                          color: Color(0xff083437),
-                          fontWeight: FontWeight.w500,
+                        "${userController.currency(postData.price)}  BDT",
+                        style: TextStyle(
+                          fontSize: s1,
+                          height: 0.8,
+                          color: const Color(0xff083437).withOpacity(0.8),
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-
+                const SizedBox(height: 8),
                 Row(
                   children: [
                     const Icon(
@@ -437,36 +457,42 @@ class PostsPro extends StatelessWidget {
                       size: 16,
                       color: Colors.black45,
                     ),
-                    const SizedBox(width: 10),
+                    const SizedBox(width: 5),
                     Text(
                       postData.location,
-                      style: const TextStyle(
-                        color: Color(0xff083437),
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: const Color(0xff083437).withOpacity(0.6),
+                        fontFamily: 'Roboto',
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 10),
-                SizedBox(height: postData.bed == "" ? 10 : 4),
+                // const SizedBox(height: 10),
+                // SizedBox(height: postData.bed == "" ? 10 : 4),
+                const SizedBox(height: 8),
                 postData.bed == ""
                     ? Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
                             postData.measurement,
-                            style: const TextStyle(
-                              color: Color(0xff083437),
-                              fontSize: 18,
+                            style: TextStyle(
+                              color: const Color(0xff083437).withOpacity(0.7),
+                              fontSize: 16,
                               height: 1.2,
+                              fontFamily: 'Roboto',
+                              // fontWeight: FontWeight.bold,
                             ),
                           ),
-                          const SizedBox(width: 10),
+                          const SizedBox(width: 4),
                           Text(
                             postData.area,
-                            style: const TextStyle(
-                              color: Color(0xff083437),
-                              fontSize: 19,
+                            style: TextStyle(
+                              color: const Color(0xff083437).withOpacity(0.8),
+                              fontSize: 17,
                               height: 1.2,
+                              fontFamily: 'Roboto',
                             ),
                           )
                         ],
@@ -476,8 +502,8 @@ class PostsPro extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(top: 2),
                             child: SizedBox(
-                              height: 24,
-                              width: 24,
+                              height: 28,
+                              width: 28,
                               child: SvgPicture.asset(
                                 'assets/icons/property/bed.svg',
                                 colorFilter: ColorFilter.mode(
@@ -492,6 +518,7 @@ class PostsPro extends StatelessWidget {
                             postData.bed,
                             style: const TextStyle(
                               color: Color(0xff083437),
+                              fontSize: s4,
                             ),
                           ),
                           const SizedBox(width: 10),
@@ -511,6 +538,7 @@ class PostsPro extends StatelessWidget {
                             postData.bath,
                             style: const TextStyle(
                               color: Color(0xff083437),
+                              fontSize: s4,
                             ),
                           ),
                           const SizedBox(width: 10),
@@ -530,6 +558,7 @@ class PostsPro extends StatelessWidget {
                             postData.size,
                             style: const TextStyle(
                               color: Color(0xff083437),
+                              fontSize: s4,
                             ),
                           ),
                         ],
@@ -567,6 +596,7 @@ class PostsPro extends StatelessWidget {
                         '${userController.getDayfull(postData.time)}',
                         style: const TextStyle(
                           color: Color(0xff68676C),
+                          fontSize: s4,
                         ),
                         overflow: TextOverflow.fade,
                       ),

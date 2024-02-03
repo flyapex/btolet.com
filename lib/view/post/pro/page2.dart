@@ -1,17 +1,18 @@
 import 'package:btolet/api/google_api.dart';
+import 'package:btolet/constants/colors.dart';
 import 'package:btolet/controller/property_controller.dart';
 import 'package:btolet/controller/user_controller.dart';
 import 'package:btolet/model/category.dart';
 import 'package:btolet/view/map/location_post.dart';
 import 'package:btolet/view/post/input_user.dart';
-import 'package:btolet/view/post/pro%20widget/text_input.dart';
-import 'package:btolet/view/post/tolet%20widget/text_input.dart';
+import 'package:btolet/view/post/pro/widget/text_input.dart';
+import 'package:btolet/view/post/tolet/widget/text_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 import 'package:vibration/vibration.dart';
 
-import 'chips.dart';
+import 'widget/chips.dart';
 
 class PostPro2 extends StatefulWidget {
   const PostPro2({super.key});
@@ -151,6 +152,7 @@ class PostToletState1 extends State<PostPro2> {
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 1,
+                    fontSize: s4,
                   ),
                 ),
                 backgroundColor: Colors.blueAccent,
@@ -158,6 +160,9 @@ class PostToletState1 extends State<PostPro2> {
             ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.only(left: 20, right: 20),
+        physics: const BouncingScrollPhysics(
+          parent: AlwaysScrollableScrollPhysics(),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -185,9 +190,9 @@ class PostToletState1 extends State<PostPro2> {
             ),
             SizedBox(height: space),
             Text(
-              'Connect with others',
+              'Your Details',
               style: TextStyle(
-                fontSize: 14,
+                fontSize: s3,
                 letterSpacing: 1,
                 color: Colors.black.withOpacity(0.3),
               ),
@@ -264,7 +269,7 @@ class PostToletState1 extends State<PostPro2> {
             const Text(
               'You are',
               style: TextStyle(
-                fontSize: 18,
+                fontSize: s1,
                 color: Colors.black54,
               ),
             ),
@@ -294,8 +299,8 @@ class PostToletState1 extends State<PostPro2> {
               hintText: '017XXXX',
               controller: userController.wappnumber,
               icon: 'assets/icons/home/wapp.svg',
-              iconh: 28,
-              iconw: 28,
+              iconh: 30,
+              iconw: 30,
               color: Colors.lightGreen,
               focusNode: userController.wappfocusNode,
               numberLength: 11,

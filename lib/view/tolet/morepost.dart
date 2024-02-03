@@ -1,285 +1,31 @@
 import 'dart:convert';
+
 import 'package:btolet/constants/colors.dart';
 import 'package:btolet/controller/ads_controller.dart';
-import 'package:btolet/view/home/widget/imageslider.dart';
-import 'package:btolet/view/sort/tolet/sortingtolet.dart';
-import 'package:btolet/controller/location_controller.dart';
 import 'package:btolet/controller/tolet_controller.dart';
 import 'package:btolet/controller/user_controller.dart';
-import 'package:btolet/view/home/widget/note.dart';
-import 'package:btolet/view/shimmer/shimmer.dart';
-import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
+import 'package:btolet/model/tolet_model.dart';
+import 'package:btolet/view/tolet/single_post.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:lottie/lottie.dart';
 
-import '../../model/tolet_model.dart';
-import 'single_post.dart';
-
-class Tolet extends StatefulWidget {
-  const Tolet({super.key});
-
-  @override
-  State<Tolet> createState() => _ToletState();
-}
-
-class _ToletState extends State<Tolet> with AutomaticKeepAliveClientMixin {
-  ToletController toletController = Get.put(ToletController());
-  LocationController locationController = Get.find();
-  bool _atEnd = false;
-  AdsController adsController = Get.put(AdsController());
-  // getLocation() async {
-  //   await locationController.getCurrnetlanlongLocation();
-  // }
-
-  @override
-  void initState() {
-    // getLocation();
-    toletController.getAllPost();
-    // adsController.createRewardedAd();
-    // adsController.createRewardedInterstitialAd();
-    super.initState();
-  }
-
-  // @override
-  // void dispose() {
-  //   adsController.rewardedAd?.dispose();
-  //   adsController.rewardedInterstitialAd?.dispose();
-  //   super.dispose();
-  // }
-
-  @override
-  Widget build(BuildContext context) {
-    super.build(context);
-    return Scaffold(
-        body: NotificationListener(
-      onNotification: (scrollNotification) {
-        if (_atEnd &&
-            scrollNotification is ScrollUpdateNotification &&
-            scrollNotification.metrics.atEdge &&
-            scrollNotification.metrics.pixels ==
-                scrollNotification.metrics.maxScrollExtent) {
-          setState(() {
-            _atEnd = false;
-          });
-        } else if (!_atEnd &&
-            scrollNotification is ScrollEndNotification &&
-            scrollNotification.metrics.pixels ==
-                scrollNotification.metrics.maxScrollExtent) {
-          setState(() {
-            _atEnd = true;
-          });
-
-          toletController.getAllPost();
-          print('Reached the end of the list!');
-        }
-        return false;
-      },
-      child: Scrollbar(
-        child: CustomRefreshIndicator(
-          key: toletController.refreshkey,
-          completeStateDuration: const Duration(milliseconds: 450),
-          builder: MaterialIndicatorDelegate(
-            backgroundColor: Colors.blueAccent,
-            builder: (context, controller) {
-              return SizedBox(
-                child: LottieBuilder.asset(
-                  'assets/lottie/ref.json',
-                ),
-              );
-            },
-          ),
-          onRefresh: () async {
-            // await locationController.getCurrnetlanlongLocation(
-            //     false, 'Tolet Ref');
-            toletController.getCurrentPostCount();
-            toletController.allPost.clear();
-            toletController.allPost.refresh();
-            toletController.page.value = 1;
-            toletController.getAllPost();
-            toletController.allPost.sentToStream;
-            setState(() {});
-          },
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(
-              parent: AlwaysScrollableScrollPhysics(),
-            ),
-            padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Note(),
-                const SizedBox(height: 20),
-                const ImageSlide(
-                  topPadding: 10.0,
-                  height: 160, //180
-                ),
-                const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Obx(
-                      () => toletController.currentPostCountLoding.value
-                          ? const ShimmerSortPostCount()
-                          : Flexible(
-                              child: RichText(
-                                text: TextSpan(
-                                  text:
-                                      "${NumberFormat.decimalPattern().format(toletController.currentPostCount.value)} ads in ",
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.black.withOpacity(0.8),
-                                  ),
-                                  children: [
-                                    TextSpan(
-                                      text: locationController
-                                          .locationAddressShort.value
-                                          .split(', ')[0],
-                                      style: TextStyle(
-                                        // fontWeight: FontWeight.w500,
-                                        fontFamily: 'Roboto',
-                                        color: Colors.black.withOpacity(0.9),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Get.bottomSheet(
-                          const SortingTolet(),
-                          elevation: 20.0,
-                          enableDrag: true,
-                          backgroundColor: Colors.white,
-                          isScrollControlled: true,
-                          ignoreSafeArea: true,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(20.0),
-                              topRight: Radius.circular(20.0),
-                            ),
-                          ),
-                          enterBottomSheetDuration:
-                              const Duration(milliseconds: 170),
-                        );
-                      },
-                      child: Container(
-                        height: 35,
-                        width: 100,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(4),
-                          border:
-                              Border.all(color: Colors.black.withOpacity(0.3)),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 5, right: 5),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  const Icon(
-                                    Feather.sliders,
-                                    color: Colors.black45,
-                                    size: 20,
-                                  ),
-                                  const SizedBox(width: 6),
-                                  Text(
-                                    'Filter',
-                                    style: h3,
-                                  ),
-                                ],
-                              ),
-                              const Icon(Feather.chevron_down),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                StreamBuilder(
-                  stream: toletController.allPost.stream,
-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    if (snapshot.data == null) {
-                      return const PostListSimmer(
-                        topPadding: 20,
-                        count: 10,
-                      );
-                    } else {
-                      return ListView.builder(
-                        // key: UniqueKey(),
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: snapshot.data.length + 1,
-                        itemBuilder: (c, i) {
-                          if (i < snapshot.data.length) {
-                            return Padding(
-                              padding: const EdgeInsets.only(top: 20),
-                              child: PostsTolet(
-                                postData: snapshot.data[i],
-                              ),
-                            );
-                          } else {
-                            if (toletController.lodingPosts.value) {
-                              return const Center(
-                                child: Padding(
-                                  padding: EdgeInsets.all(20),
-                                  child: CircularProgressIndicator(
-                                    color: Colors.red,
-                                  ),
-                                ),
-                              );
-                            } else {
-                              return Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Center(
-                                  child: Text(
-                                    'nothing more to load!',
-                                    style: h4,
-                                  ),
-                                ),
-                              );
-                            }
-                          }
-                        },
-                      );
-                    }
-                  },
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    ));
-  }
-
-  @override
-  bool get wantKeepAlive => true;
-}
-
-class PostsTolet extends StatefulWidget {
+class MoreTolet extends StatefulWidget {
   final PostListTolet postData;
   final bool isLikedvalue;
-  const PostsTolet({
+  const MoreTolet({
     super.key,
     required this.postData,
     this.isLikedvalue = false,
   });
 
   @override
-  State<PostsTolet> createState() => _PostsToletState();
+  State<MoreTolet> createState() => MoreToletState();
 }
 
-class _PostsToletState extends State<PostsTolet> {
+class MoreToletState extends State<MoreTolet> {
   ToletController toletController = Get.find();
   UserController userController = Get.find();
   AdsController adsController = Get.find();
@@ -567,6 +313,10 @@ class _PostsToletState extends State<PostsTolet> {
                         ),
                       ),
                     ),
+                    // widget.postData.totalImage == 1
+                    //     ? const SizedBox()
+                    //     :
+
                     Padding(
                       padding: const EdgeInsets.only(
                         left: 4,
@@ -611,7 +361,7 @@ class _PostsToletState extends State<PostsTolet> {
                 Expanded(
                   child: Padding(
                     padding:
-                        const EdgeInsets.only(left: 15, right: 15, bottom: 5),
+                        const EdgeInsets.only(left: 10, right: 10, bottom: 5),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -650,6 +400,7 @@ class _PostsToletState extends State<PostsTolet> {
                         ),
                         getCategory(),
                         // const SizedBox(height: 6),
+
                         Text(
                           widget.postData.location,
                           style: TextStyle(
@@ -680,7 +431,7 @@ class _PostsToletState extends State<PostsTolet> {
                     child: Icon(
                       Feather.share_2,
                       color: Colors.black.withOpacity(0.4),
-                      size: 22,
+                      size: 18,
                     ),
                   ),
                   onTap: () {

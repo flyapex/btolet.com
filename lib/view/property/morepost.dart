@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'package:btolet/constants/colors.dart';
 import 'package:btolet/controller/property_controller.dart';
 import 'package:btolet/controller/user_controller.dart';
+import 'package:btolet/model/category.dart';
 import 'package:btolet/model/pro_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -28,6 +30,172 @@ class _MorePostsProState extends State<MorePostsPro> {
   Widget build(BuildContext context) {
     var height = Get.height;
     var width = Get.width;
+    getCategory() {
+      var postData = widget.postData;
+      if (postData.category == category[0] ||
+          postData.category == category[1]) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            widget.postData.price == 0
+                ? const Text(
+                    'Price On Call',
+                    style: TextStyle(
+                      fontSize: s1,
+                      // height: 0.7,
+                      height: 1,
+                      color: Colors.black,
+                    ),
+                  )
+                : Text(
+                    "${userController.currency(widget.postData.price)} BDT",
+                    style: const TextStyle(
+                      fontSize: s1,
+                      // height: 0.5,
+                      height: 1,
+                      color: Color(0xff083437),
+                      fontWeight: FontWeight.w500,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+            Text(
+              widget.postData.category,
+              style: const TextStyle(
+                fontSize: s4,
+                color: Colors.black,
+                height: 1,
+              ),
+            ),
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 2, bottom: 2),
+                  child: SizedBox(
+                    height: 22,
+                    width: 22,
+                    child: SvgPicture.asset(
+                      'assets/icons/property/bed.svg',
+                      colorFilter: ColorFilter.mode(
+                        Colors.black.withOpacity(0.5),
+                        BlendMode.srcIn,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 6),
+                Text(
+                  widget.postData.bed,
+                  style: const TextStyle(
+                    fontSize: s3,
+                    color: Color(0xff083437),
+                  ),
+                ).paddingOnly(bottom: 2),
+                const SizedBox(width: 10),
+                SizedBox(
+                  height: 22,
+                  width: 22,
+                  child: SvgPicture.asset(
+                    'assets/icons/property/bath.svg',
+                    colorFilter: ColorFilter.mode(
+                      Colors.black.withOpacity(0.5),
+                      BlendMode.srcIn,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 6),
+                Text(
+                  widget.postData.bath,
+                  style: const TextStyle(
+                    fontSize: s3,
+                    color: Color(0xff083437),
+                  ),
+                ).paddingOnly(bottom: 2),
+                const SizedBox(width: 10),
+                SizedBox(
+                  height: 18,
+                  width: 18,
+                  child: SvgPicture.asset(
+                    'assets/icons/property/size.svg',
+                    colorFilter: ColorFilter.mode(
+                      Colors.black.withOpacity(0.5),
+                      BlendMode.srcIn,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 6),
+                Flexible(
+                  child: Text(
+                    widget.postData.size,
+                    style: const TextStyle(
+                      fontSize: s3,
+                      color: Color(0xff083437),
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ).paddingOnly(bottom: 2),
+                ),
+              ],
+            ),
+          ],
+        );
+      } else {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            widget.postData.price == 0
+                ? const Text(
+                    'Price On Call',
+                    style: TextStyle(
+                      fontSize: s1,
+                      height: 0.9,
+                      color: Colors.black,
+                    ),
+                  )
+                : Text(
+                    "${userController.currency(widget.postData.price)} BDT",
+                    style: const TextStyle(
+                      fontSize: s1,
+                      // height: 0.5,
+                      height: 0.9,
+                      color: Color(0xff083437),
+                      fontWeight: FontWeight.w500,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+            Text(
+              widget.postData.category,
+              style: const TextStyle(
+                fontSize: s4,
+                color: Colors.black,
+                height: 1,
+              ),
+            ).paddingOnly(bottom: 4),
+            Row(
+              children: [
+                Text(
+                  widget.postData.measurement,
+                  style: TextStyle(
+                    fontSize: s5,
+                    color: const Color(0xff083437).withOpacity(0.8),
+                    fontFamily: 'Roboto',
+                  ),
+                ).paddingOnly(bottom: 2),
+                const SizedBox(width: 10),
+                Text(
+                  widget.postData.area,
+                  style: TextStyle(
+                    fontSize: s5,
+                    color: const Color(0xff083437).withOpacity(0.8),
+                    fontFamily: 'Roboto',
+                  ),
+                ).paddingOnly(bottom: 2),
+              ],
+            )
+          ],
+        );
+      }
+    }
+
     return Container(
       height: height / 7,
       width: width / 1.35,
@@ -83,98 +251,15 @@ class _MorePostsProState extends State<MorePostsPro> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          widget.postData.price == 0
-                              ? const Text(
-                                  'Call For Price',
-                                  style: TextStyle(
-                                    fontSize: 24,
-                                    color: Colors.black,
-                                  ),
-                                )
-                              : Text(
-                                  "৳ ${userController.currency(widget.postData.price)} ",
-                                  style: const TextStyle(
-                                    fontSize: 22,
-                                    color: Color(0xff083437),
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                          const SizedBox(height: 6),
-                          Row(
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 2, bottom: 2),
-                                child: SizedBox(
-                                  height: 22,
-                                  width: 22,
-                                  child: SvgPicture.asset(
-                                    'assets/icons/property/bed.svg',
-                                    colorFilter: ColorFilter.mode(
-                                      Colors.black.withOpacity(0.5),
-                                      BlendMode.srcIn,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 6),
-                              Text(
-                                widget.postData.bed,
-                                style: const TextStyle(
-                                  color: Color(0xff083437),
-                                ),
-                              ),
-                              const SizedBox(width: 10),
-                              SizedBox(
-                                height: 22,
-                                width: 22,
-                                child: SvgPicture.asset(
-                                  'assets/icons/property/bath.svg',
-                                  colorFilter: ColorFilter.mode(
-                                    Colors.black.withOpacity(0.5),
-                                    BlendMode.srcIn,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 6),
-                              Text(
-                                widget.postData.bath,
-                                style: const TextStyle(
-                                  color: Color(0xff083437),
-                                ),
-                              ),
-                              const SizedBox(width: 10),
-                              SizedBox(
-                                height: 18,
-                                width: 18,
-                                child: SvgPicture.asset(
-                                  'assets/icons/property/size.svg',
-                                  colorFilter: ColorFilter.mode(
-                                    Colors.black.withOpacity(0.5),
-                                    BlendMode.srcIn,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 6),
-                              Flexible(
-                                child: Text(
-                                  widget.postData.size,
-                                  style: const TextStyle(
-                                    color: Color(0xff083437),
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
-                                ),
-                              ),
-                            ],
-                          ),
+                          // const SizedBox(height: 6),
+                          getCategory(),
                           Flexible(
                             child: Text(
                               widget.postData.location,
                               style: TextStyle(
                                 color: const Color(0xff083437).withOpacity(0.6),
                                 fontSize: 12,
+                                fontFamily: 'Roboto',
                               ),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
@@ -236,8 +321,9 @@ class _MorePostsProState extends State<MorePostsPro> {
               child: Text(
                 '${userController.getDay(widget.postData.time)}',
                 style: TextStyle(
-                  color: const Color(0xff083437).withOpacity(0.3),
-                  fontSize: 12,
+                  color: const Color(0xff083437).withOpacity(0.5),
+                  height: 0.5,
+                  fontSize: s4,
                 ),
               ),
             ),
