@@ -621,7 +621,7 @@ class ProController extends GetxController {
           NewPostPro(
             uid: dbController.getUserID(),
             category: selectedCategory.value,
-            name: '',
+            name: name.text,
             procondition: '',
             bed: '',
             bath: '',
@@ -710,7 +710,7 @@ class ProController extends GetxController {
 
   var categoriesSort = {
     'House': false.obs,
-    'Appartment': false.obs,
+    'Flat': false.obs,
     'Land': false.obs,
     'Plot': false.obs,
   };

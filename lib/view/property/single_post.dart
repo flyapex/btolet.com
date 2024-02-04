@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:btolet/api/api_property.dart';
 import 'package:btolet/constants/colors.dart';
+import 'package:btolet/controller/ads_controller.dart';
 import 'package:btolet/controller/location_controller.dart';
 import 'package:btolet/controller/property_controller.dart';
 import 'package:btolet/controller/user_controller.dart';
@@ -483,6 +484,7 @@ class _SinglePostProState extends State<SinglePostPro>
     }
   }
 
+  AdsController adsController = Get.find();
   var height = Get.height;
   var width = Get.width;
   @override
@@ -623,7 +625,18 @@ class _SinglePostProState extends State<SinglePostPro>
                                   size: 22,
                                 ),
                               ),
-                              onTap: () {},
+                              onTap: () {
+                                adsController
+                                    .shareBase64Image(postData.image1, '''
+     🏷️ ${postData.category}
+     💰 Price: ${postData.price == 0 ? "Price On Call🤙📞" : "${postData.price} ৳"} 
+     📍Location: ${postData.location}
+    
+Download our app now to discover more!🌟
+Check out the latest updates here:
+   https://play.google.com/store/apps/details?id=com.btolet.app
+    ''');
+                              },
                             ),
                           ],
                         ),
@@ -644,52 +657,57 @@ class _SinglePostProState extends State<SinglePostPro>
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              InkWell(
-                                onTap: () async {},
-                                child: Row(
-                                  children: [
-                                    Material(
-                                      type: MaterialType.transparency,
-                                      child: Ink(
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: Colors.blue,
-                                            width: 2,
+                              Expanded(
+                                child: InkWell(
+                                  onTap: () async {},
+                                  child: Row(
+                                    children: [
+                                      Material(
+                                        type: MaterialType.transparency,
+                                        child: Ink(
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Colors.blue,
+                                              width: 2,
+                                            ),
+                                            color: Colors.white,
+                                            shape: BoxShape.circle,
                                           ),
-                                          color: Colors.white,
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: InkWell(
-                                          borderRadius:
-                                              BorderRadius.circular(100),
-                                          onTap: () {},
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(10.0),
-                                            child: SizedBox(
-                                              height: 22,
-                                              width: 22,
-                                              child: SvgPicture.asset(
-                                                'assets/icons/home/map.svg',
-                                                height: 10,
+                                          child: InkWell(
+                                            borderRadius:
+                                                BorderRadius.circular(100),
+                                            onTap: () {},
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(10.0),
+                                              child: SizedBox(
+                                                height: 22,
                                                 width: 22,
+                                                child: SvgPicture.asset(
+                                                  'assets/icons/home/map.svg',
+                                                  height: 10,
+                                                  width: 22,
+                                                ),
                                               ),
                                             ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                    const SizedBox(width: 10),
-                                    Text(
-                                      postData.location,
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        color: Color(0xff083437),
-                                        fontWeight: FontWeight.w500,
-                                        overflow: TextOverflow.ellipsis,
+                                      const SizedBox(width: 10),
+                                      Expanded(
+                                        child: Text(
+                                          postData.location,
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                            color: Color(0xff083437),
+                                            fontWeight: FontWeight.w500,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          maxLines: 1,
+                                        ),
                                       ),
-                                      maxLines: 1,
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                               Text(
@@ -713,10 +731,10 @@ class _SinglePostProState extends State<SinglePostPro>
                               SizedBox(height: space),
                               getCategory(),
 
-                              postData.category == category[0] ||
-                                      postData.category == category[1]
-                                  ? const SizedBox()
-                                  : const SizedBox(height: 15),
+                              // postData.category == category[0] ||
+                              //         postData.category == category[1]
+                              //     ? const SizedBox()
+                              //     : const SizedBox(height: 15),
 
                               SizedBox(height: space),
                               Container(
@@ -1050,44 +1068,6 @@ class _SinglePostProState extends State<SinglePostPro>
                                                 title: title,
                                                 description: "description",
                                               );
-                                              // if (availableMaps.length == 1) {
-                                              //   await availableMaps.first
-                                              //       .showMarker(
-                                              //     coords: coords,
-                                              //     title: title,
-                                              //     description: "description",
-                                              //   );
-                                              // } else {
-                                              //   Get.bottomSheet(
-                                              //     SafeArea(
-                                              //       child:
-                                              //           SingleChildScrollView(
-                                              //         child: Wrap(
-                                              //           children: <Widget>[
-                                              //             for (var map
-                                              //                 in availableMaps)
-                                              //               ListTile(
-                                              //                 onTap: () => map
-                                              //                     .showMarker(
-                                              //                   coords: coords,
-                                              //                   title: title,
-                                              //                 ),
-                                              //                 title: Text(
-                                              //                     map.mapName),
-                                              //                 leading:
-                                              //                     SvgPicture
-                                              //                         .asset(
-                                              //                   map.icon,
-                                              //                   height: 30.0,
-                                              //                   width: 30.0,
-                                              //                 ),
-                                              //               ),
-                                              //           ],
-                                              //         ),
-                                              //       ),
-                                              //     ),
-                                              //   );
-                                              // }
                                             },
                                             shape: RoundedRectangleBorder(
                                               // side: const BorderSide(

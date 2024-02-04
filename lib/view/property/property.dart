@@ -358,8 +358,16 @@ class PostsPro extends StatelessWidget {
                                 ),
                               ),
                               onTap: () {
-                                adsController.shareBase64Image(
-                                    postData.image1, 'Hi');
+                                adsController
+                                    .shareBase64Image(postData.image1, '''
+     🏷️ ${postData.category}
+     💰 Price: ${postData.price == 0 ? "Price On Call" : "${postData.price} ৳"} 
+     📍Location: ${postData.location}
+    
+Download our app now to discover more!🌟
+Check out the latest updates here:
+   https://play.google.com/store/apps/details?id=com.btolet.app
+    ''');
                               },
                             ),
                           ),

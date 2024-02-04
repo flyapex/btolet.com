@@ -217,7 +217,7 @@ class _PostsProMapState extends State<PostsProMap> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(right: 5, top: 5),
+            padding: const EdgeInsets.only(right: 5, top: 10),
             child: Align(
               alignment: Alignment.topRight,
               child: SizedBox(

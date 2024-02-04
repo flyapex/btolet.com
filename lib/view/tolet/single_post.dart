@@ -347,9 +347,15 @@ class _SinglePostToletState extends State<SinglePostTolet>
                                               ),
                                               onTap: () {
                                                 adsController.shareBase64Image(
-                                                  postData.image1,
-                                                  'Hi',
-                                                );
+                                                    postData.image1, '''
+     🏷️ ${jsonDecode(postData.category).join(", ")}
+    💰Rent: ${postData.rent} ৳
+    📍Location: ${postData.location}
+    
+Download our app now to discover more!🌟
+Check out the latest updates here:
+   https://play.google.com/store/apps/details?id=com.btolet.app
+    ''');
                                               },
                                             ),
                                           ),

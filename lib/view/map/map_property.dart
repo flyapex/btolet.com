@@ -57,7 +57,7 @@ class _MapPropertyState extends State<MapProperty>
       Future markerTask = markers.addLabelMarker(
         LabelMarker(
           label: data.price == 0
-              ? "Call for price"
+              ? "Price On Call"
               : "৳ ${userController.currency(data.price)}",
           // label: data.rent.toString(),
           markerId: MarkerId(data.pid.toString()),
@@ -228,7 +228,7 @@ class _MapPropertyState extends State<MapProperty>
                                           height: 120,
                                           autoPlay: false,
                                           enlargeCenterPage: true,
-                                          enableInfiniteScroll: true,
+                                          enableInfiniteScroll: false,
                                           autoPlayInterval:
                                               const Duration(seconds: 3),
                                           autoPlayAnimationDuration:

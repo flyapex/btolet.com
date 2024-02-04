@@ -578,66 +578,69 @@ class CategoryBodyPost extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                InkWell(
-                  onTap: () async {
-                    final coords = Coords(
-                      double.parse(postData.geolat),
-                      double.parse(postData.geolon),
-                    );
-                    var title =
-                        "Price ৳ ${NumberFormat.decimalPattern().format(postData.rent)}";
-                    final availableMaps = await MapLauncher.installedMaps;
-                    await availableMaps.first.showMarker(
-                      coords: coords,
-                      title: title,
-                      description: "description",
-                    );
-                  },
-                  child: Row(
-                    children: [
-                      Material(
-                        type: MaterialType.transparency,
-                        child: Ink(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Colors.blue,
-                              width: 2,
+                Expanded(
+                  child: InkWell(
+                    onTap: () async {
+                      final coords = Coords(
+                        double.parse(postData.geolat),
+                        double.parse(postData.geolon),
+                      );
+                      var title =
+                          "Price ৳ ${NumberFormat.decimalPattern().format(postData.rent)}";
+                      final availableMaps = await MapLauncher.installedMaps;
+                      await availableMaps.first.showMarker(
+                        coords: coords,
+                        title: title,
+                        description: "description",
+                      );
+                    },
+                    child: Row(
+                      children: [
+                        Material(
+                          type: MaterialType.transparency,
+                          child: Ink(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.blue,
+                                width: 2,
+                              ),
+                              color: Colors.white,
+                              shape: BoxShape.circle,
                             ),
-                            color: Colors.white,
-                            shape: BoxShape.circle,
-                          ),
-                          child: InkWell(
-                            borderRadius: BorderRadius.circular(100),
-                            onTap: () {},
-                            child: Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: SizedBox(
-                                height: 22,
-                                width: 22,
-                                child: SvgPicture.asset(
-                                  'assets/icons/home/map.svg',
-                                  height: 10,
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(100),
+                              onTap: () {},
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: SizedBox(
+                                  height: 22,
                                   width: 22,
+                                  child: SvgPicture.asset(
+                                    'assets/icons/home/map.svg',
+                                    height: 10,
+                                    width: 22,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 10),
-                      Text(
-                        // locationController.locationAddress.value,
-                        postData.location,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: const Color(0xff083437).withOpacity(0.7),
-                          // fontWeight: FontWeight.bold,
-                          overflow: TextOverflow.ellipsis,
-                          fontFamily: 'Roboto',
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            postData.location,
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: const Color(0xff083437).withOpacity(0.7),
+                              // fontWeight: FontWeight.bold,
+                              overflow: TextOverflow.ellipsis,
+                              fontFamily: 'Roboto',
+                            ),
+                            maxLines: 1,
+                          ),
                         ),
-                        maxLines: 1,
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
                 Text(

@@ -18,6 +18,8 @@ var headers = {
 
 class ApiServiceTolet {
   static Future postCountArea(location1, location2) async {
+    print(location1);
+    print(location2);
     final response = await dio.get(
       '$baseUrl/postcount/area',
       queryParameters: {

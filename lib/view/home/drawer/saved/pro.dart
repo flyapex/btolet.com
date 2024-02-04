@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:btolet/constants/colors.dart';
+import 'package:btolet/controller/ads_controller.dart';
 import 'package:btolet/controller/property_controller.dart';
 import 'package:btolet/controller/user_controller.dart';
 import 'package:btolet/model/pro_model.dart';
@@ -154,7 +155,7 @@ class _PostsProSavedState extends State<PostsProSaved> {
   Widget build(BuildContext context) {
     UserController userController = Get.find();
     ProController proController = Get.find();
-
+    AdsController adsController = Get.find();
     return Container(
       height: 400,
       width: double.infinity,
@@ -274,7 +275,18 @@ class _PostsProSavedState extends State<PostsProSaved> {
                                   size: 21,
                                 ),
                               ),
-                              onTap: () {},
+                              onTap: () {
+                                adsController.shareBase64Image(
+                                    widget.postData.image1, '''
+     🏷️ ${widget.postData.category}
+     💰 Price: ${widget.postData.price == 0 ? "Price On Call🤙📞" : "${widget.postData.price} ৳"} 
+     📍Location: ${widget.postData.location}
+    
+Download our app now to discover more!🌟
+Check out the latest updates here:
+   https://play.google.com/store/apps/details?id=com.btolet.app
+    ''');
+                              },
                             ),
                           ),
                         ),

@@ -175,7 +175,7 @@ class _MapToletState extends State<MapTolet>
                                           height: 120,
                                           autoPlay: false,
                                           enlargeCenterPage: true,
-                                          enableInfiniteScroll: true,
+                                          enableInfiniteScroll: false,
                                           autoPlayInterval:
                                               const Duration(seconds: 3),
                                           autoPlayAnimationDuration:

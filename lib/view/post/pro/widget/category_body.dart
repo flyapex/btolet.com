@@ -226,6 +226,18 @@ class _CategoryBodyProState extends State<CategoryBodyPro> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const SizedBox(height: 20),
+            TextInputPro(
+              topPadding: 0,
+              title: "Property Name",
+              textType: TextInputType.text,
+              hintText: "Modern Apartment",
+              textlength: 500,
+              suffixtext: "",
+              controller: proController.name,
+              widthh: 2.35 / 2,
+              focusNode: proController.namefocusNode,
+            ),
             PorChipsNotextMulti(
               options: landType,
               selected: proController.selectedLandTypes,

@@ -652,9 +652,9 @@ class ToletController extends GetxController {
   var categoriesSort = {
     'Family': false.obs,
     'Bachelor': false.obs,
-    'Male seat': false.obs,
+    'Male Seat': false.obs,
     'Female Seat': false.obs,
-    'Sub-let': false.obs,
+    'Sub let': false.obs,
     'Hostel': false.obs,
     'Shop': false.obs,
     'Office': false.obs,

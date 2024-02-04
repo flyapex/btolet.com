@@ -684,10 +684,15 @@ class _PostsToletState extends State<PostsTolet> {
                     ),
                   ),
                   onTap: () {
-                    adsController.shareBase64Image(widget.postData.image1,
-                        '''📱 Dive into the world of posts with a tap! Download our app now to discover more! 🌟
+                    adsController.shareBase64Image(widget.postData.image1, '''
+     🏷️ ${jsonDecode(widget.postData.category).join(", ")}
+    💰Rent: ${widget.postData.rent} ৳
+    📍Location: ${widget.postData.location}
+    
+Download our app now to discover more!🌟
 Check out the latest updates here:
-https://play.google.com/store/apps/details?id=com.btolet.app''');
+   https://play.google.com/store/apps/details?id=com.btolet.app
+    ''');
                   },
                 ),
               ),

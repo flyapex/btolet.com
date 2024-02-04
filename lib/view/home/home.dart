@@ -195,7 +195,9 @@ class _HomeState extends State<Home>
                             ),
                             const SizedBox(width: 6),
                             Text(
-                              "Post",
+                              userController.tabController.index == 0
+                                  ? 'Post'
+                                  : 'Sell',
                               style: TextStyle(
                                 color: const Color(0xff083437).withOpacity(0.8),
                                 fontSize: s1,

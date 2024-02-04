@@ -554,7 +554,7 @@ class SinglePostShimmer extends StatelessWidget {
                           child: const Padding(
                             padding: EdgeInsets.only(left: 10),
                             child: Icon(
-                              Feather.arrow_left,
+                              Feather.chevron_left,
                               color: Colors.white,
                               size: 22,
                             ),

@@ -543,11 +543,6 @@ class _PostsToletSavedState extends State<PostsToletSaved> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                // const Icon(
-                //   Icons.favorite_border_outlined,
-                //   color: Color(0xff083437),
-                //   size: 26,
-                // ),
                 LikeButton(
                   size: 26,
                   isLiked: widget.isLikedvalue,
@@ -605,11 +600,15 @@ class _PostsToletSavedState extends State<PostsToletSaved> {
                   },
                 ),
                 const SizedBox(height: 20),
-                Text(
-                  '${userController.getDay(widget.postData.time)}',
-                  style: TextStyle(
-                    color: const Color(0xff083437).withOpacity(0.5),
-                    fontSize: s6,
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: Text(
+                    '${userController.getDay(widget.postData.time)}',
+                    style: TextStyle(
+                      color: const Color(0xff083437).withOpacity(0.5),
+                      fontSize: s6,
+                      height: 1,
+                    ),
                   ),
                 ),
               ],

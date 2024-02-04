@@ -202,11 +202,7 @@ class _MorePostsProState extends State<MorePostsPro> {
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: Colors.black12, width: 0.9)
-          // boxShadow: const [
-          //   BoxShadow(color: Colors.black12, spreadRadius: 1),
-          // ],
-          ),
+          border: Border.all(color: Colors.black12, width: 0.9)),
       child: Stack(
         children: [
           GestureDetector(
@@ -274,7 +270,7 @@ class _MorePostsProState extends State<MorePostsPro> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(right: 10, top: 10),
+            padding: const EdgeInsets.only(right: 5, top: 10),
             child: Align(
               alignment: Alignment.topRight,
               child: SizedBox(
