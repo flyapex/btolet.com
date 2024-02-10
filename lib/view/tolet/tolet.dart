@@ -72,8 +72,10 @@ class _ToletState extends State<Tolet> with AutomaticKeepAliveClientMixin {
           setState(() {
             _atEnd = true;
           });
+          if (toletController.page.value != 1) {
+            toletController.getAllPost();
+          }
 
-          toletController.getAllPost();
           print('Reached the end of the list!');
         }
         return false;
@@ -95,13 +97,16 @@ class _ToletState extends State<Tolet> with AutomaticKeepAliveClientMixin {
           onRefresh: () async {
             // await locationController.getCurrnetlanlongLocation(
             //     false, 'Tolet Ref');
+            print(toletController.allPost.length);
             toletController.getCurrentPostCount();
             toletController.allPost.clear();
             toletController.allPost.refresh();
+            // toletController.allPost.stream;
+
             toletController.page.value = 1;
             toletController.getAllPost();
             toletController.allPost.sentToStream;
-            setState(() {});
+            // _atEnd = false;
           },
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(
@@ -290,11 +295,10 @@ class _PostsToletState extends State<PostsTolet> {
 
   @override
   Widget build(BuildContext context) {
-    var height = Get.height;
     var width = Get.width;
 
     getCategory() {
-      var catagory = json.decode(widget.postData.category).cast<String>();
+      var catagory = widget.postData.category;
       var data = widget.postData.garagetype;
       if (catagory.contains('Only Garage')) {
         if (data == "Garage") {
@@ -521,7 +525,7 @@ class _PostsToletState extends State<PostsTolet> {
     }
 
     return Container(
-      height: height / 7,
+      height: 130,
       width: width / 1.35,
       decoration: BoxDecoration(
           color: Colors.white,
@@ -640,7 +644,7 @@ class _PostsToletState extends State<PostsTolet> {
                           ],
                         ),
                         Text(
-                          " ${((json.decode(widget.postData.category) as List).map((e) => e.toString()).toList()).join(', ')}",
+                          " ${((widget.postData.category).map((e) => e.toString()).toList()).join(', ')}",
                           style: const TextStyle(
                             height: 1,
                             color: Color(0xff083437),
@@ -685,12 +689,12 @@ class _PostsToletState extends State<PostsTolet> {
                   ),
                   onTap: () {
                     adsController.shareBase64Image(widget.postData.image1, '''
-     🏷️ ${jsonDecode(widget.postData.category).join(", ")}
+     🏷️ ${widget.postData.category}
     💰Rent: ${widget.postData.rent} ৳
     📍Location: ${widget.postData.location}
     
-Download our app now to discover more!🌟
-Check out the latest updates here:
+Download our app(Btolet) now to discover more!🌟
+Click Here To Download:
    https://play.google.com/store/apps/details?id=com.btolet.app
     ''');
                   },

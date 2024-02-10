@@ -17,6 +17,7 @@ class Permission extends StatelessWidget {
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied) {
+          // checkPermission();
           Get.snackbar('', 'Location Permission Denied');
           return Future.error('Location permissions are denied');
         }

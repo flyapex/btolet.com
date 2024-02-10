@@ -144,52 +144,56 @@ class _TextInputState extends State<TextInput> {
                       });
                     },
                     child: IntrinsicWidth(
-                      child: TextField(
-                        focusNode: widget.focusNode,
-                        inputFormatters: [
-                          if (widget.numberFormatter != null)
-                            widget.numberFormatter!,
-                        ],
-                        cursorHeight: 24,
-                        cursorWidth: 1.8,
-                        cursorRadius: const Radius.circular(10),
-                        controller: widget.controller,
-                        textInputAction: TextInputAction.done,
-                        keyboardType: widget.textType,
-                        maxLines: 1,
-                        cursorColor: Colors.black,
-                        style: textstyle,
-                        decoration: InputDecoration(
-                          suffix: Text(
-                            widget.suffixtext,
-                            style: TextStyle(
-                              color: iconColorChange
-                                  ? const Color(0xff0166EE)
-                                  : Colors.amber,
-                              fontSize: widget.suffixtext == '৳' ? 15 : s3,
+                      child: Center(
+                        child: TextField(
+                          focusNode: widget.focusNode,
+                          inputFormatters: [
+                            if (widget.numberFormatter != null)
+                              widget.numberFormatter!,
+                          ],
+                          cursorHeight: 24,
+                          cursorWidth: 1.8,
+                          cursorRadius: const Radius.circular(10),
+                          controller: widget.controller,
+                          textInputAction: TextInputAction.done,
+                          keyboardType: widget.textType,
+                          maxLines: 1,
+                          cursorColor: Colors.black,
+                          style: textstyle,
+                          decoration: InputDecoration(
+                            isCollapsed: true,
+                            contentPadding: const EdgeInsets.all(10),
+                            suffix: Text(
+                              widget.suffixtext,
+                              style: TextStyle(
+                                color: iconColorChange
+                                    ? const Color(0xff0166EE)
+                                    : Colors.amber,
+                                fontSize: widget.suffixtext == '৳' ? 15 : s3,
+                              ),
                             ),
+                            border: const OutlineInputBorder(
+                              borderSide: BorderSide.none,
+                            ),
+                            isDense: true,
+                            hintText: widget.hintText,
+                            hintStyle: textstyleh,
                           ),
-                          border: const OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                          ),
-                          isDense: true,
-                          hintText: widget.hintText,
-                          hintStyle: textstyleh,
+                          onChanged: (val) {
+                            // postController.alltextfield();
+                            if (val != '' &&
+                                toletController.rent == widget.controller) {
+                              toletController.priceFlag.value = true;
+                              // postController.istitletxt.value == true;
+                              // widget.flag = true;
+                              // postController.page2chack();
+                            }
+                            // postController.allCategoryCheck();
+                          },
+                          onSubmitted: (v) {
+                            getFocus();
+                          },
                         ),
-                        onChanged: (val) {
-                          // postController.alltextfield();
-                          if (val != '' &&
-                              toletController.rent == widget.controller) {
-                            toletController.priceFlag.value = true;
-                            // postController.istitletxt.value == true;
-                            // widget.flag = true;
-                            // postController.page2chack();
-                          }
-                          // postController.allCategoryCheck();
-                        },
-                        onSubmitted: (v) {
-                          getFocus();
-                        },
                       ),
                     ),
                   ),

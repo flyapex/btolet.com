@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:btolet/constants/colors.dart';
 import 'package:btolet/controller/user_controller.dart';
 import 'package:btolet/model/tolet_model.dart';
@@ -18,8 +16,8 @@ class CategoryBodyPost extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     mainBody() {
-      var catagory = json.decode(postData.category).cast<String>();
-      print(catagory);
+      var catagory = postData.category;
+      // print(catagory);
       if (catagory.contains('Only Garage')) {
         if (postData.garagetype == "Garage") {
           return Row(
@@ -154,7 +152,7 @@ class CategoryBodyPost extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Text(
-              json.decode(postData.category).join(", "),
+              postData.category.join(', '),
               style: TextStyle(
                 color: const Color(0xff083437).withOpacity(0.5),
                 fontWeight: FontWeight.bold,
@@ -170,7 +168,7 @@ class CategoryBodyPost extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Text(
-              json.decode(postData.category).join(", "),
+              postData.category.join(', '),
               style: TextStyle(
                 color: const Color(0xff083437).withOpacity(0.5),
                 fontWeight: FontWeight.bold,
@@ -324,9 +322,9 @@ class CategoryBodyPost extends StatelessWidget {
     }
 
     mainBody2() {
-      var catagory = json.decode(postData.category).cast<String>();
+      var catagory = postData.category.join(', ');
 
-      print(catagory);
+      // print(catagory);
       if (catagory.contains('Only Garage')) {
         return Column(
           children: [
@@ -337,7 +335,7 @@ class CategoryBodyPost extends StatelessWidget {
             ),
             Details(
               type: "Property Type",
-              detailstext: json.decode(postData.category).join(", "),
+              detailstext: postData.category.join(', '),
               icon: Icons.business_outlined,
             ),
             Details(
@@ -362,7 +360,7 @@ class CategoryBodyPost extends StatelessWidget {
             ),
             Details(
               type: "Property Type",
-              detailstext: json.decode(postData.category).join(", "),
+              detailstext: postData.category.join(', '),
               icon: Icons.business_outlined,
             ),
             Details(
@@ -394,7 +392,7 @@ class CategoryBodyPost extends StatelessWidget {
               type: "Facilities",
               detailstext: postData.fasalitis.isEmpty
                   ? ""
-                  : json.decode(postData.fasalitis).join(", "),
+                  : postData.fasalitis.join(", "),
               icon: Icons.search_sharp,
               textColor: Colors.green,
             ),
@@ -444,7 +442,7 @@ class CategoryBodyPost extends StatelessWidget {
               type: "Facilities",
               detailstext: postData.fasalitis.isEmpty
                   ? ""
-                  : json.decode(postData.fasalitis).join(", "),
+                  : postData.fasalitis.join(", "),
               icon: Icons.search_sharp,
               textColor: Colors.green,
             ),
@@ -472,7 +470,7 @@ class CategoryBodyPost extends StatelessWidget {
             ),
             Details(
               type: "Property Type",
-              detailstext: json.decode(postData.category).join(", "),
+              detailstext: postData.category.join(', '),
               icon: Icons.business_outlined,
             ),
             Details(
@@ -514,7 +512,7 @@ class CategoryBodyPost extends StatelessWidget {
               type: "Facilities",
               detailstext: postData.fasalitis.isEmpty
                   ? ""
-                  : json.decode(postData.fasalitis).join(", "),
+                  : postData.fasalitis.join(", "),
               icon: Icons.search_sharp,
               textColor: Colors.green,
             ),

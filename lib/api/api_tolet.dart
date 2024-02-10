@@ -53,6 +53,8 @@ class ApiServiceTolet {
   }
 
   static Future getSinglePost(postid) async {
+    print('$baseUrl/post');
+    print({"post_id": postid});
     final response = await dio.get(
       '$baseUrl/post',
       queryParameters: {"post_id": postid},
@@ -65,8 +67,7 @@ class ApiServiceTolet {
     }
   }
 
-  static Future getMorePost(
-      postid, category, price, page, geolat, geolon) async {
+  static Future getMorePost(postid, category, page, geolat, geolon) async {
     // var data = jsonEncode(
     //   {
     //     "postid": postid,
@@ -77,6 +78,7 @@ class ApiServiceTolet {
     //     "geolon": geolon.toString(),
     //   },
     // );
+
     // print(data);
 
     final response = await dio.post(
@@ -84,7 +86,6 @@ class ApiServiceTolet {
       data: {
         "postid": postid,
         "category": category,
-        "price": price,
         "page": page,
         "geolat": geolat.toString(),
         "geolon": geolon.toString(),
@@ -99,6 +100,8 @@ class ApiServiceTolet {
   }
 
   static Future newPost(NewPostTolet data) async {
+    print('$baseUrl/newPost');
+    print(newPostToletToJson(data));
     final response = await dio.post(
       '$baseUrl/newPost',
       data: newPostToletToJson(data),
@@ -112,6 +115,8 @@ class ApiServiceTolet {
   }
 
   static Future sortingPostCount(SortPostTolet data) async {
+    print('$baseUrl/sort/postlist');
+    print(sortPostToletToJson(data));
     final response = await dio.post(
       '$baseUrl/sort/postcount',
       data: sortPostToletToJson(data),
@@ -125,6 +130,8 @@ class ApiServiceTolet {
   }
 
   static Future sortingPost(SortPostTolet data) async {
+    print('$baseUrl/sort/postlist');
+    print(sortPostToletToJson(data));
     final response = await dio.post(
       '$baseUrl/sort/postlist',
       data: sortPostToletToJson(data),
@@ -156,6 +163,11 @@ class ApiServiceTolet {
   }
 
   static Future getSaved(int uid, int page) async {
+    // print('$baseUrl/save/post/get');
+    // print(jsonEncode({
+    //   "uid": uid,
+    //   "page": page,
+    // }));
     final response = await dio.post(
       '$baseUrl/save/post/get',
       data: jsonEncode(

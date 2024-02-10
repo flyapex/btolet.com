@@ -165,64 +165,71 @@ class _TextInputProState extends State<TextInputPro> {
                       });
                     },
                     child: IntrinsicWidth(
-                      child: TextField(
-                        focusNode: widget.focusNode,
-                        // inputFormatters: [
-                        //   LengthLimitingTextInputFormatter(widget.titlelenth),
-                        // ],
+                      child: Center(
+                        child: TextField(
+                          focusNode: widget.focusNode,
+                          // inputFormatters: [
+                          //   LengthLimitingTextInputFormatter(widget.titlelenth),
+                          // ],
 
-                        // inputFormatters: [ThousandsFormatter()],
-                        inputFormatters: [
-                          if (widget.numberFormatter != null)
-                            widget.numberFormatter!,
-                        ],
-                        maxLength: widget.textlength,
-                        cursorHeight: 24,
-                        cursorWidth: 1.8,
-                        cursorRadius: const Radius.circular(10),
-                        controller: widget.controller,
-                        textInputAction: TextInputAction.done,
-                        keyboardType: widget.textType,
-                        maxLines: 1,
-                        cursorColor: Colors.black,
-                        style: textstyle,
-                        decoration: InputDecoration(
-                          counterText: '',
-                          suffix: Text(
-                            widget.suffixtext,
-                            style: TextStyle(
-                              color: iconColorChange
-                                  ? const Color(0xff0166EE)
-                                  : Colors.amber,
-                              fontSize: widget.suffixtext == '৳' ? 15 : s3,
+                          // inputFormatters: [ThousandsFormatter()],
+                          inputFormatters: [
+                            if (widget.numberFormatter != null)
+                              widget.numberFormatter!,
+                          ],
+                          maxLength: widget.textlength,
+                          cursorHeight: 24,
+                          cursorWidth: 1.8,
+                          cursorRadius: const Radius.circular(10),
+                          controller: widget.controller,
+                          textInputAction: TextInputAction.done,
+                          keyboardType: widget.textType,
+                          maxLines: 1,
+                          cursorColor: Colors.black,
+                          style: textstyle,
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.all(10),
+                            counterText: '',
+                            isCollapsed: true,
+                            suffix: Text(
+                              widget.suffixtext,
+                              style: TextStyle(
+                                color: iconColorChange
+                                    ? const Color(0xff0166EE)
+                                    : Colors.amber,
+                                fontSize: widget.suffixtext == '৳' ? 15 : s3,
+                              ),
                             ),
+                            border: const OutlineInputBorder(
+                              borderSide: BorderSide.none,
+                            ),
+                            isDense: true,
+                            hintText: widget.hintText,
+                            hintStyle: textstyleh,
                           ),
-                          border: const OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                          ),
-                          isDense: true,
-                          hintText: widget.hintText,
-                          hintStyle: textstyleh,
+                          onChanged: (val) {
+                            if (userController.shortAddress ==
+                                    widget.controller ||
+                                userController.description ==
+                                    widget.controller ||
+                                userController.phonenumber ==
+                                    widget.controller ||
+                                userController.wappnumber ==
+                                    widget.controller) {
+                            } else if (val != '') {
+                              proController.flagCheck();
+                            }
+                            if (widget.controller == proController.price) {
+                              proController.priceFlag.value =
+                                  proController.price.text.isNotEmpty ||
+                                      proController.selectedPriceType.value !=
+                                          priceType[0];
+                            }
+                          },
+                          onSubmitted: (v) {
+                            getFocus();
+                          },
                         ),
-                        onChanged: (val) {
-                          if (userController.shortAddress ==
-                                  widget.controller ||
-                              userController.description == widget.controller ||
-                              userController.phonenumber == widget.controller ||
-                              userController.wappnumber == widget.controller) {
-                          } else if (val != '') {
-                            proController.flagCheck();
-                          }
-                          if (widget.controller == proController.price) {
-                            proController.priceFlag.value =
-                                proController.price.text.isNotEmpty ||
-                                    proController.selectedPriceType.value !=
-                                        priceType[0];
-                          }
-                        },
-                        onSubmitted: (v) {
-                          getFocus();
-                        },
                       ),
                     ),
                   ),

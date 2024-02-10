@@ -290,10 +290,13 @@ class SortPostListProState extends State<SortPostListPro> {
                                 count: 3,
                               );
                             } else {
-                              return const Padding(
-                                padding: EdgeInsets.all(8.0),
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
                                 child: Center(
-                                  child: Text('nothing more to load!'),
+                                  child: Text(
+                                    'nothing more to load!',
+                                    style: h4,
+                                  ),
                                 ),
                               );
                             }

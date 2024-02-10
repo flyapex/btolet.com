@@ -67,6 +67,7 @@ class ApiServicePro {
     //     "geolon": geolon.toString(),
     //   },
     // );
+    // print('$baseUrl/more/post');
     // print(data);
     final response = await dio.post(
       '$baseUrl/more/post',
@@ -121,6 +122,8 @@ class ApiServicePro {
   }
 
   static Future sortingPostCount(SortPostPro data) async {
+    // print('$baseUrl/sort/postcount');
+    // print(sortPostProToJson(data));
     final response = await dio.post(
       '$baseUrl/sort/postcount',
       data: sortPostProToJson(data),
@@ -134,6 +137,7 @@ class ApiServicePro {
   }
 
   static Future sortingPost(SortPostPro data) async {
+    print(sortPostProToJson(data));
     final response = await dio.post(
       '$baseUrl/sort/postlist',
       data: sortPostProToJson(data),
@@ -147,6 +151,14 @@ class ApiServicePro {
   }
 
   static Future savedPost(int uid, int pid, bool status) async {
+    // print('$baseUrl/save/post');
+    // print(jsonEncode(
+    //   {
+    //     "uid": uid,
+    //     "pid": pid,
+    //     "status": status,
+    //   },
+    // ));
     final response = await dio.post(
       '$baseUrl/save/post',
       data: jsonEncode(
@@ -166,6 +178,11 @@ class ApiServicePro {
   }
 
   static Future getSaved(int uid, int page) async {
+    // print('$baseUrl/save/post/get');
+    // print({
+    //   "uid": uid,
+    //   "page": page,
+    // });
     final response = await dio.post(
       '$baseUrl/save/post/get',
       data: jsonEncode(
@@ -184,6 +201,7 @@ class ApiServicePro {
   }
 
   static Future myPostList(int uid, int page) async {
+    // print('$baseUrl/user/mypost');
     final response = await dio.get(
       '$baseUrl/user/mypost',
       queryParameters: {
@@ -200,9 +218,9 @@ class ApiServicePro {
   }
 
   static Future deletePost(int uid, int postId) async {
-    print(uid);
-    print(postId);
-    print('$baseUrl/user/mypost/delete');
+    // print(uid);
+    // print(postId);
+
     final response = await dio.delete(
       '$baseUrl/user/mypost/delete',
       queryParameters: {

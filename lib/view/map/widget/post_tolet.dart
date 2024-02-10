@@ -41,7 +41,7 @@ class _PostsToletMapState extends State<PostsToletMap> {
   Widget build(BuildContext context) {
     // var height = Get.height;
     getCategory() {
-      var catagory = json.decode(widget.postData.category).cast<String>();
+      var catagory = widget.postData.category;
       var data = widget.postData.garagetype;
       if (catagory.contains('Only Garage')) {
         if (data == "Garage") {
@@ -269,6 +269,7 @@ class _PostsToletMapState extends State<PostsToletMap> {
 
     return Container(
       // height: 115,
+      height: 130,
       width: widget.wid,
       // margin: const EdgeInsets.only(bottom: 40, right: 28),
 
@@ -396,7 +397,7 @@ class _PostsToletMapState extends State<PostsToletMap> {
                             ],
                           ),
                           Text(
-                            " ${((json.decode(widget.postData.category) as List).map((e) => e.toString()).toList()).join(', ')}",
+                            " ${((widget.postData.category).map((e) => e.toString()).toList()).join(', ')}",
                             style: const TextStyle(
                               height: 1,
                               color: Color(0xff083437),
@@ -427,7 +428,7 @@ class _PostsToletMapState extends State<PostsToletMap> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(right: 10, top: 5),
+            padding: const EdgeInsets.only(right: 10, top: 10),
             child: Align(
               alignment: Alignment.topRight,
               child: SizedBox(
@@ -467,20 +468,17 @@ class _PostsToletMapState extends State<PostsToletMap> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(right: 10, bottom: 10),
-            child: Align(
-              alignment: Alignment.bottomRight,
-              child: Text(
-                '${userController.getDay(widget.postData.time)}',
-                style: TextStyle(
-                  color: const Color(0xff083437).withOpacity(0.5),
-                  fontSize: s6,
-                  height: 0.7,
-                ),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: Text(
+              '${userController.getDay(widget.postData.time)}',
+              style: TextStyle(
+                color: const Color(0xff083437).withOpacity(0.8),
+                fontSize: s6,
+                height: 1,
               ),
             ),
-          ),
+          ).paddingOnly(right: 10, bottom: 2),
         ],
       ),
     );

@@ -48,7 +48,8 @@ class ToletController extends GetxController {
 
       if (response != null) {
         allPost.addAll(response);
-        if (response.isEmpty || response.length < 4) {
+        if (response.isEmpty) {
+          //|| response.length < 4
           lodingPosts(false);
         }
         page = page + 1;
@@ -132,13 +133,13 @@ class ToletController extends GetxController {
     'Only Garage': false.obs,
   };
 
-  String getCategory() {
+  getCategory() {
     final selectedCategories = categories.entries
         .where((entry) => entry.value.value)
         .map((entry) => entry.key)
         .toList();
-    String jsonStringArray = jsonEncode(selectedCategories);
-    return jsonStringArray;
+    // String jsonStringArray = jsonEncode(selectedCategories);
+    return selectedCategories;
   }
 
   var fasalitis = {
@@ -160,14 +161,14 @@ class ToletController extends GetxController {
         FasalitisModel(state: false.obs, icon: Icons.local_drink_outlined),
   };
 
-  String getFasalities() {
+  getFasalities() {
     final selectedCategories = fasalitis.entries
         .where((entry) => entry.value.state.value)
         .map((entry) => entry.key)
         .toList();
 
-    String jsonStringArray = jsonEncode(selectedCategories);
-    return jsonStringArray;
+    // String jsonStringArray = jsonEncode(selectedCategories);
+    return selectedCategories;
   }
 
   var selectedBed = bedtolet[0].obs;
@@ -449,7 +450,7 @@ class ToletController extends GetxController {
             mentenance: 0,
             rent: int.parse(rent.text.replaceAll(",", "")),
             garagetype: garage.value,
-            fasalitis: "",
+            fasalitis: [],
             image1: imageBase64List[0],
             image2: imageBase64List[1],
             image3: imageBase64List[2],
@@ -471,7 +472,7 @@ class ToletController extends GetxController {
             phone: userController.code.value + userController.phonenumber.text,
             wapp: userController.wappnumber.text.isEmpty
                 ? ""
-                : userController.code.value + userController.phonenumber.text,
+                : userController.code.value + userController.wappnumber.text,
           ),
         );
       } else if (categories['Shop']!.value) {
@@ -494,7 +495,7 @@ class ToletController extends GetxController {
             mentenance: 0,
             rent: int.parse(rent.text.replaceAll(",", "")),
             garagetype: garage.value,
-            fasalitis: "",
+            fasalitis: [],
             image1: imageBase64List[0],
             image2: imageBase64List[1],
             image3: imageBase64List[2],
@@ -516,7 +517,7 @@ class ToletController extends GetxController {
             phone: userController.code.value + userController.phonenumber.text,
             wapp: userController.wappnumber.text.isEmpty
                 ? ""
-                : userController.code.value + userController.phonenumber.text,
+                : userController.code.value + userController.wappnumber.text,
           ),
         );
       } else if (categories['Office']!.value) {
@@ -563,7 +564,7 @@ class ToletController extends GetxController {
             phone: userController.code.value + userController.phonenumber.text,
             wapp: userController.wappnumber.text.isEmpty
                 ? ""
-                : userController.code.value + userController.phonenumber.text,
+                : userController.code.value + userController.wappnumber.text,
           ),
         );
       } else {
@@ -609,7 +610,7 @@ class ToletController extends GetxController {
             phone: userController.code.value + userController.phonenumber.text,
             wapp: userController.wappnumber.text.isEmpty
                 ? ""
-                : userController.code.value + userController.phonenumber.text,
+                : userController.code.value + userController.wappnumber.text,
           ),
         );
       }
@@ -661,14 +662,14 @@ class ToletController extends GetxController {
     'Only Garage': false.obs,
   };
 
-  String getCategorySort() {
+  getCategorySort() {
     final selectedCategories = categoriesSort.entries
         .where((entry) => entry.value.value)
         .map((entry) => entry.key)
         .toList();
 
-    String jsonStringArray = jsonEncode(selectedCategories);
-    return jsonStringArray;
+    // String jsonStringArray = jsonEncode(selectedCategories);
+    return selectedCategories;
   }
 
   var fasalitisSort = {
@@ -686,25 +687,25 @@ class ToletController extends GetxController {
     'Fire Alarm':
         FasalitisModel(state: false.obs, icon: Icons.fire_extinguisher),
   };
-  String getFasalitiesSort() {
+  getFasalitiesSort() {
     final selectedCategories = fasalitisSort.entries
         .where((entry) => entry.value.state.value)
         .map((entry) => entry.key)
         .toList();
 
-    String jsonStringArray = jsonEncode(selectedCategories);
-    return jsonStringArray;
+    // String jsonStringArray = jsonEncode(selectedCategories);
+    return selectedCategories;
   }
 
   var bedsort = [].obs;
   var bathsort = [].obs;
 
-  String getSort(mainList) {
-    String jsonStringArray = jsonEncode(mainList
+  List<String> getSort(List<dynamic> mainList) {
+    List<String> stringList = mainList
         .map((element) => element is String ? element : element.toString())
-        .toList());
+        .toList();
 
-    return mainList.isEmpty ? '' : jsonStringArray;
+    return stringList;
   }
 
   var totalResult = 0.obs;

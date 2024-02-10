@@ -65,7 +65,11 @@ class _PropertyState extends State<Property>
             _atEnd = true;
           });
           // Perform any action when scroll reaches the end
-          proController.getAllPost();
+
+          if (proController.page.value != 1) {
+            proController.getAllPost();
+          }
+
           print('Reached the end of the list!');
         }
         return false;
@@ -361,11 +365,11 @@ class PostsPro extends StatelessWidget {
                                 adsController
                                     .shareBase64Image(postData.image1, '''
      🏷️ ${postData.category}
-     💰 Price: ${postData.price == 0 ? "Price On Call" : "${postData.price} ৳"} 
+     💰 Price: ${postData.price == 0 ? "Price On Call" : "${userController.currency(postData.price)}  BDT"} 
      📍Location: ${postData.location}
     
-Download our app now to discover more!🌟
-Check out the latest updates here:
+Download our app(Btolet) now to discover more!🌟
+Click Here To Download:
    https://play.google.com/store/apps/details?id=com.btolet.app
     ''');
                               },
@@ -377,9 +381,6 @@ Check out the latest updates here:
                   ),
                 ],
               ),
-              // postData.totalImage == 1
-              //     ? const SizedBox()
-              //     :
               Padding(
                 padding: const EdgeInsets.only(
                   right: 8,

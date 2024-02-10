@@ -186,24 +186,24 @@ class ProController extends GetxController {
         FasalitisModel(state: false.obs, icon: Icons.turn_sharp_right_sharp),
   };
 
-  String getFasalities() {
+  getFasalities() {
     final selectedCategories = fasalitis.entries
         .where((entry) => entry.value.state.value)
         .map((entry) => entry.key)
         .toList();
 
-    String jsonStringArray = jsonEncode(selectedCategories);
-    return jsonStringArray;
+    // String jsonStringArray = jsonEncode(selectedCategories);
+    return selectedCategories;
   }
 
-  String getFasalities2() {
+  getFasalities2() {
     final selectedCategories = fasalitis2.entries
         .where((entry) => entry.value.state.value)
         .map((entry) => entry.key)
         .toList();
 
-    String jsonStringArray = jsonEncode(selectedCategories);
-    return jsonStringArray;
+    // String jsonStringArray = jsonEncode(selectedCategories);
+    return selectedCategories;
   }
 
   var selectedCategory = category[0].obs;
@@ -605,11 +605,11 @@ class ProController extends GetxController {
             ownertype: selectedPostedBy.value,
             geolat: locationController.currentlatitude.value.toString(),
             geolon: locationController.currentlongitude.value.toString(),
-            phone: userController.phonenumber.text,
+            phone: userController.code.value + userController.phonenumber.text,
             wapp: userController.wappnumber.text.isEmpty
                 ? ""
-                : userController.phonenumber.text,
-            landType: '',
+                : userController.code.value + userController.wappnumber.text,
+            landType: [],
             area: '',
             measurement: '',
             roadSize: '',
@@ -660,11 +660,11 @@ class ProController extends GetxController {
             ownertype: selectedPostedBy.value,
             geolat: locationController.currentlatitude.value.toString(),
             geolon: locationController.currentlongitude.value.toString(),
-            phone: userController.phonenumber.text,
+            phone: userController.code.value + userController.phonenumber.text,
             wapp: userController.wappnumber.text.isEmpty
                 ? ""
-                : userController.phonenumber.text,
-            landType: jsonEncode(selectedLandTypes),
+                : userController.code.value + userController.wappnumber.text,
+            landType: selectedLandTypes,
             area: area.value,
             measurement: mesurement.text,
             roadSize: roadSize.text,
@@ -700,12 +700,12 @@ class ProController extends GetxController {
   final FocusNode priceminfocusNode = FocusNode();
   final FocusNode pricemaxfocusNode = FocusNode();
 
-  String getSort(mainList) {
-    String jsonStringArray = jsonEncode(mainList
+  getSort(List<dynamic> mainList) {
+    List<String> stringList = mainList
         .map((element) => element is String ? element : element.toString())
-        .toList());
+        .toList();
 
-    return mainList.isEmpty ? '' : jsonStringArray;
+    return stringList;
   }
 
   var categoriesSort = {
@@ -714,14 +714,14 @@ class ProController extends GetxController {
     'Land': false.obs,
     'Plot': false.obs,
   };
-  String getCategorySort() {
+  getCategorySort() {
     final selectedCategories = categoriesSort.entries
         .where((entry) => entry.value.value)
         .map((entry) => entry.key)
         .toList();
 
-    String jsonStringArray = jsonEncode(selectedCategories);
-    return jsonStringArray;
+    // String jsonStringArray = jsonEncode(selectedCategories);
+    return selectedCategories;
   }
 
   var fasalitisSort = {
@@ -756,14 +756,14 @@ class ProController extends GetxController {
         FasalitisModel(state: false.obs, icon: Icons.turn_sharp_right_sharp),
   };
 
-  String getFasalitiesSort() {
-    final selectedCategories = fasalitis.entries
+  getFasalitiesSort() {
+    final selectedCategories = fasalitisSort.entries
         .where((entry) => entry.value.state.value)
         .map((entry) => entry.key)
         .toList();
 
-    String jsonStringArray = jsonEncode(selectedCategories);
-    return jsonStringArray;
+    // String jsonStringArray = jsonEncode(selectedCategories);
+    return selectedCategories;
   }
 
   var totalResult = 0.obs;

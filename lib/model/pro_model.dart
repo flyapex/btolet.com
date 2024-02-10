@@ -129,7 +129,7 @@ class SinglePostModelPro {
   String facing;
   String totalUnit;
   int price;
-  String amenities;
+  List<String> amenities;
   String floorPlan;
   String ytVideo;
   String image1;
@@ -153,7 +153,7 @@ class SinglePostModelPro {
   String geolon;
   String phone;
   String wapp;
-  String landType;
+  List<String> landType;
   String area;
   String measurement;
   String roadSize;
@@ -237,7 +237,7 @@ class SinglePostModelPro {
         facing: json["facing"],
         totalUnit: json["total_unit"],
         price: json["price"],
-        amenities: json["amenities"],
+        amenities: List<String>.from(json["amenities"].map((x) => x)),
         floorPlan: json["floor_plan"],
         ytVideo: json["yt_video"],
         image1: json["image1"],
@@ -261,7 +261,7 @@ class SinglePostModelPro {
         geolon: json["geolon"],
         phone: json["phone"],
         wapp: json["wapp"],
-        landType: json["land_type"],
+        landType: List<String>.from(json["land_type"].map((x) => x)),
         area: json["area"],
         measurement: json["measurement"],
         roadSize: json["road_size"],
@@ -291,7 +291,7 @@ class SinglePostModelPro {
         "facing": facing,
         "total_unit": totalUnit,
         "price": price,
-        "amenities": amenities,
+        "amenities": List<dynamic>.from(amenities.map((x) => x)),
         "floor_plan": floorPlan,
         "yt_video": ytVideo,
         "image1": image1,
@@ -315,7 +315,7 @@ class SinglePostModelPro {
         "geolon": geolon,
         "phone": phone,
         "wapp": wapp,
-        "land_type": landType,
+        "land_type": List<dynamic>.from(landType.map((x) => x)),
         "area": area,
         "measurement": measurement,
         "road_size": roadSize,
@@ -350,7 +350,7 @@ class NewPostPro {
   String facing;
   String totalUnit;
   int price;
-  String amenities;
+  List<String> amenities;
   String floorPlan;
   String ytVideo;
   String image1;
@@ -374,7 +374,7 @@ class NewPostPro {
   String geolat;
   String phone;
   String wapp;
-  String landType;
+  List<String> landType;
   String area;
   String measurement;
   String roadSize;
@@ -447,7 +447,7 @@ class NewPostPro {
         facing: json["facing"],
         totalUnit: json["total_unit"],
         price: json["price"],
-        amenities: json["amenities"],
+        amenities: List<String>.from(json["amenities"].map((x) => x)),
         floorPlan: json["floor_plan"],
         ytVideo: json["yt_video"],
         image1: json["image1"],
@@ -471,7 +471,7 @@ class NewPostPro {
         geolon: json["geolon"],
         phone: json["phone"],
         wapp: json["wapp"],
-        landType: json["land_type"],
+        landType: List<String>.from(json["land_type"].map((x) => x)),
         area: json["area"],
         measurement: json["measurement"],
         roadSize: json["road_size"],
@@ -496,7 +496,7 @@ class NewPostPro {
         "facing": facing,
         "total_unit": totalUnit,
         "price": price,
-        "amenities": amenities,
+        "amenities": List<dynamic>.from(amenities.map((x) => x)),
         "floor_plan": floorPlan,
         "yt_video": ytVideo,
         "image1": image1,
@@ -520,7 +520,7 @@ class NewPostPro {
         "geolon": geolon,
         "phone": phone,
         "wapp": wapp,
-        "land_type": landType,
+        "land_type": List<dynamic>.from(landType.map((x) => x)),
         "area": area,
         "measurement": measurement,
         "road_size": roadSize,
@@ -537,12 +537,12 @@ class SortPostPro {
   String geolat;
   String geolon;
   int page;
-  String category;
-  String fasalitis;
+  List<String> category;
+  List<String> fasalitis;
   int rentmin;
   int rentmax;
-  String bed;
-  String bath;
+  List<String> bed;
+  List<String> bath;
 
   SortPostPro({
     required this.geolat,
@@ -560,24 +560,24 @@ class SortPostPro {
         geolat: json["geolat"],
         geolon: json["geolon"],
         page: json["page"],
-        category: json["category"],
-        fasalitis: json["fasalitis"],
+        category: List<String>.from(json["category"].map((x) => x)),
+        fasalitis: List<String>.from(json["fasalitis"].map((x) => x)),
         rentmin: json["rentmin"],
         rentmax: json["rentmax"],
-        bed: json["bed"],
-        bath: json["bath"],
+        bed: List<String>.from(json["bed"].map((x) => x)),
+        bath: List<String>.from(json["bath"].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
         "geolat": geolat,
         "geolon": geolon,
         "page": page,
-        "category": category,
-        "fasalitis": fasalitis,
+        "category": List<dynamic>.from(category.map((x) => x)),
+        "fasalitis": List<dynamic>.from(fasalitis.map((x) => x)),
         "rentmin": rentmin,
         "rentmax": rentmax,
-        "bed": bed,
-        "bath": bath,
+        "bed": List<dynamic>.from(bed.map((x) => x)),
+        "bath": List<dynamic>.from(bath.map((x) => x)),
       };
 }
 // To parse this JSON data, do

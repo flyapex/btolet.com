@@ -222,10 +222,9 @@ class _MyPostsToletState extends State<MyPostsTolet>
 
   @override
   Widget build(BuildContext context) {
-    var height = Get.height;
     var width = Get.width;
     getCategory() {
-      var catagory = json.decode(widget.postData.category).cast<String>();
+      var catagory = widget.postData.category;
       var data = widget.postData.garagetype;
       if (catagory.contains('Only Garage')) {
         if (data == "Garage") {
@@ -452,7 +451,7 @@ class _MyPostsToletState extends State<MyPostsTolet>
     }
 
     return Container(
-      height: height / 7,
+      height: 130,
       width: Get.width,
       decoration: BoxDecoration(
         color: Colors.white,
@@ -540,94 +539,110 @@ class _MyPostsToletState extends State<MyPostsTolet>
                   ],
                 ),
                 Expanded(
-                  child: SizedBox(
-                    // width: width - ((width / 2.8) + 40),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 15, right: 15),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              const Text(
-                                '৳ ',
-                                style: TextStyle(
-                                  fontSize: 22,
-                                  color: Color(0xff083437),
-                                  // fontWeight: FontWeight.bold,
-                                ),
-                                overflow: TextOverflow.ellipsis,
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.only(left: 15, right: 15, bottom: 5),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              '৳ ',
+                              style: TextStyle(
+                                fontSize: 22,
+                                color: const Color(0xff083437).withOpacity(0.8),
                               ),
-                              Text(
-                                NumberFormat.decimalPattern()
-                                    .format(widget.postData.rent),
-                                style: const TextStyle(
-                                  fontSize: s1,
-                                  color: Color(0xff083437),
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                overflow: TextOverflow.ellipsis,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Text(
+                              NumberFormat.decimalPattern()
+                                  .format(widget.postData.rent),
+                              style: TextStyle(
+                                fontSize: s1,
+                                color: const Color(0xff083437).withOpacity(0.8),
+                                fontWeight: FontWeight.bold,
                               ),
-                            ],
-                          ),
-                          Text(
-                            " ${((json.decode(widget.postData.category) as List).map((e) => e.toString()).toList()).join(', ')}",
-                            style: const TextStyle(
-                              height: 1,
-                              color: Color(0xff083437),
-                              fontSize: s4,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                            overflow: TextOverflow.ellipsis,
+                          ],
+                        ),
+                        Text(
+                          " ${((widget.postData.category).map((e) => e.toString()).toList()).join(', ')}",
+                          style: const TextStyle(
+                            height: 1,
+                            color: Color(0xff083437),
+                            fontSize: s4,
                           ),
-                          getCategory(),
-                          Text(
-                            widget.postData.location,
-                            style: TextStyle(
-                              color: const Color(0xff083437).withOpacity(0.6),
-                              fontSize: 12,
-                              fontFamily: 'Roboto',
-                            ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        getCategory(),
+                        // const SizedBox(height: 6),
+                        Text(
+                          widget.postData.location,
+                          style: TextStyle(
+                            color: const Color(0xff083437).withOpacity(0.6),
+                            fontSize: 12,
+                            fontFamily: 'Roboto',
                           ),
-                        ],
-                      ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
                     ),
                   ),
                 )
               ],
             ),
           ),
-          Align(
-            alignment: Alignment.centerRight,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                IconButton(
-                  onPressed: () async {
-                    await showPopUp();
-                  },
-                  splashRadius: 30,
-                  icon: const Icon(
-                    Feather.trash_2,
-                    color: Colors.red,
-                  ),
+          // Align(
+          //   alignment: Alignment.centerRight,
+          //   child: Column(
+          //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+          //     crossAxisAlignment: CrossAxisAlignment.end,
+          //     children: [
+          //       IconButton(
+          //         onPressed: () async {
+          //           await showPopUp();
+          //         },
+          //         splashRadius: 30,
+          //         icon: const Icon(
+          //           Feather.trash_2,
+          //           color: Colors.red,
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
+          Padding(
+            padding: const EdgeInsets.only(right: 10, top: 10),
+            child: Align(
+              alignment: Alignment.topRight,
+              child: IconButton(
+                onPressed: () async {
+                  await showPopUp();
+                },
+                splashRadius: 30,
+                icon: const Icon(
+                  Feather.trash_2,
+                  color: Colors.red,
                 ),
-                const SizedBox(height: 20),
-                Padding(
-                  padding: const EdgeInsets.only(right: 15),
-                  child: Text(
-                    '${userController.getDay(widget.postData.time)}',
-                    style: TextStyle(
-                      color: const Color(0xff083437).withOpacity(0.5),
-                      fontSize: s6,
-                    ),
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: Text(
+              '${userController.getDay(widget.postData.time)}',
+              style: TextStyle(
+                color: const Color(0xff083437).withOpacity(0.8),
+                fontSize: s6,
+                height: 1,
+              ),
+            ),
+          ).paddingOnly(right: 10, bottom: 2),
         ],
       ),
     );

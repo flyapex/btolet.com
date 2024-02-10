@@ -13,7 +13,7 @@ String postListToletToJson(List<PostListTolet> data) =>
 
 class PostListTolet {
   final int postId;
-  final String category;
+  List<String> category;
   final int uid;
   final String bed;
   final String bath;
@@ -45,7 +45,7 @@ class PostListTolet {
 
   factory PostListTolet.fromJson(Map<String, dynamic> json) => PostListTolet(
         postId: json["post_id"],
-        category: json["category"],
+        category: List<String>.from(json["category"].map((x) => x)),
         uid: json["uid"],
         bed: json["bed"],
         bath: json["bath"],
@@ -62,7 +62,7 @@ class PostListTolet {
 
   Map<String, dynamic> toJson() => {
         "post_id": postId,
-        "category": category,
+        "category": List<dynamic>.from(category.map((x) => x)),
         "uid": uid,
         "bed": bed,
         "bath": bath,
@@ -88,7 +88,7 @@ class SingleToletPostModel {
   final int postId;
   final int uid;
   final String propertyname;
-  final String category;
+  List<String> category;
   final String bed;
   final String bath;
   final String balcony;
@@ -102,7 +102,7 @@ class SingleToletPostModel {
   final int mentenance;
   final int rent;
   final String garagetype;
-  final String fasalitis;
+  List<String> fasalitis;
   final String image1;
   final String image2;
   final String image3;
@@ -176,7 +176,7 @@ class SingleToletPostModel {
         postId: json["post_id"],
         uid: json["uid"],
         propertyname: json["propertyname"],
-        category: json["category"],
+        category: List<String>.from(json["category"].map((x) => x)),
         bed: json["bed"],
         bath: json["bath"],
         balcony: json["balcony"],
@@ -190,7 +190,7 @@ class SingleToletPostModel {
         mentenance: json["mentenance"],
         rent: json["rent"],
         garagetype: json["garagetype"],
-        fasalitis: json["fasalitis"],
+        fasalitis: List<String>.from(json["fasalitis"].map((x) => x)),
         image1: json["image1"],
         image2: json["image2"],
         image3: json["image3"],
@@ -220,7 +220,7 @@ class SingleToletPostModel {
         "post_id": postId,
         "uid": uid,
         "propertyname": propertyname,
-        "category": category,
+        "category": List<dynamic>.from(category.map((x) => x)),
         "bed": bed,
         "bath": bath,
         "balcony": balcony,
@@ -234,7 +234,7 @@ class SingleToletPostModel {
         "mentenance": mentenance,
         "rent": rent,
         "garagetype": garagetype,
-        "fasalitis": fasalitis,
+        "fasalitis": List<dynamic>.from(fasalitis.map((x) => x)),
         "image1": image1,
         "image2": image2,
         "image3": image3,
@@ -269,7 +269,7 @@ String newPostToletToJson(NewPostTolet data) => json.encode(data.toJson());
 class NewPostTolet {
   final int uid;
   final String propertyname;
-  final String category;
+  List<String> category;
   final String bed;
   final String bath;
   final String balcony;
@@ -283,7 +283,7 @@ class NewPostTolet {
   final int mentenance;
   final int rent;
   final String garagetype;
-  final String fasalitis;
+  List<String> fasalitis;
   final String image1;
   final String image2;
   final String image3;
@@ -348,7 +348,7 @@ class NewPostTolet {
   factory NewPostTolet.fromJson(Map<String, dynamic> json) => NewPostTolet(
         uid: json["uid"],
         propertyname: json["propertyname"],
-        category: json["category"],
+        category: List<String>.from(json["category"].map((x) => x)),
         bed: json["bed"],
         bath: json["bath"],
         balcony: json["balcony"],
@@ -362,7 +362,7 @@ class NewPostTolet {
         mentenance: json["mentenance"],
         rent: json["rent"],
         garagetype: json["garagetype"],
-        fasalitis: json["fasalitis"],
+        fasalitis: List<String>.from(json["fasalitis"].map((x) => x)),
         image1: json["image1"],
         image2: json["image2"],
         image3: json["image3"],
@@ -388,7 +388,7 @@ class NewPostTolet {
   Map<String, dynamic> toJson() => {
         "uid": uid,
         "propertyname": propertyname,
-        "category": category,
+        "category": List<dynamic>.from(category.map((x) => x)),
         "bed": bed,
         "bath": bath,
         "balcony": balcony,
@@ -402,7 +402,7 @@ class NewPostTolet {
         "mentenance": mentenance,
         "rent": rent,
         "garagetype": garagetype,
-        "fasalitis": fasalitis,
+        "fasalitis": List<dynamic>.from(fasalitis.map((x) => x)),
         "image1": image1,
         "image2": image2,
         "image3": image3,
@@ -435,12 +435,12 @@ class SortPostTolet {
   String geolat;
   String geolon;
   int page;
-  String category;
-  String fasalitis;
+  List<String> category;
+  List<String> fasalitis;
   int rentmin;
   int rentmax;
-  String bed;
-  String bath;
+  List<String> bed;
+  List<String> bath;
 
   SortPostTolet({
     required this.geolat,
@@ -458,24 +458,24 @@ class SortPostTolet {
         geolat: json["geolat"],
         geolon: json["geolon"],
         page: json["page"],
-        category: json["category"],
-        fasalitis: json["fasalitis"],
+        category: List<String>.from(json["category"].map((x) => x)),
+        fasalitis: List<String>.from(json["fasalitis"].map((x) => x)),
         rentmin: json["rentmin"],
         rentmax: json["rentmax"],
-        bed: json["bed"],
-        bath: json["bath"],
+        bed: List<String>.from(json["bed"].map((x) => x)),
+        bath: List<String>.from(json["bath"].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
         "geolat": geolat,
         "geolon": geolon,
         "page": page,
-        "category": category,
-        "fasalitis": fasalitis,
+        "category": List<dynamic>.from(category.map((x) => x)),
+        "fasalitis": List<dynamic>.from(fasalitis.map((x) => x)),
         "rentmin": rentmin,
         "rentmax": rentmax,
-        "bed": bed,
-        "bath": bath,
+        "bed": List<dynamic>.from(bed.map((x) => x)),
+        "bath": List<dynamic>.from(bath.map((x) => x)),
       };
 }
 

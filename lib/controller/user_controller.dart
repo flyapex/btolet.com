@@ -1,14 +1,45 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:btolet/api/api.dart';
 import 'package:btolet/constants/colors.dart';
 import 'package:btolet/model/api.dart';
+
+import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'db_controller.dart';
 
 class UserController extends GetxController {
+  final refreshkeyUser = GlobalKey<CustomRefreshIndicatorState>();
+
+  // var connectionStatus = ''.obs;
+
+  // @override
+  // void onInit() {
+  //   super.onInit();
+  //   Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+  //     updateConnectionStatus(result);
+  //   });
+  // }
+
+  // void updateConnectionStatus(ConnectivityResult result) {
+  //   switch (result) {
+  //     case ConnectivityResult.wifi:
+  //     case ConnectivityResult.mobile:
+  //       connectionStatus.value = 'Connected';
+  //       break;
+  //     case ConnectivityResult.none:
+  //       connectionStatus.value = 'No connection';
+  //       break;
+  //     default:
+  //       connectionStatus.value = 'Unknown';
+  //       break;
+  //   }
+  // }
+
   TextEditingController shortAddress = TextEditingController();
   TextEditingController description = TextEditingController();
 

@@ -109,7 +109,7 @@ class _CategoryBodyState extends State<CategoryBody> {
                     flex: 1,
                     child: TextInput(
                       topPadding: 0,
-                      title: "Room Size",
+                      title: "Size",
                       textType: TextInputType.number,
                       hintText: "1200 ft\u00b2",
                       titlelenth: 5,

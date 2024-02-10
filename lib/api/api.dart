@@ -37,6 +37,8 @@ class ApiService {
   }
 
   static Future profileUpdateapi(ProfileUpdate data) async {
+    // print('$baseUrl/user/profile/update');
+    // print(jsonEncode(data));
     Response response = await dio.post(
       '$baseUrl/user/profile/update',
       data: profileUpdateToJson(data),
@@ -51,6 +53,8 @@ class ApiService {
 
 //NEW USER
   static Future userLogin(Newuser data) async {
+    print('$baseUrl/login');
+    print(jsonEncode(data));
     var response = await http.post(
       Uri.parse('$baseUrl/login'),
       body: newuserToJson(data),
@@ -76,20 +80,6 @@ class ApiService {
       return null;
     } else {
       return userDetailsFromJson(response.body)[0];
-    }
-  }
-
-  static Future newPostTolet(PostToServerTolet data) async {
-    var response = await http.post(
-      Uri.parse('$baseUrl/newpostTolet'),
-      body: postToServerToletToJson(data),
-      headers: headers,
-    );
-    print(response.body);
-    if (response.statusCode == 200) {
-      return response.body;
-    } else {
-      return null;
     }
   }
 }

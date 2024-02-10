@@ -3,7 +3,8 @@ import 'package:btolet/controller/property_controller.dart';
 import 'package:btolet/controller/tolet_controller.dart';
 import 'package:btolet/controller/user_controller.dart';
 import 'package:country_currency_pickers/country.dart';
-import 'package:country_currency_pickers/currency_picker_dropdown.dart';
+import 'package:country_currency_pickers/country_pickers.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -229,6 +230,80 @@ class _NumberInputState extends State<NumberInput> {
     }
   }
 
+  Country _selectedCupertinoCountry =
+      CountryPickerUtils.getCountryByIsoCode('BD');
+  void _openCupertinoCountryPicker() => showCupertinoModalPopup<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return CountryPickerCupertino(
+          pickerSheetHeight: Get.height / 3,
+          backgroundColor: const Color(0xff161A2D),
+          itemBuilder: _buildCupertinoSelectedItemPopup,
+          initialCountry: _selectedCupertinoCountry,
+          onValuePicked: (Country country) {
+            var code = country.phoneCode;
+
+            if (code != null && code.isNotEmpty) {
+              code = code.substring(0, code.length - 1);
+            }
+            userController.code.value = "+$code";
+            print(userController.code.value);
+            setState(
+              () => _selectedCupertinoCountry = country,
+            );
+          },
+        );
+      });
+  Widget _buildCupertinoSelectedItemPopup(Country country) {
+    return DefaultTextStyle(
+      style: const TextStyle(
+        fontSize: s4,
+      ),
+      child: Row(
+        children: <Widget>[
+          const SizedBox(width: 40),
+          CountryPickerUtils.getDefaultFlagImage(country),
+          const SizedBox(width: 10),
+          Flexible(child: Text(country.isoCode ?? '')),
+          const SizedBox(width: 10),
+          Text(
+            "+${country.phoneCode}",
+            style: const TextStyle(
+              fontSize: s4,
+              height: 1.3,
+            ),
+          ),
+          const SizedBox(width: 10),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCupertinoSelectedItem(Country country) {
+    var code = country.phoneCode;
+
+    if (code != null && code.isNotEmpty) {
+      code = code.substring(0, code.length - 1);
+    }
+    return Row(
+      children: <Widget>[
+        // CountryPickerUtils.getDefaultFlagImage(country),
+        const SizedBox(width: 8.0),
+
+        // Text(
+        //   '+$code',
+        //   style: h3,
+        // ),
+        Text(
+          "+${country.phoneCode}",
+          style: h3,
+        ),
+        const SizedBox(width: 8.0),
+        // Flexible(child: Text(country.name ?? ''))
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -243,33 +318,38 @@ class _NumberInputState extends State<NumberInput> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
-              height: 48,
-              padding: const EdgeInsets.only(left: 10),
-              decoration: BoxDecoration(
-                color: const Color(0xffF2F3F5),
-                borderRadius: BorderRadius.circular(6),
-                border: Border.all(color: getBorderColor()),
-              ),
-              child: Center(
-                child: CurrencyPickerDropdown(
-                  initialValue: 'BDT',
-                  itemBuilder: (Country country) {
-                    var code = country.phoneCode;
-
-                    if (code != null && code.isNotEmpty) {
-                      code = code.substring(0, code.length - 1);
-                    }
-                    userController.code.value = '+$code';
-                    return Text(
-                      '+$code',
-                      style: h3,
-                    );
-                  },
-                  onValuePicked: (v) {
-                    print(v!.phoneCode);
-                  },
+            InkWell(
+              onTap: _openCupertinoCountryPicker,
+              child: Container(
+                height: 48,
+                width: 100,
+                padding: const EdgeInsets.only(left: 10),
+                decoration: BoxDecoration(
+                  color: const Color(0xffF2F3F5),
+                  borderRadius: BorderRadius.circular(6),
+                  border: Border.all(color: getBorderColor()),
                 ),
+                // child: Center(
+                //   child: CurrencyPickerDropdown(
+                //     initialValue: 'BDT',
+                //     itemBuilder: (Country country) {
+                //       var code = country.phoneCode;
+
+                //       if (code != null && code.isNotEmpty) {
+                //         code = code.substring(0, code.length - 1);
+                //       }
+                //       userController.code.value = '+$code';
+                //       return Text(
+                //         '+$code',
+                //         style: h3,
+                //       );
+                //     },
+                //     onValuePicked: (v) {
+                //       print(v!.phoneCode);
+                //     },
+                //   ),
+                // ),
+                child: _buildCupertinoSelectedItem(_selectedCupertinoCountry),
               ),
             ),
             Expanded(

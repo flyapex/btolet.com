@@ -11,6 +11,7 @@ import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'aboutus.dart';
+import 'feedback.dart';
 import 'mypost.dart';
 import 'profile/profile.dart';
 import 'saved.dart';
@@ -211,20 +212,25 @@ class _CustomeDrawerState extends State<CustomeDrawer>
             // ),
 
             ListTile(
-              title: const Row(
-                children: [
-                  Icon(
-                    Feather.radio,
-                    color: Colors.black38,
-                  ),
-                  SizedBox(
-                    width: 30,
-                  ),
-                  Text(
-                    'Feedback',
-                    style: TextStyle(color: Colors.black, fontSize: s3),
-                  ),
-                ],
+              title: InkWell(
+                onTap: () {
+                  Get.to(const FeedBack());
+                },
+                child: const Row(
+                  children: [
+                    Icon(
+                      Feather.radio,
+                      color: Colors.black38,
+                    ),
+                    SizedBox(
+                      width: 30,
+                    ),
+                    Text(
+                      'Feedback',
+                      style: TextStyle(color: Colors.black, fontSize: s3),
+                    ),
+                  ],
+                ),
               ),
               onTap: () {},
             ),

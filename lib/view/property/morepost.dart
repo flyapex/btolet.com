@@ -28,7 +28,6 @@ class _MorePostsProState extends State<MorePostsPro> {
   UserController userController = Get.find();
   @override
   Widget build(BuildContext context) {
-    var height = Get.height;
     var width = Get.width;
     getCategory() {
       var postData = widget.postData;
@@ -66,76 +65,79 @@ class _MorePostsProState extends State<MorePostsPro> {
                 height: 1,
               ),
             ),
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 2, bottom: 2),
-                  child: SizedBox(
-                    height: 22,
-                    width: 22,
-                    child: SvgPicture.asset(
-                      'assets/icons/property/bed.svg',
-                      colorFilter: ColorFilter.mode(
-                        Colors.black.withOpacity(0.5),
-                        BlendMode.srcIn,
+            widget.postData.category == category[2] ||
+                    widget.postData.category == category[3]
+                ? const SizedBox(height: 20)
+                : Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 2, bottom: 2),
+                        child: SizedBox(
+                          height: 22,
+                          width: 22,
+                          child: SvgPicture.asset(
+                            'assets/icons/property/bed.svg',
+                            colorFilter: ColorFilter.mode(
+                              Colors.black.withOpacity(0.5),
+                              BlendMode.srcIn,
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
+                      const SizedBox(width: 6),
+                      Text(
+                        widget.postData.bed,
+                        style: const TextStyle(
+                          fontSize: s3,
+                          color: Color(0xff083437),
+                        ),
+                      ).paddingOnly(bottom: 2),
+                      const SizedBox(width: 10),
+                      SizedBox(
+                        height: 22,
+                        width: 22,
+                        child: SvgPicture.asset(
+                          'assets/icons/property/bath.svg',
+                          colorFilter: ColorFilter.mode(
+                            Colors.black.withOpacity(0.5),
+                            BlendMode.srcIn,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 6),
+                      Text(
+                        widget.postData.bath,
+                        style: const TextStyle(
+                          fontSize: s3,
+                          color: Color(0xff083437),
+                        ),
+                      ).paddingOnly(bottom: 2),
+                      const SizedBox(width: 10),
+                      SizedBox(
+                        height: 18,
+                        width: 18,
+                        child: SvgPicture.asset(
+                          'assets/icons/property/size.svg',
+                          colorFilter: ColorFilter.mode(
+                            Colors.black.withOpacity(0.5),
+                            BlendMode.srcIn,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 6),
+                      Flexible(
+                        child: Text(
+                          widget.postData.size,
+                          style: const TextStyle(
+                            fontSize: s3,
+                            color: Color(0xff083437),
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                        ).paddingOnly(bottom: 2),
+                      ),
+                    ],
                   ),
-                ),
-                const SizedBox(width: 6),
-                Text(
-                  widget.postData.bed,
-                  style: const TextStyle(
-                    fontSize: s3,
-                    color: Color(0xff083437),
-                  ),
-                ).paddingOnly(bottom: 2),
-                const SizedBox(width: 10),
-                SizedBox(
-                  height: 22,
-                  width: 22,
-                  child: SvgPicture.asset(
-                    'assets/icons/property/bath.svg',
-                    colorFilter: ColorFilter.mode(
-                      Colors.black.withOpacity(0.5),
-                      BlendMode.srcIn,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 6),
-                Text(
-                  widget.postData.bath,
-                  style: const TextStyle(
-                    fontSize: s3,
-                    color: Color(0xff083437),
-                  ),
-                ).paddingOnly(bottom: 2),
-                const SizedBox(width: 10),
-                SizedBox(
-                  height: 18,
-                  width: 18,
-                  child: SvgPicture.asset(
-                    'assets/icons/property/size.svg',
-                    colorFilter: ColorFilter.mode(
-                      Colors.black.withOpacity(0.5),
-                      BlendMode.srcIn,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 6),
-                Flexible(
-                  child: Text(
-                    widget.postData.size,
-                    style: const TextStyle(
-                      fontSize: s3,
-                      color: Color(0xff083437),
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                  ).paddingOnly(bottom: 2),
-                ),
-              ],
-            ),
           ],
         );
       } else {
@@ -197,7 +199,7 @@ class _MorePostsProState extends State<MorePostsPro> {
     }
 
     return Container(
-      height: height / 7,
+      height: 130,
       width: width / 1.35,
       decoration: BoxDecoration(
           color: Colors.white,
@@ -310,20 +312,17 @@ class _MorePostsProState extends State<MorePostsPro> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(right: 10, bottom: 10),
-            child: Align(
-              alignment: Alignment.bottomRight,
-              child: Text(
-                '${userController.getDay(widget.postData.time)}',
-                style: TextStyle(
-                  color: const Color(0xff083437).withOpacity(0.5),
-                  height: 0.5,
-                  fontSize: s4,
-                ),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: Text(
+              '${userController.getDay(widget.postData.time)}',
+              style: TextStyle(
+                color: const Color(0xff083437).withOpacity(0.8),
+                fontSize: s6,
+                height: 1,
               ),
             ),
-          ),
+          ).paddingOnly(right: 10, bottom: 2),
         ],
       ),
     );

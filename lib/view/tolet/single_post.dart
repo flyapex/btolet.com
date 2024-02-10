@@ -122,18 +122,16 @@ class _SinglePostToletState extends State<SinglePostTolet>
     _controller.addListener(_scrollListener);
     _controllerMore.addListener(_scrollListenerMore);
     super.initState();
-    // adsController.createInterstitialAd();
   }
 
   var lodingmorePosts = true.obs;
   var morePostList = [].obs;
-  void getMorePost(postid, category, price, page, latitude, longitude) async {
+  void getMorePost(postid, category, page, latitude, longitude) async {
     lodingmorePosts(true);
     try {
       var response = await ApiServiceTolet.getMorePost(
         postid,
         category,
-        price,
         page,
         latitude,
         longitude,
@@ -159,19 +157,11 @@ class _SinglePostToletState extends State<SinglePostTolet>
       getMorePost(
         postData.postId,
         postData.category,
-        postData.rent,
         1,
         postData.geolat,
         postData.geolon,
       );
-      // toletController.getMorePost(
-      //   postData.postId,
-      //   postData.category,
-      //   postData.rent,
-      //   1,
-      //   postData.geolat,
-      //   postData.geolon,
-      // );
+
       setState(() {
         morePost = true;
       });
@@ -186,19 +176,11 @@ class _SinglePostToletState extends State<SinglePostTolet>
       getMorePost(
         postData.postId,
         postData.category,
-        postData.rent,
         lodingPage,
         postData.geolat,
         postData.geolon,
       );
-      // toletController.getMorePost(
-      //   postData.postId,
-      //   postData.category,
-      //   postData.rent,
-      //   lodingPage,
-      //   postData.geolat,
-      //   postData.geolon,
-      // );
+
       print(lodingPage);
       lodingPage++;
     }
@@ -210,8 +192,9 @@ class _SinglePostToletState extends State<SinglePostTolet>
     super.dispose();
 
     // adsController.interstitialAd?.dispose();
-    // adsController.rewardedAd?.dispose();
+
     // adsController.rewardedInterstitialAd?.dispose();
+    // adsController.rewardedAd?.dispose();
   }
 
   late String _mapStyle;
@@ -348,7 +331,7 @@ class _SinglePostToletState extends State<SinglePostTolet>
                                               onTap: () {
                                                 adsController.shareBase64Image(
                                                     postData.image1, '''
-     🏷️ ${jsonDecode(postData.category).join(", ")}
+     🏷️ ${postData.category}
     💰Rent: ${postData.rent} ৳
     📍Location: ${postData.location}
     
@@ -511,7 +494,7 @@ Check out the latest updates here:
                             ),
                             const SizedBox(height: 20),
                             SizedBox(
-                              height: height / 7,
+                              height: 130,
                               child: StreamBuilder(
                                 stream: morePostList.stream,
                                 builder: (BuildContext context,
@@ -632,10 +615,11 @@ Check out the latest updates here:
                       flex: 1,
                       child: InkWell(
                         onTap: () async {
-                          adsController.showRewardedAd(
-                            'call',
-                            postData.phone,
-                          );
+                          print(postData.phone);
+                          // adsController.showRewardedAd(
+                          //   'call',
+                          //   postData.phone,
+                          // );
                         },
                         child: Container(
                           height: 44,
@@ -675,10 +659,10 @@ Check out the latest updates here:
                       flex: 1,
                       child: InkWell(
                         onTap: () async {
-                          adsController.showRewardedInterstitialAd(
-                            'sms',
-                            postData.phone,
-                          );
+                          // adsController.showRewardedInterstitialAd(
+                          //   'sms',
+                          //   postData.phone,
+                          // );
                         },
                         child: Container(
                           height: 44,
@@ -727,10 +711,10 @@ Check out the latest updates here:
                       flex: 2,
                       child: InkWell(
                         onTap: () async {
-                          adsController.showRewardedInterstitialAd(
-                            'wapp',
-                            postData.phone,
-                          );
+                          // adsController.showRewardedInterstitialAd(
+                          //   'wapp',
+                          //   postData.phone,
+                          // );
                         },
                         child: Container(
                           height: 44,

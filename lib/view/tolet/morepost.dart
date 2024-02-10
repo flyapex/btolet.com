@@ -36,11 +36,10 @@ class MoreToletState extends State<MoreTolet> {
 
   @override
   Widget build(BuildContext context) {
-    var height = Get.height;
     var width = Get.width;
 
     getCategory() {
-      var catagory = json.decode(widget.postData.category).cast<String>();
+      var catagory = widget.postData.category;
       var data = widget.postData.garagetype;
       if (catagory.contains('Only Garage')) {
         if (data == "Garage") {
@@ -267,16 +266,13 @@ class MoreToletState extends State<MoreTolet> {
     }
 
     return Container(
-      height: height / 7,
+      height: 130,
       width: width / 1.35,
       decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: Colors.black12, width: 0.9)
-          // boxShadow: const [
-          //   BoxShadow(color: Colors.black12, spreadRadius: 1),
-          // ],
-          ),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: Colors.black12, width: 0.9),
+      ),
       child: Stack(
         children: [
           InkWell(
@@ -313,10 +309,6 @@ class MoreToletState extends State<MoreTolet> {
                         ),
                       ),
                     ),
-                    // widget.postData.totalImage == 1
-                    //     ? const SizedBox()
-                    //     :
-
                     Padding(
                       padding: const EdgeInsets.only(
                         left: 4,
@@ -390,7 +382,7 @@ class MoreToletState extends State<MoreTolet> {
                           ],
                         ),
                         Text(
-                          " ${((json.decode(widget.postData.category) as List).map((e) => e.toString()).toList()).join(', ')}",
+                          " ${((widget.postData.category).map((e) => e.toString()).toList()).join(', ')}",
                           style: const TextStyle(
                             height: 1,
                             color: Color(0xff083437),
@@ -400,7 +392,6 @@ class MoreToletState extends State<MoreTolet> {
                         ),
                         getCategory(),
                         // const SizedBox(height: 6),
-
                         Text(
                           widget.postData.location,
                           style: TextStyle(
@@ -431,14 +422,19 @@ class MoreToletState extends State<MoreTolet> {
                     child: Icon(
                       Feather.share_2,
                       color: Colors.black.withOpacity(0.4),
-                      size: 18,
+                      size: 22,
                     ),
                   ),
                   onTap: () {
-                    adsController.shareBase64Image(widget.postData.image1,
-                        '''📱 Dive into the world of posts with a tap! Download our app now to discover more! 🌟
-Check out the latest updates here:
-https://play.google.com/store/apps/details?id=com.btolet.app''');
+                    adsController.shareBase64Image(widget.postData.image1, '''
+     🏷️ ${widget.postData.category}
+    💰Rent: ${widget.postData.rent} ৳
+    📍Location: ${widget.postData.location}
+    
+Download our app(Btolet) now to discover more!🌟
+Click Here To Download:
+   https://play.google.com/store/apps/details?id=com.btolet.app
+    ''');
                   },
                 ),
               ),

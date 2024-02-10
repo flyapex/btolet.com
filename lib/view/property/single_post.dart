@@ -380,7 +380,7 @@ class _SinglePostProState extends State<SinglePostPro>
         children: [
           Row(
             children: List.generate(
-              json.decode(postData.landType).length,
+              postData.landType.length,
               (index) => Expanded(
                 flex: 1,
                 child: Container(
@@ -404,7 +404,7 @@ class _SinglePostProState extends State<SinglePostPro>
                       const SizedBox(width: 4),
                       Flexible(
                         child: Text(
-                          json.decode(postData.landType)[index],
+                          postData.landType[index],
                           style: TextStyle(
                             fontSize: s3,
                             color: Colors.black.withOpacity(0.5),
@@ -873,11 +873,7 @@ Check out the latest updates here:
                                               CrossAxisAlignment.start,
                                           children: () {
                                             List<String> amenitiesList =
-                                                List<String>.from(
-                                              json.decode(
-                                                postData.amenities,
-                                              ),
-                                            );
+                                                postData.amenities;
 
                                             // Sort amenities alphabetically
                                             amenitiesList.sort((a, b) =>
@@ -909,11 +905,7 @@ Check out the latest updates here:
                                               CrossAxisAlignment.start,
                                           children: () {
                                             List<String> amenitiesList =
-                                                List<String>.from(
-                                              json.decode(
-                                                postData.amenities,
-                                              ),
-                                            );
+                                                postData.amenities;
 
                                             // Sort amenities alphabetically
                                             amenitiesList.sort((a, b) =>
@@ -1144,7 +1136,7 @@ Check out the latest updates here:
                     ),
                     SizedBox(height: space),
                     SizedBox(
-                      height: height / 7,
+                      height: 130,
                       child: StreamBuilder(
                         stream: morePostList.stream,
                         builder:
@@ -1477,7 +1469,7 @@ class DetailsCircle extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: 3),
+        const SizedBox(height: 10),
         Text(
           title,
           style: TextStyle(

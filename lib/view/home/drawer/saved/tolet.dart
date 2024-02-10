@@ -160,10 +160,9 @@ class _PostsToletSavedState extends State<PostsToletSaved> {
 
   @override
   Widget build(BuildContext context) {
-    var height = Get.height;
     var width = Get.width;
     getCategory() {
-      var catagory = json.decode(widget.postData.category).cast<String>();
+      var catagory = widget.postData.category;
       var data = widget.postData.garagetype;
       if (catagory.contains('Only Garage')) {
         if (data == "Garage") {
@@ -390,8 +389,8 @@ class _PostsToletSavedState extends State<PostsToletSaved> {
     }
 
     return Container(
-      height: height / 7,
-      width: Get.width,
+      height: 130,
+      width: double.infinity,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
@@ -405,11 +404,14 @@ class _PostsToletSavedState extends State<PostsToletSaved> {
         children: [
           InkWell(
             onTap: () {
-              print(widget.postData.postId);
+              toletController.singlePostloding(true);
               Get.to(
-                () => SinglePostTolet(postid: widget.postData.postId),
+                () => SinglePostTolet(
+                  postid: widget.postData.postId,
+                ),
                 transition: Transition.circularReveal,
                 duration: const Duration(milliseconds: 600),
+                preventDuplicates: false,
               );
             },
             child: Row(
@@ -430,12 +432,10 @@ class _PostsToletSavedState extends State<PostsToletSaved> {
                           image:
                               MemoryImage(base64Decode(widget.postData.image1)),
                           fit: BoxFit.cover,
+                          // alignment: Alignment.topCenter,
                         ),
                       ),
                     ),
-                    //  widget.postData.totalImage == 1
-                    // ? const SizedBox()
-                    // :
                     Padding(
                       padding: const EdgeInsets.only(
                         left: 4,
@@ -478,75 +478,136 @@ class _PostsToletSavedState extends State<PostsToletSaved> {
                   ],
                 ),
                 Expanded(
-                  child: SizedBox(
-                    // width: width - ((width / 2.8) + 40),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 15, right: 15),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              const Text(
-                                '৳ ',
-                                style: TextStyle(
-                                  fontSize: 22,
-                                  color: Color(0xff083437),
-                                ),
-                                overflow: TextOverflow.ellipsis,
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.only(left: 15, right: 15, bottom: 5),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              '৳ ',
+                              style: TextStyle(
+                                fontSize: 22,
+                                color: const Color(0xff083437).withOpacity(0.8),
                               ),
-                              Text(
-                                NumberFormat.decimalPattern()
-                                    .format(widget.postData.rent),
-                                style: const TextStyle(
-                                  fontSize: s1,
-                                  color: Color(0xff083437),
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                overflow: TextOverflow.ellipsis,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Text(
+                              NumberFormat.decimalPattern()
+                                  .format(widget.postData.rent),
+                              style: TextStyle(
+                                fontSize: s1,
+                                color: const Color(0xff083437).withOpacity(0.8),
+                                fontWeight: FontWeight.bold,
                               ),
-                            ],
-                          ),
-                          Text(
-                            " ${((json.decode(widget.postData.category) as List).map((e) => e.toString()).toList()).join(', ')}",
-                            style: const TextStyle(
-                              height: 1,
-                              color: Color(0xff083437),
-                              fontSize: s4,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                            overflow: TextOverflow.ellipsis,
+                          ],
+                        ),
+                        Text(
+                          " ${((widget.postData.category).map((e) => e.toString()).toList()).join(', ')}",
+                          style: const TextStyle(
+                            height: 1,
+                            color: Color(0xff083437),
+                            fontSize: s4,
                           ),
-                          getCategory(),
-                          Text(
-                            widget.postData.location,
-                            style: TextStyle(
-                              color: const Color(0xff083437).withOpacity(0.6),
-                              fontSize: 12,
-                              fontFamily: 'Roboto',
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        getCategory(),
+                        // const SizedBox(height: 6),
+                        Text(
+                          widget.postData.location,
+                          style: TextStyle(
+                            color: const Color(0xff083437).withOpacity(0.6),
+                            fontSize: 12,
+                            fontFamily: 'Roboto',
                           ),
-                        ],
-                      ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
                     ),
                   ),
                 )
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(right: 10),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                LikeButton(
+          // Column(
+          //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+          //   crossAxisAlignment: CrossAxisAlignment.end,
+          //   children: [
+          //     LikeButton(
+          //       size: 26,
+          //       isLiked: widget.isLikedvalue,
+          //       mainAxisAlignment: MainAxisAlignment.end,
+          //       circleColor: const CircleColor(
+          //         start: Color(0xff00ddff),
+          //         end: Color(0xff0099cc),
+          //       ),
+          //       bubblesColor: const BubblesColor(
+          //         dotPrimaryColor: Color(0xff33b5e5),
+          //         dotSecondaryColor: Color(0xff0099cc),
+          //       ),
+          //       // likeCount: 665,
+          //       likeBuilder: (bool isLiked) {
+          //         return Icon(
+          //           isLiked ? Icons.favorite : Icons.favorite_border_outlined,
+          //           color: isLiked ? Colors.blue.withOpacity(0.9) : Colors.grey,
+          //         );
+          //       },
+          //       animationDuration: const Duration(milliseconds: 400),
+          //       onTap: (isLiked) async {
+          //         PostListTolet removedItem =
+          //             toletController.allSavedPost.removeAt(widget.index);
+
+          //         toletController.deleteKeySaved.currentState!.removeItem(
+          //           widget.index,
+          //           (context, animation) => SlideTransition(
+          //             position: animation.drive(
+          //               Tween<Offset>(
+          //                 begin: const Offset(2, 0.0),
+          //                 end: const Offset(0.0, 0.0),
+          //               ).chain(
+          //                 CurveTween(curve: Curves.easeIn),
+          //               ),
+          //             ),
+          //             child: Padding(
+          //               padding: const EdgeInsets.only(top: 20),
+          //               child: PostsToletSaved(
+          //                 postData: removedItem,
+          //                 index: widget.index,
+          //                 isLikedvalue: false,
+          //               ),
+          //             ),
+          //           ),
+          //           duration: const Duration(
+          //             milliseconds: 600,
+          //           ),
+          //         );
+          //         toletController.save(
+          //           widget.postData.postId,
+          //           !isLiked,
+          //         );
+          //         return !isLiked;
+          //       },
+          //     ),
+          //   ],
+          // ),
+          Align(
+            alignment: Alignment.topRight,
+            child: SizedBox(
+              height: 36,
+              width: 36,
+              child: Center(
+                child: LikeButton(
                   size: 26,
                   isLiked: widget.isLikedvalue,
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  // mainAxisAlignment: MainAxisAlignment.end,
+                  // crossAxisAlignment: CrossAxisAlignment.start,
                   circleColor: const CircleColor(
                     start: Color(0xff00ddff),
                     end: Color(0xff0099cc),
@@ -599,21 +660,20 @@ class _PostsToletSavedState extends State<PostsToletSaved> {
                     return !isLiked;
                   },
                 ),
-                const SizedBox(height: 20),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Text(
-                    '${userController.getDay(widget.postData.time)}',
-                    style: TextStyle(
-                      color: const Color(0xff083437).withOpacity(0.5),
-                      fontSize: s6,
-                      height: 1,
-                    ),
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: Text(
+              '${userController.getDay(widget.postData.time)}',
+              style: TextStyle(
+                color: const Color(0xff083437).withOpacity(0.8),
+                fontSize: s6,
+                height: 1,
+              ),
+            ),
+          ).paddingOnly(right: 10, bottom: 2),
         ],
       ),
     );

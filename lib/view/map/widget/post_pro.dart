@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:btolet/constants/colors.dart';
 import 'package:btolet/controller/property_controller.dart';
 import 'package:btolet/controller/user_controller.dart';
+import 'package:btolet/model/category.dart';
 import 'package:btolet/model/pro_model.dart';
 import 'package:btolet/view/property/single_post.dart';
 import 'package:flutter/material.dart';
@@ -120,79 +121,82 @@ class _PostsProMapState extends State<PostsProMap> {
                             overflow: TextOverflow.ellipsis,
                           ),
                           // const SizedBox(height: 6),
-                          Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                  top: 2,
-                                  bottom: 2,
-                                ),
-                                child: SizedBox(
-                                  height: 22,
-                                  width: 22,
-                                  child: SvgPicture.asset(
-                                    'assets/icons/property/bed.svg',
-                                    colorFilter: ColorFilter.mode(
-                                      Colors.black.withOpacity(0.5),
-                                      BlendMode.srcIn,
+                          widget.postData.category == category[2] ||
+                                  widget.postData.category == category[3]
+                              ? const SizedBox(height: 20)
+                              : Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                        top: 2,
+                                        bottom: 2,
+                                      ),
+                                      child: SizedBox(
+                                        height: 22,
+                                        width: 22,
+                                        child: SvgPicture.asset(
+                                          'assets/icons/property/bed.svg',
+                                          colorFilter: ColorFilter.mode(
+                                            Colors.black.withOpacity(0.5),
+                                            BlendMode.srcIn,
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                  ),
+                                    const SizedBox(width: 6),
+                                    Text(
+                                      widget.postData.bed,
+                                      style: const TextStyle(
+                                        fontSize: s3,
+                                        color: Color(0xff083437),
+                                      ),
+                                    ).paddingOnly(bottom: 2),
+                                    const SizedBox(width: 10),
+                                    SizedBox(
+                                      height: 22,
+                                      width: 22,
+                                      child: SvgPicture.asset(
+                                        'assets/icons/property/bath.svg',
+                                        colorFilter: ColorFilter.mode(
+                                          Colors.black.withOpacity(0.5),
+                                          BlendMode.srcIn,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 6),
+                                    Text(
+                                      widget.postData.bath,
+                                      style: const TextStyle(
+                                        fontSize: s3,
+                                        color: Color(0xff083437),
+                                      ),
+                                    ).paddingOnly(bottom: 2),
+                                    const SizedBox(width: 10),
+                                    SizedBox(
+                                      height: 18,
+                                      width: 18,
+                                      child: SvgPicture.asset(
+                                        'assets/icons/property/size.svg',
+                                        colorFilter: ColorFilter.mode(
+                                          Colors.black.withOpacity(0.5),
+                                          BlendMode.srcIn,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 6),
+                                    Flexible(
+                                      child: Text(
+                                        widget.postData.size,
+                                        style: const TextStyle(
+                                          fontSize: s3,
+                                          color: Color(0xff083437),
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
+                                      ).paddingOnly(bottom: 2),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                              const SizedBox(width: 6),
-                              Text(
-                                widget.postData.bed,
-                                style: const TextStyle(
-                                  fontSize: s3,
-                                  color: Color(0xff083437),
-                                ),
-                              ).paddingOnly(bottom: 2),
-                              const SizedBox(width: 10),
-                              SizedBox(
-                                height: 22,
-                                width: 22,
-                                child: SvgPicture.asset(
-                                  'assets/icons/property/bath.svg',
-                                  colorFilter: ColorFilter.mode(
-                                    Colors.black.withOpacity(0.5),
-                                    BlendMode.srcIn,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 6),
-                              Text(
-                                widget.postData.bath,
-                                style: const TextStyle(
-                                  fontSize: s3,
-                                  color: Color(0xff083437),
-                                ),
-                              ).paddingOnly(bottom: 2),
-                              const SizedBox(width: 10),
-                              SizedBox(
-                                height: 18,
-                                width: 18,
-                                child: SvgPicture.asset(
-                                  'assets/icons/property/size.svg',
-                                  colorFilter: ColorFilter.mode(
-                                    Colors.black.withOpacity(0.5),
-                                    BlendMode.srcIn,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 6),
-                              Flexible(
-                                child: Text(
-                                  widget.postData.size,
-                                  style: const TextStyle(
-                                    fontSize: s3,
-                                    color: Color(0xff083437),
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
-                                ).paddingOnly(bottom: 2),
-                              ),
-                            ],
-                          ),
 
                           // const SizedBox(height: 6),
                           Flexible(
