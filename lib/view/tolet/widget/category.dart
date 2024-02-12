@@ -332,6 +332,9 @@ class CategoryBodyPost extends StatelessWidget {
               type: "Property Name",
               detailstext: postData.propertyname,
               icon: Icons.home_outlined,
+              fontfamily: 'Roboto',
+              fontSize: 14,
+              textColor: const Color(0xff083437).withOpacity(0.5),
             ),
             Details(
               type: "Property Type",
@@ -347,6 +350,9 @@ class CategoryBodyPost extends StatelessWidget {
               type: "Short Address",
               detailstext: postData.shortaddress,
               icon: Icons.share_location_rounded,
+              fontfamily: 'Roboto',
+              fontSize: 14,
+              textColor: const Color(0xff083437).withOpacity(0.5),
             ),
           ],
         );
@@ -357,6 +363,9 @@ class CategoryBodyPost extends StatelessWidget {
               type: "Property Name",
               detailstext: postData.propertyname,
               icon: Icons.home_outlined,
+              fontfamily: 'Roboto',
+              fontSize: 14,
+              textColor: const Color(0xff083437).withOpacity(0.5),
             ),
             Details(
               type: "Property Type",
@@ -407,6 +416,9 @@ class CategoryBodyPost extends StatelessWidget {
               type: "Short Address",
               detailstext: postData.shortaddress,
               icon: Icons.share_location_rounded,
+              fontfamily: 'Roboto',
+              fontSize: 14,
+              textColor: const Color(0xff083437).withOpacity(0.5),
             ),
           ],
         );
@@ -457,6 +469,9 @@ class CategoryBodyPost extends StatelessWidget {
               type: "Short Address",
               detailstext: postData.shortaddress,
               icon: Icons.share_location_rounded,
+              fontfamily: 'Roboto',
+              fontSize: 14,
+              textColor: const Color(0xff083437).withOpacity(0.5),
             ),
           ],
         );
@@ -467,6 +482,9 @@ class CategoryBodyPost extends StatelessWidget {
               type: "Property Name",
               detailstext: postData.propertyname,
               icon: Icons.home_outlined,
+              fontfamily: 'Roboto',
+              fontSize: 14,
+              textColor: const Color(0xff083437).withOpacity(0.5),
             ),
             Details(
               type: "Property Type",
@@ -527,6 +545,9 @@ class CategoryBodyPost extends StatelessWidget {
               type: "Short Address",
               detailstext: postData.shortaddress,
               icon: Icons.share_location_rounded,
+              fontfamily: 'Roboto',
+              fontSize: 14,
+              textColor: const Color(0xff083437).withOpacity(0.5),
             ),
           ],
         );
@@ -732,9 +753,13 @@ class CategoryBodyPost extends StatelessWidget {
                 ),
                 child: Text(
                   postData.description,
-                  textAlign: TextAlign.justify,
+                  // textAlign: TextAlign.justify,
                   overflow: TextOverflow.clip,
-                  style: h3,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: const Color(0xff083437).withOpacity(0.5),
+                    fontFamily: 'Roboto',
+                  ),
                   // maxLines: 5,
                 ),
               ),

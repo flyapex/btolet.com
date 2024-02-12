@@ -50,7 +50,7 @@ class ApiServicePro {
       queryParameters: {"pid": postid},
     );
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 && jsonEncode(response.data).isNotEmpty) {
       return singlePostModelProFromJson(jsonEncode(response.data));
     } else {
       return null;

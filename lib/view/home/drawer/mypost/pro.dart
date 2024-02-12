@@ -79,6 +79,7 @@ class _MyProPageState extends State<MyProPage>
             child: StreamBuilder(
               stream: proController.mypostList.stream,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
+                print(proController.mypostList.length);
                 if (snapshot.data == null) {
                   return const PostListSimmer(
                     topPadding: 20,
@@ -91,7 +92,7 @@ class _MyProPageState extends State<MyProPage>
                     physics: const BouncingScrollPhysics(
                       parent: AlwaysScrollableScrollPhysics(),
                     ),
-                    initialItemCount: proController.mypostList.length,
+                    initialItemCount: proController.mypostList.length + 1,
                     padding: const EdgeInsets.only(bottom: 100),
                     itemBuilder: (context, i, animation) {
                       if (i < snapshot.data.length) {
@@ -104,9 +105,13 @@ class _MyProPageState extends State<MyProPage>
                         );
                       } else {
                         if (proController.mypostPageloding.value) {
-                          return const PostListSimmer(
-                            topPadding: 20,
-                            count: 10,
+                          return const Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(20),
+                              child: CircularProgressIndicator(
+                                color: Colors.red,
+                              ),
+                            ),
                           );
                         } else {
                           return const Padding(

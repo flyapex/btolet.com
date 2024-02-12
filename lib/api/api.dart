@@ -82,4 +82,26 @@ class ApiService {
       return userDetailsFromJson(response.body)[0];
     }
   }
+
+  static Future feedback(image1, image2, text) async {
+    final response = await dio.post(
+      '$baseUrl/feedback',
+      data: jsonEncode(
+        {
+          "image1": image1,
+          "image2": image2,
+          "text": text,
+        },
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      print(response);
+      print(jsonEncode(response.data['message']));
+
+      return jsonEncode(response.data['message']);
+    } else {
+      return null;
+    }
+  }
 }

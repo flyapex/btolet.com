@@ -57,14 +57,19 @@ class ToletController extends GetxController {
     } finally {}
   }
 
+  var singlePostNull = false.obs;
   var singlePostloding = true.obs;
   getSinglePost(postid) async {
+    singlePostNull(false);
     singlePostloding(true);
     try {
       var response = await ApiServiceTolet.getSinglePost(postid);
+      print('---------------------');
+      print(response);
       if (response != null) {
         return response;
       } else {
+        singlePostNull(true);
         return null;
       }
     } finally {
@@ -469,10 +474,12 @@ class ToletController extends GetxController {
             location: locationController.locationAddressShort.value.toString(),
             locationfull: locationController.locationAddress.value.toString(),
             shortaddress: userController.shortAddress.text,
-            phone: userController.code.value + userController.phonenumber.text,
+            phone: userController.codePhone.value +
+                userController.phonenumber.text,
             wapp: userController.wappnumber.text.isEmpty
                 ? ""
-                : userController.code.value + userController.wappnumber.text,
+                : userController.codeWapp.value +
+                    userController.wappnumber.text,
           ),
         );
       } else if (categories['Shop']!.value) {
@@ -514,10 +521,12 @@ class ToletController extends GetxController {
             location: locationController.locationAddressShort.value.toString(),
             locationfull: locationController.locationAddress.value.toString(),
             shortaddress: userController.shortAddress.text,
-            phone: userController.code.value + userController.phonenumber.text,
+            phone: userController.codePhone.value +
+                userController.phonenumber.text,
             wapp: userController.wappnumber.text.isEmpty
                 ? ""
-                : userController.code.value + userController.wappnumber.text,
+                : userController.codeWapp.value +
+                    userController.wappnumber.text,
           ),
         );
       } else if (categories['Office']!.value) {
@@ -561,10 +570,12 @@ class ToletController extends GetxController {
             location: locationController.locationAddressShort.value.toString(),
             locationfull: locationController.locationAddress.value.toString(),
             shortaddress: userController.shortAddress.text,
-            phone: userController.code.value + userController.phonenumber.text,
+            phone: userController.codePhone.value +
+                userController.phonenumber.text,
             wapp: userController.wappnumber.text.isEmpty
                 ? ""
-                : userController.code.value + userController.wappnumber.text,
+                : userController.codeWapp.value +
+                    userController.wappnumber.text,
           ),
         );
       } else {
@@ -607,10 +618,12 @@ class ToletController extends GetxController {
             location: locationController.locationAddressShort.value.toString(),
             locationfull: locationController.locationAddress.value.toString(),
             shortaddress: userController.shortAddress.text,
-            phone: userController.code.value + userController.phonenumber.text,
+            phone: userController.codePhone.value +
+                userController.phonenumber.text,
             wapp: userController.wappnumber.text.isEmpty
                 ? ""
-                : userController.code.value + userController.wappnumber.text,
+                : userController.codeWapp.value +
+                    userController.wappnumber.text,
           ),
         );
       }
@@ -820,7 +833,7 @@ class ToletController extends GetxController {
         mypostPage = mypostPage + 1;
       }
     } finally {
-      mypostPageloding(false);
+      // mypostPageloding(false);
     }
   }
 

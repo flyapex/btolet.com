@@ -8,6 +8,7 @@ import 'package:btolet/controller/property_controller.dart';
 import 'package:btolet/controller/user_controller.dart';
 import 'package:btolet/model/category.dart';
 import 'package:btolet/model/pro_model.dart';
+import 'package:btolet/view/error/emptypage.dart';
 import 'package:btolet/view/shimmer/shimmer.dart';
 import 'package:btolet/view/tolet/single_post.dart';
 import 'package:expandable/expandable.dart';
@@ -493,141 +494,150 @@ class _SinglePostProState extends State<SinglePostPro>
     double space = 20.0;
     return Obx(
       () => proController.singlePostloding.value
-          ? const SinglePostShimmer() //! Work here
-          : Scaffold(
-              body: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(
-                  parent: AlwaysScrollableScrollPhysics(),
-                ),
-                controller: _controller,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    //  SizedBox(height: 20),
-                    Stack(
+          ? const SinglePostShimmer()
+          : proController.singlePostNull.value
+              ? const EmptyPage(
+                  appBarTitle: 'Back',
+                  bodyText: 'Sorry, The post has been deleted.',
+                  smallText: 'Try Another One🤝',
+                  lottieasset: 'assets/lottie/404.json',
+                )
+              : Scaffold(
+                  body: SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(
+                      parent: AlwaysScrollableScrollPhysics(),
+                    ),
+                    controller: _controller,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        ImageSlidePage(
-                          hight: height / 3.5,
-                          imageList: getImage(
-                            postData.image1,
-                            postData.image2,
-                            postData.image3,
-                            postData.image4,
-                            postData.image5,
-                            postData.image6,
-                            postData.image7,
-                            postData.image8,
-                            postData.image9,
-                            postData.image10,
-                            postData.image11,
-                            postData.image12,
-                          ),
-                        ),
-                        Column(
+                        //  SizedBox(height: 20),
+                        Stack(
                           children: [
-                            const SizedBox(height: 30),
+                            ImageSlidePage(
+                              hight: height / 3.5,
+                              imageList: getImage(
+                                postData.image1,
+                                postData.image2,
+                                postData.image3,
+                                postData.image4,
+                                postData.image5,
+                                postData.image6,
+                                postData.image7,
+                                postData.image8,
+                                postData.image9,
+                                postData.image10,
+                                postData.image11,
+                                postData.image12,
+                              ),
+                            ),
+                            Column(
+                              children: [
+                                const SizedBox(height: 30),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    InkWell(
+                                      child: const Padding(
+                                        padding: EdgeInsets.only(left: 10),
+                                        child: Icon(
+                                          Feather.chevron_left,
+                                          color: Colors.white,
+                                          size: 22,
+                                        ),
+                                      ),
+                                      onTap: () {
+                                        Get.back();
+                                      },
+                                    ),
+                                    Row(
+                                      children: [
+                                        const SizedBox(width: 10),
+                                        LikeButton(
+                                          size: 32,
+                                          likeBuilder: (bool isLiked) {
+                                            return Icon(
+                                              isLiked
+                                                  ? Icons.favorite
+                                                  : Icons
+                                                      .favorite_border_outlined,
+                                              color: isLiked
+                                                  ? Colors.lightBlue
+                                                  : const Color(0xff083437),
+                                            );
+                                          },
+                                          animationDuration:
+                                              const Duration(milliseconds: 400),
+                                          onTap: (isLiked) async {
+                                            print(!isLiked);
+                                            proController.savePost(
+                                              postData.pid,
+                                              !isLiked,
+                                            );
+                                            return !isLiked;
+                                          },
+                                        ),
+                                        const SizedBox(width: 15),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: space),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 20),
+                                    child: postData.price == 0
+                                        ? const Text(
+                                            'Price On Call',
+                                            style: TextStyle(
+                                              fontSize: s1,
+                                              color: Colors.black,
+                                            ),
+                                          )
+                                        : Text(
+                                            // currency(
+                                            //   singlepost.price,
+                                            //   '৳',
+                                            // ),
+                                            "${userController.currency(postData.price)} BDT",
+                                            // "${NumberFormat.decimalPattern().format(singlepost.price)} BDT",
+                                            style: TextStyle(
+                                              fontSize: 28,
+                                              color: const Color(0xff083437)
+                                                  .withOpacity(0.8),
+                                              fontWeight: FontWeight.w500,
+                                              overflow: TextOverflow.ellipsis,
+                                              fontFamily: 'Roboto',
+                                            ),
+                                          ),
+                                  ),
+                                ),
                                 InkWell(
-                                  child: const Padding(
-                                    padding: EdgeInsets.only(left: 10),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right: 20),
                                     child: Icon(
-                                      Feather.chevron_left,
-                                      color: Colors.white,
+                                      Feather.share_2,
+                                      color: const Color(0xff083437)
+                                          .withOpacity(0.8),
                                       size: 22,
                                     ),
                                   ),
                                   onTap: () {
-                                    Get.back();
-                                  },
-                                ),
-                                Row(
-                                  children: [
-                                    const SizedBox(width: 10),
-                                    LikeButton(
-                                      size: 32,
-                                      likeBuilder: (bool isLiked) {
-                                        return Icon(
-                                          isLiked
-                                              ? Icons.favorite
-                                              : Icons.favorite_border_outlined,
-                                          color: isLiked
-                                              ? Colors.lightBlue
-                                              : const Color(0xff083437),
-                                        );
-                                      },
-                                      animationDuration:
-                                          const Duration(milliseconds: 400),
-                                      onTap: (isLiked) async {
-                                        print(!isLiked);
-                                        proController.savePost(
-                                          postData.pid,
-                                          !isLiked,
-                                        );
-                                        return !isLiked;
-                                      },
-                                    ),
-                                    const SizedBox(width: 15),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(height: space),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 20),
-                                child: postData.price == 0
-                                    ? const Text(
-                                        'Price On Call',
-                                        style: TextStyle(
-                                          fontSize: s1,
-                                          color: Colors.black,
-                                        ),
-                                      )
-                                    : Text(
-                                        // currency(
-                                        //   singlepost.price,
-                                        //   '৳',
-                                        // ),
-                                        "${userController.currency(postData.price)} BDT",
-                                        // "${NumberFormat.decimalPattern().format(singlepost.price)} BDT",
-                                        style: TextStyle(
-                                          fontSize: 28,
-                                          color: const Color(0xff083437)
-                                              .withOpacity(0.8),
-                                          fontWeight: FontWeight.w500,
-                                          overflow: TextOverflow.ellipsis,
-                                          fontFamily: 'Roboto',
-                                        ),
-                                      ),
-                              ),
-                            ),
-                            InkWell(
-                              child: Padding(
-                                padding: const EdgeInsets.only(right: 20),
-                                child: Icon(
-                                  Feather.share_2,
-                                  color:
-                                      const Color(0xff083437).withOpacity(0.8),
-                                  size: 22,
-                                ),
-                              ),
-                              onTap: () {
-                                adsController
-                                    .shareBase64Image(postData.image1, '''
+                                    adsController
+                                        .shareBase64Image(postData.image1, '''
      🏷️ ${postData.category}
      💰 Price: ${postData.price == 0 ? "Price On Call🤙📞" : "${postData.price} ৳"} 
      📍Location: ${postData.location}
@@ -636,737 +646,771 @@ Download our app now to discover more!🌟
 Check out the latest updates here:
    https://play.google.com/store/apps/details?id=com.btolet.app
     ''');
-                              },
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: space),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
-                          child: Container(
-                            height: 1,
-                            decoration: BoxDecoration(
-                              color: Colors.black12,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10, right: 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: InkWell(
-                                  onTap: () async {},
-                                  child: Row(
-                                    children: [
-                                      Material(
-                                        type: MaterialType.transparency,
-                                        child: Ink(
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: Colors.blue,
-                                              width: 2,
-                                            ),
-                                            color: Colors.white,
-                                            shape: BoxShape.circle,
-                                          ),
-                                          child: InkWell(
-                                            borderRadius:
-                                                BorderRadius.circular(100),
-                                            onTap: () {},
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(10.0),
-                                              child: SizedBox(
-                                                height: 22,
-                                                width: 22,
-                                                child: SvgPicture.asset(
-                                                  'assets/icons/home/map.svg',
-                                                  height: 10,
-                                                  width: 22,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 10),
-                                      Expanded(
-                                        child: Text(
-                                          postData.location,
-                                          style: const TextStyle(
-                                            fontSize: 14,
-                                            color: Color(0xff083437),
-                                            fontWeight: FontWeight.w500,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                          maxLines: 1,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                  },
                                 ),
-                              ),
-                              Text(
-                                '${userController.getDay(postData.time)}',
-                                style: const TextStyle(
-                                  fontSize: s4,
-                                  color: Color(0xff083437),
-                                  fontWeight: FontWeight.normal,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                maxLines: 1,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(height: space),
-                              getCategory(),
-
-                              // postData.category == category[0] ||
-                              //         postData.category == category[1]
-                              //     ? const SizedBox()
-                              //     : const SizedBox(height: 15),
-
-                              SizedBox(height: space),
-                              Container(
+                              ],
+                            ),
+                            SizedBox(height: space),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 20, right: 20),
+                              child: Container(
                                 height: 1,
                                 decoration: BoxDecoration(
                                   color: Colors.black12,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
-                              const SizedBox(height: 10),
-                              Details(
-                                type: "Property Name",
-                                detailstext: postData.name,
-                                icon: Icons.home_outlined,
-                              ),
-                              Details(
-                                type: "Type",
-                                detailstext: postData.category,
-                                icon: Icons.home_work_outlined,
-                              ),
-                              Details(
-                                type: "Condition",
-                                detailstext: postData.procondition,
-                                icon: Icons.build_circle_outlined,
-                              ),
-                              Details(
-                                type: "Available From",
-                                detailstext: DateFormat('d MMM')
-                                    .format(postData.sellfrom),
-                                icon: Icons.access_time,
-                              ),
-                              Details(
-                                type: "Short Address",
-                                detailstext: postData.shortaddress,
-                                icon: Icons.share_location_rounded,
-                              ),
-                              Details(
-                                type: "Posted By",
-                                detailstext: postData.ownertype,
-                                icon: Feather.user,
-                              ),
-
-                              postData.floorPlan == ""
-                                  ? const SizedBox()
-                                  : SizedBox(height: space),
-                              postData.floorPlan == ""
-                                  ? const SizedBox()
-                                  : Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        border: Border.all(
-                                            color: Colors.blueAccent),
-                                      ),
-                                      child: ExpandablePanel(
-                                        header: Container(
-                                          padding: const EdgeInsets.only(
-                                            top: 10,
-                                            left: 10,
-                                            bottom: 10,
-                                          ),
-                                          child: const Text(
-                                            'Floor Plan',
-                                            style: TextStyle(
-                                              fontSize: s2,
-                                              height: 0.8,
-                                              color: Colors.black,
-                                            ),
-                                          ).paddingOnly(bottom: 2),
-                                        ),
-                                        collapsed: const SizedBox(),
-                                        expanded: Container(
-                                          height: 300,
-                                          width: width,
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            image: DecorationImage(
-                                              image: MemoryImage(
-                                                base64Decode(
-                                                  postData.floorPlan,
-                                                ),
-                                              ),
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                              SizedBox(height: space),
-                              postData.ytVideo == ""
-                                  ? const SizedBox()
-                                  : Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const Text(
-                                          'Video',
-                                          style: TextStyle(
-                                            fontSize: s3,
-                                            color: Colors.black,
-                                            // fontStyle: FontStyle.italic,
-                                          ),
-                                        ),
-                                        SizedBox(height: space),
-                                        YoutubeVideo(
-                                          videoUrl: postData.ytVideo,
-                                        ),
-                                      ],
-                                    ),
-                              SizedBox(height: space),
-                              const Text(
-                                'Amenities',
-                                style: TextStyle(
-                                  fontSize: s1,
-                                  height: 0.7,
-                                  color: Colors.black54,
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                  top: 8,
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        // First Column
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: () {
-                                            List<String> amenitiesList =
-                                                postData.amenities;
-
-                                            // Sort amenities alphabetically
-                                            amenitiesList.sort((a, b) =>
-                                                a.length.compareTo(b.length));
-
-                                            int halfLength =
-                                                (amenitiesList.length / 2)
-                                                    .ceil();
-
-                                            return List.generate(
-                                              halfLength,
-                                              (index) => Amenities(
-                                                text: amenitiesList[index],
-                                              ),
-                                            );
-                                          }(),
-                                        ),
-                                      ],
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        // Second Column
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: () {
-                                            List<String> amenitiesList =
-                                                postData.amenities;
-
-                                            // Sort amenities alphabetically
-                                            amenitiesList.sort((a, b) =>
-                                                a.length.compareTo(b.length));
-
-                                            int halfLength =
-                                                (amenitiesList.length / 2)
-                                                    .ceil();
-                                            int start = halfLength;
-
-                                            return List.generate(
-                                              amenitiesList.length - halfLength,
-                                              (index) => Amenities(
-                                                text: amenitiesList[
-                                                    start + index],
-                                              ),
-                                            );
-                                          }(),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-
-                              SizedBox(height: space),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
+                            ),
+                            const SizedBox(height: 10),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 10, right: 20),
+                              child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Feather.menu,
-                                        color: const Color(0xff8595A9)
-                                            .withOpacity(0.5),
-                                        size: 18,
+                                  Expanded(
+                                    child: InkWell(
+                                      onTap: () async {},
+                                      child: Row(
+                                        children: [
+                                          Material(
+                                            type: MaterialType.transparency,
+                                            child: Ink(
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                  color: Colors.blue,
+                                                  width: 2,
+                                                ),
+                                                color: Colors.white,
+                                                shape: BoxShape.circle,
+                                              ),
+                                              child: InkWell(
+                                                borderRadius:
+                                                    BorderRadius.circular(100),
+                                                onTap: () {},
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(
+                                                      10.0),
+                                                  child: SizedBox(
+                                                    height: 22,
+                                                    width: 22,
+                                                    child: SvgPicture.asset(
+                                                      'assets/icons/home/map.svg',
+                                                      height: 10,
+                                                      width: 22,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(width: 10),
+                                          Expanded(
+                                            child: Text(
+                                              postData.location,
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                color: Color(0xff083437),
+                                                fontWeight: FontWeight.w500,
+                                                overflow: TextOverflow.ellipsis,
+                                                fontFamily: 'Roboto',
+                                              ),
+                                              maxLines: 1,
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      const SizedBox(width: 10),
-                                      Text(
-                                        "Discription",
-                                        style: h3,
-                                      ),
-                                    ],
+                                    ),
                                   ),
                                   Text(
-                                    'id: ${postData.pid}',
+                                    '${userController.getDay(postData.time)}',
                                     style: const TextStyle(
                                       fontSize: s4,
+                                      color: Color(0xff083437),
+                                      fontWeight: FontWeight.normal,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    maxLines: 1,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 20, right: 20),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(height: space),
+                                  getCategory(),
+
+                                  // postData.category == category[0] ||
+                                  //         postData.category == category[1]
+                                  //     ? const SizedBox()
+                                  //     : const SizedBox(height: 15),
+
+                                  SizedBox(height: space),
+                                  Container(
+                                    height: 1,
+                                    decoration: BoxDecoration(
+                                      color: Colors.black12,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Details(
+                                    type: "Property Name",
+                                    detailstext: postData.name,
+                                    icon: Icons.home_outlined,
+                                    fontfamily: 'Roboto',
+                                    fontSize: 14,
+                                    textColor: const Color(0xff083437)
+                                        .withOpacity(0.5),
+                                  ),
+                                  Details(
+                                    type: "Type",
+                                    detailstext: postData.category,
+                                    icon: Icons.home_work_outlined,
+                                  ),
+                                  Details(
+                                    type: "Condition",
+                                    detailstext: postData.procondition,
+                                    icon: Icons.build_circle_outlined,
+                                  ),
+                                  Details(
+                                    type: "Available From",
+                                    detailstext: DateFormat('d MMM')
+                                        .format(postData.sellfrom),
+                                    icon: Icons.access_time,
+                                  ),
+                                  Details(
+                                    type: "Short Address",
+                                    detailstext: postData.shortaddress,
+                                    icon: Icons.share_location_rounded,
+                                    fontfamily: 'Roboto',
+                                    fontSize: 14,
+                                    textColor: const Color(0xff083437)
+                                        .withOpacity(0.5),
+                                  ),
+                                  Details(
+                                    type: "Posted By",
+                                    detailstext: postData.ownertype,
+                                    icon: Feather.user,
+                                  ),
+
+                                  postData.floorPlan == ""
+                                      ? const SizedBox()
+                                      : SizedBox(height: space),
+                                  postData.floorPlan == ""
+                                      ? const SizedBox()
+                                      : Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            border: Border.all(
+                                                color: Colors.blueAccent),
+                                          ),
+                                          child: ExpandablePanel(
+                                            header: Container(
+                                              padding: const EdgeInsets.only(
+                                                top: 10,
+                                                left: 10,
+                                                bottom: 10,
+                                              ),
+                                              child: const Text(
+                                                'Floor Plan',
+                                                style: TextStyle(
+                                                  fontSize: s2,
+                                                  height: 0.8,
+                                                  color: Colors.black,
+                                                ),
+                                              ).paddingOnly(bottom: 2),
+                                            ),
+                                            collapsed: const SizedBox(),
+                                            expanded: Container(
+                                              height: 300,
+                                              width: width,
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                image: DecorationImage(
+                                                  image: MemoryImage(
+                                                    base64Decode(
+                                                      postData.floorPlan,
+                                                    ),
+                                                  ),
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                  SizedBox(height: space),
+                                  postData.ytVideo == ""
+                                      ? const SizedBox()
+                                      : Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const Text(
+                                              'Video',
+                                              style: TextStyle(
+                                                fontSize: s3,
+                                                color: Colors.black,
+                                                // fontStyle: FontStyle.italic,
+                                              ),
+                                            ),
+                                            SizedBox(height: space),
+                                            YoutubeVideo(
+                                              videoUrl: postData.ytVideo,
+                                            ),
+                                          ],
+                                        ),
+                                  SizedBox(height: space),
+                                  const Text(
+                                    'Amenities',
+                                    style: TextStyle(
+                                      fontSize: s1,
+                                      height: 0.7,
                                       color: Colors.black54,
                                     ),
                                   ),
-                                ],
-                              ),
-                              SizedBox(height: space),
-                              Container(
-                                height: 100,
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  color: const Color(0xffE3E8FF),
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                    top: 20,
-                                    left: 20,
-                                    right: 15,
-                                    bottom: 20,
-                                  ),
-                                  child: Text(
-                                    postData.description,
-                                    textAlign: TextAlign.justify,
-                                    overflow: TextOverflow.clip,
-                                    style: h3,
-                                    // maxLines: 5,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: space),
-                              const Text(
-                                "In Map",
-                                style: TextStyle(
-                                  fontSize: s2,
-                                  height: 0.5,
-                                  color: Color(0xff083437),
-                                  fontWeight: FontWeight.normal,
-                                ),
-                              ),
-                              SizedBox(height: space),
-                              Container(
-                                height: 130,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(6),
-                                  border: Border.all(
-                                    color: Colors.black12,
-                                    width: 0.9,
-                                  ),
-                                ),
-                                child: Stack(
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(8),
-                                      child: GoogleMap(
-                                        padding: const EdgeInsets.only(
-                                          bottom: 500,
-                                          top: 0,
-                                          right: 0,
-                                          left: 0,
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      top: 8,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            // First Column
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: () {
+                                                List<String> amenitiesList =
+                                                    postData.amenities;
+
+                                                // Sort amenities alphabetically
+                                                amenitiesList.sort((a, b) => a
+                                                    .length
+                                                    .compareTo(b.length));
+
+                                                int halfLength =
+                                                    (amenitiesList.length / 2)
+                                                        .ceil();
+
+                                                return List.generate(
+                                                  halfLength,
+                                                  (index) => Amenities(
+                                                    text: amenitiesList[index],
+                                                  ),
+                                                );
+                                              }(),
+                                            ),
+                                          ],
                                         ),
-                                        onMapCreated: (controller) {
-                                          // controller.setMapStyle(_mapStyle);
-                                        },
-                                        // mapType: MapType.normal,
-                                        zoomControlsEnabled: false,
-                                        myLocationButtonEnabled: false,
-                                        initialCameraPosition: CameraPosition(
-                                          target: LatLng(
-                                            double.parse(postData.geolat),
-                                            double.parse(postData.geolon),
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            // Second Column
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: () {
+                                                List<String> amenitiesList =
+                                                    postData.amenities;
+
+                                                // Sort amenities alphabetically
+                                                amenitiesList.sort((a, b) => a
+                                                    .length
+                                                    .compareTo(b.length));
+
+                                                int halfLength =
+                                                    (amenitiesList.length / 2)
+                                                        .ceil();
+                                                int start = halfLength;
+
+                                                return List.generate(
+                                                  amenitiesList.length -
+                                                      halfLength,
+                                                  (index) => Amenities(
+                                                    text: amenitiesList[
+                                                        start + index],
+                                                  ),
+                                                );
+                                              }(),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+
+                                  SizedBox(height: space),
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Feather.menu,
+                                            color: const Color(0xff8595A9)
+                                                .withOpacity(0.5),
+                                            size: 18,
                                           ),
-                                          zoom: 16.0,
+                                          const SizedBox(width: 10),
+                                          Text(
+                                            "Discription",
+                                            style: h3,
+                                          ),
+                                        ],
+                                      ),
+                                      Text(
+                                        'id: ${postData.pid}',
+                                        style: const TextStyle(
+                                          fontSize: s4,
+                                          color: Colors.black54,
                                         ),
-                                        mapToolbarEnabled: false,
-                                        markers: markers,
-                                        compassEnabled: true,
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: space),
+                                  Container(
+                                    height: 100,
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xffE3E8FF),
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                        top: 20,
+                                        left: 20,
+                                        right: 15,
+                                        bottom: 20,
+                                      ),
+                                      child: Text(
+                                        postData.description,
+                                        // textAlign: TextAlign.justify,
+                                        overflow: TextOverflow.clip,
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: const Color(0xff083437)
+                                              .withOpacity(0.5),
+                                          fontFamily: 'Roboto',
+                                        ),
+                                        // maxLines: 5,
                                       ),
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(10.0),
-                                      child: Align(
-                                        alignment: Alignment.bottomRight,
-                                        child: SizedBox(
-                                          height: 40,
-                                          child: FloatingActionButton.extended(
-                                            backgroundColor: Colors.blue,
-                                            onPressed: () async {
-                                              final coords = Coords(
+                                  ),
+                                  SizedBox(height: space),
+                                  const Text(
+                                    "In Map",
+                                    style: TextStyle(
+                                      fontSize: s2,
+                                      height: 0.5,
+                                      color: Color(0xff083437),
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                                  ),
+                                  SizedBox(height: space),
+                                  Container(
+                                    height: 130,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(6),
+                                      border: Border.all(
+                                        color: Colors.black12,
+                                        width: 0.9,
+                                      ),
+                                    ),
+                                    child: Stack(
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          child: GoogleMap(
+                                            padding: const EdgeInsets.only(
+                                              bottom: 500,
+                                              top: 0,
+                                              right: 0,
+                                              left: 0,
+                                            ),
+                                            onMapCreated: (controller) {
+                                              // controller.setMapStyle(_mapStyle);
+                                            },
+                                            // mapType: MapType.normal,
+                                            zoomControlsEnabled: false,
+                                            myLocationButtonEnabled: false,
+                                            initialCameraPosition:
+                                                CameraPosition(
+                                              target: LatLng(
                                                 double.parse(postData.geolat),
                                                 double.parse(postData.geolon),
-                                              );
-                                              var title =
-                                                  "Price ৳ ${userController.currency(postData.price)}";
-                                              final availableMaps =
-                                                  await MapLauncher
-                                                      .installedMaps;
-                                              print(availableMaps.length);
-                                              await availableMaps.first
-                                                  .showMarker(
-                                                coords: coords,
-                                                title: title,
-                                                description: "description",
-                                              );
-                                            },
-                                            shape: RoundedRectangleBorder(
-                                              // side: const BorderSide(
-                                              //     width: 3,
-                                              //     color: Colors.brown),
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                100,
+                                              ),
+                                              zoom: 16.0,
+                                            ),
+                                            mapToolbarEnabled: false,
+                                            markers: markers,
+                                            compassEnabled: true,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: Align(
+                                            alignment: Alignment.bottomRight,
+                                            child: SizedBox(
+                                              height: 40,
+                                              child:
+                                                  FloatingActionButton.extended(
+                                                backgroundColor: Colors.blue,
+                                                onPressed: () async {
+                                                  final coords = Coords(
+                                                    double.parse(
+                                                        postData.geolat),
+                                                    double.parse(
+                                                        postData.geolon),
+                                                  );
+                                                  var title =
+                                                      "Price ৳ ${userController.currency(postData.price)}";
+                                                  final availableMaps =
+                                                      await MapLauncher
+                                                          .installedMaps;
+                                                  print(availableMaps.length);
+                                                  await availableMaps.first
+                                                      .showMarker(
+                                                    coords: coords,
+                                                    title: title,
+                                                    description: "description",
+                                                  );
+                                                },
+                                                shape: RoundedRectangleBorder(
+                                                  // side: const BorderSide(
+                                                  //     width: 3,
+                                                  //     color: Colors.brown),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                    100,
+                                                  ),
+                                                ),
+                                                label: Row(
+                                                  children: [
+                                                    Text(
+                                                      'Map',
+                                                      style: TextStyle(
+                                                        fontSize: s2,
+                                                        color: Colors.white
+                                                            .withOpacity(0.95),
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    )..paddingOnly(bottom: 2),
+                                                    const SizedBox(width: 10),
+                                                    const Icon(
+                                                      Feather.navigation,
+                                                      color: Colors.white,
+                                                      size: 18,
+                                                    ),
+                                                  ],
+                                                ),
+                                                elevation: 0,
                                               ),
                                             ),
-                                            label: Row(
-                                              children: [
-                                                Text(
-                                                  'Map',
-                                                  style: TextStyle(
-                                                    fontSize: s2,
-                                                    color: Colors.white
-                                                        .withOpacity(0.95),
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                )..paddingOnly(bottom: 2),
-                                                const SizedBox(width: 10),
-                                                const Icon(
-                                                  Feather.navigation,
-                                                  color: Colors.white,
-                                                  size: 18,
-                                                ),
-                                              ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+
+                                  // Container(
+                                  //   height: 100,
+                                  //   width: width,
+                                  //   decoration: BoxDecoration(
+                                  //     color: Colors.black12,
+                                  //     borderRadius: BorderRadius.circular(10),
+                                  //   ),
+                                  //   child:  Text(
+                                  //     "Nirala 14, Khulna",
+                                  //     style: TextStyle(
+                                  //       fontSize: 12,
+                                  //       color: Color(0xff083437),
+                                  //       fontWeight: FontWeight.normal,
+                                  //     ),
+                                  //   ),
+                                  // ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: space),
+                        const Row(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(left: 20),
+                              child: Text(
+                                'more',
+                                style: TextStyle(
+                                  fontSize: s4,
+                                  color: Colors.black38,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: space),
+                        SizedBox(
+                          height: 130,
+                          child: StreamBuilder(
+                            stream: morePostList.stream,
+                            builder:
+                                (BuildContext context, AsyncSnapshot snapshot) {
+                              if (snapshot.data == null) {
+                                return const PostListSuggstionSimmer(
+                                  topPadding: 0,
+                                  count: 4,
+                                );
+                              } else {
+                                return ListView.builder(
+                                  controller: _controllerMore,
+                                  physics: const BouncingScrollPhysics(
+                                    parent: AlwaysScrollableScrollPhysics(),
+                                  ),
+                                  scrollDirection: Axis.horizontal,
+                                  shrinkWrap: true,
+                                  itemCount: snapshot.data.length + 1,
+                                  itemBuilder: (c, i) {
+                                    if (i < snapshot.data.length) {
+                                      return Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 20),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            border: Border.all(
+                                              color:
+                                                  Colors.black.withOpacity(0.1),
+                                              width: 0.4,
                                             ),
-                                            elevation: 0,
+                                          ),
+                                          child: MorePostsPro(
+                                            postData: snapshot.data[i],
+                                          ),
+                                        ),
+                                      );
+                                    } else {
+                                      if (lodingmorePosts.value) {
+                                        return const Center(
+                                          child: Padding(
+                                            padding: EdgeInsets.all(20),
+                                            child: CircularProgressIndicator(
+                                              color: Colors.red,
+                                            ),
+                                          ),
+                                        );
+                                      } else {
+                                        return const Padding(
+                                          padding: EdgeInsets.all(8.0),
+                                          child: Center(
+                                            child: Text(''),
+                                          ),
+                                        );
+                                      }
+                                    }
+                                  },
+                                );
+                              }
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 80),
+                      ],
+                    ),
+                  ),
+                  bottomNavigationBar: Container(
+                    height: 75,
+                    width: width,
+                    margin: const EdgeInsets.only(bottom: 10),
+                    color: Colors.white,
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 15),
+                        Row(
+                          children: [
+                            SizedBox(width: space),
+                            Expanded(
+                              flex: 1,
+                              child: InkWell(
+                                onTap: () async {
+                                  final call =
+                                      Uri.parse('tel:${postData.phone}');
+                                  if (await canLaunchUrl(call)) {
+                                    launchUrl(call);
+                                  } else {
+                                    throw 'Could not launch $call';
+                                  }
+                                },
+                                child: Container(
+                                  height: 44,
+                                  decoration: BoxDecoration(
+                                    // color: Colors.deepOrange,
+                                    color: const Color(0xffF36251),
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                  // ignore: prefer__ructors
+                                  child: const Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.call,
+                                        color: Colors.white,
+                                        size: 26,
+                                      ),
+                                      SizedBox(width: 5),
+                                      Text(
+                                        'CALL',
+                                        style: TextStyle(
+                                          fontSize: s2,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              flex: 1,
+                              child: InkWell(
+                                onTap: () async {
+                                  var uri = Uri.parse(
+                                      'sms:${postData.phone}?body=hello%20there');
+                                  if (await canLaunchUrl(uri)) {
+                                    await launchUrl(uri);
+                                  } else {
+                                    if (await canLaunchUrl(uri)) {
+                                      await launchUrl(uri);
+                                    } else {
+                                      throw 'Could not launch $uri';
+                                    }
+                                  }
+                                },
+                                child: Container(
+                                  height: 44,
+                                  decoration: BoxDecoration(
+                                    // color: Colors.blueAccent,
+                                    color: Colors.blue,
+                                    // color:  Color(0xff27D468),
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                        height: 23,
+                                        width: 23,
+                                        child: Center(
+                                          child: SvgPicture.asset(
+                                            'assets/icons/home/message.svg',
+                                            colorFilter: const ColorFilter.mode(
+                                              Colors.white,
+                                              BlendMode.srcIn,
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    )
-                                  ],
+                                      const SizedBox(width: 10),
+                                      const Text(
+                                        'SMS',
+                                        style: TextStyle(
+                                          fontSize: s2,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-
-                              // Container(
-                              //   height: 100,
-                              //   width: width,
-                              //   decoration: BoxDecoration(
-                              //     color: Colors.black12,
-                              //     borderRadius: BorderRadius.circular(10),
-                              //   ),
-                              //   child:  Text(
-                              //     "Nirala 14, Khulna",
-                              //     style: TextStyle(
-                              //       fontSize: 12,
-                              //       color: Color(0xff083437),
-                              //       fontWeight: FontWeight.normal,
-                              //     ),
-                              //   ),
-                              // ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: space),
-                    const Row(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(left: 20),
-                          child: Text(
-                            'more',
-                            style: TextStyle(
-                              fontSize: s4,
-                              color: Colors.black38,
                             ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: space),
-                    SizedBox(
-                      height: 130,
-                      child: StreamBuilder(
-                        stream: morePostList.stream,
-                        builder:
-                            (BuildContext context, AsyncSnapshot snapshot) {
-                          if (snapshot.data == null) {
-                            return const PostListSuggstionSimmer(
-                              topPadding: 0,
-                              count: 4,
-                            );
-                          } else {
-                            return ListView.builder(
-                              controller: _controllerMore,
-                              physics: const BouncingScrollPhysics(
-                                parent: AlwaysScrollableScrollPhysics(),
-                              ),
-                              scrollDirection: Axis.horizontal,
-                              shrinkWrap: true,
-                              itemCount: snapshot.data.length + 1,
-                              itemBuilder: (c, i) {
-                                if (i < snapshot.data.length) {
-                                  return Padding(
-                                    padding: const EdgeInsets.only(left: 20),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        border: Border.all(
-                                          color: Colors.black.withOpacity(0.1),
-                                          width: 0.4,
-                                        ),
-                                      ),
-                                      child: MorePostsPro(
-                                        postData: snapshot.data[i],
-                                      ),
-                                    ),
-                                  );
-                                } else {
-                                  if (lodingmorePosts.value) {
-                                    return const Center(
-                                      child: Padding(
-                                        padding: EdgeInsets.all(20),
-                                        child: CircularProgressIndicator(
-                                          color: Colors.red,
-                                        ),
-                                      ),
-                                    );
-                                  } else {
-                                    return const Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: Center(
-                                        child: Text(''),
-                                      ),
-                                    );
-                                  }
-                                }
-                              },
-                            );
-                          }
-                        },
-                      ),
-                    ),
-                    const SizedBox(height: 80),
-                  ],
-                ),
-              ),
-              bottomNavigationBar: Container(
-                height: 75,
-                width: width,
-                margin: const EdgeInsets.only(bottom: 10),
-                color: Colors.white,
-                child: Column(
-                  children: [
-                    const SizedBox(height: 15),
-                    Row(
-                      children: [
-                        SizedBox(width: space),
-                        Expanded(
-                          flex: 1,
-                          child: InkWell(
-                            onTap: () async {
-                              final call = Uri.parse('tel:${postData.phone}');
-                              if (await canLaunchUrl(call)) {
-                                launchUrl(call);
-                              } else {
-                                throw 'Could not launch $call';
-                              }
-                            },
-                            child: Container(
-                              height: 44,
-                              decoration: BoxDecoration(
-                                // color: Colors.deepOrange,
-                                color: const Color(0xffF36251),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              // ignore: prefer__ructors
-                              child: const Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.call,
-                                    color: Colors.white,
-                                    size: 26,
-                                  ),
-                                  SizedBox(width: 5),
-                                  Text(
-                                    'CALL',
-                                    style: TextStyle(
-                                      fontSize: s2,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          flex: 1,
-                          child: InkWell(
-                            onTap: () async {
-                              var uri = Uri.parse(
-                                  'sms:${postData.phone}?body=hello%20there');
-                              if (await canLaunchUrl(uri)) {
-                                await launchUrl(uri);
-                              } else {
-                                if (await canLaunchUrl(uri)) {
-                                  await launchUrl(uri);
-                                } else {
-                                  throw 'Could not launch $uri';
-                                }
-                              }
-                            },
-                            child: Container(
-                              height: 44,
-                              decoration: BoxDecoration(
-                                // color: Colors.blueAccent,
-                                color: Colors.blue,
-                                // color:  Color(0xff27D468),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SizedBox(
-                                    height: 23,
-                                    width: 23,
-                                    child: Center(
-                                      child: SvgPicture.asset(
-                                        'assets/icons/home/message.svg',
-                                        colorFilter: const ColorFilter.mode(
-                                          Colors.white,
-                                          BlendMode.srcIn,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  const Text(
-                                    'SMS',
-                                    style: TextStyle(
-                                      fontSize: s2,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          flex: 2,
-                          child: InkWell(
-                            onTap: () async {
-                              String appUrl;
-                              String phone = postData.wapp;
-                              String message = '''
+                            const SizedBox(width: 10),
+                            Expanded(
+                              flex: 2,
+                              child: InkWell(
+                                onTap: () async {
+                                  String appUrl;
+                                  String phone = postData.wapp;
+                                  String message = '''
 Hey there👋! I saw your sweet listing on btolet - is it still up for sale? I'm super interested. 😊 Please let me know what you think.''';
-                              if (Platform.isAndroid) {
-                                appUrl =
-                                    "whatsapp://send?phone=$phone&text=${Uri.parse(message)}";
-                              } else {
-                                appUrl =
-                                    "https://api.whatsapp.com/send?phone=$phone=${Uri.parse(message)}"; // URL for non-Android devices
-                              }
+                                  if (Platform.isAndroid) {
+                                    appUrl =
+                                        "whatsapp://send?phone=$phone&text=${Uri.parse(message)}";
+                                  } else {
+                                    appUrl =
+                                        "https://api.whatsapp.com/send?phone=$phone=${Uri.parse(message)}"; // URL for non-Android devices
+                                  }
 
-                              if (await canLaunchUrl(Uri.parse(appUrl))) {
-                                await launchUrl(Uri.parse(appUrl));
-                              } else {
-                                throw 'Could not launch $appUrl';
-                              }
-                            },
-                            child: Container(
-                              height: 44,
-                              decoration: BoxDecoration(
-                                color: const Color(0xff27D468),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SizedBox(
-                                    height: 30,
-                                    width: 30,
-                                    child: SvgPicture.asset(
-                                      'assets/icons/home/wapp.svg',
-                                      height: 10,
-                                      width: 22,
-                                    ),
+                                  if (await canLaunchUrl(Uri.parse(appUrl))) {
+                                    await launchUrl(Uri.parse(appUrl));
+                                  } else {
+                                    throw 'Could not launch $appUrl';
+                                  }
+                                },
+                                child: Container(
+                                  height: 44,
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xff27D468),
+                                    borderRadius: BorderRadius.circular(6),
                                   ),
-                                  const SizedBox(width: 10),
-                                  const Text(
-                                    'WhatsApp',
-                                    style: TextStyle(
-                                      fontSize: s2,
-                                      color: Colors.white,
-                                    ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                        height: 30,
+                                        width: 30,
+                                        child: SvgPicture.asset(
+                                          'assets/icons/home/wapp.svg',
+                                          height: 10,
+                                          width: 22,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      const Text(
+                                        'WhatsApp',
+                                        style: TextStyle(
+                                          fontSize: s2,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ],
+                                ),
                               ),
                             ),
-                          ),
+                            SizedBox(width: space),
+                          ],
                         ),
-                        SizedBox(width: space),
                       ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
     );
   }
 

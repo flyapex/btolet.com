@@ -57,15 +57,18 @@ class ProController extends GetxController {
     } finally {}
   }
 
+  var singlePostNull = false.obs;
   var singlePostloding = true.obs;
   getSinglePost(postid) async {
     // print("get Data");
+    singlePostNull(false);
     singlePostloding(true);
     try {
       var response = await ApiServicePro.getSinglePost(postid);
       if (response != null) {
         return response;
       } else {
+        singlePostNull(true);
         return null;
       }
     } finally {
@@ -605,10 +608,12 @@ class ProController extends GetxController {
             ownertype: selectedPostedBy.value,
             geolat: locationController.currentlatitude.value.toString(),
             geolon: locationController.currentlongitude.value.toString(),
-            phone: userController.code.value + userController.phonenumber.text,
+            phone: userController.codePhone.value +
+                userController.phonenumber.text,
             wapp: userController.wappnumber.text.isEmpty
                 ? ""
-                : userController.code.value + userController.wappnumber.text,
+                : userController.codeWapp.value +
+                    userController.wappnumber.text,
             landType: [],
             area: '',
             measurement: '',
@@ -660,10 +665,12 @@ class ProController extends GetxController {
             ownertype: selectedPostedBy.value,
             geolat: locationController.currentlatitude.value.toString(),
             geolon: locationController.currentlongitude.value.toString(),
-            phone: userController.code.value + userController.phonenumber.text,
+            phone: userController.codePhone.value +
+                userController.phonenumber.text,
             wapp: userController.wappnumber.text.isEmpty
                 ? ""
-                : userController.code.value + userController.wappnumber.text,
+                : userController.codeWapp.value +
+                    userController.wappnumber.text,
             landType: selectedLandTypes,
             area: area.value,
             measurement: mesurement.text,
@@ -877,7 +884,7 @@ class ProController extends GetxController {
         mypostPage = mypostPage + 1;
       }
     } finally {
-      mypostPageloding(false);
+      // mypostPageloding(false);
     }
   }
 

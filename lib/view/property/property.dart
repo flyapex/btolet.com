@@ -295,7 +295,7 @@ class PostsPro extends StatelessWidget {
                     onTap: () {
                       Get.to(
                         () => SinglePostPro(pid: postData.pid),
-                        transition: Transition.circularReveal,
+                        transition: Transition.cupertino,
                         duration: const Duration(milliseconds: 600),
                       );
                     },
@@ -701,11 +701,10 @@ Click Here To Download:
                               ),
                             ),
                             onTap: () async {
-                              var data = '+88${postData.wapp}';
                               var message =
                                   'Hi There I Just Saw A ads On btolet app, Is it available?';
                               await launchUrl(Uri.parse(
-                                  "whatsapp://send?phone=$data&text=${Uri.parse(message)}"));
+                                  "whatsapp://send?phone=${postData.wapp}&text=${Uri.parse(message)}"));
                               // final coords = Coords(
                               //   double.parse(postData.geolat),
                               //   double.parse(postData.geolon),

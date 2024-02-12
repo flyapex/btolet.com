@@ -132,7 +132,7 @@ class PostToletState1 extends State<PostPro1> {
                         const Row(
                           children: [
                             Text(
-                              'Amenities',
+                              'Ameneties',
                               style: TextStyle(
                                 fontSize: s3,
                                 color: Colors.black,

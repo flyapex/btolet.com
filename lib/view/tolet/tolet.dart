@@ -544,7 +544,7 @@ class _PostsToletState extends State<PostsTolet> {
                 () => SinglePostTolet(
                   postid: widget.postData.postId,
                 ),
-                transition: Transition.circularReveal,
+                transition: Transition.cupertino,
                 duration: const Duration(milliseconds: 600),
                 preventDuplicates: false,
               );

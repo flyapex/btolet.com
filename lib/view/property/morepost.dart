@@ -212,7 +212,7 @@ class _MorePostsProState extends State<MorePostsPro> {
               proController.singlePostloding(true);
               Get.to(
                 () => SinglePostPro(pid: widget.postData.pid),
-                transition: Transition.circularReveal,
+                transition: Transition.cupertino,
                 duration: const Duration(milliseconds: 600),
                 preventDuplicates: false,
               );

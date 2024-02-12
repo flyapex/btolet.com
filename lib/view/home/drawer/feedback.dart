@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 
+import 'feedback/imagepicker.dart';
+
 class FeedBack extends StatelessWidget {
   const FeedBack({super.key});
 
@@ -35,7 +37,9 @@ class FeedBack extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: () async {
+          await userController.feedback();
+        },
         label: const Row(
           children: [
             Icon(
@@ -54,50 +58,54 @@ class FeedBack extends StatelessWidget {
           ],
         ),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 20),
-          const Text(
-            'Feedback wanted! Enhance our app? Suggestions for extra features? Let us know! ✨',
-            style: TextStyle(
-              fontSize: 18,
-              color: Colors.black,
-            ),
-          ),
-          const SizedBox(height: 20),
-          const Text(
-            'Select Image',
-            style: TextStyle(
-              fontSize: 18,
-              color: Colors.black,
-            ),
-          ),
-          const SizedBox(height: 10),
-          Container(
-            height: 140,
-            decoration: BoxDecoration(
-              color: const Color(0xffE3E8FF),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: const Center(
-              child: Icon(
-                Feather.camera,
-                color: Colors.black45,
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 20),
+            const Text(
+              'Feedback wanted! Enhance our app? Suggestions for extra features? Let us know! ✨',
+              style: TextStyle(
+                fontSize: 18,
+                color: Colors.black,
               ),
             ),
-          ),
-          const SizedBox(height: 20),
-          Description(
-            title: "Text",
-            textType: TextInputType.text,
-            hintText: "\nFeedback Here✨",
-            controller: userController.description,
-            icon: Feather.file_text,
-            focusNode: userController.descriptionfocusNode,
-          ),
-        ],
-      ).paddingOnly(left: 20, right: 20),
+            const SizedBox(height: 20),
+            const Text(
+              'Select Image',
+              style: TextStyle(
+                fontSize: 18,
+                color: Colors.black,
+              ),
+            ),
+            const SizedBox(height: 10),
+            // Container(
+            //   height: 140,
+            //   decoration: BoxDecoration(
+            //     color: const Color(0xffE3E8FF),
+            //     borderRadius: BorderRadius.circular(10),
+            //   ),
+            //   child: const Center(
+            //     child: Icon(
+            //       Feather.camera,
+            //       color: Colors.black45,
+            //     ),
+            //   ),
+            // ),
+            const ImagePickerFeedback(
+              imagnumber: 2,
+            ),
+            const SizedBox(height: 20),
+            Description(
+              title: "Text",
+              textType: TextInputType.text,
+              hintText: "\nFeedback Here✨",
+              controller: userController.feedbackTextController,
+              icon: Feather.file_text,
+            ),
+          ],
+        ).paddingOnly(left: 20, right: 20),
+      ),
     );
   }
 }
@@ -108,16 +116,15 @@ class Description extends StatefulWidget {
   final String hintText;
   final TextInputType textType;
   final TextEditingController controller;
-  final FocusNode focusNode;
-  const Description(
-      {Key? key,
-      required this.title,
-      required this.icon,
-      required this.hintText,
-      required this.textType,
-      required this.controller,
-      required this.focusNode})
-      : super(key: key);
+
+  const Description({
+    Key? key,
+    required this.title,
+    required this.icon,
+    required this.hintText,
+    required this.textType,
+    required this.controller,
+  }) : super(key: key);
 
   @override
   DescriptionState createState() => DescriptionState();
@@ -128,26 +135,18 @@ class DescriptionState extends State<Description> {
   var textstyle = const TextStyle(
     overflow: TextOverflow.fade,
     height: 1.2,
-    // fontSize: s2,
     fontFamily: 'Roboto',
     fontSize: 14,
   );
   var textstyleh = TextStyle(
     overflow: TextOverflow.fade,
     height: 1.2,
-    // fontSize: s2,
-    // letterSpacing: 1.2,
     fontFamily: 'Roboto',
     fontSize: 14,
     color: Colors.black.withOpacity(0.3),
   );
   var iconColorChange = false;
   var focusNode = FocusNode();
-  getFocus() {
-    if (widget.focusNode == userController.descriptionfocusNode) {
-      FocusScope.of(context).requestFocus(userController.phonefocusNode);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -211,9 +210,6 @@ class DescriptionState extends State<Description> {
                         });
                       },
                       child: TextField(
-                        // textAlignVertical: TextAlignVertical.top,
-                        // textAlign: TextAlign.center,
-                        focusNode: widget.focusNode,
                         cursorHeight: 28,
                         cursorWidth: 1.8,
                         cursorRadius: const Radius.circular(10),
@@ -224,7 +220,6 @@ class DescriptionState extends State<Description> {
                         textInputAction: TextInputAction.newline,
                         cursorColor: Colors.black,
                         style: textstyle,
-
                         decoration: InputDecoration(
                           // contentPadding:
                           //     EdgeInsets.only(top: !iconColorChange ? 0 : 30),
@@ -236,9 +231,7 @@ class DescriptionState extends State<Description> {
                           hintStyle: textstyleh,
                         ),
                         onChanged: (v) {},
-                        onSubmitted: (v) {
-                          getFocus();
-                        },
+                        onSubmitted: (v) {},
                       ),
                     ),
                   ),

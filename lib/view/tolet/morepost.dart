@@ -282,7 +282,7 @@ class MoreToletState extends State<MoreTolet> {
                 () => SinglePostTolet(
                   postid: widget.postData.postId,
                 ),
-                transition: Transition.circularReveal,
+                transition: Transition.cupertino,
                 duration: const Duration(milliseconds: 600),
                 preventDuplicates: false,
               );

@@ -6,6 +6,7 @@ import 'package:btolet/controller/ads_controller.dart';
 import 'package:btolet/controller/location_controller.dart';
 import 'package:btolet/controller/tolet_controller.dart';
 import 'package:btolet/controller/user_controller.dart';
+import 'package:btolet/view/error/emptypage.dart';
 import 'package:btolet/model/tolet_model.dart';
 import 'package:btolet/view/shimmer/shimmer.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,7 @@ import 'package:label_marker/label_marker.dart';
 import 'package:like_button/like_button.dart';
 import 'package:map_launcher/map_launcher.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'morepost.dart';
 import 'widget/category.dart';
@@ -228,109 +230,119 @@ class _SinglePostToletState extends State<SinglePostTolet>
     return Obx(
       () => toletController.singlePostloding.value
           ? const SinglePostShimmer()
-          : Scaffold(
-              body: Stack(
-                children: [
-                  SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(
-                      parent: AlwaysScrollableScrollPhysics(),
-                    ),
-                    controller: _controller,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Stack(
+          : toletController.singlePostNull.value
+              ? const EmptyPage(
+                  appBarTitle: 'Back',
+                  bodyText: 'Sorry, The post has been deleted.',
+                  smallText: 'Try Another One🤝',
+                  lottieasset: 'assets/lottie/404.json',
+                )
+              : Scaffold(
+                  body: Stack(
+                    children: [
+                      SingleChildScrollView(
+                        physics: const BouncingScrollPhysics(
+                          parent: AlwaysScrollableScrollPhysics(),
+                        ),
+                        controller: _controller,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            ImageSlidePage(
-                              hight: height / 3.5,
-                              imageList: getImage(
-                                postData.image1,
-                                postData.image2,
-                                postData.image3,
-                                postData.image4,
-                                postData.image5,
-                                postData.image6,
-                                postData.image7,
-                                postData.image8,
-                                postData.image9,
-                                postData.image10,
-                                postData.image11,
-                                postData.image12,
-                              ),
-                            ),
-                            Column(
+                            Stack(
                               children: [
-                                const SizedBox(height: 30),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                ImageSlidePage(
+                                  hight: height / 3.5,
+                                  imageList: getImage(
+                                    postData.image1,
+                                    postData.image2,
+                                    postData.image3,
+                                    postData.image4,
+                                    postData.image5,
+                                    postData.image6,
+                                    postData.image7,
+                                    postData.image8,
+                                    postData.image9,
+                                    postData.image10,
+                                    postData.image11,
+                                    postData.image12,
+                                  ),
+                                ),
+                                Column(
                                   children: [
-                                    InkWell(
-                                      child: const Padding(
-                                        padding: EdgeInsets.only(left: 8),
-                                        child: Icon(
-                                          // Feather.arrow_left,
-                                          Feather.chevron_left,
-                                          color: Colors.white,
-                                          // size: 22,
-                                          size: 24,
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        Get.back();
-                                      },
-                                    ),
+                                    const SizedBox(height: 30),
                                     Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
-                                        ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(50),
-                                          child: Material(
-                                            color: Colors.black26,
-                                            child: LikeButton(
-                                              size: 32,
-                                              likeBuilder: (bool isLiked) {
-                                                return Icon(
-                                                  isLiked
-                                                      ? Icons.favorite
-                                                      : Icons
-                                                          .favorite_border_outlined,
-                                                  color: isLiked
-                                                      ? Colors.lightBlueAccent
-                                                      : Colors.white,
-                                                );
-                                              },
-                                              animationDuration: const Duration(
-                                                  milliseconds: 400),
-                                              onTap: (isLiked) async {
-                                                print(!isLiked);
-                                                toletController.save(
-                                                  postData.postId,
-                                                  !isLiked,
-                                                );
-                                                return !isLiked;
-                                              },
+                                        InkWell(
+                                          child: const Padding(
+                                            padding: EdgeInsets.only(left: 8),
+                                            child: Icon(
+                                              // Feather.arrow_left,
+                                              Feather.chevron_left,
+                                              color: Colors.white,
+                                              // size: 22,
+                                              size: 24,
                                             ),
                                           ),
+                                          onTap: () {
+                                            Get.back();
+                                          },
                                         ),
-                                        const SizedBox(width: 10),
-                                        ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(50),
-                                          child: Material(
-                                            color: Colors.black26,
-                                            child: InkWell(
-                                              child: const Padding(
-                                                padding: EdgeInsets.all(5),
-                                                child: Icon(
-                                                  Feather.share_2,
-                                                  color: Colors.white,
-                                                  size: 22,
+                                        Row(
+                                          children: [
+                                            ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(50),
+                                              child: Material(
+                                                color: Colors.black26,
+                                                child: LikeButton(
+                                                  size: 32,
+                                                  likeBuilder: (bool isLiked) {
+                                                    return Icon(
+                                                      isLiked
+                                                          ? Icons.favorite
+                                                          : Icons
+                                                              .favorite_border_outlined,
+                                                      color: isLiked
+                                                          ? Colors
+                                                              .lightBlueAccent
+                                                          : Colors.white,
+                                                    );
+                                                  },
+                                                  animationDuration:
+                                                      const Duration(
+                                                          milliseconds: 400),
+                                                  onTap: (isLiked) async {
+                                                    print(!isLiked);
+                                                    toletController.save(
+                                                      postData.postId,
+                                                      !isLiked,
+                                                    );
+                                                    return !isLiked;
+                                                  },
                                                 ),
                                               ),
-                                              onTap: () {
-                                                adsController.shareBase64Image(
-                                                    postData.image1, '''
+                                            ),
+                                            const SizedBox(width: 10),
+                                            ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(50),
+                                              child: Material(
+                                                color: Colors.black26,
+                                                child: InkWell(
+                                                  child: const Padding(
+                                                    padding: EdgeInsets.all(5),
+                                                    child: Icon(
+                                                      Feather.share_2,
+                                                      color: Colors.white,
+                                                      size: 22,
+                                                    ),
+                                                  ),
+                                                  onTap: () {
+                                                    adsController
+                                                        .shareBase64Image(
+                                                            postData.image1, '''
      🏷️ ${postData.category}
     💰Rent: ${postData.rent} ৳
     📍Location: ${postData.location}
@@ -339,424 +351,454 @@ Download our app now to discover more!🌟
 Check out the latest updates here:
    https://play.google.com/store/apps/details?id=com.btolet.app
     ''');
-                                              },
+                                                  },
+                                                ),
+                                              ),
                                             ),
-                                          ),
+                                            const SizedBox(width: 15),
+                                          ],
                                         ),
-                                        const SizedBox(width: 15),
                                       ],
                                     ),
                                   ],
-                                ),
+                                )
                               ],
-                            )
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            CategoryBodyPost(
-                              postData: postData,
                             ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 20, right: 20),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(height: 20),
-                                  const Text(
-                                    "In Map",
-                                    style: TextStyle(
-                                      fontSize: s3,
-                                      color: Color(0xff083437),
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 20),
-                                  Container(
-                                    height: 150,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(6),
-                                      border: Border.all(
-                                        color: Colors.black.withOpacity(0.2),
+                            Column(
+                              children: [
+                                CategoryBodyPost(
+                                  postData: postData,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 20, right: 20),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const SizedBox(height: 20),
+                                      const Text(
+                                        "In Map",
+                                        style: TextStyle(
+                                          fontSize: s3,
+                                          color: Color(0xff083437),
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                       ),
-                                    ),
-                                    child: Stack(
-                                      children: [
-                                        ClipRRect(
+                                      const SizedBox(height: 20),
+                                      Container(
+                                        height: 150,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
                                           borderRadius:
-                                              BorderRadius.circular(8),
-                                          child: GoogleMap(
-                                            padding: const EdgeInsets.only(
-                                              bottom: 500,
-                                              top: 0,
-                                              right: 0,
-                                              left: 0,
-                                            ),
-                                            onMapCreated: (controller) {
-                                              controller.setMapStyle(_mapStyle);
-                                            },
-                                            zoomControlsEnabled: false,
-                                            myLocationButtonEnabled: false,
-                                            initialCameraPosition:
-                                                CameraPosition(
-                                              target: LatLng(
-                                                double.parse(postData.geolat),
-                                                double.parse(postData.geolon),
-                                              ),
-                                              zoom: 16.0,
-                                            ),
-                                            mapToolbarEnabled: false,
-                                            markers: markers,
-                                            compassEnabled: true,
+                                              BorderRadius.circular(6),
+                                          border: Border.all(
+                                            color:
+                                                Colors.black.withOpacity(0.2),
                                           ),
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: Align(
-                                            alignment: Alignment.bottomRight,
-                                            child: SizedBox(
-                                              height: 40,
-                                              child:
-                                                  FloatingActionButton.extended(
-                                                backgroundColor: Colors.blue,
-                                                onPressed: () async {
-                                                  final coords = Coords(
+                                        child: Stack(
+                                          children: [
+                                            ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                              child: GoogleMap(
+                                                padding: const EdgeInsets.only(
+                                                  bottom: 500,
+                                                  top: 0,
+                                                  right: 0,
+                                                  left: 0,
+                                                ),
+                                                onMapCreated: (controller) {
+                                                  controller
+                                                      .setMapStyle(_mapStyle);
+                                                },
+                                                zoomControlsEnabled: false,
+                                                myLocationButtonEnabled: false,
+                                                initialCameraPosition:
+                                                    CameraPosition(
+                                                  target: LatLng(
                                                     double.parse(
                                                         postData.geolat),
                                                     double.parse(
                                                         postData.geolon),
-                                                  );
-                                                  var title =
-                                                      "Price ৳ ${NumberFormat.decimalPattern().format(postData.rent)}";
-                                                  final availableMaps =
-                                                      await MapLauncher
-                                                          .installedMaps;
-                                                  await availableMaps.first
-                                                      .showMarker(
-                                                    coords: coords,
-                                                    title: title,
-                                                    description: "description",
-                                                  );
-                                                },
-                                                shape: RoundedRectangleBorder(
-                                                  // side: const BorderSide(
-                                                  //     width: 3,
-                                                  //     color: Colors.brown),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                    100,
                                                   ),
+                                                  zoom: 16.0,
                                                 ),
-                                                label: const Row(
-                                                  children: [
-                                                    Text(
-                                                      'Map',
-                                                      style: TextStyle(
-                                                        fontSize: s3,
-                                                        color: Colors.white,
-                                                      ),
-                                                    ),
-                                                    SizedBox(width: 10),
-                                                    Icon(
-                                                      Feather.navigation,
-                                                      color: Colors.white,
-                                                      size: 18,
-                                                    ),
-                                                  ],
-                                                ),
-                                                elevation: 0,
+                                                mapToolbarEnabled: false,
+                                                markers: markers,
+                                                compassEnabled: true,
                                               ),
                                             ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(10.0),
+                                              child: Align(
+                                                alignment:
+                                                    Alignment.bottomRight,
+                                                child: SizedBox(
+                                                  height: 40,
+                                                  child: FloatingActionButton
+                                                      .extended(
+                                                    backgroundColor:
+                                                        Colors.blue,
+                                                    onPressed: () async {
+                                                      final coords = Coords(
+                                                        double.parse(
+                                                            postData.geolat),
+                                                        double.parse(
+                                                            postData.geolon),
+                                                      );
+                                                      var title =
+                                                          "Price ৳ ${NumberFormat.decimalPattern().format(postData.rent)}";
+                                                      final availableMaps =
+                                                          await MapLauncher
+                                                              .installedMaps;
+                                                      await availableMaps.first
+                                                          .showMarker(
+                                                        coords: coords,
+                                                        title: title,
+                                                        description:
+                                                            "description",
+                                                      );
+                                                    },
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      // side: const BorderSide(
+                                                      //     width: 3,
+                                                      //     color: Colors.brown),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                        100,
+                                                      ),
+                                                    ),
+                                                    label: const Row(
+                                                      children: [
+                                                        Text(
+                                                          'Map',
+                                                          style: TextStyle(
+                                                            fontSize: s3,
+                                                            color: Colors.white,
+                                                          ),
+                                                        ),
+                                                        SizedBox(width: 10),
+                                                        Icon(
+                                                          Feather.navigation,
+                                                          color: Colors.white,
+                                                          size: 18,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    elevation: 0,
+                                                  ),
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(height: 30),
+                                const Row(
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 20),
+                                      child: Text(
+                                        'more',
+                                        style: TextStyle(
+                                          fontSize: s4,
+                                          color: Colors.black38,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 20),
+                                SizedBox(
+                                  height: 130,
+                                  child: StreamBuilder(
+                                    stream: morePostList.stream,
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot snapshot) {
+                                      if (snapshot.data == null) {
+                                        return const PostListSuggstionSimmer(
+                                          topPadding: 0,
+                                          count: 4,
+                                        );
+                                      } else {
+                                        return ListView.builder(
+                                          physics: const BouncingScrollPhysics(
+                                            parent:
+                                                AlwaysScrollableScrollPhysics(),
                                           ),
-                                        )
-                                      ],
+                                          controller: _controllerMore,
+                                          scrollDirection: Axis.horizontal,
+                                          shrinkWrap: true,
+                                          itemCount: snapshot.data.length + 1,
+                                          itemBuilder: (c, i) {
+                                            if (i < snapshot.data.length) {
+                                              return Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 20),
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    border: Border.all(
+                                                      color: Colors.black
+                                                          .withOpacity(0.1),
+                                                      width: 0.4,
+                                                    ),
+                                                  ),
+                                                  child: MoreTolet(
+                                                    postData: snapshot.data[i],
+                                                  ),
+                                                ),
+                                              );
+                                            } else {
+                                              if (lodingmorePosts.value) {
+                                                return const Center(
+                                                  child: Padding(
+                                                    padding: EdgeInsets.all(20),
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      color: Colors.red,
+                                                    ),
+                                                  ),
+                                                );
+                                              } else {
+                                                return const Padding(
+                                                  padding: EdgeInsets.all(8.0),
+                                                  child: Center(
+                                                    child: Text(''),
+                                                  ),
+                                                );
+                                              }
+                                            }
+                                          },
+                                        );
+                                      }
+                                    },
+                                  ),
+                                ),
+                                const SizedBox(height: 80),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      // AnimatedSlide(
+                      //   duration: const Duration(milliseconds: 800),
+                      //   offset: locationController.singlePostTolemap.value
+                      //       ? Offset.zero
+                      //       : const Offset(0, 2),
+                      //   child: AnimatedOpacity(
+                      //     duration: const Duration(milliseconds: 800),
+                      //     opacity:
+                      //         locationController.singlePostTolemap.value ? 1 : 0,
+                      //     child: Align(
+                      //       alignment: Alignment.bottomCenter,
+                      //       child: Padding(
+                      //         padding: const EdgeInsets.only(bottom: 80),
+                      //         child: SizedBox(
+                      //           height: 40,
+                      //           child: FloatingActionButton.extended(
+                      //             onPressed: () {},
+                      //             label: const Row(
+                      //               children: [
+                      //                 Icon(Icons.map_rounded),
+                      //                 Text(
+                      //                   'Map',
+                      //                   style: TextStyle(
+                      //                     fontSize: 14,
+                      //                     color: Colors.black,
+                      //                   ),
+                      //                 ),
+                      //               ],
+                      //             ),
+                      //             elevation: 0,
+                      //           ),
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
+                    ],
+                  ),
+                  bottomNavigationBar: Container(
+                    height: 75,
+                    width: width,
+                    margin: const EdgeInsets.only(bottom: 10),
+                    color: Colors.white,
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 20),
+                        Expanded(
+                          flex: 1,
+                          child: InkWell(
+                            onTap: () async {
+                              print(postData.phone);
+                              // adsController.showRewardedAd(
+                              //   'call',
+                              //   postData.phone,
+                              // );
+                              final call = Uri.parse('tel:${postData.phone}');
+                              if (await canLaunchUrl(call)) {
+                                launchUrl(call);
+                              } else {
+                                throw 'Could not launch $call';
+                              }
+                            },
+                            child: Container(
+                              height: 44,
+                              decoration: BoxDecoration(
+                                // color: Colors.deepOrange,
+                                color: const Color(0xffF36251),
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.call,
+                                    color: Colors.white,
+                                    size: 26,
+                                  ),
+                                  SizedBox(width: 5),
+                                  Flexible(
+                                    child: Text(
+                                      'CALL',
+                                      style: TextStyle(
+                                        fontSize: s2,
+                                        color: Colors.white,
+                                        height: 0.7,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
                                     ),
                                   ),
                                 ],
                               ),
                             ),
-                            const SizedBox(height: 30),
-                            const Row(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(left: 20),
-                                  child: Text(
-                                    'more',
-                                    style: TextStyle(
-                                      fontSize: s4,
-                                      color: Colors.black38,
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          flex: 1,
+                          child: InkWell(
+                            onTap: () async {
+                              // adsController.showRewardedInterstitialAd(
+                              //   'sms',
+                              //   postData.phone,
+                              // );
+                              final sms = Uri.parse('sms:${postData.phone}');
+                              if (await canLaunchUrl(sms)) {
+                                launchUrl(sms);
+                              } else {
+                                throw 'Could not launch $sms';
+                              }
+                            },
+                            child: Container(
+                              height: 44,
+                              decoration: BoxDecoration(
+                                // color: Colors.blueAccent,
+                                color: Colors.blue,
+                                // color: const Color(0xff27D468),
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    height: 23,
+                                    width: 23,
+                                    child: Center(
+                                      child: SvgPicture.asset(
+                                        'assets/icons/home/message.svg',
+                                        colorFilter: const ColorFilter.mode(
+                                          Colors.white,
+                                          BlendMode.srcIn,
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 20),
-                            SizedBox(
-                              height: 130,
-                              child: StreamBuilder(
-                                stream: morePostList.stream,
-                                builder: (BuildContext context,
-                                    AsyncSnapshot snapshot) {
-                                  if (snapshot.data == null) {
-                                    return const PostListSuggstionSimmer(
-                                      topPadding: 0,
-                                      count: 4,
-                                    );
-                                  } else {
-                                    return ListView.builder(
-                                      physics: const BouncingScrollPhysics(
-                                        parent: AlwaysScrollableScrollPhysics(),
+                                  const SizedBox(width: 10),
+                                  const Flexible(
+                                    child: Text(
+                                      'SMS',
+                                      style: TextStyle(
+                                        fontSize: s2,
+                                        height: 0.7,
+                                        color: Colors.white,
                                       ),
-                                      controller: _controllerMore,
-                                      scrollDirection: Axis.horizontal,
-                                      shrinkWrap: true,
-                                      itemCount: snapshot.data.length + 1,
-                                      itemBuilder: (c, i) {
-                                        if (i < snapshot.data.length) {
-                                          return Padding(
-                                            padding:
-                                                const EdgeInsets.only(left: 20),
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                border: Border.all(
-                                                  color: Colors.black
-                                                      .withOpacity(0.1),
-                                                  width: 0.4,
-                                                ),
-                                              ),
-                                              child: MoreTolet(
-                                                postData: snapshot.data[i],
-                                              ),
-                                            ),
-                                          );
-                                        } else {
-                                          if (lodingmorePosts.value) {
-                                            return const Center(
-                                              child: Padding(
-                                                padding: EdgeInsets.all(20),
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  color: Colors.red,
-                                                ),
-                                              ),
-                                            );
-                                          } else {
-                                            return const Padding(
-                                              padding: EdgeInsets.all(8.0),
-                                              child: Center(
-                                                child: Text(''),
-                                              ),
-                                            );
-                                          }
-                                        }
-                                      },
-                                    );
-                                  }
-                                },
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            const SizedBox(height: 80),
-                          ],
+                          ),
                         ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          flex: 2,
+                          child: InkWell(
+                            onTap: () async {
+                              // adsController.showRewardedInterstitialAd(
+                              //   'wapp',
+                              //   postData.phone,
+                              // );
+
+                              var message =
+                                  'Hi There I Just Saw A ads On btolet app, Is it available?';
+                              await launchUrl(Uri.parse(
+                                  "whatsapp://send?phone=${postData.wapp}&text=${Uri.parse(message)}"));
+                            },
+                            child: Container(
+                              height: 44,
+                              decoration: BoxDecoration(
+                                color: const Color(0xff27D468),
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    height: 30,
+                                    width: 30,
+                                    child: SvgPicture.asset(
+                                      'assets/icons/home/wapp.svg',
+                                      height: 10,
+                                      width: 22,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  const Flexible(
+                                    child: Text(
+                                      'WhatsApp',
+                                      style: TextStyle(
+                                        fontSize: s2,
+                                        height: 0.7,
+                                        color: Colors.white,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 20),
                       ],
                     ),
                   ),
-                  // AnimatedSlide(
-                  //   duration: const Duration(milliseconds: 800),
-                  //   offset: locationController.singlePostTolemap.value
-                  //       ? Offset.zero
-                  //       : const Offset(0, 2),
-                  //   child: AnimatedOpacity(
-                  //     duration: const Duration(milliseconds: 800),
-                  //     opacity:
-                  //         locationController.singlePostTolemap.value ? 1 : 0,
-                  //     child: Align(
-                  //       alignment: Alignment.bottomCenter,
-                  //       child: Padding(
-                  //         padding: const EdgeInsets.only(bottom: 80),
-                  //         child: SizedBox(
-                  //           height: 40,
-                  //           child: FloatingActionButton.extended(
-                  //             onPressed: () {},
-                  //             label: const Row(
-                  //               children: [
-                  //                 Icon(Icons.map_rounded),
-                  //                 Text(
-                  //                   'Map',
-                  //                   style: TextStyle(
-                  //                     fontSize: 14,
-                  //                     color: Colors.black,
-                  //                   ),
-                  //                 ),
-                  //               ],
-                  //             ),
-                  //             elevation: 0,
-                  //           ),
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                ],
-              ),
-              bottomNavigationBar: Container(
-                height: 75,
-                width: width,
-                margin: const EdgeInsets.only(bottom: 10),
-                color: Colors.white,
-                child: Row(
-                  children: [
-                    const SizedBox(width: 20),
-                    Expanded(
-                      flex: 1,
-                      child: InkWell(
-                        onTap: () async {
-                          print(postData.phone);
-                          // adsController.showRewardedAd(
-                          //   'call',
-                          //   postData.phone,
-                          // );
-                        },
-                        child: Container(
-                          height: 44,
-                          decoration: BoxDecoration(
-                            // color: Colors.deepOrange,
-                            color: const Color(0xffF36251),
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.call,
-                                color: Colors.white,
-                                size: 26,
-                              ),
-                              SizedBox(width: 5),
-                              Flexible(
-                                child: Text(
-                                  'CALL',
-                                  style: TextStyle(
-                                    fontSize: s2,
-                                    color: Colors.white,
-                                    height: 0.7,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      flex: 1,
-                      child: InkWell(
-                        onTap: () async {
-                          // adsController.showRewardedInterstitialAd(
-                          //   'sms',
-                          //   postData.phone,
-                          // );
-                        },
-                        child: Container(
-                          height: 44,
-                          decoration: BoxDecoration(
-                            // color: Colors.blueAccent,
-                            color: Colors.blue,
-                            // color: const Color(0xff27D468),
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                height: 23,
-                                width: 23,
-                                child: Center(
-                                  child: SvgPicture.asset(
-                                    'assets/icons/home/message.svg',
-                                    colorFilter: const ColorFilter.mode(
-                                      Colors.white,
-                                      BlendMode.srcIn,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 10),
-                              const Flexible(
-                                child: Text(
-                                  'SMS',
-                                  style: TextStyle(
-                                    fontSize: s2,
-                                    height: 0.7,
-                                    color: Colors.white,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      flex: 2,
-                      child: InkWell(
-                        onTap: () async {
-                          // adsController.showRewardedInterstitialAd(
-                          //   'wapp',
-                          //   postData.phone,
-                          // );
-                        },
-                        child: Container(
-                          height: 44,
-                          decoration: BoxDecoration(
-                            color: const Color(0xff27D468),
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                height: 30,
-                                width: 30,
-                                child: SvgPicture.asset(
-                                  'assets/icons/home/wapp.svg',
-                                  height: 10,
-                                  width: 22,
-                                ),
-                              ),
-                              const SizedBox(width: 10),
-                              const Flexible(
-                                child: Text(
-                                  'WhatsApp',
-                                  style: TextStyle(
-                                    fontSize: s2,
-                                    height: 0.7,
-                                    color: Colors.white,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 20),
-                  ],
                 ),
-              ),
-            ),
     );
   }
 
@@ -769,13 +811,16 @@ class Details extends StatelessWidget {
   final String detailstext;
   final IconData icon;
   final Color textColor;
-
+  final String fontfamily;
+  final double fontSize;
   const Details({
     super.key,
     required this.type,
     required this.detailstext,
     required this.icon,
     this.textColor = const Color(0xff083437),
+    this.fontfamily = 'x',
+    this.fontSize = s4,
   });
 
   @override
@@ -786,7 +831,7 @@ class Details extends StatelessWidget {
             children: [
               const SizedBox(height: 8),
               Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Expanded(
                     flex: 4,
@@ -812,8 +857,9 @@ class Details extends StatelessWidget {
                     child: Text(
                       detailstext,
                       style: TextStyle(
-                        fontSize: s4,
+                        fontSize: fontSize,
                         color: textColor,
+                        fontFamily: fontfamily,
                       ),
                     ),
                   ),

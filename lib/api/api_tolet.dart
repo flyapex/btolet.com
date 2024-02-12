@@ -53,14 +53,16 @@ class ApiServiceTolet {
   }
 
   static Future getSinglePost(postid) async {
-    print('$baseUrl/post');
-    print({"post_id": postid});
+    // print('$baseUrl/post');
+    // print({"post_id": postid});
     final response = await dio.get(
       '$baseUrl/post',
       queryParameters: {"post_id": postid},
     );
 
-    if (response.statusCode == 200) {
+    // print(responseData.length);
+    // print(responseData.isNotEmpty);
+    if (response.statusCode == 200 && jsonEncode(response.data).isNotEmpty) {
       return singleToletPostModelFromJson(jsonEncode(response.data));
     } else {
       return null;

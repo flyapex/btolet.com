@@ -112,19 +112,18 @@ class _CustomeDrawerState extends State<CustomeDrawer>
               onTap: () {
                 Get.to(
                   () => const Profile(),
-                  transition: Transition.circularReveal,
-                  duration: const Duration(milliseconds: 500),
+                  transition: Transition.cupertino,
+                  duration: const Duration(milliseconds: 600),
                 );
               },
             ),
             ListTile(
               onTap: () {
                 Get.back();
-
                 Get.to(
                   () => const Saved(),
-                  transition: Transition.circularReveal,
-                  duration: const Duration(milliseconds: 500),
+                  transition: Transition.cupertino,
+                  duration: const Duration(milliseconds: 600),
                 );
               },
               title: const Row(
@@ -144,6 +143,13 @@ class _CustomeDrawerState extends State<CustomeDrawer>
               ),
             ),
             ListTile(
+              onTap: () {
+                Get.to(
+                  () => const MyPost(),
+                  transition: Transition.cupertino,
+                  duration: const Duration(milliseconds: 600),
+                );
+              },
               title: const Row(
                 children: [
                   Icon(
@@ -159,13 +165,6 @@ class _CustomeDrawerState extends State<CustomeDrawer>
                   ),
                 ],
               ),
-              onTap: () {
-                Get.to(
-                  () => const MyPost(),
-                  transition: Transition.circularReveal,
-                  duration: const Duration(milliseconds: 500),
-                );
-              },
             ),
             // ListTile(
             //   title: const Row(
@@ -212,27 +211,28 @@ class _CustomeDrawerState extends State<CustomeDrawer>
             // ),
 
             ListTile(
-              title: InkWell(
-                onTap: () {
-                  Get.to(const FeedBack());
-                },
-                child: const Row(
-                  children: [
-                    Icon(
-                      Feather.radio,
-                      color: Colors.black38,
-                    ),
-                    SizedBox(
-                      width: 30,
-                    ),
-                    Text(
-                      'Feedback',
-                      style: TextStyle(color: Colors.black, fontSize: s3),
-                    ),
-                  ],
-                ),
+              onTap: () {
+                Get.to(
+                  const FeedBack(),
+                  transition: Transition.cupertino,
+                  duration: const Duration(milliseconds: 600),
+                );
+              },
+              title: const Row(
+                children: [
+                  Icon(
+                    Feather.radio,
+                    color: Colors.black38,
+                  ),
+                  SizedBox(
+                    width: 30,
+                  ),
+                  Text(
+                    'Feedback',
+                    style: TextStyle(color: Colors.black, fontSize: s3),
+                  ),
+                ],
               ),
-              onTap: () {},
             ),
             const SizedBox(height: 50),
             Container(
@@ -240,69 +240,75 @@ class _CustomeDrawerState extends State<CustomeDrawer>
               color: Colors.black45,
             ),
             ListTile(
-              title: InkWell(
-                onTap: () {
-                  Get.to(const Terms());
-                },
-                child: const Row(
-                  children: [
-                    Icon(
-                      Feather.search,
-                      color: Colors.black38,
-                    ),
-                    SizedBox(
-                      width: 30,
-                    ),
-                    Text(
-                      'Terms & Condition',
-                      style: TextStyle(color: Colors.black, fontSize: s3),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            InkWell(
-              onTap: () {},
-              child: ListTile(
-                title: const Row(
-                  children: [
-                    Icon(
-                      Feather.phone_call,
-                      color: Colors.black38,
-                    ),
-                    SizedBox(
-                      width: 30,
-                    ),
-                    Text(
-                      'Contact Us',
-                      style: TextStyle(color: Colors.black, fontSize: s3),
-                    ),
-                  ],
-                ),
-                onTap: () async {
-                  String appUrl;
-                  String phone = '+8801799261773';
-                  String message =
-                      '''Hello Btolet Team This is ${userController.name.value} id:${dbController.getUserID()} ''';
-                  if (Platform.isAndroid) {
-                    appUrl =
-                        "whatsapp://send?phone=$phone&text=${Uri.encodeComponent(message)}";
-                  } else {
-                    appUrl =
-                        "https://api.whatsapp.com/send?phone=$phone&text=${Uri.encodeComponent(message)}"; // URL for non-Android devices
-                  }
-
-                  // ignore: deprecated_member_use
-                  if (await canLaunch(appUrl)) {
-                    // ignore: deprecated_member_use
-                    await launch(appUrl);
-                  } else {
-                    throw 'Could not launch $appUrl';
-                  }
-                },
+              onTap: () {
+                Get.to(
+                  const Terms(),
+                  transition: Transition.cupertino,
+                  duration: const Duration(milliseconds: 600),
+                );
+              },
+              title: const Row(
+                children: [
+                  Icon(
+                    Feather.search,
+                    color: Colors.black38,
+                  ),
+                  SizedBox(
+                    width: 30,
+                  ),
+                  Text(
+                    'Terms & Condition',
+                    style: TextStyle(color: Colors.black, fontSize: s3),
+                  ),
+                ],
               ),
             ),
             ListTile(
+              onTap: () async {
+                String appUrl;
+                String phone = '+8801799261773';
+                String message =
+                    '''Hello Btolet Team This is ${userController.name.value} id:${dbController.getUserID()} ''';
+                if (Platform.isAndroid) {
+                  appUrl =
+                      "whatsapp://send?phone=$phone&text=${Uri.encodeComponent(message)}";
+                } else {
+                  appUrl =
+                      "https://api.whatsapp.com/send?phone=$phone&text=${Uri.encodeComponent(message)}"; // URL for non-Android devices
+                }
+
+                // ignore: deprecated_member_use
+                if (await canLaunch(appUrl)) {
+                  // ignore: deprecated_member_use
+                  await launch(appUrl);
+                } else {
+                  throw 'Could not launch $appUrl';
+                }
+              },
+              title: const Row(
+                children: [
+                  Icon(
+                    Feather.phone_call,
+                    color: Colors.black38,
+                  ),
+                  SizedBox(
+                    width: 30,
+                  ),
+                  Text(
+                    'Contact Us',
+                    style: TextStyle(color: Colors.black, fontSize: s3),
+                  ),
+                ],
+              ),
+            ),
+            ListTile(
+              onTap: () {
+                Get.to(
+                  () => const AboutUS(),
+                  transition: Transition.cupertino,
+                  duration: const Duration(milliseconds: 600),
+                );
+              },
               title: const Row(
                 children: [
                   Icon(
@@ -318,13 +324,6 @@ class _CustomeDrawerState extends State<CustomeDrawer>
                   ),
                 ],
               ),
-              onTap: () {
-                Get.to(
-                  () => const AboutUS(),
-                  transition: Transition.circularReveal,
-                  duration: const Duration(milliseconds: 500),
-                );
-              },
             ),
             // InkWell(
             //   onTap: () {
@@ -342,7 +341,7 @@ class _CustomeDrawerState extends State<CustomeDrawer>
             //         ),
             //         Text(
             //           'LOGOUT',
-            //           style: TextStyle(color: Colors.black),
+            //           style: TextStyle(color: Colors.black, fontSize: s3),
             //         ),
             //       ],
             //     ),

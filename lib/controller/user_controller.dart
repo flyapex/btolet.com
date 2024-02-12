@@ -9,11 +9,51 @@ import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
+import 'package:hl_image_picker_android/hl_image_picker_android.dart';
 import 'db_controller.dart';
 
 class UserController extends GetxController {
   final refreshkeyUser = GlobalKey<CustomRefreshIndicatorState>();
+  List<HLPickerItem> selectedImages = [];
+  TextEditingController feedbackTextController = TextEditingController();
+
+  feedback() async {
+    List<String> imageBase64List = [];
+
+    for (int i = 0; i < 2; i++) {
+      if (i < selectedImages.length) {
+        Uint8List? compressedImage =
+            await FlutterImageCompress.compressWithFile(
+          selectedImages[i].path,
+          minHeight: 1200,
+          minWidth: 800,
+          quality: 20,
+          rotate: 0,
+        );
+        String base64Image = base64Encode(compressedImage!);
+        imageBase64List.add(base64Image);
+      } else {
+        imageBase64List.add("");
+      }
+    }
+    try {
+      var response = await ApiService.feedback(
+        imageBase64List[0],
+        imageBase64List[1],
+        feedbackTextController.text,
+      );
+      if (response != null) {
+        Get.back();
+        Get.back();
+        snakberSuccess(response);
+        selectedImages.clear();
+        feedbackTextController.clear();
+        return true;
+      }
+    } finally {}
+  }
 
   // var connectionStatus = ''.obs;
 
@@ -45,7 +85,8 @@ class UserController extends GetxController {
 
   TextEditingController nameController = TextEditingController();
 
-  var code = '+88'.obs;
+  var codePhone = '+88'.obs;
+  var codeWapp = '+88'.obs;
   TextEditingController phonenumber = TextEditingController();
   TextEditingController wappnumber = TextEditingController();
 

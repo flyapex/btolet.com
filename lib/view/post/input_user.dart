@@ -212,7 +212,7 @@ class _NumberInputState extends State<NumberInput> {
     letterSpacing: 1.2,
   );
 
-  var hinttex = '017xxxxxxxx';
+  var hinttex = '17xxxxxxxx';
   var iconColorChange = false;
 
   getBorderColor() {
@@ -242,12 +242,20 @@ class _NumberInputState extends State<NumberInput> {
           initialCountry: _selectedCupertinoCountry,
           onValuePicked: (Country country) {
             var code = country.phoneCode;
+            // print("+$code");
+            // if (code != null && code.isNotEmpty) {
+            //   code = code.substring(0, code.length - 1);
+            // }
 
-            if (code != null && code.isNotEmpty) {
-              code = code.substring(0, code.length - 1);
+            if (widget.focusNode == userController.phonefocusNode) {
+              userController.codePhone.value = "+$code";
+              print(userController.codePhone.value);
+            } else {
+              userController.codeWapp.value = "+$code";
+              print(userController.codePhone.value);
             }
-            userController.code.value = "+$code";
-            print(userController.code.value);
+
+            print(userController.codePhone.value);
             setState(
               () => _selectedCupertinoCountry = country,
             );

@@ -1,12 +1,38 @@
+import 'package:btolet/constants/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:get/get.dart';
 
 class Terms extends StatelessWidget {
   const Terms({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: SafeArea(
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: false,
+        leadingWidth: 54,
+        leading: Align(
+          alignment: Alignment.centerRight,
+          child: IconButton(
+            onPressed: () {
+              Get.back();
+            },
+            icon: const Icon(Feather.chevron_left),
+          ),
+        ),
+        backgroundColor: Colors.white,
+        title: Text(
+          'Back',
+          style: TextStyle(
+            fontSize: s1,
+            height: 0.5,
+            fontWeight: FontWeight.bold,
+            color: Colors.black.withOpacity(0.7),
+          ),
+        ),
+      ),
+      body: const SafeArea(
         child: SingleChildScrollView(
           physics:
               BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
