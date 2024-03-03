@@ -467,12 +467,15 @@ Click Here To Download:
                       color: Colors.black45,
                     ),
                     const SizedBox(width: 5),
-                    Text(
-                      postData.location,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: const Color(0xff083437).withOpacity(0.6),
-                        fontFamily: 'Roboto',
+                    Expanded(
+                      child: Text(
+                        postData.location,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: const Color(0xff083437).withOpacity(0.6),
+                          fontFamily: 'Roboto',
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ],

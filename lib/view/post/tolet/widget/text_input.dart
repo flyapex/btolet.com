@@ -159,7 +159,24 @@ class _TextInputState extends State<TextInput> {
                           keyboardType: widget.textType,
                           maxLines: 1,
                           cursorColor: Colors.black,
-                          style: textstyle,
+                          // style: textstyle,
+                          style: TextStyle(
+                            overflow: TextOverflow.ellipsis,
+                            color: Colors.black.withOpacity(0.5),
+                            height: 1.2,
+                            letterSpacing: RegExp(r'^[a-zA-Z\s]+$')
+                                    .hasMatch(widget.controller.text)
+                                ? 1.2
+                                : 0.7,
+                            fontSize: RegExp(r'^[a-zA-Z\s]+$')
+                                    .hasMatch(widget.controller.text)
+                                ? s3
+                                : 15,
+                            fontFamily: RegExp(r'^[a-zA-Z\s]+$')
+                                    .hasMatch(widget.controller.text)
+                                ? 'x'
+                                : 'Roboto',
+                          ),
                           decoration: InputDecoration(
                             isCollapsed: true,
                             contentPadding: const EdgeInsets.all(10),
@@ -169,7 +186,15 @@ class _TextInputState extends State<TextInput> {
                                 color: iconColorChange
                                     ? const Color(0xff0166EE)
                                     : Colors.amber,
-                                fontSize: widget.suffixtext == '৳' ? 15 : s3,
+                                // fontSize: widget.suffixtext == '৳' ? 15 : s3,
+                                fontSize: RegExp(r'^[a-zA-Z\s]+$')
+                                        .hasMatch(widget.controller.text)
+                                    ? s3
+                                    : 15,
+                                fontFamily: RegExp(r'^[a-zA-Z\s]+$')
+                                        .hasMatch(widget.controller.text)
+                                    ? 'x'
+                                    : 'Roboto',
                               ),
                             ),
                             border: const OutlineInputBorder(
@@ -177,7 +202,24 @@ class _TextInputState extends State<TextInput> {
                             ),
                             isDense: true,
                             hintText: widget.hintText,
-                            hintStyle: textstyleh,
+                            // hintStyle: textstyleh,
+                            hintStyle: TextStyle(
+                              overflow: TextOverflow.ellipsis,
+                              color: Colors.black.withOpacity(0.5),
+                              height: 1.2,
+                              letterSpacing: RegExp(r'^[a-zA-Z\s]+$')
+                                      .hasMatch(widget.controller.text)
+                                  ? 1.2
+                                  : 0.6,
+                              fontSize: RegExp(r'^[a-zA-Z\s]+$')
+                                      .hasMatch(widget.controller.text)
+                                  ? s3
+                                  : 15,
+                              fontFamily: RegExp(r'^[a-zA-Z\s]+$')
+                                      .hasMatch(widget.controller.text)
+                                  ? 'x'
+                                  : 'Roboto',
+                            ),
                           ),
                           onChanged: (val) {
                             // postController.alltextfield();

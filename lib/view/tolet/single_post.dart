@@ -20,7 +20,6 @@ import 'package:label_marker/label_marker.dart';
 import 'package:like_button/like_button.dart';
 import 'package:map_launcher/map_launcher.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import 'morepost.dart';
 import 'widget/category.dart';
@@ -645,12 +644,12 @@ Check out the latest updates here:
                               //   'call',
                               //   postData.phone,
                               // );
-                              final call = Uri.parse('tel:${postData.phone}');
-                              if (await canLaunchUrl(call)) {
-                                launchUrl(call);
-                              } else {
-                                throw 'Could not launch $call';
-                              }
+                              // final call = Uri.parse('tel:${postData.phone}');
+                              // if (await canLaunchUrl(call)) {
+                              //   launchUrl(call);
+                              // } else {
+                              //   throw 'Could not launch $call';
+                              // }
                             },
                             child: Container(
                               height: 44,
@@ -694,12 +693,12 @@ Check out the latest updates here:
                               //   'sms',
                               //   postData.phone,
                               // );
-                              final sms = Uri.parse('sms:${postData.phone}');
-                              if (await canLaunchUrl(sms)) {
-                                launchUrl(sms);
-                              } else {
-                                throw 'Could not launch $sms';
-                              }
+                              // final sms = Uri.parse('sms:${postData.phone}');
+                              // if (await canLaunchUrl(sms)) {
+                              //   launchUrl(sms);
+                              // } else {
+                              //   throw 'Could not launch $sms';
+                              // }
                             },
                             child: Container(
                               height: 44,
@@ -753,10 +752,10 @@ Check out the latest updates here:
                               //   postData.phone,
                               // );
 
-                              var message =
-                                  'Hi There I Just Saw A ads On btolet app, Is it available?';
-                              await launchUrl(Uri.parse(
-                                  "whatsapp://send?phone=${postData.wapp}&text=${Uri.parse(message)}"));
+                              // var message =
+                              //     'Hi There I Just Saw A ads On btolet app, Is it available?';
+                              // await launchUrl(Uri.parse(
+                              //     "whatsapp://send?phone=${postData.wapp}&text=${Uri.parse(message)}"));
                             },
                             child: Container(
                               height: 44,

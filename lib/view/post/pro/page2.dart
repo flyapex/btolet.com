@@ -289,7 +289,7 @@ class PostToletState1 extends State<PostPro2> {
               iconw: 21,
               color: const Color(0xff6E7FFC),
               focusNode: userController.phonefocusNode,
-              numberLength: 11,
+              numberLength: 10,
             ),
             NumberInput(
               topPadding: 10,
@@ -303,7 +303,7 @@ class PostToletState1 extends State<PostPro2> {
               iconw: 30,
               color: Colors.lightGreen,
               focusNode: userController.wappfocusNode,
-              numberLength: 11,
+              numberLength: 10,
             ),
             const SizedBox(height: 200),
           ],

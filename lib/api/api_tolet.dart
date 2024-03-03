@@ -102,8 +102,8 @@ class ApiServiceTolet {
   }
 
   static Future newPost(NewPostTolet data) async {
-    print('$baseUrl/newPost');
-    print(newPostToletToJson(data));
+    // print('$baseUrl/newPost');
+    // print(newPostToletToJson(data));
     final response = await dio.post(
       '$baseUrl/newPost',
       data: newPostToletToJson(data),
@@ -117,11 +117,22 @@ class ApiServiceTolet {
   }
 
   static Future sortingPostCount(SortPostTolet data) async {
-    print('$baseUrl/sort/postlist');
-    print(sortPostToletToJson(data));
-    final response = await dio.post(
+    // print('$baseUrl/sort/postcount');
+    // print(sortPostToletToJson(data));
+    final response = await dio.get(
       '$baseUrl/sort/postcount',
-      data: sortPostToletToJson(data),
+      // data: sortPostToletToJson(data),
+      queryParameters: {
+        "geolat": data.geolat,
+        "geolon": data.geolon,
+        "page": data.page,
+        "category": List<dynamic>.from(data.category.map((x) => x)),
+        "fasalitis": List<dynamic>.from(data.fasalitis.map((x) => x)),
+        "rentmin": data.rentmin,
+        "rentmax": data.rentmax,
+        "bed": List<dynamic>.from(data.bed.map((x) => x)),
+        "bath": List<dynamic>.from(data.bath.map((x) => x)),
+      },
     );
 
     if (response.statusCode == 200) {
@@ -132,11 +143,22 @@ class ApiServiceTolet {
   }
 
   static Future sortingPost(SortPostTolet data) async {
-    print('$baseUrl/sort/postlist');
-    print(sortPostToletToJson(data));
-    final response = await dio.post(
+    // print('$baseUrl/sort/postlist');
+    // print(sortPostToletToJson(data));
+    final response = await dio.get(
       '$baseUrl/sort/postlist',
-      data: sortPostToletToJson(data),
+      // data: sortPostToletToJson(data),
+      queryParameters: {
+        "geolat": data.geolat,
+        "geolon": data.geolon,
+        "page": data.page,
+        "category": List<dynamic>.from(data.category.map((x) => x)),
+        "fasalitis": List<dynamic>.from(data.fasalitis.map((x) => x)),
+        "rentmin": data.rentmin,
+        "rentmax": data.rentmax,
+        "bed": List<dynamic>.from(data.bed.map((x) => x)),
+        "bath": List<dynamic>.from(data.bath.map((x) => x)),
+      },
     );
 
     if (response.statusCode == 200) {

@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 
 class Description extends StatefulWidget {
@@ -195,7 +196,8 @@ class NumberInput extends StatefulWidget {
 
 class _NumberInputState extends State<NumberInput> {
   final UserController userController = Get.find();
-  ProController proController = Get.find();
+
+  ProController proController = Get.put(ProController());
   ToletController toletController = Get.find();
 
   static const TextStyle textstyle = TextStyle(
@@ -242,6 +244,7 @@ class _NumberInputState extends State<NumberInput> {
           initialCountry: _selectedCupertinoCountry,
           onValuePicked: (Country country) {
             var code = country.phoneCode;
+            print(code);
             // print("+$code");
             // if (code != null && code.isNotEmpty) {
             //   code = code.substring(0, code.length - 1);
@@ -296,6 +299,16 @@ class _NumberInputState extends State<NumberInput> {
     return Row(
       children: <Widget>[
         // CountryPickerUtils.getDefaultFlagImage(country),
+        // Flexible(
+        //   child: Text(
+        //     '(${country.isoCode ?? ''} )',
+        //     style: const TextStyle(
+        //       height: 1.2,
+        //       fontSize: s4,
+        //       fontFamily: 'x',
+        //     ),
+        //   ),
+        // ),
         const SizedBox(width: 8.0),
 
         // Text(
@@ -306,8 +319,13 @@ class _NumberInputState extends State<NumberInput> {
           "+${country.phoneCode}",
           style: h3,
         ),
-        const SizedBox(width: 8.0),
+        // const SizedBox(width: 8.0),
+        const SizedBox(width: 4.0),
         // Flexible(child: Text(country.name ?? ''))
+        const Icon(
+          Feather.chevron_down,
+          size: 14,
+        ),
       ],
     );
   }

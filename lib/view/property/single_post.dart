@@ -450,7 +450,7 @@ class _SinglePostProState extends State<SinglePostPro>
                     ),
                     DetailsCircle(
                       icon: 'assets/icons/property/road.svg',
-                      title: "Rode size",
+                      title: "Rode size(ft)",
                       subtitle: postData.roadSize,
                       iconheight: 32,
                       iconwidth: 32,
@@ -959,66 +959,76 @@ Check out the latest updates here:
                                     ),
                                   ),
 
-                                  SizedBox(height: space),
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Icon(
-                                            Feather.menu,
-                                            color: const Color(0xff8595A9)
-                                                .withOpacity(0.5),
-                                            size: 18,
-                                          ),
-                                          const SizedBox(width: 10),
-                                          Text(
-                                            "Discription",
-                                            style: h3,
-                                          ),
-                                        ],
-                                      ),
-                                      Text(
-                                        'id: ${postData.pid}',
-                                        style: const TextStyle(
-                                          fontSize: s4,
-                                          color: Colors.black54,
+                                  postData.description.isEmpty
+                                      ? const SizedBox(height: 20)
+                                      : Column(
+                                          children: [
+                                            SizedBox(height: space),
+                                            Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Icon(
+                                                      Feather.menu,
+                                                      color: const Color(
+                                                              0xff8595A9)
+                                                          .withOpacity(0.5),
+                                                      size: 18,
+                                                    ),
+                                                    const SizedBox(width: 10),
+                                                    Text(
+                                                      "Description",
+                                                      style: h3,
+                                                    ),
+                                                  ],
+                                                ),
+                                                Text(
+                                                  'id: ${postData.pid}',
+                                                  style: const TextStyle(
+                                                    fontSize: s4,
+                                                    color: Colors.black54,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(height: space),
+                                            Container(
+                                              // height: 100,
+                                              width: double.infinity,
+                                              decoration: BoxDecoration(
+                                                color: const Color(0xffE3E8FF),
+                                                borderRadius:
+                                                    BorderRadius.circular(6),
+                                              ),
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                  top: 20,
+                                                  left: 20,
+                                                  right: 15,
+                                                  bottom: 20,
+                                                ),
+                                                child: Text(
+                                                  postData.description,
+                                                  // textAlign: TextAlign.justify,
+                                                  overflow: TextOverflow.clip,
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    color:
+                                                        const Color(0xff083437)
+                                                            .withOpacity(0.5),
+                                                    fontFamily: 'Roboto',
+                                                  ),
+                                                  // maxLines: 5,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: space),
-                                  Container(
-                                    height: 100,
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xffE3E8FF),
-                                      borderRadius: BorderRadius.circular(6),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                        top: 20,
-                                        left: 20,
-                                        right: 15,
-                                        bottom: 20,
-                                      ),
-                                      child: Text(
-                                        postData.description,
-                                        // textAlign: TextAlign.justify,
-                                        overflow: TextOverflow.clip,
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: const Color(0xff083437)
-                                              .withOpacity(0.5),
-                                          fontFamily: 'Roboto',
-                                        ),
-                                        // maxLines: 5,
-                                      ),
-                                    ),
-                                  ),
                                   SizedBox(height: space),
                                   const Text(
                                     "In Map",

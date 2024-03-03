@@ -85,8 +85,8 @@ class UserController extends GetxController {
 
   TextEditingController nameController = TextEditingController();
 
-  var codePhone = '+88'.obs;
-  var codeWapp = '+88'.obs;
+  var codePhone = '+880'.obs;
+  var codeWapp = '+880'.obs;
   TextEditingController phonenumber = TextEditingController();
   TextEditingController wappnumber = TextEditingController();
 

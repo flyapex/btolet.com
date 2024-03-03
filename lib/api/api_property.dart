@@ -102,6 +102,8 @@ class ApiServicePro {
   // }
 
   static Future newPost(NewPostPro data) async {
+    print('$baseUrl/newPost');
+    print(newPostProToJson(data));
     try {
       final response = await dio.post(
         '$baseUrl/newpost',
@@ -124,9 +126,31 @@ class ApiServicePro {
   static Future sortingPostCount(SortPostPro data) async {
     // print('$baseUrl/sort/postcount');
     // print(sortPostProToJson(data));
-    final response = await dio.post(
+    // print({
+    //   "geolat": data.geolat,
+    //   "geolon": data.geolon,
+    //   "page": data.page,
+    //   "category": List<dynamic>.from(data.category.map((x) => x)),
+    //   "fasalitis": List<dynamic>.from(data.fasalitis.map((x) => x)),
+    //   "rentmin": data.rentmin,
+    //   "rentmax": data.rentmax,
+    //   "bed": List<dynamic>.from(data.bed.map((x) => x)),
+    //   "bath": List<dynamic>.from(data.bath.map((x) => x)),
+    // });
+    final response = await dio.get(
       '$baseUrl/sort/postcount',
-      data: sortPostProToJson(data),
+      // data: sortPostProToJson(data),
+      queryParameters: {
+        "geolat": data.geolat,
+        "geolon": data.geolon,
+        "page": data.page,
+        "category": List<dynamic>.from(data.category.map((x) => x)),
+        "fasalitis": List<dynamic>.from(data.fasalitis.map((x) => x)),
+        "rentmin": data.rentmin,
+        "rentmax": data.rentmax,
+        "bed": List<dynamic>.from(data.bed.map((x) => x)),
+        "bath": List<dynamic>.from(data.bath.map((x) => x)),
+      },
     );
 
     if (response.statusCode == 200) {
@@ -137,10 +161,22 @@ class ApiServicePro {
   }
 
   static Future sortingPost(SortPostPro data) async {
-    print(sortPostProToJson(data));
-    final response = await dio.post(
+    // print('$baseUrl/sort/postlist');
+    // print(sortPostProToJson(data));
+    final response = await dio.get(
       '$baseUrl/sort/postlist',
       data: sortPostProToJson(data),
+      queryParameters: {
+        "geolat": data.geolat,
+        "geolon": data.geolon,
+        "page": data.page,
+        "category": List<dynamic>.from(data.category.map((x) => x)),
+        "fasalitis": List<dynamic>.from(data.fasalitis.map((x) => x)),
+        "rentmin": data.rentmin,
+        "rentmax": data.rentmax,
+        "bed": List<dynamic>.from(data.bed.map((x) => x)),
+        "bath": List<dynamic>.from(data.bath.map((x) => x)),
+      },
     );
 
     if (response.statusCode == 200) {

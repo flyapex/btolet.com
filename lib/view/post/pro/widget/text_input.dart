@@ -186,7 +186,24 @@ class _TextInputProState extends State<TextInputPro> {
                           keyboardType: widget.textType,
                           maxLines: 1,
                           cursorColor: Colors.black,
-                          style: textstyle,
+                          // style: textstyle,
+                          style: TextStyle(
+                            overflow: TextOverflow.ellipsis,
+                            color: Colors.black.withOpacity(0.5),
+                            height: 1.2,
+                            letterSpacing: RegExp(r'^[a-zA-Z\s]+$')
+                                    .hasMatch(widget.controller.text)
+                                ? 1.2
+                                : 0.7,
+                            fontSize: RegExp(r'^[a-zA-Z\s]+$')
+                                    .hasMatch(widget.controller.text)
+                                ? s3
+                                : 15,
+                            fontFamily: RegExp(r'^[a-zA-Z\s]+$')
+                                    .hasMatch(widget.controller.text)
+                                ? 'x'
+                                : 'Roboto',
+                          ),
                           decoration: InputDecoration(
                             contentPadding: const EdgeInsets.all(10),
                             counterText: '',
@@ -205,7 +222,23 @@ class _TextInputProState extends State<TextInputPro> {
                             ),
                             isDense: true,
                             hintText: widget.hintText,
-                            hintStyle: textstyleh,
+                            hintStyle: TextStyle(
+                              overflow: TextOverflow.ellipsis,
+                              color: Colors.black.withOpacity(0.5),
+                              height: 1.2,
+                              letterSpacing: RegExp(r'^[a-zA-Z\s]+$')
+                                      .hasMatch(widget.controller.text)
+                                  ? 1.2
+                                  : 0.7,
+                              fontSize: RegExp(r'^[a-zA-Z\s]+$')
+                                      .hasMatch(widget.controller.text)
+                                  ? s3
+                                  : 15,
+                              fontFamily: RegExp(r'^[a-zA-Z\s]+$')
+                                      .hasMatch(widget.controller.text)
+                                  ? 'x'
+                                  : 'Roboto',
+                            ),
                           ),
                           onChanged: (val) {
                             if (userController.shortAddress ==

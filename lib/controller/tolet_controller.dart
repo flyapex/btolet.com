@@ -138,7 +138,7 @@ class ToletController extends GetxController {
     'Only Garage': false.obs,
   };
 
-  getCategory() {
+  List<String> getCategory() {
     final selectedCategories = categories.entries
         .where((entry) => entry.value.value)
         .map((entry) => entry.key)
@@ -306,6 +306,7 @@ class ToletController extends GetxController {
   }
 
   checkAllCatagory() {
+    // categoryFlag.value == getCategory().isEmpty;
     priceFlag.value = rent.text.isNotEmpty;
     imageFlag.value = selectedImages.isNotEmpty;
 
@@ -318,93 +319,114 @@ class ToletController extends GetxController {
   }
 
   flagCheck() {
-    if (categories['Only Garage']!.value) {
-      if (rent.text.isNotEmpty) {
-        priceFlag.value = true;
-      } else {
-        animateToPage(0);
-      }
-      if (selectedImages.isNotEmpty) {
-        imageFlag.value = true;
-      } else {
-        animateToPage(0);
-      }
+    print(categoryFlag.value);
 
-      userController.phoneFlag.value =
-          userController.phonenumber.text.isNotEmpty ||
-              userController.wappnumber.text.isNotEmpty;
-
-      allFlag.value =
-          imageFlag.value && priceFlag.value && userController.phoneFlag.value;
-    } else if (categories['Office']!.value && categories['Family']!.value) {
-      if (rent.text.isNotEmpty) {
-        priceFlag.value = true;
-      } else {
-        animateToPage(0);
-      }
-      if (selectedImages.isNotEmpty) {
-        imageFlag.value = true;
-      } else {
-        animateToPage(0);
-      }
-
-      userController.phoneFlag.value =
-          userController.phonenumber.text.isNotEmpty ||
-              userController.wappnumber.text.isNotEmpty;
-      allFlag.value =
-          priceFlag.value && imageFlag.value && userController.phoneFlag.value;
-    } else if (categories['Office']!.value) {
-      if (rent.text.isNotEmpty) {
-        priceFlag.value = true;
-      } else {
-        animateToPage(0);
-      }
-      if (selectedImages.isNotEmpty) {
-        imageFlag.value = true;
-      } else {
-        animateToPage(0);
-      }
-      userController.phoneFlag.value =
-          userController.phonenumber.text.isNotEmpty ||
-              userController.wappnumber.text.isNotEmpty;
-
-      allFlag.value =
-          priceFlag.value && imageFlag.value && userController.phoneFlag.value;
-    } else if (categories['Shop']!.value) {
-      if (rent.text.isNotEmpty) {
-        priceFlag.value = true;
-      } else {
-        animateToPage(0);
-      }
-
-      if (selectedImages.isNotEmpty) {
-        imageFlag.value = true;
-      } else {
-        animateToEnd();
-      }
-      userController.phoneFlag.value =
-          userController.phonenumber.text.isNotEmpty ||
-              userController.wappnumber.text.isNotEmpty;
-
-      allFlag.value =
-          imageFlag.value && priceFlag.value && userController.phoneFlag.value;
+    if (getCategory().isEmpty) {
+      categoryFlag(false);
+      animateToPage(0);
     } else {
-      if (rent.text.isNotEmpty) {
-        priceFlag.value = true;
-      } else {
-        animateToPage(0);
-      }
-      if (selectedImages.isNotEmpty) {
-        imageFlag.value = true;
-      } else {
-        animateToPage(0);
-      }
       userController.phoneFlag.value =
           userController.phonenumber.text.isNotEmpty ||
               userController.wappnumber.text.isNotEmpty;
 
-      allFlag.value =
-          priceFlag.value && imageFlag.value && userController.phoneFlag.value;
+      if (categories['Only Garage']!.value) {
+        if (rent.text.isNotEmpty) {
+          priceFlag.value = true;
+        } else {
+          animateToPage(0);
+        }
+        if (selectedImages.isNotEmpty) {
+          imageFlag.value = true;
+        } else {
+          animateToPage(0);
+        }
+
+        // userController.phoneFlag.value =
+        //     userController.phonenumber.text.isNotEmpty ||
+        //         userController.wappnumber.text.isNotEmpty;
+
+        allFlag.value = categoryFlag.value &&
+            imageFlag.value &&
+            priceFlag.value &&
+            userController.phoneFlag.value;
+      } else if (categories['Office']!.value && categories['Family']!.value) {
+        if (rent.text.isNotEmpty) {
+          priceFlag.value = true;
+        } else {
+          animateToPage(0);
+        }
+        if (selectedImages.isNotEmpty) {
+          imageFlag.value = true;
+        } else {
+          animateToPage(0);
+        }
+
+        // userController.phoneFlag.value =
+        //     userController.phonenumber.text.isNotEmpty ||
+        //         userController.wappnumber.text.isNotEmpty;
+        allFlag.value = categoryFlag.value &&
+            priceFlag.value &&
+            imageFlag.value &&
+            userController.phoneFlag.value;
+      } else if (categories['Office']!.value) {
+        if (rent.text.isNotEmpty) {
+          priceFlag.value = true;
+        } else {
+          animateToPage(0);
+        }
+        if (selectedImages.isNotEmpty) {
+          imageFlag.value = true;
+        } else {
+          animateToPage(0);
+        }
+        // userController.phoneFlag.value =
+        //     userController.phonenumber.text.isNotEmpty ||
+        //         userController.wappnumber.text.isNotEmpty;
+
+        allFlag.value = categoryFlag.value &&
+            priceFlag.value &&
+            imageFlag.value &&
+            userController.phoneFlag.value;
+      } else if (categories['Shop']!.value) {
+        if (rent.text.isNotEmpty) {
+          priceFlag.value = true;
+        } else {
+          animateToPage(0);
+        }
+
+        if (selectedImages.isNotEmpty) {
+          imageFlag.value = true;
+        } else {
+          animateToEnd();
+        }
+        // userController.phoneFlag.value =
+        //     userController.phonenumber.text.isNotEmpty ||
+        //         userController.wappnumber.text.isNotEmpty;
+
+        allFlag.value = categoryFlag.value &&
+            imageFlag.value &&
+            priceFlag.value &&
+            userController.phoneFlag.value;
+      } else {
+        if (rent.text.isNotEmpty) {
+          priceFlag.value = true;
+        } else {
+          animateToPage(0);
+        }
+        if (selectedImages.isNotEmpty) {
+          imageFlag.value = true;
+        } else {
+          animateToPage(0);
+        }
+        // userController.phoneFlag.value =
+        //     userController.phonenumber.text.isNotEmpty ||
+        //         userController.wappnumber.text.isNotEmpty;
+
+        allFlag.value = categoryFlag.value &&
+            priceFlag.value &&
+            imageFlag.value &&
+            userController.phoneFlag.value;
+      }
     }
   }
 

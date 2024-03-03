@@ -993,10 +993,10 @@ class PostListSuggstionSimmer extends StatelessWidget {
       baseColor: Colors.grey.shade300,
       highlightColor: Colors.grey.shade100,
       child: Container(
-        height: height / 7,
+        height: 130,
         width: width / 2.8,
         decoration: const BoxDecoration(
-          color: Colors.red,
+          color: Colors.white,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(10),
             bottomLeft: Radius.circular(10),

@@ -565,6 +565,8 @@ class ProController extends GetxController {
     try {
       if (selectedCategory.value == category[0] ||
           selectedCategory.value == category[1]) {
+
+            
         response = await ApiServicePro.newPost(
           NewPostPro(
             uid: dbController.getUserID(),
