@@ -20,6 +20,7 @@ class Location extends StatelessWidget {
             duration: const Duration(milliseconds: 170),
             transition: Transition.circularReveal,
             fullscreenDialog: true,
+            preventDuplicates: false,
           ),
           child: Column(
             children: [

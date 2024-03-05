@@ -23,7 +23,7 @@ class _LocationSheetState extends State<LocationSheet>
     with AutomaticKeepAliveClientMixin {
   double latitude = 0;
   double longitude = 0;
-  LocationController locationController = Get.put(LocationController());
+  LocationController locationController = Get.find();
   UserController userController = Get.find();
   // PostController postController = Get.find();
 
