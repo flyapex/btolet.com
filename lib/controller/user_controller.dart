@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:btolet/api/api.dart';
 import 'package:btolet/constants/colors.dart';
-import 'package:btolet/model/api.dart';
+import 'package:btolet/model/user_model.dart';
 
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/foundation.dart';

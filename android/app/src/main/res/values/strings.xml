@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="facebook_app_id">1378670759385646</string>
-    <string name="facebook_client_token">04f194ff47a318ba4c566355e5e528e8</string>
+    <string name="app_name">btolet</string>
+    <string name="facebook_app_id">418935914042660</string>
+    <string name="fb_login_protocol_scheme">fb418935914042660</string>
+    <string name="facebook_client_token">2f245003b92e58ad11c5536f2f4994ef</string>
 </resources>

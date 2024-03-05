@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'package:btolet/model/api.dart';
 import 'package:btolet/model/pro_model.dart';
+import 'package:btolet/model/user_model.dart';
 import 'package:dio/dio.dart';
 
 import 'google ads/ad_helper.dart';

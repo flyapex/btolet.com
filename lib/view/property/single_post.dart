@@ -450,10 +450,18 @@ class _SinglePostProState extends State<SinglePostPro>
                     ),
                     DetailsCircle(
                       icon: 'assets/icons/property/road.svg',
-                      title: "Rode size(ft)",
-                      subtitle: postData.roadSize,
+                      title: "Rode size",
+                      subtitle: "${postData.roadSize} (ft)",
                       iconheight: 32,
                       iconwidth: 32,
+                      fontflag: false,
+                    ),
+                    DetailsCircle(
+                      icon: 'assets/icons/property/emi.svg',
+                      title: 'EMI',
+                      subtitle: postData.emi,
+                      iconheight: 30,
+                      iconwidth: 30,
                       fontflag: false,
                     ),
                     // DetailsCircle(

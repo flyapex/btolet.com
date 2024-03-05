@@ -303,6 +303,28 @@ class _CategoryBodyProState extends State<CategoryBodyPro> {
                     focusNode: proController.pricefocusNode,
                   )
                 : const SizedBox(),
+            proController.selectedCategory.value == category[3]
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: space),
+                      Text(
+                        'EMI',
+                        style: TextStyle(
+                          letterSpacing: 0.7,
+                          color: Colors.black.withOpacity(0.6),
+                          fontSize: s3,
+                          height: 1,
+                        ),
+                      ).paddingOnly(bottom: 2),
+                      PorChipsNotext(
+                        options: emi,
+                        selected: proController.selectedEMIType,
+                      ),
+                      // SizedBox(height: space),
+                    ],
+                  )
+                : const SizedBox()
             // SizedBox(height: space),
           ],
         );

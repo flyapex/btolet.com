@@ -1,5 +1,6 @@
 import 'dart:convert';
-import 'package:btolet/model/api.dart';
+import 'package:btolet/model/ads_model.dart';
+import 'package:btolet/model/user_model.dart';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 

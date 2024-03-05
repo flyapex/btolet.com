@@ -68,8 +68,6 @@ dependencies:
   shimmer: ^3.0.0
   google_mobile_ads: ^3.1.0
   pattern_formatter: ^3.0.0
-  # flutter_facebook_auth: ^6.0.3
-  # device_preview: ^1.1.0
   map_launcher: ^3.1.0
   # in_app_review: ^2.0.8
   card_swiper: ^3.0.1
@@ -78,11 +76,12 @@ dependencies:
   flutter_local_notifications: ^16.3.0
   firebase_core: ^2.24.2
   firebase_messaging: ^14.7.10
-  device_preview: ^1.1.0
   in_app_update: ^4.2.2
   country_currency_pickers: ^3.0.0
   carousel_slider: ^4.2.1
   connectivity_plus: ^5.0.2
+  flutter_facebook_auth: ^6.1.1
+  device_preview: ^1.1.0
 
 
  

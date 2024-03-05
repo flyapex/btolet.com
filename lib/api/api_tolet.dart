@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'package:btolet/model/api.dart';
 import 'package:btolet/model/tolet_model.dart';
+import 'package:btolet/model/user_model.dart';
 import 'package:dio/dio.dart';
 
 import 'google ads/ad_helper.dart';
@@ -119,6 +119,7 @@ class ApiServiceTolet {
   static Future sortingPostCount(SortPostTolet data) async {
     // print('$baseUrl/sort/postcount');
     // print(sortPostToletToJson(data));
+
     final response = await dio.get(
       '$baseUrl/sort/postcount',
       // data: sortPostToletToJson(data),
@@ -134,7 +135,7 @@ class ApiServiceTolet {
         "bath": List<dynamic>.from(data.bath.map((x) => x)),
       },
     );
-
+    // print('Request URL: ${response.realUri}');
     if (response.statusCode == 200) {
       return response.data['total_count'];
     } else {

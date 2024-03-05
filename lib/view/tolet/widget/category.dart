@@ -48,19 +48,19 @@ class CategoryBodyPost extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(width: 3),
-              SizedBox(
-                height: 10,
-                width: 10,
-                child: SvgPicture.asset(
-                  'assets/icons/tolet/security.svg',
-                  colorFilter: const ColorFilter.mode(
-                    // Color(0xff083437),
-                    Colors.green,
-                    BlendMode.srcIn,
-                  ),
-                ),
-              ),
+              // const SizedBox(width: 3),
+              // SizedBox(
+              //   height: 10,
+              //   width: 10,
+              //   child: SvgPicture.asset(
+              //     'assets/icons/tolet/security.svg',
+              //     colorFilter: const ColorFilter.mode(
+              //       // Color(0xff083437),
+              //       Colors.green,
+              //       BlendMode.srcIn,
+              //     ),
+              //   ),
+              // ),
             ],
           );
         } else if (postData.garagetype == "Bike") {

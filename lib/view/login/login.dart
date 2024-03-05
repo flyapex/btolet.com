@@ -3,7 +3,7 @@ import 'package:btolet/api/google_api.dart';
 import 'package:btolet/controller/db_controller.dart';
 import 'package:btolet/controller/widget/notification.dart';
 import 'package:btolet/controller/user_controller.dart';
-import 'package:btolet/model/api.dart';
+import 'package:btolet/model/user_model.dart';
 import 'package:btolet/view/login/widget/permission.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -199,6 +199,75 @@ class _LoginState extends State<Login> {
                             messageText: const Text('Maybe Google? 👌'),
                             barBlur: 30,
                           );
+                          // final LoginResult result =
+                          //     await FacebookAuth.instance.login();
+                          // if (result.status == LoginStatus.success) {
+                          //   print(result.accessToken);
+                          //   // get the user data
+                          //   // by default we get the userId, email,name and picture
+                          //   final userData =
+                          //       await FacebookAuth.instance.getUserData();
+                          //   // final userData = await FacebookAuth.instance.getUserData(fields: "email,birthday,friends,gender,link");
+                          //   print(userData);
+                          //   print(userData["picture"]["data"]["url"]);
+
+                          //   //   var userdetails = await userController.userLogin(
+                          //   //     Newuser(
+                          //   //       // name: user!.displayName!,
+                          //   //       name: userData['name'],
+                          //   //       email: '',
+                          //   //       fb: "",
+                          //   //       image: userData["picture"]["data"]["url"],
+                          //   //       geolocation: userController.geolocation.value,
+                          //   //       signature: userController.signature.value,
+                          //   //     ),
+                          //   //   );
+
+                          //   //   if (userdetails == false) {
+                          //   //     Get.snackbar(
+                          //   //       'ERROR👏🤝',
+                          //   //       'We Will back soon',
+                          //   //       snackPosition: SnackPosition.TOP,
+                          //   //       backgroundColor: Colors.white,
+                          //   //       borderRadius: 10,
+                          //   //       margin: const EdgeInsets.all(10),
+                          //   //     );
+                          //   //   } else {
+                          //   //     dbController.saveUserId(userdetails.uid);
+                          //   //     Get.offAll(
+                          //   //       () => const Permission(),
+                          //   //       transition: Transition.circularReveal,
+                          //   //       duration: const Duration(milliseconds: 600),
+                          //   //     );
+
+                          //   //     Get.snackbar(
+                          //   //       'Congrats👏🤝',
+                          //   //       'Welcome ${userdetails.name}',
+                          //   //       snackPosition: SnackPosition.TOP,
+                          //   //       backgroundColor: Colors.white,
+                          //   //       borderRadius: 10,
+                          //   //       margin: const EdgeInsets.all(10),
+                          //   //     );
+                          //   //   }
+                          // } else {
+                          //   // print(result.status);
+                          //   // print(result.message);
+                          //   Get.snackbar(
+                          //     '',
+                          //     '',
+                          //     snackPosition: SnackPosition.BOTTOM,
+                          //     borderRadius: 6,
+                          //     margin: const EdgeInsets.only(
+                          //       top: 30,
+                          //       right: 30,
+                          //       left: 30,
+                          //       bottom: 10,
+                          //     ),
+                          //     titleText: const Text('Under Deverlopment 👀👀 '),
+                          //     messageText: const Text('Maybe Google? 👌'),
+                          //     barBlur: 30,
+                          //   );
+                          // }
                         },
                         child: const SocialIcons(
                           icon: 'assets/icons/home/fb.svg',

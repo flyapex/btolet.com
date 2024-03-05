@@ -424,158 +424,167 @@ Click Here To Download:
               ),
             ],
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 15),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  "${postData.category} ",
-                  style: const TextStyle(
-                    color: Color(0xff083437),
-                    fontSize: s2,
-                    height: 0.8,
+          InkWell(
+            onTap: () {
+              Get.to(
+                () => SinglePostPro(pid: postData.pid),
+                transition: Transition.cupertino,
+                duration: const Duration(milliseconds: 600),
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(left: 15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    "${postData.category} ",
+                    style: const TextStyle(
+                      color: Color(0xff083437),
+                      fontSize: s2,
+                      height: 0.8,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 12),
-                postData.price == 0
-                    ? Text(
-                        'Price On Call',
-                        style: TextStyle(
-                          fontSize: s1,
-                          height: 0.8,
-                          color: const Color(0xff083437).withOpacity(0.8),
-                          fontWeight: FontWeight.bold,
-                        ),
-                      )
-                    : Text(
-                        "${userController.currency(postData.price)}  BDT",
-                        style: TextStyle(
-                          fontSize: s1,
-                          height: 0.8,
-                          color: const Color(0xff083437).withOpacity(0.8),
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    const Icon(
-                      Feather.map_pin,
-                      size: 16,
-                      color: Colors.black45,
-                    ),
-                    const SizedBox(width: 5),
-                    Expanded(
-                      child: Text(
-                        postData.location,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: const Color(0xff083437).withOpacity(0.6),
-                          fontFamily: 'Roboto',
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
-                ),
-                // const SizedBox(height: 10),
-                // SizedBox(height: postData.bed == "" ? 10 : 4),
-                const SizedBox(height: 8),
-                postData.bed == ""
-                    ? Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            postData.measurement,
-                            style: TextStyle(
-                              color: const Color(0xff083437).withOpacity(0.7),
-                              fontSize: 16,
-                              height: 1.2,
-                              fontFamily: 'Roboto',
-                              // fontWeight: FontWeight.bold,
-                            ),
+                  const SizedBox(height: 12),
+                  postData.price == 0
+                      ? Text(
+                          'Price On Call',
+                          style: TextStyle(
+                            fontSize: s1,
+                            height: 0.8,
+                            color: const Color(0xff083437).withOpacity(0.8),
+                            fontWeight: FontWeight.bold,
                           ),
-                          const SizedBox(width: 4),
-                          Text(
-                            postData.area,
-                            style: TextStyle(
-                              color: const Color(0xff083437).withOpacity(0.8),
-                              fontSize: 17,
-                              height: 1.2,
-                              fontFamily: 'Roboto',
+                        )
+                      : Text(
+                          "${userController.currency(postData.price)}  BDT",
+                          style: TextStyle(
+                            fontSize: s1,
+                            height: 0.8,
+                            color: const Color(0xff083437).withOpacity(0.8),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      const Icon(
+                        Feather.map_pin,
+                        size: 16,
+                        color: Colors.black45,
+                      ),
+                      const SizedBox(width: 5),
+                      Expanded(
+                        child: Text(
+                          postData.location,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: const Color(0xff083437).withOpacity(0.6),
+                            fontFamily: 'Roboto',
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                  // const SizedBox(height: 10),
+                  // SizedBox(height: postData.bed == "" ? 10 : 4),
+                  const SizedBox(height: 8),
+                  postData.bed == ""
+                      ? Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              postData.measurement,
+                              style: TextStyle(
+                                color: const Color(0xff083437).withOpacity(0.7),
+                                fontSize: 16,
+                                height: 1.2,
+                                fontFamily: 'Roboto',
+                                // fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          )
-                        ],
-                      )
-                    : Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 2),
-                            child: SizedBox(
-                              height: 28,
-                              width: 28,
+                            const SizedBox(width: 4),
+                            Text(
+                              postData.area,
+                              style: TextStyle(
+                                color: const Color(0xff083437).withOpacity(0.8),
+                                fontSize: 17,
+                                height: 1.2,
+                                fontFamily: 'Roboto',
+                              ),
+                            )
+                          ],
+                        )
+                      : Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 2),
+                              child: SizedBox(
+                                height: 28,
+                                width: 28,
+                                child: SvgPicture.asset(
+                                  'assets/icons/property/bed.svg',
+                                  colorFilter: ColorFilter.mode(
+                                    Colors.black.withOpacity(0.5),
+                                    BlendMode.srcIn,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 6),
+                            Text(
+                              postData.bed,
+                              style: const TextStyle(
+                                color: Color(0xff083437),
+                                fontSize: s4,
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            SizedBox(
+                              height: 24,
+                              width: 24,
                               child: SvgPicture.asset(
-                                'assets/icons/property/bed.svg',
+                                'assets/icons/property/bath.svg',
                                 colorFilter: ColorFilter.mode(
                                   Colors.black.withOpacity(0.5),
                                   BlendMode.srcIn,
                                 ),
                               ),
                             ),
-                          ),
-                          const SizedBox(width: 6),
-                          Text(
-                            postData.bed,
-                            style: const TextStyle(
-                              color: Color(0xff083437),
-                              fontSize: s4,
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          SizedBox(
-                            height: 24,
-                            width: 24,
-                            child: SvgPicture.asset(
-                              'assets/icons/property/bath.svg',
-                              colorFilter: ColorFilter.mode(
-                                Colors.black.withOpacity(0.5),
-                                BlendMode.srcIn,
+                            const SizedBox(width: 6),
+                            Text(
+                              postData.bath,
+                              style: const TextStyle(
+                                color: Color(0xff083437),
+                                fontSize: s4,
                               ),
                             ),
-                          ),
-                          const SizedBox(width: 6),
-                          Text(
-                            postData.bath,
-                            style: const TextStyle(
-                              color: Color(0xff083437),
-                              fontSize: s4,
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          SizedBox(
-                            height: 18,
-                            width: 18,
-                            child: SvgPicture.asset(
-                              'assets/icons/property/size.svg',
-                              colorFilter: ColorFilter.mode(
-                                Colors.black.withOpacity(0.5),
-                                BlendMode.srcIn,
+                            const SizedBox(width: 10),
+                            SizedBox(
+                              height: 18,
+                              width: 18,
+                              child: SvgPicture.asset(
+                                'assets/icons/property/size.svg',
+                                colorFilter: ColorFilter.mode(
+                                  Colors.black.withOpacity(0.5),
+                                  BlendMode.srcIn,
+                                ),
                               ),
                             ),
-                          ),
-                          const SizedBox(width: 6),
-                          Text(
-                            postData.size,
-                            style: const TextStyle(
-                              color: Color(0xff083437),
-                              fontSize: s4,
+                            const SizedBox(width: 6),
+                            Text(
+                              postData.size,
+                              style: const TextStyle(
+                                color: Color(0xff083437),
+                                fontSize: s4,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-              ],
+                          ],
+                        ),
+                ],
+              ),
             ),
           ),
           Container(

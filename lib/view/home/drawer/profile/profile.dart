@@ -1,6 +1,7 @@
 import 'package:btolet/constants/colors.dart';
 import 'package:btolet/controller/db_controller.dart';
 import 'package:btolet/controller/user_controller.dart';
+import 'package:btolet/view/post/input_user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
@@ -185,25 +186,53 @@ class Profile extends StatelessWidget {
                             iconh: 23,
                             iconw: 23,
                           ),
-                          TextInputBoxProfile(
-                            topPadding: 20,
-                            title: "Phone",
-                            textType: TextInputType.number,
-                            hintText: userController.phone.value,
-                            suffixtext: "",
+                          // TextInputBoxProfile(
+                          //   topPadding: 20,
+                          //   title: "Phone",
+                          //   textType: TextInputType.number,
+                          //   hintText: userController.phone.value,
+                          //   suffixtext: "",
+                          //   controller: userController.phonenumber,
+                          //   iconh: 23,
+                          //   iconw: 23,
+                          // ),
+                          // TextInputBoxProfile(
+                          //   topPadding: 20,
+                          //   title: "Whatsapp",
+                          //   textType: TextInputType.number,
+                          //   hintText: userController.wapp.value,
+                          //   suffixtext: "",
+                          //   controller: userController.wappnumber,
+                          //   iconh: 23,
+                          //   iconw: 23,
+                          // ),
+                          NumberInput(
+                            topPadding: 15,
+                            bottomPadding: 6,
+                            title: "Phone *",
+                            textType: TextInputType.phone,
+                            hintText: '17XXXX',
                             controller: userController.phonenumber,
-                            iconh: 23,
-                            iconw: 23,
+                            icon: 'assets/icons/home/call.svg',
+                            iconh: 21,
+                            iconw: 21,
+                            color: const Color(0xff6E7FFC),
+                            focusNode: userController.phonefocusNode,
+                            numberLength: 10,
                           ),
-                          TextInputBoxProfile(
-                            topPadding: 20,
-                            title: "Whatsapp",
-                            textType: TextInputType.number,
-                            hintText: userController.wapp.value,
-                            suffixtext: "",
+                          NumberInput(
+                            topPadding: 10,
+                            bottomPadding: 6,
+                            title: "WhatsApp",
+                            textType: TextInputType.phone,
+                            hintText: '18XXXX',
                             controller: userController.wappnumber,
-                            iconh: 23,
-                            iconw: 23,
+                            icon: 'assets/icons/home/wapp.svg',
+                            iconh: 28,
+                            iconw: 28,
+                            color: Colors.lightGreen,
+                            focusNode: userController.wappfocusNode,
+                            numberLength: 10,
                           ),
                         ],
                       ),

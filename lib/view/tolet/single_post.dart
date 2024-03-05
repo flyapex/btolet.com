@@ -240,9 +240,9 @@ class _SinglePostToletState extends State<SinglePostTolet>
                   body: Stack(
                     children: [
                       SingleChildScrollView(
-                        physics: const BouncingScrollPhysics(
-                          parent: AlwaysScrollableScrollPhysics(),
-                        ),
+                        // physics: const BouncingScrollPhysics(
+                        //   parent: AlwaysScrollableScrollPhysics(),
+                        // ),
                         controller: _controller,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -830,7 +830,7 @@ class Details extends StatelessWidget {
             children: [
               const SizedBox(height: 8),
               Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
                     flex: 4,

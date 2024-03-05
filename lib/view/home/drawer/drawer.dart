@@ -53,9 +53,9 @@ class _CustomeDrawerState extends State<CustomeDrawer>
     return Obx(
       () => Drawer(
         child: ListView(
-          physics: const BouncingScrollPhysics(
-            parent: AlwaysScrollableScrollPhysics(),
-          ),
+          // physics: const BouncingScrollPhysics(
+          //   parent: AlwaysScrollableScrollPhysics(),
+          // ),
           padding: const EdgeInsets.all(0.0),
           children: [
             UserAccountsDrawerHeader(

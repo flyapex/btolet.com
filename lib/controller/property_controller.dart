@@ -565,8 +565,6 @@ class ProController extends GetxController {
     try {
       if (selectedCategory.value == category[0] ||
           selectedCategory.value == category[1]) {
-
-            
         response = await ApiServicePro.newPost(
           NewPostPro(
             uid: dbController.getUserID(),
@@ -677,7 +675,9 @@ class ProController extends GetxController {
             area: area.value,
             measurement: mesurement.text,
             roadSize: roadSize.text,
-            emi: selectedEMIType.value,
+            emi: selectedCategory.value == category[3]
+                ? selectedEMIType.value
+                : '',
           ),
         );
       }
