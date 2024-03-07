@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:btolet/api/google%20ads/ad_helper.dart';
 import 'package:btolet/controller/tolet_controller.dart';
 import 'package:btolet/view/tolet/single_post.dart';
+import 'package:facebook_audience_network/facebook_audience_network.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -264,35 +265,56 @@ class AdsController extends GetxController {
 
 //----------------------Facebook Ads
 
-  // bool _isRewardedAdLoaded = false;
-  // void _loadRewardedVideoAd() {
-  //   FacebookRewardedVideoAd.loadRewardedVideoAd(
-  //     placementId: "YOUR_PLACEMENT_ID",
-  //     listener: (result, value) {
-  //       print("Rewarded Ad: $result --> $value");
-  //       if (result == RewardedVideoAdResult.LOADED) {
-  //         _isRewardedAdLoaded = true;
-  //       }
-  //       if (result == RewardedVideoAdResult.VIDEO_COMPLETE) {
-  //         print("Show Number");
-  //       }
+  bool _isRewardedAdLoaded = false;
 
-  //       if (result == RewardedVideoAdResult.VIDEO_CLOSED &&
-  //           (value == true || value["invalidated"] == true)) {
-  //         _isRewardedAdLoaded = false;
-  //         _loadRewardedVideoAd();
-  //       }
-  //     },
-  //   );
-  // }
+  void fbAdsInitialization() async {
+    await FacebookAudienceNetwork.init();
+  }
 
-  // _showRewardedAd() {
-  //   if (_isRewardedAdLoaded == true) {
-  //     FacebookRewardedVideoAd.showRewardedVideoAd();
-  //   } else {
-  //     print("Rewarded Ad not yet loaded!");
-  //   }
-  // }
+  var wappNumber = '';
+  var message =
+      '''Hey there👋! I saw your sweet listing on btolet App(btolet.com) - is it still up for Rent? I'm super interested. 😊 Please let me know what you think.''';
+  openWapp() async {
+    await launchUrl(Uri.parse(
+        "whatsapp://send?phone=$wappNumber&text=${Uri.parse(message)}"));
+  }
+
+  void loadRewardedVideoAdFB() {
+    wappNumber = '';
+    FacebookRewardedVideoAd.loadRewardedVideoAd(
+      // placementId: "YOUR_PLACEMENT_ID",
+      placementId: "VID_HD_16_9_15S_APP_INSTALL#YOUR_PLACEMENT_ID",
+      listener: (result, value) {
+        print("Rewarded Ad: $result --> $value");
+        if (result == RewardedVideoAdResult.LOADED) {
+          _isRewardedAdLoaded = true;
+          print("LOADED");
+        }
+        if (result == RewardedVideoAdResult.VIDEO_COMPLETE) {
+          print("VIDEO_COMPLETE");
+          print(wappNumber);
+          openWapp();
+        }
+
+        if (result == RewardedVideoAdResult.VIDEO_CLOSED &&
+            (value == true || value["invalidated"] == true)) {
+          _isRewardedAdLoaded = false;
+          loadRewardedVideoAdFB();
+          print("VIDEO_CLOSED");
+        }
+      },
+    );
+  }
+
+  showRewardedAdFB(data) {
+    wappNumber = data;
+    if (_isRewardedAdLoaded == true) {
+      FacebookRewardedVideoAd.showRewardedVideoAd();
+    } else {
+      print("Rewarded Ad not yet loaded!");
+      openWapp();
+    }
+  }
 
   Future<void> shareBase64Image(String base64Image, text) async {
     try {

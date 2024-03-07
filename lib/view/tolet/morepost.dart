@@ -152,7 +152,7 @@ class MoreToletState extends State<MoreTolet> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Expanded(
-                  flex: 3,
+                  flex: 1,
                   child: Row(
                     children: [
                       SizedBox(
@@ -180,7 +180,7 @@ class MoreToletState extends State<MoreTolet> {
                   ),
                 ),
                 Expanded(
-                  flex: 3,
+                  flex: 1,
                   child: Row(
                     children: [
                       SizedBox(
@@ -206,7 +206,7 @@ class MoreToletState extends State<MoreTolet> {
                   ),
                 ),
                 Expanded(
-                  flex: 5,
+                  flex: 1,
                   child: widget.postData.roomsize == ''
                       ? Row(
                           children: [

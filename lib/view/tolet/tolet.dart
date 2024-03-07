@@ -15,7 +15,6 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
-
 import '../../model/tolet_model.dart';
 import 'single_post.dart';
 
@@ -40,7 +39,6 @@ class _ToletState extends State<Tolet> with AutomaticKeepAliveClientMixin {
     // getLocation();
     toletController.getAllPost();
     // adsController.createRewardedAd();
-    // adsController.createRewardedInterstitialAd();
     super.initState();
   }
 

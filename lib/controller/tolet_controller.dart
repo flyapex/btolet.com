@@ -64,8 +64,8 @@ class ToletController extends GetxController {
     singlePostloding(true);
     try {
       var response = await ApiServiceTolet.getSinglePost(postid);
-      print('---------------------');
-      print(response);
+      // print('---------------------');
+      // print(response);
       if (response != null) {
         return response;
       } else {
@@ -434,8 +434,8 @@ class ToletController extends GetxController {
   final DBController dbController = Get.put(DBController());
 
   newpost() async {
-    print('------------------');
-    print(rentFrom);
+    // print('------------------');
+    // print(rentFrom);
     List<String> imageBase64List = [];
 
     for (int i = 0; i < 12; i++) {

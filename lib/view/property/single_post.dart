@@ -772,8 +772,8 @@ Check out the latest updates here:
                                     type: "Property Name",
                                     detailstext: postData.name,
                                     icon: Icons.home_outlined,
-                                    fontfamily: 'Roboto',
-                                    fontSize: 14,
+                                    // fontfamily: 'Roboto',
+                                    // fontSize: 14,
                                     textColor: const Color(0xff083437)
                                         .withOpacity(0.5),
                                   ),
@@ -792,13 +792,13 @@ Check out the latest updates here:
                                     detailstext: DateFormat('d MMM')
                                         .format(postData.sellfrom),
                                     icon: Icons.access_time,
+                                    textColor: const Color(0xff083437)
+                                        .withOpacity(0.5),
                                   ),
                                   Details(
                                     type: "Short Address",
                                     detailstext: postData.shortaddress,
                                     icon: Icons.share_location_rounded,
-                                    fontfamily: 'Roboto',
-                                    fontSize: 14,
                                     textColor: const Color(0xff083437)
                                         .withOpacity(0.5),
                                   ),

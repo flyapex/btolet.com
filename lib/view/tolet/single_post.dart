@@ -118,8 +118,14 @@ class _SinglePostToletState extends State<SinglePostTolet>
       _mapStyle = string;
     });
     lodeData();
-    // adsController.createRewardedAd();
-    // adsController.createRewardedInterstitialAd();
+
+    //*fb google
+    adsController.createRewardedAd();
+    adsController.createRewardedInterstitialAd();
+    //*fb ads
+    // adsController.fbAdsInitialization();
+    // adsController.loadRewardedVideoAdFB();
+
     _controller.addListener(_scrollListener);
     _controllerMore.addListener(_scrollListenerMore);
     super.initState();
@@ -194,8 +200,8 @@ class _SinglePostToletState extends State<SinglePostTolet>
 
     // adsController.interstitialAd?.dispose();
 
-    // adsController.rewardedInterstitialAd?.dispose();
-    // adsController.rewardedAd?.dispose();
+    adsController.rewardedInterstitialAd?.dispose();
+    adsController.rewardedAd?.dispose();
   }
 
   late String _mapStyle;
@@ -639,11 +645,12 @@ Check out the latest updates here:
                           flex: 1,
                           child: InkWell(
                             onTap: () async {
-                              print(postData.phone);
-                              // adsController.showRewardedAd(
-                              //   'call',
-                              //   postData.phone,
-                              // );
+                              // adsController.showRewardedAdFB();
+                              // print(postData.phone);
+                              adsController.showRewardedAd(
+                                'call',
+                                postData.phone,
+                              );
                               // final call = Uri.parse('tel:${postData.phone}');
                               // if (await canLaunchUrl(call)) {
                               //   launchUrl(call);
@@ -689,10 +696,10 @@ Check out the latest updates here:
                           flex: 1,
                           child: InkWell(
                             onTap: () async {
-                              // adsController.showRewardedInterstitialAd(
-                              //   'sms',
-                              //   postData.phone,
-                              // );
+                              adsController.showRewardedInterstitialAd(
+                                'sms',
+                                postData.phone,
+                              );
                               // final sms = Uri.parse('sms:${postData.phone}');
                               // if (await canLaunchUrl(sms)) {
                               //   launchUrl(sms);
@@ -747,10 +754,11 @@ Check out the latest updates here:
                           flex: 2,
                           child: InkWell(
                             onTap: () async {
-                              // adsController.showRewardedInterstitialAd(
-                              //   'wapp',
-                              //   postData.phone,
-                              // );
+                              // adsController.showRewardedAdFB(postData.wapp);
+                              adsController.showRewardedInterstitialAd(
+                                'wapp',
+                                postData.phone,
+                              );
 
                               // var message =
                               //     'Hi There I Just Saw A ads On btolet app, Is it available?';
@@ -810,16 +818,16 @@ class Details extends StatelessWidget {
   final String detailstext;
   final IconData icon;
   final Color textColor;
-  final String fontfamily;
-  final double fontSize;
+  // final String fontfamily;
+  // final double fontSize;
   const Details({
     super.key,
     required this.type,
     required this.detailstext,
     required this.icon,
     this.textColor = const Color(0xff083437),
-    this.fontfamily = 'x',
-    this.fontSize = s4,
+    // this.fontfamily = 'x',
+    // this.fontSize = s4,
   });
 
   @override
@@ -830,6 +838,7 @@ class Details extends StatelessWidget {
             children: [
               const SizedBox(height: 8),
               Row(
+                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
@@ -853,14 +862,30 @@ class Details extends StatelessWidget {
                   ),
                   Expanded(
                     flex: 6,
-                    child: Text(
-                      detailstext,
-                      style: TextStyle(
-                        fontSize: fontSize,
-                        color: textColor,
-                        fontFamily: fontfamily,
-                      ),
-                    ),
+                    child: RegExp(r'^[a-zA-Z\s]+$|^[a-zA-Z0-9\s]+$')
+                            .hasMatch(detailstext)
+                        ? Text(
+                            detailstext,
+                            style: TextStyle(
+                              fontSize: s4,
+                              color: textColor,
+                            ),
+                            // maxLines: 2,
+                            textAlign: TextAlign.start,
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.only(top: 8),
+                            child: Text(
+                              detailstext,
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: textColor,
+                                fontFamily: 'Roboto',
+                              ),
+                              // maxLines: 2,
+                              textAlign: TextAlign.start,
+                            ),
+                          ),
                   ),
                 ],
               ),

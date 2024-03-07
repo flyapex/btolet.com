@@ -117,25 +117,46 @@ class ApiServiceTolet {
   }
 
   static Future sortingPostCount(SortPostTolet data) async {
+    print('Request URL: $baseUrl/sort/postcount');
+    print(sortPostToletToJson(data));
+    // Map<String, dynamic> requestData = {
+    //   "geolat": data.geolat,
+    //   "geolon": data.geolon,
+    //   "page": data.page,
+    //   "category": List<dynamic>.from(data.category.map((x) => x)),
+    //   "fasalitis": List<dynamic>.from(data.fasalitis.map((x) => x)),
+    //   "rentmin": data.rentmin,
+    //   "rentmax": data.rentmax,
+    //   "bed": List<dynamic>.from(data.bed.map((x) => x)),
+    //   "bath": List<dynamic>.from(data.bath.map((x) => x)),
+    // };
+
+    // print(requestData);
+
     // print('$baseUrl/sort/postcount');
     // print(sortPostToletToJson(data));
 
-    final response = await dio.get(
+    // final response = await dio.get(
+    //   '$baseUrl/sort/postcount',
+    //   // data: sortPostToletToJson(data),
+    //   queryParameters: {
+    //     "geolat": data.geolat,
+    //     "geolon": data.geolon,
+    //     "page": data.page,
+    //     "category": List<dynamic>.from(data.category.map((x) => x)),
+    //     "fasalitis": List<dynamic>.from(data.fasalitis.map((x) => x)),
+    //     "rentmin": data.rentmin,
+    //     "rentmax": data.rentmax,
+    //     "bed": List<dynamic>.from(data.bed.map((x) => x)),
+    //     "bath": List<dynamic>.from(data.bath.map((x) => x)),
+    //   },
+    // );
+    final response = await dio.post(
       '$baseUrl/sort/postcount',
       // data: sortPostToletToJson(data),
-      queryParameters: {
-        "geolat": data.geolat,
-        "geolon": data.geolon,
-        "page": data.page,
-        "category": List<dynamic>.from(data.category.map((x) => x)),
-        "fasalitis": List<dynamic>.from(data.fasalitis.map((x) => x)),
-        "rentmin": data.rentmin,
-        "rentmax": data.rentmax,
-        "bed": List<dynamic>.from(data.bed.map((x) => x)),
-        "bath": List<dynamic>.from(data.bath.map((x) => x)),
-      },
+      data: sortPostToletToJson(data),
     );
-    // print('Request URL: ${response.realUri}');
+    print('Request URL: ${response.realUri}');
     if (response.statusCode == 200) {
       return response.data['total_count'];
     } else {
@@ -146,20 +167,20 @@ class ApiServiceTolet {
   static Future sortingPost(SortPostTolet data) async {
     // print('$baseUrl/sort/postlist');
     // print(sortPostToletToJson(data));
-    final response = await dio.get(
+    final response = await dio.post(
       '$baseUrl/sort/postlist',
-      // data: sortPostToletToJson(data),
-      queryParameters: {
-        "geolat": data.geolat,
-        "geolon": data.geolon,
-        "page": data.page,
-        "category": List<dynamic>.from(data.category.map((x) => x)),
-        "fasalitis": List<dynamic>.from(data.fasalitis.map((x) => x)),
-        "rentmin": data.rentmin,
-        "rentmax": data.rentmax,
-        "bed": List<dynamic>.from(data.bed.map((x) => x)),
-        "bath": List<dynamic>.from(data.bath.map((x) => x)),
-      },
+      data: sortPostToletToJson(data),
+      // queryParameters: {
+      //   "geolat": data.geolat,
+      //   "geolon": data.geolon,
+      //   "page": data.page,
+      //   "category": List<dynamic>.from(data.category.map((x) => x)),
+      //   "fasalitis": List<dynamic>.from(data.fasalitis.map((x) => x)),
+      //   "rentmin": data.rentmin,
+      //   "rentmax": data.rentmax,
+      //   "bed": List<dynamic>.from(data.bed.map((x) => x)),
+      //   "bath": List<dynamic>.from(data.bath.map((x) => x)),
+      // },
     );
 
     if (response.statusCode == 200) {
